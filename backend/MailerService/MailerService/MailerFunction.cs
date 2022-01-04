@@ -1,11 +1,11 @@
 ﻿namespace MailerService
 {
 	using System;
-	using System.Linq;
 	using System.Threading;
 	using System.Threading.Tasks;
 	using CloudNative.CloudEvents;
 	using Google.Cloud.Functions.Framework;
+	using Google.Cloud.Functions.Hosting;
 	using Google.Events.Protobuf.Cloud.PubSub.V1;
 	using Microsoft.Extensions.Logging;
 	using Newtonsoft.Json;
@@ -13,6 +13,7 @@
 	/// <summary>
 	///   Google cloud function for sending emails using pub/sub.
 	/// </summary>
+	[FunctionsStartup(typeof(Startup))]
 	public class MailerFunction : ICloudEventFunction<MessagePublishedData>
 	{
 		/// <summary>
@@ -20,13 +21,17 @@
 		/// </summary>
 		private readonly ILogger<MailerFunction> logger;
 
+		private readonly IMailerProvider mailerProvider;
+
 		/// <summary>
 		///   Creates a new instance of <see cref="MailerFunction" />.
 		/// </summary>
 		/// <param name="logger">Logger for error messages.</param>
-		public MailerFunction(ILogger<MailerFunction> logger)
+		/// <param name="mailerProvider">Provider for sending emails.</param>
+		public MailerFunction(ILogger<MailerFunction> logger, IMailerProvider mailerProvider)
 		{
 			this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			this.mailerProvider = mailerProvider ?? throw new ArgumentNullException(nameof(mailerProvider));
 		}
 
 		/// <summary>
@@ -41,8 +46,7 @@
 			try
 			{
 				var message = JsonConvert.DeserializeObject<Message>(data.Message.TextData);
-				this.logger.LogInformation(
-					string.Join(", ", message?.Recipients?.Select(x => x.Name) ?? Enumerable.Empty<string>()));
+				this.mailerProvider.Send(message);
 			}
 			catch (Exception e)
 			{
