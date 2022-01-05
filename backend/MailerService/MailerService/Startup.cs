@@ -1,6 +1,8 @@
 ﻿namespace MailerService
 {
 	using Google.Cloud.Functions.Hosting;
+	using MailerService.Contracts;
+	using MailerService.Logic;
 	using Microsoft.AspNetCore.Hosting;
 	using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +18,7 @@
 		/// <param name="services">The <see cref="IServiceCollection" />.</param>
 		public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
 		{
+			services.AddScoped<IMessageConverter, MessageConverter>();
 			services.AddScoped<IMailerProvider, MailerProvider>();
 		}
 	}

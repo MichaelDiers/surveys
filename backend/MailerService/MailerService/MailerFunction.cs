@@ -7,6 +7,8 @@
 	using Google.Cloud.Functions.Framework;
 	using Google.Cloud.Functions.Hosting;
 	using Google.Events.Protobuf.Cloud.PubSub.V1;
+	using MailerService.Contracts;
+	using MailerService.Model;
 	using Microsoft.Extensions.Logging;
 	using Newtonsoft.Json;
 
@@ -21,6 +23,9 @@
 		/// </summary>
 		private readonly ILogger<MailerFunction> logger;
 
+		/// <summary>
+		///   Provider for sending emails.
+		/// </summary>
 		private readonly IMailerProvider mailerProvider;
 
 		/// <summary>
@@ -32,6 +37,7 @@
 		{
 			this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			this.mailerProvider = mailerProvider ?? throw new ArgumentNullException(nameof(mailerProvider));
+			this.mailerProvider.SendAsync(null);
 		}
 
 		/// <summary>
@@ -41,19 +47,17 @@
 		/// <param name="data">The message data.</param>
 		/// <param name="cancellationToken">A token to cancel the operation.</param>
 		/// <returns>A <see cref="Task" /> without a result.</returns>
-		public Task HandleAsync(CloudEvent cloudEvent, MessagePublishedData data, CancellationToken cancellationToken)
+		public async Task HandleAsync(CloudEvent cloudEvent, MessagePublishedData data, CancellationToken cancellationToken)
 		{
 			try
 			{
 				var message = JsonConvert.DeserializeObject<Message>(data.Message.TextData);
-				this.mailerProvider.Send(message);
+				await this.mailerProvider.SendAsync(message);
 			}
 			catch (Exception e)
 			{
 				this.logger.LogError(e, "Unexpected error.");
 			}
-
-			return Task.CompletedTask;
 		}
 	}
 }
