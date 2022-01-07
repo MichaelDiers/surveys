@@ -27,6 +27,4 @@ jobs:
           project_id: surveys-services-test
           event_trigger_type: providers/cloud.firestore/eventTypes/document.create
           event_trigger_resource: 'projects/surveys-services-test/databases/(default)/documents/surveys/{survey}'
-defaults:
-  run:
-    working-directory: 'backend/SurveyCreatedService'
+          source_dir: 'backend/SurveyCreatedService'
