@@ -17,10 +17,8 @@ jobs:
         with:
           node-version: 14.x
       - name: install dependencies
-        working-directory: functions
         run: npm install
       - name: set config
-        working-directory: functions
         run: npx firebase-tools functions:config:set --project=test savesurveyservice.collectionname=$COLLECTION_NAME savesurveyservice.topicname=$TOPIC_NAME --token "$FIREBASE_CI_TOKEN"
         env:
           FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
@@ -32,4 +30,4 @@ jobs:
           FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
 defaults:
   run:
-    working-directory: 'backend/SaveSurveyService'
+    working-directory: 'backend/SaveSurveyService/functions'
