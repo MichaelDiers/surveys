@@ -21,11 +21,13 @@ jobs:
       - name: install dependencies
         run: npm install
       - name: set config
-        run: npx firebase-tools functions:config:set --project=test savesurveyservice.collectionname=$COLLECTION_NAME savesurveyservice.topicname=$TOPIC_NAME --token "$FIREBASE_CI_TOKEN"
+        run: npx firebase-tools functions:config:set --project=$PROJECT_ID savesurveyservice.collectionname=$COLLECTION_NAME savesurveyservice.topicname=$TOPIC_NAME savesurveyservice.projectid=$PROJECT_ID savesurveyservice.topicnamecreated=$TOPIC_NAME_CREATED --token "$FIREBASE_CI_TOKEN"
         env:
           FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
           COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
-          TOPIC_NAME: ${{ secrets.TOPIC_NAME }}          
+          TOPIC_NAME: ${{ secrets.TOPIC_NAME }}
+          PROJECT_ID: test
+          TOPIC_NAME_CREATED: ${{ secrets.TOPIC_NAME_CREATED }}
       - name: deploy firebase function
         run: npx firebase-tools deploy --project=test --only functions --token "$FIREBASE_CI_TOKEN"
         env:
@@ -46,11 +48,13 @@ jobs:
       - name: install dependencies
         run: npm install
       - name: set config
-        run: npx firebase-tools functions:config:set --project=prod savesurveyservice.collectionname=$COLLECTION_NAME savesurveyservice.topicname=$TOPIC_NAME --token "$FIREBASE_CI_TOKEN"
+        run: npx firebase-tools functions:config:set --project=$PROJECT_ID savesurveyservice.collectionname=$COLLECTION_NAME savesurveyservice.topicname=$TOPIC_NAME savesurveyservice.projectid=$PROJECT_ID savesurveyservice.topicnamecreated=$TOPIC_NAME_CREATED --token "$FIREBASE_CI_TOKEN"
         env:
           FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
           COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
-          TOPIC_NAME: ${{ secrets.TOPIC_NAME }}          
+          TOPIC_NAME: ${{ secrets.TOPIC_NAME }}
+          PROJECT_ID: prod
+          TOPIC_NAME_CREATED: ${{ secrets.TOPIC_NAME_CREATED }}
       - name: deploy firebase function
         run: npx firebase-tools deploy --project=prod --only functions --token "$FIREBASE_CI_TOKEN"
         env:
