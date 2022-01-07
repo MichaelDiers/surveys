@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "surveys-services-test",
+    "test": "surveys-services-test",
+    "prod": "surveys-services"
+  },
+  "targets": {}
+}
