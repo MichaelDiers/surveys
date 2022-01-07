@@ -15,9 +15,12 @@ const {
 const pubsub = new PubSub({ projectId });
 
 exports.SaveSurvey = functions.pubsub.topic(topicName).onPublish(async (message) => {
+  const { json } = message;
+  json.status = 'CREATED';
   const docRef = database.collection(collectionName).doc();
-  await docRef.set(message.json);
+  await docRef.set(json);
+  json.id = docRef.id;
 
-  const data = Buffer.from(JSON.stringify(message.json));
+  const data = Buffer.from(JSON.stringify(json));
   await pubsub.topic(topicNameCreated).publishMessage({ data });
 });
