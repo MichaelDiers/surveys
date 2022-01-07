@@ -26,7 +26,7 @@ jobs:
           FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
           COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
           TOPIC_NAME: ${{ secrets.TOPIC_NAME }}
-          PROJECT_ID: test
+          PROJECT_ID: surveys-services-test
           TOPIC_NAME_CREATED: ${{ secrets.TOPIC_NAME_CREATED }}
       - name: deploy firebase function
         run: npx firebase-tools deploy --project=test --only functions --token "$FIREBASE_CI_TOKEN"
@@ -53,7 +53,7 @@ jobs:
           FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
           COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
           TOPIC_NAME: ${{ secrets.TOPIC_NAME }}
-          PROJECT_ID: prod
+          PROJECT_ID: surveys-services
           TOPIC_NAME_CREATED: ${{ secrets.TOPIC_NAME_CREATED }}
       - name: deploy firebase function
         run: npx firebase-tools deploy --project=prod --only functions --token "$FIREBASE_CI_TOKEN"
