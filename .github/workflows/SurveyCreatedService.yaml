@@ -25,6 +25,6 @@ jobs:
           runtime: python39
           entry_point: on_survey_created
           project_id: surveys-services-test
-          event_trigger_type: providers/cloud.firestore/eventTypes/document.create
-          event_trigger_resource: 'projects/surveys-services-test/databases/(default)/documents/surveys/{survey}'
+          event_trigger_type: google.pubsub.topic.publish
+          event_trigger_resource: SURVEY_CREATED
           source_dir: 'backend/SurveyCreatedService'

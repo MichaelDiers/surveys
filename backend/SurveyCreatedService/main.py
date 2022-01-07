@@ -1,14 +1,17 @@
+import base64
 import json
 
-def on_survey_created(data, context):
-    """ Triggered when a survey-document is written to for the first time.
+def on_survey_created(event, context):
+    """Triggered from a message on a Cloud Pub/Sub topic.
     Args:
-        data (dict): The event payload.
-        context (google.cloud.functions.Context): Metadata for the event.
+         event (dict): Event payload.
+         context (google.cloud.functions.Context): Metadata for the event.
     """
-    trigger_resource = context.resource
-
-    print('Function triggered by change to: %s' % trigger_resource)
-
-    print('\nNew value:')
-    print(json.dumps(data["value"]))
+    try:
+        if 'data' in event:
+            json_message = base64.b64decode(event['data']).decode('utf-8')
+            print(json_message)
+        else:
+            print('no data')
+    except Exception as error:
+        print(f'Unexpected error: {str(error)}')
