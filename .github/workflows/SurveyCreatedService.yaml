@@ -1,0 +1,57 @@
+name: BE/SurveyCreatedService.yaml
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/SurveyCreatedService/**'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment:
+      name: SurveyCreatedService-Test
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: SurveyCreatedService
+          runtime: python39
+          entry_point: on_survey_created
+          project_id: surveys-services-test
+          event_trigger_type: providers/cloud.firestore/eventTypes/document.create
+          event_trigger_resource: projects/surveys-services-test/databases/(default)/documents/collection/surveys/{survey}      
+  prod:
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    environment:
+      name: SurveyCreatedService-Prod
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: use node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: install dependencies
+        run: npm install
+      - name: set config
+        run: npx firebase-tools functions:config:set --project=prod savesurveyservice.collectionname=$COLLECTION_NAME savesurveyservice.topicname=$TOPIC_NAME --token "$FIREBASE_CI_TOKEN"
+        env:
+          FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
+          COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
+          TOPIC_NAME: ${{ secrets.TOPIC_NAME }}          
+      - name: deploy firebase function
+        run: npx firebase-tools deploy --project=prod --only functions --token "$FIREBASE_CI_TOKEN"
+        env:
+          FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
+defaults:
+  run:
+    working-directory: 'backend/SurveyCreatedService'
