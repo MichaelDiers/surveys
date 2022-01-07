@@ -9,7 +9,7 @@ const {
   topicname: topicName,
 } = functions.config().savesurveyservice;
 
-exports.surveyStore = functions.pubsub.topic(topicName).onPublish(async (message) => {
+exports.SaveSurvey = functions.pubsub.topic(topicName).onPublish(async (message) => {
   const docRef = database.collection(collectionName).doc();
   await docRef.set(message.json);
 });
