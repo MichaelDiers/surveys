@@ -29,7 +29,7 @@ jobs:
           PROJECT_ID: surveys-services-test
           TOPIC_NAME_CREATED: ${{ secrets.TOPIC_NAME_CREATED }}
       - name: deploy firebase function
-        run: npx firebase-tools deploy --project=test --only functions --token "$FIREBASE_CI_TOKEN"
+        run: npx firebase-tools deploy --project=test --only functions:SaveSurvey --token "$FIREBASE_CI_TOKEN"
         env:
           FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
   prod:
