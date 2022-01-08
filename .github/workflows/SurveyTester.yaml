@@ -14,6 +14,7 @@ jobs:
     env:
       FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      FUNCTION_NAME: ${{ secrets.FUNCTION_NAME }}
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -30,7 +31,7 @@ jobs:
           DOCUMENT_ID: ${{ secrets.DOCUMENT_ID }}
           TOPIC_NAME: ${{ secrets.TOPIC_NAME }}
       - name: deploy firebase function
-        run: npx firebase-tools deploy --project=$PROJECT_ID --only functions --token "$FIREBASE_CI_TOKEN"
+        run: npx firebase-tools deploy --project=$PROJECT_ID --only functions:$FUNCTION_NAME --token "$FIREBASE_CI_TOKEN"
   prod:
     runs-on: ubuntu-latest
     needs:
@@ -40,6 +41,7 @@ jobs:
     env:
       FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
       PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      FUNCTION_NAME: ${{ secrets.FUNCTION_NAME }}
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -56,7 +58,7 @@ jobs:
           DOCUMENT_ID: ${{ secrets.DOCUMENT_ID }}
           TOPIC_NAME: ${{ secrets.TOPIC_NAME }}
       - name: deploy firebase function
-        run: npx firebase-tools deploy --project=$PROJECT_ID --only functions --token "$FIREBASE_CI_TOKEN"
+        run: npx firebase-tools deploy --project=$PROJECT_ID --only functions:$FUNCTION_NAME --token "$FIREBASE_CI_TOKEN"
 defaults:
   run:
     working-directory: 'backend/SurveyTester/functions'

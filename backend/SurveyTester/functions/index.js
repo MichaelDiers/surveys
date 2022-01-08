@@ -14,7 +14,7 @@ const {
 const database = admin.firestore();
 const pubsub = new PubSub({ projectId });
 
-exports.TestSurvey = functions.https.onRequest(async (req, res) => {
+exports.SurveyTester = functions.https.onRequest(async (req, res) => {
   const docRef = database.collection(collectionName).doc(documentId);
   const doc = await docRef.get();
   if (doc.exists) {
