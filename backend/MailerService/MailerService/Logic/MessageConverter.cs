@@ -35,10 +35,8 @@
 			var mimeMessage = new MimeMessage(
 				from,
 				request.Recipients.Select(r => new MailboxAddress(r.Name, r.Email)),
-				body)
-			{
-				Subject = request.SurveyName
-			};
+				request.SurveyName,
+				body);
 
 			return mimeMessage;
 		}
