@@ -8,9 +8,7 @@
 	using Google.Cloud.Functions.Hosting;
 	using Google.Events.Protobuf.Cloud.PubSub.V1;
 	using MailerService.Contracts;
-	using MailerService.Model;
 	using Microsoft.Extensions.Logging;
-	using Newtonsoft.Json;
 
 	/// <summary>
 	///   Google cloud function for sending emails using pub/sub.
@@ -51,8 +49,7 @@
 		{
 			try
 			{
-				var message = JsonConvert.DeserializeObject<Message>(data.Message.TextData);
-				await this.mailerProvider.SendAsync(message);
+				await this.mailerProvider.SendAsync(data?.Message?.TextData);
 			}
 			catch (Exception e)
 			{

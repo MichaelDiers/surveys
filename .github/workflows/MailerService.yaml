@@ -1,0 +1,56 @@
+name: BE/MailerService.yaml
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/MailerService/MailerService/**'
+  workflow_dispatch:
+jobs:
+  env:
+      APP_SETTINGS_JSON: 'backend/MailerService/MailerService/appsettings.json'
+      CONFIG: Release
+      SOURCE_DIR: 'backend/MailerService/MailerService'
+      ENTRY_POINT: MailerService.MailerFunction
+      FUNCTION_NAME: MailerService
+  test:
+    runs-on: ubuntu-latest
+    environment:
+      name: MailerService-Test    
+    steps:      
+      - name: checkout source
+        uses: actions/checkout@v2
+      - name: configure appsettings.json
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: $APP_SETTINGS_JSON
+        env:
+          MailboxAddressFrom.Name: ${{ secrets.MAILBOX_ADDRESS_FROM_NAME }}
+          MailboxAddressFrom.Address: ${{ secrets.MAILBOX_ADDRESS_FROM_ADDRESS }}
+          Smtp.Password: ${{ secrets.SMTP_PASSWORD }}
+          Smtp.Port: ${{ secrets.SMTP_PORT }}
+          Smtp.Server: ${{ secrets.SMTP_SERVER }}
+          Smtp.UserName: ${{ secrets.SMTP_USERNAME }}
+      - name: use .net core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
+      - name: build
+        run: dotnet build --configuration "$CONFIG"
+      - name: test
+        run: dotnet test --configuration "$CONFIG" --no-build
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: $FUNCTION_NAME
+          runtime: dotnet3          
+          project_id: ${{ secrets.PROJECT_ID }}          
+          source_dir: $SOURCE_DIR
+          entry_point: $ENTRY_POINT
+defaults:
+  run:
+    working-directory: 'backend/MailerService'

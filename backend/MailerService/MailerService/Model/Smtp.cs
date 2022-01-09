@@ -1,9 +1,11 @@
 ﻿namespace MailerService.Model
 {
+	using MailerService.Contracts;
+
 	/// <summary>
 	///   Specifies the smtp connection data.
 	/// </summary>
-	public class Smtp
+	public class Smtp : ISmtp
 	{
 		/// <summary>
 		///   Gets or sets the smtp password.
@@ -19,5 +21,10 @@
 		///   Gets or sets the smtp server.
 		/// </summary>
 		public string Server { get; set; }
+
+		/// <summary>
+		///   Gets the name of the user.
+		/// </summary>
+		public string UserName { get; set; }
 	}
 }
