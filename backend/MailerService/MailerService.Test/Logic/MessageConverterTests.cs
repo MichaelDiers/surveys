@@ -26,7 +26,15 @@
 			string fromName,
 			string fromAddress)
 		{
-			var message = new MessageConverter().ToMimeMessage(
+			var message = new MessageConverter(
+				new MailerServiceConfiguration
+				{
+					SurveyRequestTemplate = new MessageTemplate
+					{
+						Text = "{0}{1}{2}",
+						Html = "{0}{1}{2}"
+					}
+				}).ToMimeMessage(
 				new MailerServiceRequest
 				{
 					EmailType = emailType,

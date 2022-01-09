@@ -32,6 +32,8 @@ jobs:
           Smtp.Port: ${{ secrets.SMTP_PORT }}
           Smtp.Server: ${{ secrets.SMTP_SERVER }}
           Smtp.UserName: ${{ secrets.SMTP_USERNAME }}
+          SurveyRequestTemplate.Text: ${{ secrets.SURVEY_REQUEST_TEXT }}
+          SurveyRequestTemplate.Html: ${{ secrets.SURVEY_REQUEST_HTML }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:

@@ -16,5 +16,10 @@
 		///   Gets or sets the connection data for smtp.
 		/// </summary>
 		public Smtp Smtp { get; set; }
+
+		/// <summary>
+		///   Gets or sets the templates for survey request templates.
+		/// </summary>
+		public MessageTemplate SurveyRequestTemplate { get; set; }
 	}
 }
