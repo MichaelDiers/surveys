@@ -63,7 +63,8 @@
 					this.configuration.SurveyRequestTemplate.Text,
 					string.Join(", ", request.Recipients.Select(r => r.Name)),
 					request.SurveyName,
-					request.SurveyLink);
+					request.SurveyLink,
+					Environment.NewLine);
 				builder.HtmlBody = string.Format(
 					this.configuration.SurveyRequestTemplate.Html,
 					string.Join(", ", request.Recipients.Select(r => r.Name)),
