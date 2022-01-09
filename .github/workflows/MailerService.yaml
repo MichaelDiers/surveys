@@ -54,4 +54,4 @@ jobs:
           entry_point: ${{ env.ENTRY_POINT }}
 defaults:
   run:
-    working-directory: ${{ env.WORKING_DIRECTORY }}
+    working-directory: ${{ WORKING_DIRECTORY }}
