@@ -24,7 +24,7 @@ jobs:
       - name: configure appsettings.json
         uses: microsoft/variable-substitution@v1
         with:
-          files: $APP_SETTINGS_JSON
+          files: ${{ env.APP_SETTINGS_JSON }}
         env:
           MailboxAddressFrom.Name: ${{ secrets.MAILBOX_ADDRESS_FROM_NAME }}
           MailboxAddressFrom.Address: ${{ secrets.MAILBOX_ADDRESS_FROM_ADDRESS }}
