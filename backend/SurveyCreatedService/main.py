@@ -2,6 +2,8 @@ import base64
 import json
 import sys
 
+from google.cloud import pubsub_v1
+
 PARTICIPANTS = 'participants'
 PARTICIPANT_NAME = 'name'
 PARTICIPANT_EMAIL = 'email'
@@ -14,6 +16,8 @@ MESSAGE_RECIPIENT_NAME = 'name'
 MESSAGE_RECIPIENT_EMAIL = 'email'
 MESSAGE_SURVEY_LINK = 'surveyLink'
 MESSAGE_SURVEY_NAME = 'surveyName'
+
+publisher = pubsub_v1.PublisherClient()
 
 def create_message(surveyName, participant):
     return {
@@ -30,9 +34,13 @@ def create_message(surveyName, participant):
 
 def send_mails(survey):
     survey_name = survey[SURVEY_NAME]
+    topic_path = publisher.topic_path('surveys-services-test', 'SEND_MAIL')
     for participant in survey[PARTICIPANTS]:
         message = create_message(survey_name, participant)
-        print(message)
+        message_json = json.dumps(message)
+        message_bytes = message_json.encode('utf-8')
+        publish_future = publisher.publish(topic_path, data=message_bytes)
+        publish_future.result()
 
 def validate(survey):
     for name in [PARTICIPANTS, SURVEY_NAME]:
