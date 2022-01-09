@@ -24,8 +24,4 @@
     <ProjectReference Include="..\MailerService\MailerService.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Logic\" />
-  </ItemGroup>
-
 </Project>

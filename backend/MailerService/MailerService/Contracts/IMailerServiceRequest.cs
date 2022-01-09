@@ -1,6 +1,7 @@
 ﻿namespace MailerService.Contracts
 {
 	using System.Collections.Generic;
+	using MailerService.Model;
 
 	/// <summary>
 	///   Specifies the data of a <see cref="MailerFunction" /> request.
@@ -15,7 +16,7 @@
 		/// <summary>
 		///   Gets the recipients of the email.
 		/// </summary>
-		IEnumerable<IRecipient> Recipients { get; }
+		IEnumerable<Recipient> Recipients { get; }
 
 		/// <summary>
 		///   Gets the link to the survey.

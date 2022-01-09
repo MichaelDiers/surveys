@@ -9,14 +9,14 @@
 	public class MailerServiceRequest : IMailerServiceRequest
 	{
 		/// <summary>
+		///   Gets or sets the recipients of the email.
+		/// </summary>
+		public IEnumerable<Recipient> Recipients { get; set; }
+
+		/// <summary>
 		///   Gets the type of the requested email.
 		/// </summary>
 		public EmailType EmailType { get; set; }
-
-		/// <summary>
-		///   Gets or sets the recipients of the email.
-		/// </summary>
-		public IEnumerable<IRecipient> Recipients { get; set; }
 
 		/// <summary>
 		///   Gets or sets the link to the survey.
