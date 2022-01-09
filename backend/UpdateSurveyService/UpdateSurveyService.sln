@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdateSurveyService", "UpdateSurveyService\UpdateSurveyService.csproj", "{37A90780-6B84-4EB7-93B7-3524D55B5B74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37A90780-6B84-4EB7-93B7-3524D55B5B74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37A90780-6B84-4EB7-93B7-3524D55B5B74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37A90780-6B84-4EB7-93B7-3524D55B5B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37A90780-6B84-4EB7-93B7-3524D55B5B74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A51B9BE7-276D-4E7A-9637-DC8DA8B73CEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A51B9BE7-276D-4E7A-9637-DC8DA8B73CEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A51B9BE7-276D-4E7A-9637-DC8DA8B73CEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A51B9BE7-276D-4E7A-9637-DC8DA8B73CEE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C1291017-8F92-4ADD-B77D-D1F49A8D1DFB}
+	EndGlobalSection
+EndGlobal

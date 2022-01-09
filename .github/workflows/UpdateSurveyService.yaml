@@ -1,0 +1,51 @@
+name: BE/UpdateSurveyService.yaml
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/UpdateSurveyService/UpdateSurveyService/**'
+  workflow_dispatch:
+env:
+  APP_SETTINGS_JSON: 'backend/UpdateSurveyService/UpdateSurveyService/appsettings.json'
+  CONFIG: Release
+  SOURCE_DIR: 'backend/UpdateSurveyService/UpdateSurveyService'
+  ENTRY_POINT: UpdateSurveyService.UpdateSurveyFunction
+  FUNCTION_NAME: UpdateSurveyService
+  SLN_FILE: 'backend/UpdateSurveyService/UpdateSurveyService.sln'
+jobs:  
+  test:
+    runs-on: ubuntu-latest
+    environment:
+      name: UpdateSurveyService-Test    
+    steps:      
+      - name: checkout source
+        uses: actions/checkout@v2
+      - name: configure appsettings.json
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.APP_SETTINGS_JSON }}
+        env:
+          Foo: bar          
+      - name: use .net core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
+      - name: build
+        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
+      - name: test
+        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: ${{ env.FUNCTION_NAME }}
+          runtime: dotnet3          
+          project_id: ${{ secrets.PROJECT_ID }}          
+          source_dir: ${{ env.SOURCE_DIR }}
+          entry_point: ${{ env.ENTRY_POINT }}
+          event_trigger_type: google.pubsub.topic.publish
+          event_trigger_resource: projects/${{ secrets.PROJECT_ID }}/topics/${{ secrets.TOPIC_NAME }}
