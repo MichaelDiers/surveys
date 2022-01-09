@@ -8,8 +8,7 @@ on:
   workflow_dispatch:
 env:
   FUNCTION_NAME: SurveyCreatedService
-  ENTRY_POINT: on_survey_created
-  PROJECT_ID: surveys-services-test
+  ENTRY_POINT: on_survey_created  
   SOURCE_DIR: 'backend/SurveyCreatedService'
 jobs:
   test:
@@ -29,8 +28,8 @@ jobs:
           name: ${{ env.FUNCTION_NAME }}
           runtime: python39
           entry_point: ${{ env.ENTRY_POINT }}
-          project_id: ${{ env.PROJECT_ID }}
+          project_id: ${{ secrets.PROJECT_ID }}
           event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SURVEY_CREATED }}
+          event_trigger_resource: projects/${{ secrets.PROJECT_ID }}/topics/${{ secrets.TOPIC_NAME_SURVEY_CREATED }}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_PROJECT_ID=${{ env.PROJECT_ID }},ENV_TOPIC_NAME_SEND_MAIL=${{ env.TOPIC_NAME_SEND_MAIL }}
+          env_vars: ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_TOPIC_NAME_SEND_MAIL=${{ secrets.TOPIC_NAME_SEND_MAIL }}
