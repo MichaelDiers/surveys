@@ -6,6 +6,11 @@ on:
     paths:
       - 'backend/SurveyCreatedService/**'
   workflow_dispatch:
+env:
+  FUNCTION_NAME: SurveyCreatedService
+  ENTRY_POINT: on_survey_created
+  PROJECT_ID: surveys-services-test
+  SOURCE_DIR: 'backend/SurveyCreatedService'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -21,10 +26,11 @@ jobs:
       - name: deploy
         uses: google-github-actions/deploy-cloud-functions@v0
         with:
-          name: SurveyCreatedService
+          name: ${{ env.SurveyCreatedService }}
           runtime: python39
-          entry_point: on_survey_created
-          project_id: surveys-services-test
+          entry_point: ${{ env.ENTRY_POINT }}
+          project_id: ${{ env.PROJECT_ID }}
           event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/surveys-services-test/topics/SURVEY_CREATED
-          source_dir: 'backend/SurveyCreatedService'
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SURVEY_CREATED }}
+          source_dir: ${{ env.SOURCE_DIR }}
+          env_vars: ENV_PROJECT_ID=${{ env.PROJECT_ID }},ENV_TOPIC_NAME_SEND_MAIL=${{ env.TOPIC_NAME_SEND_MAIL }}

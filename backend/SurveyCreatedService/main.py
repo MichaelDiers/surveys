@@ -1,8 +1,12 @@
 import base64
 import json
+import os
 import sys
 
 from google.cloud import pubsub_v1
+
+ENV_PROJECT_ID = 'ENV_PROJECT_ID'
+ENV_TOPIC_NAME_SEND_MAIL = 'ENV_TOPIC_NAME_SEND_MAIL'
 
 PARTICIPANTS = 'participants'
 PARTICIPANT_NAME = 'name'
@@ -34,12 +38,16 @@ def create_message(surveyName, participant):
 
 def send_mails(survey):
     survey_name = survey[SURVEY_NAME]
-    topic_path = publisher.topic_path('surveys-services-test', 'SEND_MAIL')
+
+    project_id = os.environ.get(ENV_PROJECT_ID, f'Specified environment variable is not set: {ENV_PROJECT_ID}')
+    topic_name_send_mail = os.environ.get(ENV_TOPIC_NAME_SEND_MAIL, f'Specified environment variable is not set: {ENV_TOPIC_NAME_SEND_MAIL}')
+    topic_path_send_mail = publisher.topic_path(project_id, topic_name_send_mail)
+
     for participant in survey[PARTICIPANTS]:
         message = create_message(survey_name, participant)
         message_json = json.dumps(message)
         message_bytes = message_json.encode('utf-8')
-        publish_future = publisher.publish(topic_path, data=message_bytes)
+        publish_future = publisher.publish(topic_path_send_mail, data=message_bytes)
         publish_future.result()
 
 def validate(survey):
