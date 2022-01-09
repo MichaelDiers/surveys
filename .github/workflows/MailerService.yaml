@@ -52,3 +52,5 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}          
           source_dir: ${{ env.SOURCE_DIR }}
           entry_point: ${{ env.ENTRY_POINT }}
+          event_trigger_type: google.pubsub.topic.publish
+          event_trigger_resource: projects/${{ secrets.PROJECT_ID }}/topics/${{ secrets.TOPIC_NAME }}
