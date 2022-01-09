@@ -2,7 +2,12 @@
 {
 	using Google.Cloud.Functions.Hosting;
 	using Microsoft.AspNetCore.Hosting;
+	using Microsoft.Extensions.Configuration;
 	using Microsoft.Extensions.DependencyInjection;
+	using UpdateSurveyService.Contracts;
+	using UpdateSurveyService.Logic;
+	using UpdateSurveyService.Model;
+	using IConfiguration = UpdateSurveyService.Contracts.IConfiguration;
 
 	/// <summary>
 	///   Entry point of the google cloud function at startup.
@@ -16,6 +21,12 @@
 		/// <param name="services">The <see cref="IServiceCollection" />.</param>
 		public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
 		{
+			var configuration = new Configuration();
+			context.Configuration.Bind(configuration);
+			services.AddScoped<IConfiguration>(_ => configuration);
+
+			services.AddScoped<IDatabase, Database>();
+			services.AddScoped<IUpdateProvider, UpdateProvider>();
 		}
 	}
 }
