@@ -2,22 +2,30 @@ import base64
 import json
 import sys
 
-PARTICIPANTS = 'Participants'
-PARTICIPANT_NAME = 'Name'
-PARTICIPANT_EMAIL = 'Email'
-SURVEY_NAME = 'Name'
+PARTICIPANTS = 'participants'
+PARTICIPANT_NAME = 'name'
+PARTICIPANT_EMAIL = 'email'
+SURVEY_NAME = 'name'
+
+MESSAGE_EMAIL_TYPE = 'emailType'
+MESSAGE_EMAIL_TYPE_VALUE = 'surveyRequest'
+MESSAGE_RECIPIENTS = 'recipients'
+MESSAGE_RECIPIENT_NAME = 'name'
+MESSAGE_RECIPIENT_EMAIL = 'email'
+MESSAGE_SURVEY_LINK = 'surveyLink'
+MESSAGE_SURVEY_NAME = 'surveyName'
 
 def create_message(surveyName, participant):
     return {
-                "EmailType": "SurveyRequest",
-                "Recipients": [
+                MESSAGE_EMAIL_TYPE: MESSAGE_EMAIL_TYPE_VALUE,
+                MESSAGE_RECIPIENTS: [
                     {
-                        "Name": participant[PARTICIPANT_NAME],
-                        "Email":participant[PARTICIPANT_EMAIL]
+                        MESSAGE_RECIPIENT_NAME: participant[PARTICIPANT_NAME],
+                        MESSAGE_RECIPIENT_EMAIL:participant[PARTICIPANT_EMAIL]
                     }
                 ],
-                "SurveyLink": "",
-                "SurveyName": surveyName
+                MESSAGE_SURVEY_LINK: "",
+                MESSAGE_SURVEY_NAME: surveyName
     }
 
 def send_mails(survey):
