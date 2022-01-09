@@ -25,7 +25,7 @@ jobs:
       - name: install dependencies
         run: npm install
       - name: set config
-        run: npx firebase-tools functions:config:set --project=$PROJECT_ID surveytester.collectionname=$COLLECTION_NAME surveytester.projectid=$PROJECT_ID surveytester.documentid=DOCUMENT_ID surveytester.topicname=TOPIC_NAME  --token "$FIREBASE_CI_TOKEN"
+        run: npx firebase-tools functions:config:set --project=$PROJECT_ID surveytester.collectionname=$COLLECTION_NAME surveytester.projectid=$PROJECT_ID surveytester.documentid=$DOCUMENT_ID surveytester.topicname=$TOPIC_NAME  --token "$FIREBASE_CI_TOKEN"
         env:          
           COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
           DOCUMENT_ID: ${{ secrets.DOCUMENT_ID }}
@@ -52,7 +52,7 @@ jobs:
       - name: install dependencies
         run: npm install
       - name: set config
-        run: npx firebase-tools functions:config:set --project=$PROJECT_ID surveytester.collectionname=$COLLECTION_NAME surveytester.projectid=$PROJECT_ID surveytester.documentid=DOCUMENT_ID surveytester.topicname=TOPIC_NAME  --token "$FIREBASE_CI_TOKEN"
+        run: npx firebase-tools functions:config:set --project=$PROJECT_ID surveytester.collectionname=$COLLECTION_NAME surveytester.projectid=$PROJECT_ID surveytester.documentid=$DOCUMENT_ID surveytester.topicname=$TOPIC_NAME  --token "$FIREBASE_CI_TOKEN"
         env:          
           COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
           DOCUMENT_ID: ${{ secrets.DOCUMENT_ID }}
