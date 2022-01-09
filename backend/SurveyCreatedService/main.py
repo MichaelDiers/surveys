@@ -59,7 +59,7 @@ def on_survey_created(event, context):
             json_message = base64.b64decode(event['data']).decode('utf-8')
             survey = json.loads(json_message)
             if not validate(survey):
-                print(f'Invalid data: {str(json_message)}', file = sys.stderr)
+                print(f'Invalid data: {str(json_message)} - {str(survey)}', file = sys.stderr)
             else:
                 send_mails(survey)
         else:

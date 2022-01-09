@@ -108,3 +108,6 @@ bin/
 obj/
 .vs/
 *.DotSettings.user
+
+# python
+__pycache__
