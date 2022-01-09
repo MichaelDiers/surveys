@@ -6,13 +6,14 @@ on:
     paths:
       - 'backend/MailerService/MailerService/**'
   workflow_dispatch:
-jobs:
-  env:
-      APP_SETTINGS_JSON: 'backend/MailerService/MailerService/appsettings.json'
-      CONFIG: Release
-      SOURCE_DIR: 'backend/MailerService/MailerService'
-      ENTRY_POINT: MailerService.MailerFunction
-      FUNCTION_NAME: MailerService
+env:
+  APP_SETTINGS_JSON: 'backend/MailerService/MailerService/appsettings.json'
+  CONFIG: Release
+  SOURCE_DIR: 'backend/MailerService/MailerService'
+  ENTRY_POINT: MailerService.MailerFunction
+  FUNCTION_NAME: MailerService
+  WORKING_DIRECTORY: 'backend/MailerService'
+jobs:  
   test:
     runs-on: ubuntu-latest
     environment:
@@ -53,4 +54,4 @@ jobs:
           entry_point: $ENTRY_POINT
 defaults:
   run:
-    working-directory: 'backend/MailerService'
+    working-directory: $WORKING_DIRECTORY
