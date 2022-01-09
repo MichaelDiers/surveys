@@ -26,7 +26,7 @@ jobs:
       - name: deploy
         uses: google-github-actions/deploy-cloud-functions@v0
         with:
-          name: ${{ env.SurveyCreatedService }}
+          name: ${{ env.FUNCTION_NAME }}
           runtime: python39
           entry_point: ${{ env.ENTRY_POINT }}
           project_id: ${{ env.PROJECT_ID }}
