@@ -45,6 +45,8 @@ def validate(survey):
             or PARTICIPANT_NAME not in participant or len(participant[PARTICIPANT_NAME]) == 0 \
             or PARTICIPANT_EMAIL not in participant or len(participant[PARTICIPANT_EMAIL]) == 0:
             return False
+    
+    return True
 
 def on_survey_created(event, context):
     """Triggered from a message on a Cloud Pub/Sub topic.
