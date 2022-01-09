@@ -32,4 +32,4 @@ jobs:
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/${{ secrets.PROJECT_ID }}/topics/${{ secrets.TOPIC_NAME_SURVEY_CREATED }}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_TOPIC_NAME_SEND_MAIL=${{ secrets.TOPIC_NAME_SEND_MAIL }}
+          env_vars: ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_TOPIC_NAME_SEND_MAIL=${{ secrets.TOPIC_NAME_SEND_MAIL }},ENV_TOPIC_NAME_UPDATE_SURVEY=${{ secrets.TOPIC_NAME_UPDATE_SURVEY }}

@@ -7,6 +7,7 @@ from google.cloud import pubsub_v1
 
 ENV_PROJECT_ID = 'ENV_PROJECT_ID'
 ENV_TOPIC_NAME_SEND_MAIL = 'ENV_TOPIC_NAME_SEND_MAIL'
+ENV_TOPIC_NAME_UPDATE_SURVEY = 'ENV_TOPIC_NAME_UPDATE_SURVEY'
 
 PARTICIPANTS = 'participants'
 PARTICIPANT_NAME = 'name'
@@ -21,9 +22,15 @@ MESSAGE_RECIPIENT_EMAIL = 'email'
 MESSAGE_SURVEY_LINK = 'surveyLink'
 MESSAGE_SURVEY_NAME = 'surveyName'
 
+MESSAGE_UPDATE_SURVEY_ID = 'surveyId'
+MESSAGE_UPDATE_SURVEY_TYPE = 'type'
+MESSAGE_UPDATE_SURVEY_TYPE_VALUE = 'status'
+MESSAGE_UPDATE_SURVEY_STATUS = 'status'
+MESSAGE_UPDATE_SURVEY_STATUS_VALUE = 'SEND_MAIL'
+
 publisher = pubsub_v1.PublisherClient()
 
-def create_message(surveyName, participant):
+def create_message_send_mail(surveyName, participant):
     return {
                 MESSAGE_EMAIL_TYPE: MESSAGE_EMAIL_TYPE_VALUE,
                 MESSAGE_RECIPIENTS: [
@@ -36,6 +43,22 @@ def create_message(surveyName, participant):
                 MESSAGE_SURVEY_NAME: surveyName
     }
 
+def send_update_survey(survey_id):
+    project_id = os.environ.get(ENV_PROJECT_ID, f'Specified environment variable is not set: {ENV_PROJECT_ID}')
+    topic_name = os.environ.get(ENV_TOPIC_NAME_UPDATE_SURVEY, f'Specified environment variable is not set: {ENV_TOPIC_NAME_UPDATE_SURVEY}')
+    topic_path = publisher.topic_path(project_id, topic_name)
+
+    message = {
+        MESSAGE_UPDATE_SURVEY_ID: survey_id,
+        MESSAGE_UPDATE_SURVEY_TYPE: MESSAGE_UPDATE_SURVEY_TYPE_VALUE,
+        MESSAGE_UPDATE_SURVEY_STATUS: MESSAGE_UPDATE_SURVEY_STATUS_VALUE
+    }
+
+    message_json = json.dumps(message)
+    message_bytes = message_json.encode('utf-8')
+    publish_future = publisher.publish(topic_path, data=message_bytes)
+    publish_future.result()
+
 def send_mails(survey):
     survey_name = survey[SURVEY_NAME]
 
@@ -44,7 +67,7 @@ def send_mails(survey):
     topic_path_send_mail = publisher.topic_path(project_id, topic_name_send_mail)
 
     for participant in survey[PARTICIPANTS]:
-        message = create_message(survey_name, participant)
+        message = create_message_send_mail(survey_name, participant)
         message_json = json.dumps(message)
         message_bytes = message_json.encode('utf-8')
         publish_future = publisher.publish(topic_path_send_mail, data=message_bytes)
@@ -78,6 +101,7 @@ def on_survey_created(event, context):
                 print(f'Invalid data: {str(json_message)} - {str(survey)}', file = sys.stderr)
             else:
                 send_mails(survey)
+                send_update_survey(survey['id'])
         else:
             print('No data!', file = sys.stderr)
     except Exception as error:
