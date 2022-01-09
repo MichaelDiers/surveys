@@ -10,7 +10,8 @@ def on_survey_created(event, context):
     try:
         if 'data' in event:
             json_message = base64.b64decode(event['data']).decode('utf-8')
-            print(json_message)
+            message = json.loads(json_message)
+            print(message)
         else:
             print('no data')
     except Exception as error:
