@@ -37,9 +37,9 @@ jobs:
         with:
           dotnet-version: 3.1.x
       - name: build
-        run: dotnet build --configuration "$CONFIG"
+        run: dotnet build --configuration "${{ env.CONFIG }}"
       - name: test
-        run: dotnet test --configuration "$CONFIG" --no-build
+        run: dotnet test --configuration "${{ env.CONFIG }}" --no-build
       - name: auth
         uses: google-github-actions/auth@v0
         with:
@@ -47,11 +47,11 @@ jobs:
       - name: deploy
         uses: google-github-actions/deploy-cloud-functions@v0
         with:
-          name: $FUNCTION_NAME
+          name: ${{ env.FUNCTION_NAME }}
           runtime: dotnet3          
           project_id: ${{ secrets.PROJECT_ID }}          
-          source_dir: $SOURCE_DIR
-          entry_point: $ENTRY_POINT
+          source_dir: ${{ env.SOURCE_DIR }}
+          entry_point: ${{ env.ENTRY_POINT }}
 defaults:
   run:
-    working-directory: $WORKING_DIRECTORY
+    working-directory: ${{ env.WORKING_DIRECTORY }}
