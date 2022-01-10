@@ -31,8 +31,10 @@ exports.SaveSurveyService = functions.pubsub.topic(topicName).onPublish(async (m
   json.participantIds = json.participants.map((participant) => participant.guid);
   json.questions.forEach((question, index) => {
     json.questions[index].guid = uuidv4();
-    question.choices.forEach((_, qindex) => {
-      json.questions[index].choices[qindex].value = qindex + 1;
+    question.choices.forEach((choice, qindex) => {
+      if (choice.hasNoValue !== true) {
+        json.questions[index].choices[qindex].value = qindex + 1;
+      }
     });
   });
 
