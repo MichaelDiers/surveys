@@ -1,6 +1,7 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { PubSub } = require('@google-cloud/pubsub');
+const { v4: uuidv4 } = require('uuid');
 
 admin.initializeApp();
 const database = admin.firestore();
@@ -22,7 +23,13 @@ const pubsub = new PubSub({ projectId });
  */
 exports.SaveSurveyService = functions.pubsub.topic(topicName).onPublish(async (message) => {
   const { json } = message;
+
   json.status = 'CREATED';
+  json.guid = uuidv4();
+  json.participants.forEach((_, index) => {
+    json.participants[index].guid = uuidv4;
+  });
+
   const docRef = database.collection(collectionName).doc();
   await docRef.set(json);
   json.id = docRef.id;
