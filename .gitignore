@@ -111,3 +111,6 @@ obj/
 
 # python
 __pycache__
+
+# nodejs
+.runtimeconfig.json
