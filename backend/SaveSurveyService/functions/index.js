@@ -25,7 +25,6 @@ exports.SaveSurveyService = functions.pubsub.topic(topicName).onPublish(async (m
   const { json } = message;
 
   json.status = 'CREATED';
-  json.guid = uuidv4();
   json.participants.forEach((_, index) => {
     json.participants[index].guid = uuidv4();
   });
@@ -37,7 +36,7 @@ exports.SaveSurveyService = functions.pubsub.topic(topicName).onPublish(async (m
     });
   });
 
-  const docRef = database.collection(collectionName).doc();
+  const docRef = database.collection(collectionName).doc(uuidv4());
   await docRef.set(json);
   json.id = docRef.id;
 
