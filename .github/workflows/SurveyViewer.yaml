@@ -1,0 +1,62 @@
+name: FE/SurveyViewer.yaml
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/SurveyViewer/**'
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment:
+      name: SurveyViewer-Test
+    env:
+      FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      FUNCTION_NAME: ${{ secrets.FUNCTION_NAME }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: use node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: install dependencies
+        run: npm install
+      - name: set config
+        run: npx firebase-tools functions:config:set --project=$PROJECT_ID surveyviewer.collectionname=$COLLECTION_NAME surveyviewer.projectid=$PROJECT_ID surveyviewer.topicname=$TOPIC_NAME  --token "$FIREBASE_CI_TOKEN"
+        env:          
+          COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
+          TOPIC_NAME: ${{ secrets.TOPIC_NAME }}
+      - name: deploy firebase function
+        run: npx firebase-tools deploy --project=$PROJECT_ID --only functions:$FUNCTION_NAME --token "$FIREBASE_CI_TOKEN"
+  prod:
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    environment:
+      name: SurveyViewer-Prod
+    env:
+      FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      FUNCTION_NAME: ${{ secrets.FUNCTION_NAME }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: use node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: install dependencies
+        run: npm install
+      - name: set config
+        run: npx firebase-tools functions:config:set --project=$PROJECT_ID surveyviewer.collectionname=$COLLECTION_NAME surveyviewer.projectid=$PROJECT_ID surveyviewer.topicname=$TOPIC_NAME  --token "$FIREBASE_CI_TOKEN"
+        env:          
+          COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
+          TOPIC_NAME: ${{ secrets.TOPIC_NAME }}
+      - name: deploy firebase function
+        run: npx firebase-tools deploy --project=$PROJECT_ID --only functions:$FUNCTION_NAME --token "$FIREBASE_CI_TOKEN"
+defaults:
+  run:
+    working-directory: 'frontend/SurveyViewer/functions'
