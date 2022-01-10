@@ -8,10 +8,12 @@ from google.cloud import pubsub_v1
 ENV_PROJECT_ID = 'ENV_PROJECT_ID'
 ENV_TOPIC_NAME_SEND_MAIL = 'ENV_TOPIC_NAME_SEND_MAIL'
 ENV_TOPIC_NAME_UPDATE_SURVEY = 'ENV_TOPIC_NAME_UPDATE_SURVEY'
+ENV_SURVEY_VIEWER_LINK = 'ENV_SURVEY_VIEWER_LINK'
 
 PARTICIPANTS = 'participants'
 PARTICIPANT_NAME = 'name'
 PARTICIPANT_EMAIL = 'email'
+PARTICIPANT_GUID = 'guid'
 SURVEY_NAME = 'name'
 
 MESSAGE_EMAIL_TYPE = 'emailType'
@@ -31,6 +33,8 @@ MESSAGE_UPDATE_SURVEY_STATUS_VALUE = 'SEND_MAIL'
 publisher = pubsub_v1.PublisherClient()
 
 def create_message_send_mail(surveyName, participant):
+    link = os.environ.get(ENV_SURVEY_VIEWER_LINK, f'Specified environment variable is not set: {ENV_SURVEY_VIEWER_LINK}')
+
     return {
                 MESSAGE_EMAIL_TYPE: MESSAGE_EMAIL_TYPE_VALUE,
                 MESSAGE_RECIPIENTS: [
@@ -39,7 +43,7 @@ def create_message_send_mail(surveyName, participant):
                         MESSAGE_RECIPIENT_EMAIL:participant[PARTICIPANT_EMAIL]
                     }
                 ],
-                MESSAGE_SURVEY_LINK: "",
+                MESSAGE_SURVEY_LINK: f'{link}{participant[PARTICIPANT_GUID]}',
                 MESSAGE_SURVEY_NAME: surveyName
     }
 
