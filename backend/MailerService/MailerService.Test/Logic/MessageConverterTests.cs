@@ -55,7 +55,7 @@
 					ReplyTo = new Recipient
 					{
 						Email = replyToEmail,
-						Name = replyToEmail
+						Name = replyToName
 					}
 				},
 				new[]
