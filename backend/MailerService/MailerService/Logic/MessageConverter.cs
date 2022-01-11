@@ -80,14 +80,16 @@
 					string.Join(", ", request.Recipients.Select(r => r.Name)),
 					request.SurveyName,
 					string.Join(Environment.NewLine, request.Results),
-					Environment.NewLine);
+					Environment.NewLine,
+					request.SurveyLink);
 				builder.HtmlBody = string.Format(
 					this.configuration.ThankYouTemplate.Html,
 					string.Join(", ", request.Recipients.Select(r => r.Name)),
 					request.SurveyName,
 					string.Join(
 						string.Empty,
-						request.Results.Select(x => string.Format(this.configuration.ThankYouTemplate.HtmlElement, x))));
+						request.Results.Select(x => string.Format(this.configuration.ThankYouTemplate.HtmlElement, x))),
+					request.SurveyLink);
 			}
 
 			return builder.ToMessageBody();
