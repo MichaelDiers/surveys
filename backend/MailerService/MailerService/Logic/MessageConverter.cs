@@ -85,7 +85,9 @@
 					this.configuration.ThankYouTemplate.Html,
 					string.Join(", ", request.Recipients.Select(r => r.Name)),
 					request.SurveyName,
-					string.Join(Environment.NewLine, request.Results.Select(x => $"<div>{x}</div>")));
+					string.Join(
+						string.Empty,
+						request.Results.Select(x => string.Format(this.configuration.ThankYouTemplate.HtmlElement, x))));
 			}
 
 			return builder.ToMessageBody();

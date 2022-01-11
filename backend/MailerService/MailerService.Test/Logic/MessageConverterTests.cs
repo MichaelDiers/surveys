@@ -57,7 +57,8 @@
 					ThankYouTemplate = new MessageTemplate
 					{
 						Text = "{0}{1}{2}",
-						Html = "{0}{1}{2}"
+						Html = "{0}{1}{2}",
+						HtmlElement = "{0}"
 					}
 				}).ToMimeMessage(
 				new MailerServiceRequest

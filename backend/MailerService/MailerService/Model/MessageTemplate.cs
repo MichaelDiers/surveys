@@ -11,6 +11,11 @@
 		public string Html { get; set; }
 
 		/// <summary>
+		///   Gets or sets the html template for an result element.
+		/// </summary>
+		public string HtmlElement { get; set; }
+
+		/// <summary>
 		///   Gets or sets the text template.
 		/// </summary>
 		public string Text { get; set; }

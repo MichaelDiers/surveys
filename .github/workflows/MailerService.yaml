@@ -36,6 +36,7 @@ jobs:
           SurveyRequestTemplate.Html: ${{ secrets.SURVEY_REQUEST_HTML }}
           ThankYouTemplate.Text: ${{ secrets.THANK_YOU_TEXT }}
           ThankYouTemplate.Html: ${{ secrets.THANK_YOU_HTML }}
+          ThankYouTemplate.HtmlElement: ${{ secrets.THANK_YOU_HTML_ELEMENT }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
