@@ -15,6 +15,7 @@ PARTICIPANT_NAME = 'name'
 PARTICIPANT_EMAIL = 'email'
 PARTICIPANT_GUID = 'guid'
 SURVEY_NAME = 'name'
+REPLY_TO_EMAIL = 'replyToEmail'
 
 MESSAGE_EMAIL_TYPE = 'emailType'
 MESSAGE_EMAIL_TYPE_VALUE = 'surveyRequest'
@@ -23,6 +24,7 @@ MESSAGE_RECIPIENT_NAME = 'name'
 MESSAGE_RECIPIENT_EMAIL = 'email'
 MESSAGE_SURVEY_LINK = 'surveyLink'
 MESSAGE_SURVEY_NAME = 'surveyName'
+MESSAGE_REPLY_TO = 'replyTo'
 
 MESSAGE_UPDATE_SURVEY_ID = 'surveyId'
 MESSAGE_UPDATE_SURVEY_TYPE = 'type'
@@ -32,7 +34,7 @@ MESSAGE_UPDATE_SURVEY_STATUS_VALUE = 'SEND_MAIL'
 
 publisher = pubsub_v1.PublisherClient()
 
-def create_message_send_mail(surveyName, participant):
+def create_message_send_mail(surveyName, participant, reply_to):
     link = os.environ.get(ENV_SURVEY_VIEWER_LINK, f'Specified environment variable is not set: {ENV_SURVEY_VIEWER_LINK}')
 
     return {
@@ -44,7 +46,8 @@ def create_message_send_mail(surveyName, participant):
                     }
                 ],
                 MESSAGE_SURVEY_LINK: f'{link}{participant[PARTICIPANT_GUID]}',
-                MESSAGE_SURVEY_NAME: surveyName
+                MESSAGE_SURVEY_NAME: surveyName,
+                MESSAGE_REPLY_TO: reply_to
     }
 
 def send_update_survey(survey_id):
@@ -65,20 +68,21 @@ def send_update_survey(survey_id):
 
 def send_mails(survey):
     survey_name = survey[SURVEY_NAME]
+    reply_to_email = survey[REPLY_TO_EMAIL]
 
     project_id = os.environ.get(ENV_PROJECT_ID, f'Specified environment variable is not set: {ENV_PROJECT_ID}')
     topic_name_send_mail = os.environ.get(ENV_TOPIC_NAME_SEND_MAIL, f'Specified environment variable is not set: {ENV_TOPIC_NAME_SEND_MAIL}')
     topic_path_send_mail = publisher.topic_path(project_id, topic_name_send_mail)
 
     for participant in survey[PARTICIPANTS]:
-        message = create_message_send_mail(survey_name, participant)
+        message = create_message_send_mail(survey_name, participant, reply_to_email)
         message_json = json.dumps(message)
         message_bytes = message_json.encode('utf-8')
         publish_future = publisher.publish(topic_path_send_mail, data=message_bytes)
         publish_future.result()
 
 def validate(survey):
-    for name in [PARTICIPANTS, SURVEY_NAME]:
+    for name in [PARTICIPANTS, SURVEY_NAME, REPLY_TO_EMAIL]:
         value = survey.get(name)
         if value is None or len(value) == 0:
             return False
