@@ -16,7 +16,9 @@
 			"surveyName",
 			"surveyLink",
 			"fromName",
-			"fromAddress")]
+			"fromAddress",
+			"replyToName",
+			"replyToEmail")]
 		public void ToMimeMessage(
 			EmailType emailType,
 			string recipientEmail,
@@ -24,7 +26,9 @@
 			string surveyName,
 			string surveyLink,
 			string fromName,
-			string fromAddress)
+			string fromAddress,
+			string replyToName,
+			string replyToEmail)
 		{
 			var message = new MessageConverter(
 				new MailerServiceConfiguration
@@ -47,7 +51,12 @@
 						}
 					},
 					SurveyName = surveyName,
-					SurveyLink = surveyLink
+					SurveyLink = surveyLink,
+					ReplyTo = new Recipient
+					{
+						Email = replyToEmail,
+						Name = replyToEmail
+					}
 				},
 				new[]
 				{

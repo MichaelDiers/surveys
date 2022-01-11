@@ -19,6 +19,11 @@
 		IEnumerable<Recipient> Recipients { get; }
 
 		/// <summary>
+		///   Gets the reply to email address.
+		/// </summary>
+		public Recipient ReplyTo { get; }
+
+		/// <summary>
 		///   Gets the link to the survey.
 		/// </summary>
 		string SurveyLink { get; }

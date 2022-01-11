@@ -46,6 +46,8 @@
 				request.SurveyName,
 				body);
 
+			mimeMessage.ReplyTo.Add(new MailboxAddress(request.ReplyTo.Name, request.ReplyTo.Email));
+
 			return mimeMessage;
 		}
 
