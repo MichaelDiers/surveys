@@ -73,6 +73,20 @@
 					request.SurveyName,
 					request.SurveyLink);
 			}
+			else if (request.EmailType == EmailType.ThankYou)
+			{
+				builder.TextBody = string.Format(
+					this.configuration.ThankYouTemplate.Text,
+					string.Join(", ", request.Recipients.Select(r => r.Name)),
+					request.SurveyName,
+					string.Join(Environment.NewLine, request.Results),
+					Environment.NewLine);
+				builder.HtmlBody = string.Format(
+					this.configuration.ThankYouTemplate.Html,
+					string.Join(", ", request.Recipients.Select(r => r.Name)),
+					request.SurveyName,
+					string.Join(Environment.NewLine, request.Results.Select(x => $"<div>{x}</div>")));
+			}
 
 			return builder.ToMessageBody();
 		}

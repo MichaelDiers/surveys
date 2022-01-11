@@ -21,5 +21,10 @@
 		///   Gets the templates for survey request templates.
 		/// </summary>
 		MessageTemplate SurveyRequestTemplate { get; }
+
+		/// <summary>
+		///   Gets or sets the templates for thank you emails.
+		/// </summary>
+		public MessageTemplate ThankYouTemplate { get; }
 	}
 }

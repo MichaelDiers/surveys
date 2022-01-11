@@ -13,6 +13,11 @@
 		/// <summary>
 		///   Service sends a request to participate in a survey.
 		/// </summary>
-		SurveyRequest = 1
+		SurveyRequest = 1,
+
+		/// <summary>
+		///   Send a thank you email to a survey participant.
+		/// </summary>
+		ThankYou = 2
 	}
 }

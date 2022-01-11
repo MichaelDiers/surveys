@@ -18,7 +18,21 @@
 			"fromName",
 			"fromAddress",
 			"replyToName",
-			"replyToEmail")]
+			"replyToEmail",
+			null,
+			null)]
+		[InlineData(
+			EmailType.ThankYou,
+			"recipientEmail",
+			"recipientName",
+			"surveyName",
+			"surveyLink",
+			"fromName",
+			"fromAddress",
+			"replyToName",
+			"replyToEmail",
+			"result1",
+			"result2")]
 		public void ToMimeMessage(
 			EmailType emailType,
 			string recipientEmail,
@@ -28,12 +42,19 @@
 			string fromName,
 			string fromAddress,
 			string replyToName,
-			string replyToEmail)
+			string replyToEmail,
+			string results1,
+			string results2)
 		{
 			var message = new MessageConverter(
 				new MailerServiceConfiguration
 				{
 					SurveyRequestTemplate = new MessageTemplate
+					{
+						Text = "{0}{1}{2}",
+						Html = "{0}{1}{2}"
+					},
+					ThankYouTemplate = new MessageTemplate
 					{
 						Text = "{0}{1}{2}",
 						Html = "{0}{1}{2}"
@@ -56,6 +77,11 @@
 					{
 						Email = replyToEmail,
 						Name = replyToName
+					},
+					Results = new[]
+					{
+						results1,
+						results2
 					}
 				},
 				new[]

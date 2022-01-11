@@ -24,6 +24,11 @@
 		public Recipient ReplyTo { get; }
 
 		/// <summary>
+		///   Gets or sets the results.
+		/// </summary>
+		IEnumerable<string> Results { get; set; }
+
+		/// <summary>
 		///   Gets the link to the survey.
 		/// </summary>
 		string SurveyLink { get; }

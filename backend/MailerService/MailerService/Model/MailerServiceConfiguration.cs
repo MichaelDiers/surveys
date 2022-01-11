@@ -18,8 +18,13 @@
 		public Smtp Smtp { get; set; }
 
 		/// <summary>
-		///   Gets or sets the templates for survey request templates.
+		///   Gets or sets the templates for survey request emails.
 		/// </summary>
 		public MessageTemplate SurveyRequestTemplate { get; set; }
+
+		/// <summary>
+		///   Gets or sets the templates for thank you emails.
+		/// </summary>
+		public MessageTemplate ThankYouTemplate { get; set; }
 	}
 }

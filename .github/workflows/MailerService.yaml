@@ -34,6 +34,8 @@ jobs:
           Smtp.UserName: ${{ secrets.SMTP_USERNAME }}
           SurveyRequestTemplate.Text: ${{ secrets.SURVEY_REQUEST_TEXT }}
           SurveyRequestTemplate.Html: ${{ secrets.SURVEY_REQUEST_HTML }}
+          ThankYouTemplate.Text: ${{ secrets.THANK_YOU_TEXT }}
+          ThankYouTemplate.Html: ${{ secrets.THANK_YOU_HTML }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
