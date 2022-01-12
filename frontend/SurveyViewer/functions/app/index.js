@@ -13,6 +13,10 @@ const initialize = (config = {}) => {
   } = config;
 
   const router = express.Router();
+
+  const statics = express.static('./app/static', { index: false });
+  router.use('/static', statics);
+
   router.use(middleware.base());
 
   router.use('/participate', routers.participateRouter({
