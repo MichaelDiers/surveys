@@ -114,7 +114,7 @@ def update_survey(transaction, survey_id, survey_result):
     participant = [p for p in participants if p[DB_FIELD_GUID] == survey_result[MESSAGE_FIELD_PARTICIPANT_ID]][0]
     for key, value in survey_result.items():
         if key != MESSAGE_FIELD_PARTICIPANT_ID:
-            participant[key] = value
+            participant[key] = int(value)
     participant[DB_FIELD_UPDATED] = datetime.datetime.now(datetime.timezone.utc).isoformat()
     participant[DB_FIELD_HAS_VOTED] = True
 
