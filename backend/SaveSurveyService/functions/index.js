@@ -29,11 +29,13 @@ exports.SaveSurveyService = functions.pubsub.topic(topicName).onPublish(async (m
     json.participants[index].guid = uuidv4();
   });
   json.participantIds = json.participants.map((participant) => participant.guid);
+  let value = 1;
   json.questions.forEach((question, index) => {
     json.questions[index].guid = uuidv4();
     question.choices.forEach((choice, qindex) => {
       if (choice.hasNoValue !== true) {
-        json.questions[index].choices[qindex].value = qindex + 1;
+        json.questions[index].choices[qindex].value = value;
+        value += 1;
       }
     });
   });
