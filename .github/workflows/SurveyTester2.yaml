@@ -9,7 +9,7 @@ on:
 env:
   FUNCTION_NAME: SurveyTester
   SOURCE_DIR: 'backend/SurveyTester'
-  ENTRY_POINT: 'backend/SurveyTester/index.js'
+  ENTRY_POINT: 'backend/SurveyTester/functions/index.js'
 jobs:
   test:
     runs-on: ubuntu-latest
