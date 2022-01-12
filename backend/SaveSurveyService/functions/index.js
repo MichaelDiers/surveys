@@ -2,6 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { PubSub } = require('@google-cloud/pubsub');
 const { v4: uuidv4 } = require('uuid');
+const { firestore } = require('firebase-admin');
 
 admin.initializeApp();
 const database = admin.firestore();
@@ -39,6 +40,7 @@ exports.SaveSurveyService = functions.pubsub.topic(topicName).onPublish(async (m
       }
     });
   });
+  json.timestamp = firestore.FieldValue.serverTimestamp();
 
   const docRef = database.collection(collectionName).doc(uuidv4());
   await docRef.set(json);
