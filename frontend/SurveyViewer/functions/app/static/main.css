@@ -16,6 +16,24 @@
   }
 }
 
+dl {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 30% 10%;
+      grid-template-columns: 30% 10%;
+      grid-template-areas: 'left right';
+  gap: 50px;
+}
+
+dt {
+  grid-area: 'left';
+}
+
+dd {
+  grid-area: 'right';
+  margin: 0;
+}
+
 .fade-in {
   opacity: 0;
   -webkit-animation: 1s ease-in-out 3s 1 fade-in forwards;

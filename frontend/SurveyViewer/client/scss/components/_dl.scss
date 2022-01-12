@@ -1,0 +1,14 @@
+dl {
+  display: grid;
+  grid-template-columns: 30% 10%;
+  grid-template-areas: 'left right';
+  gap: 50px;
+}
+
+dt {
+  grid-area: 'left';
+}
+dd {
+  grid-area: 'right';
+  margin: 0;
+}

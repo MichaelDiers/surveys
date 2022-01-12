@@ -2,11 +2,13 @@ const { Router } = require('express');
 
 const initialize = (config = {}) => {
   const {
+    controller,
     router = Router(),
   } = config;
 
-  router.get('/:participantId', (req, res) => {
-    res.render('thankyou/index', { link: `../participate/${req.params.participantId}` });
+  router.get('/:participantId', async (req, res) => {
+    const { view, options } = await controller.thankyou(req.params.participantId);
+    res.render(view, options);
   });
 
   return router;

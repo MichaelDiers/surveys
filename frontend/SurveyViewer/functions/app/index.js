@@ -20,7 +20,7 @@ const initialize = (config = {}) => {
   router.use(middleware.base());
 
   router.use('/participate', routers.participateRouter({
-    controller: controllers.participateController({
+    controller: controllers.participate({
       database,
       pubsub,
       topicNameEvaluateSurvey,
@@ -28,7 +28,12 @@ const initialize = (config = {}) => {
     }),
   }));
 
-  router.use('/thankyou', routers.thankyou());
+  router.use('/thankyou', routers.thankyou({
+    controller: controllers.thankyou({
+      database,
+      collectionName,
+    }),
+  }));
 
   const app = express();
   app.set('views', './app/views');

@@ -20,6 +20,17 @@ const initialize = (config = {}) => {
       const snapshot = await database.collection(collectionName).where(DB_FIELD_PARTICIPATE_IDS, 'array-contains', participantId).limit(1).get();
       if (!snapshot.empty) {
         const survey = snapshot.docs[0].data();
+        const participant = survey.participants.find((p) => p.guid === participantId);
+
+        // pre-select answers if participant has already voted
+        if (participant.hasVoted === true) {
+          survey.questions.forEach((question, qi) => {
+            question.choices.forEach((choice, ci) => {
+              survey.questions[qi].choices[ci].isSelected = choice.value === participant[question.guid]; // eslint-disable-line max-len
+            });
+          });
+        }
+
         if (survey.status !== DB_VALUE_STATUS_CLOSED) {
           const options = {
             participantName: survey.participants.find((p) => p.guid === participantId).name,

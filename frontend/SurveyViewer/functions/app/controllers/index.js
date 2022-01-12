@@ -1,5 +1,7 @@
-const participateController = require('./participate');
+const participate = require('./participate');
+const thankyou = require('./thankyou');
 
 module.exports = {
-  participateController,
+  participate,
+  thankyou,
 };
