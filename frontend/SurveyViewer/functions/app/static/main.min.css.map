@@ -1,0 +1,12 @@
+{
+    "version": 3,
+    "mappings": "ACAA,UAAU,CAAV,OAAU,CACR,EAAE,CACA,OAAO,CAAE,CAAC,CAEZ,IAAI,CACF,OAAO,CAAE,CAAC,EELd,AAAA,QAAQ,AAAC,CDCP,OAAO,CAAE,CAAC,CACV,SAAS,CAFY,EAAE,CAEL,WAAW,CAFO,EAAE,CAEE,CAAC,CAAC,OAAO,CAAC,QAAQ,CCA3D",
+    "sources": [
+        "../../../client/scss/main.scss",
+        "../../../client/scss/abstracts/_keyframes.scss",
+        "../../../client/scss/abstracts/_mixins.scss",
+        "../../../client/scss/base/_base.scss"
+    ],
+    "names": [],
+    "file": "main.min.css"
+}

@@ -1,0 +1,24 @@
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  -webkit-animation: 1s ease-in-out 3s 1 fade-in forwards;
+          animation: 1s ease-in-out 3s 1 fade-in forwards;
+}
+/*# sourceMappingURL=main.css.map */
