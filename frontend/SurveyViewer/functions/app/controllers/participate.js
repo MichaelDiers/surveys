@@ -1,3 +1,6 @@
+const DB_FIELD_PARTICIPATE_IDS = 'participantIds';
+const DB_VALUE_STATUS_CLOSED = 'CLOSED';
+
 const initialize = (config = {}) => {
   const {
     database,
@@ -14,18 +17,34 @@ const initialize = (config = {}) => {
       await pubsub.topic(topicNameEvaluateSurvey).publishMessage({ data });
     },
     viewSurvey: async (participantId) => {
-      const snapshot = await database.collection(collectionName).where('participantIds', 'array-contains', participantId).limit(1).get();
+      const snapshot = await database.collection(collectionName).where(DB_FIELD_PARTICIPATE_IDS, 'array-contains', participantId).limit(1).get();
       if (!snapshot.empty) {
         const survey = snapshot.docs[0].data();
+        if (survey.status !== DB_VALUE_STATUS_CLOSED) {
+          const options = {
+            participantName: survey.participants.find((p) => p.guid === participantId).name,
+            participantId,
+            surveyName: survey.name,
+            questions: survey.questions,
+          };
+
+          return {
+            view: 'participate/index',
+            options,
+          };
+        }
+
+        // handle closed state
         const options = {
           participantName: survey.participants.find((p) => p.guid === participantId).name,
           participantId,
           surveyName: survey.name,
           questions: survey.questions,
+          closed: true,
         };
 
         return {
-          view: 'participate/index',
+          view: 'participate/closed',
           options,
         };
       }
