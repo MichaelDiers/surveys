@@ -9,6 +9,7 @@ on:
 env:
   FUNCTION_NAME: SurveyTester
   SOURCE_DIR: 'backend/SurveyTester'
+  ENTRY_POINT: 'backend/SurveyTester/index.js'
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -29,3 +30,4 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
           env_vars: surveytester.collectionname=$COLLECTION_NAME,surveytester.projectid=$PROJECT_ID,surveytester.documentid=$DOCUMENT_ID,surveytester.topicname=$TOPIC_NAME
+          entry_point: ${{ env.ENTRY_POINT }}
