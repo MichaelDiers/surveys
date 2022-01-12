@@ -6,8 +6,8 @@ const initialize = (config = {}) => {
     router = Router(),
   } = config;
 
-  router.get('/:participantId', async (req, res) => {
-    const { view, options } = await controller.thankyou(req.params.participantId);
+  router.get('/pid/:participantId/*', async (req, res) => {
+    const { view, options } = await controller.thankyou(req.params.participantId, req.params[0]);
     res.render(view, options);
   });
 

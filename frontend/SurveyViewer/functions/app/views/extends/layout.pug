@@ -1,5 +1,9 @@
 block variables
 
+- var staticLink = '../static/'
+if staticPreLink
+  - staticLink = staticPreLink + staticLink
+
 doctype html
 html(lang=lang)
   head
@@ -7,7 +11,7 @@ html(lang=lang)
     meta(name='viewport', content='width=device-width', initial-scale=1.0)
     meta(name='google', content='notranslate')
     title= title
-    link(rel='stylesheet', href='../static/main.min.css')
+    link(rel='stylesheet', href= staticLink + 'main.min.css')
   body
     header
       include ../includes/header
@@ -15,4 +19,4 @@ html(lang=lang)
       block content
     footer
       include ../includes/footer
-    script(src='../static/client.js')
+    script(src= staticLink + 'client.js')

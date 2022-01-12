@@ -13,8 +13,8 @@ const initialize = (config = {}) => {
   });
 
   router.post('/', async (req, res) => {
-    await controller.updateSurvey(req.body);
-    res.redirect(303, `../thankyou/${req.body.participantId}`);
+    const values = await controller.updateSurvey(req.body);
+    res.redirect(303, `../thankyou/pid/${req.body.participantId}/${values}`);
   });
 
   return router;

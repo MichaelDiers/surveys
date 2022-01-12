@@ -15,6 +15,8 @@ const initialize = (config = {}) => {
       delete result._csrf; // eslint-disable-line no-underscore-dangle
       const data = Buffer.from(JSON.stringify(result));
       await pubsub.topic(topicNameEvaluateSurvey).publishMessage({ data });
+      delete result.participantId;
+      return Object.values(result).join('/');
     },
     viewSurvey: async (participantId) => {
       const snapshot = await database.collection(collectionName).where(DB_FIELD_PARTICIPATE_IDS, 'array-contains', participantId).limit(1).get();

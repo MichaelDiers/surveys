@@ -22,7 +22,7 @@ dl {
   -ms-grid-columns: 30% 10%;
       grid-template-columns: 30% 10%;
       grid-template-areas: 'left right';
-  gap: 50px;
+  gap: 10px;
 }
 
 dt {
