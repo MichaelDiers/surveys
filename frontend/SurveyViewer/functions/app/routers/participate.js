@@ -12,7 +12,8 @@ const initialize = (config = {}) => {
     res.render(view, options);
   });
 
-  router.post('/', (req, res) => {
+  router.post('/', async (req, res) => {
+    await controller.updateSurvey(req.body);
     res.redirect(303, `../thankyou/${req.body.participantId}`);
   });
 

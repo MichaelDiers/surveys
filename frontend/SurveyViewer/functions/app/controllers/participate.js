@@ -1,11 +1,20 @@
 const initialize = (config = {}) => {
   const {
     database,
+    pubsub,
+    topicNameEvaluateSurvey,
+    collectionName,
   } = config;
 
   const controller = {
+    updateSurvey: async (surveyResult) => {
+      const result = JSON.parse(JSON.stringify(surveyResult));
+      delete result._csrf; // eslint-disable-line no-underscore-dangle
+      const data = Buffer.from(JSON.stringify(result));
+      await pubsub.topic(topicNameEvaluateSurvey).publishMessage({ data });
+    },
     viewSurvey: async (participantId) => {
-      const snapshot = await database.collection('surveys').where('participantIds', 'array-contains', participantId).limit(1).get();
+      const snapshot = await database.collection(collectionName).where('participantIds', 'array-contains', participantId).limit(1).get();
       if (!snapshot.empty) {
         const survey = snapshot.docs[0].data();
         const options = {

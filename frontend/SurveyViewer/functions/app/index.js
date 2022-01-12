@@ -7,12 +7,23 @@ const routers = require('./routers/index');
 const initialize = (config = {}) => {
   const {
     database,
+    pubsub,
+    topicNameEvaluateSurvey,
+    collectionName,
   } = config;
 
   const router = express.Router();
   router.use(middleware.base());
 
-  router.use('/participate', routers.participateRouter({ controller: controllers.participateController({ database }) }));
+  router.use('/participate', routers.participateRouter({
+    controller: controllers.participateController({
+      database,
+      pubsub,
+      topicNameEvaluateSurvey,
+      collectionName,
+    }),
+  }));
+
   router.use('/thankyou', routers.thankyou());
 
   const app = express();
