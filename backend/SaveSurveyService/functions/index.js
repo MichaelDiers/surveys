@@ -8,11 +8,11 @@ admin.initializeApp();
 const database = admin.firestore();
 
 const {
-  collectionname: collectionName,
-  topicname: topicName,
-  projectid: projectId,
-  topicnamecreated: topicNameCreated,
-} = functions.config().savesurveyservice;
+  ENV_COLLECTION_NAME: collectionName,
+  ENV_TOPIC_NAME_SUB: topicNameSub,
+  ENV_PROJECT_ID: projectId,
+  ENV_TOPIC_NAME_PUB: topicNamePub,
+} = process.env;
 
 const pubsub = new PubSub({ projectId });
 
@@ -22,7 +22,7 @@ const pubsub = new PubSub({ projectId });
  * - saves the messages to firestore
  * - publishes the message to topic topicNameCreated if the data is saved
  */
-exports.SaveSurveyService = functions.pubsub.topic(topicName).onPublish(async (message) => {
+exports.SaveSurveyService = functions.pubsub.topic(topicNameSub).onPublish(async (message) => {
   const { json } = message;
 
   json.status = 'CREATED';
@@ -47,5 +47,5 @@ exports.SaveSurveyService = functions.pubsub.topic(topicName).onPublish(async (m
   json.id = docRef.id;
 
   const data = Buffer.from(JSON.stringify(json));
-  await pubsub.topic(topicNameCreated).publishMessage({ data });
+  await pubsub.topic(topicNamePub).publishMessage({ data });
 });

@@ -6,59 +6,26 @@ on:
     paths:
       - 'backend/SaveSurveyService/**'
   workflow_dispatch:
+env:
+  FUNCTION_NAME: SaveSurveyService
+  SOURCE_DIR: 'backend/SaveSurveyService/functions'
 jobs:
   test:
     runs-on: ubuntu-latest
     environment:
       name: SaveSurveyService-Test
-    env:
-      FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      FUNCTION_NAME: ${{ secrets.FUNCTION_NAME }}
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: use node.js
-        uses: actions/setup-node@v1
+      - name: auth
+        uses: google-github-actions/auth@v0
         with:
-          node-version: 14.x
-      - name: install dependencies
-        run: npm install
-      - name: set config
-        run: npx firebase-tools functions:config:set --project=$PROJECT_ID savesurveyservice.collectionname=$COLLECTION_NAME savesurveyservice.topicname=$TOPIC_NAME savesurveyservice.projectid=$PROJECT_ID savesurveyservice.topicnamecreated=$TOPIC_NAME_CREATED --token "$FIREBASE_CI_TOKEN"
-        env:          
-          COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
-          TOPIC_NAME: ${{ secrets.TOPIC_NAME }}          
-          TOPIC_NAME_CREATED: ${{ secrets.TOPIC_NAME_CREATED }}
-      - name: deploy firebase function
-        run: npx firebase-tools deploy --project=$PROJECT_ID --only functions:$FUNCTION_NAME --token "$FIREBASE_CI_TOKEN"
-  prod:
-    runs-on: ubuntu-latest
-    needs:
-      - test
-    environment:
-      name: SaveSurveyService-Prod
-    env:
-      FIREBASE_CI_TOKEN: ${{ secrets.FIREBASE_CI_TOKEN }}
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      FUNCTION_NAME: ${{ secrets.FUNCTION_NAME }}
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: use node.js
-        uses: actions/setup-node@v1
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
         with:
-          node-version: 14.x
-      - name: install dependencies
-        run: npm install
-      - name: set config
-        run: npx firebase-tools functions:config:set --project=$PROJECT_ID savesurveyservice.collectionname=$COLLECTION_NAME savesurveyservice.topicname=$TOPIC_NAME savesurveyservice.projectid=$PROJECT_ID savesurveyservice.topicnamecreated=$TOPIC_NAME_CREATED --token "$FIREBASE_CI_TOKEN"
-        env:          
-          COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
-          TOPIC_NAME: ${{ secrets.TOPIC_NAME }}
-          TOPIC_NAME_CREATED: ${{ secrets.TOPIC_NAME_CREATED }}
-      - name: deploy firebase function
-        run: npx firebase-tools deploy --project=$PROJECT_ID --only functions:$FUNCTION_NAME --token "$FIREBASE_CI_TOKEN"        
-defaults:
-  run:
-    working-directory: 'backend/SaveSurveyService/functions'
+          name: ${{ env.FUNCTION_NAME }}
+          runtime: nodejs14
+          project_id: ${{ secrets.PROJECT_ID }}
+          source_dir: ${{ env.SOURCE_DIR }}
+          env_vars: ENV_COLLECTION_NAME=${{ secrets.COLLECTION_NAME }},ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_TOPIC_NAME_SUB=${{ secrets.TOPIC_NAME_SUB }},ENV_TOPIC_NAME_PUB=${{ secrets.TOPIC_NAME_PUB }}
