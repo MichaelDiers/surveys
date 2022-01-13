@@ -5,6 +5,8 @@ on:
       - main
     paths:
       - 'backend/SaveSurveyService/**'
+    paths-ignore:
+      - 'backend/SaveSurveyService/functions/schema.avro'
   workflow_dispatch:
 env:
   FUNCTION_NAME: SaveSurveyService
