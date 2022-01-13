@@ -28,4 +28,4 @@ jobs:
           runtime: nodejs14
           project_id: ${{ secrets.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_COLLECTION_NAME=$COLLECTION_NAME,ENV_PROJECT_ID=$PROJECT_ID,ENV_DOCUMENT_ID=$DOCUMENT_ID,ENV_TOPIC_NAME=$TOPIC_NAME
+          env_vars: ENV_COLLECTION_NAME=${{ secrets.COLLECTION_NAME }},ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_DOCUMENT_ID=${{ secrets.DOCUMENT_ID }},ENV_TOPIC_NAME=${{ secrets.TOPIC_NAME }}
