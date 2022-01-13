@@ -34,7 +34,7 @@ jobs:
           PROJECT_ID: ${{ env.PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
         with:
-          args: pubsub schemas delete ${{ env.SCHEMA_NAME }}
+          args: pubsub schemas delete ${{ env.SCHEMA_NAME }} --quiet
       - name: deploy schema
         uses: actions-hub/gcloud@master
         env:
