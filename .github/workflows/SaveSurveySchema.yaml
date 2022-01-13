@@ -1,13 +1,13 @@
-name: BE/SaveSurveySub.yaml
+name: Schemas/SaveSurveySchema.yaml
 on:
   push:
     branches:
       - main
     paths:
-      - 'backend/SaveSurveyService/functions/schema.avro'
+      - 'backend/Schemas/SaveSurveySchema.avro'
   workflow_dispatch:
 env:
-  SCHEMA_FILE: 'backend/SaveSurveyService/functions/schema.avro'
+  SCHEMA_FILE: 'backend/Schemas/SaveSurveySchema.avro'
   SCHEMA_NAME: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}_SCHEMA
   TOPIC_NAME: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}
 jobs:
@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v2
       - name: delete topic
         uses: actions-hub/gcloud@master
-        continue-on-error:
+        continue-on-error: true
         env:
           PROJECT_ID: ${{ env.PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
@@ -29,7 +29,7 @@ jobs:
           args: pubsub topics delete ${{ env.TOPIC_NAME }} 
       - name: delete schema
         uses: actions-hub/gcloud@master
-        continue-on-error:
+        continue-on-error: true
         env:
           PROJECT_ID: ${{ env.PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
