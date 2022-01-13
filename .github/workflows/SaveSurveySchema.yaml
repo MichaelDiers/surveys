@@ -48,5 +48,5 @@ jobs:
           PROJECT_ID: ${{ env.PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
         with:
-          args: pubsub topics create ${{ env.TOPIC_NAME }} --message-encoding=binary --schema=${{ env.SCHEMA_NAME }}
+          args: pubsub topics create ${{ env.TOPIC_NAME }} --message-encoding=json --schema=${{ env.SCHEMA_NAME }}
       
