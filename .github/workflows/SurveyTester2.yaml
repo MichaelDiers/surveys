@@ -13,6 +13,25 @@ jobs:
   test:
     runs-on: ubuntu-latest
     environment:
+      name: SurveyTester-Test2
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: ${{ env.FUNCTION_NAME }}
+          runtime: nodejs14
+          project_id: ${{ secrets.PROJECT_ID }}
+          source_dir: ${{ env.SOURCE_DIR }}
+          env_vars: ENV_COLLECTION_NAME=${{ secrets.COLLECTION_NAME }},ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_DOCUMENT_ID=${{ secrets.DOCUMENT_ID }},ENV_TOPIC_NAME=${{ secrets.TOPIC_NAME }}
+  stage:
+    runs-on: ubuntu-latest
+    environment:
       name: SurveyTester-Stage2
     steps:
       - name: checkout
@@ -29,3 +48,22 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
           env_vars: ENV_COLLECTION_NAME=${{ secrets.COLLECTION_NAME }},ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_DOCUMENT_ID=${{ secrets.DOCUMENT_ID }},ENV_TOPIC_NAME=${{ secrets.TOPIC_NAME }}
+  prod:
+    runs-on: ubuntu-latest
+    environment:
+      name: SurveyTester-Prod2
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: ${{ env.FUNCTION_NAME }}
+          runtime: nodejs14
+          project_id: ${{ secrets.PROJECT_ID }}
+          source_dir: ${{ env.SOURCE_DIR }}
+          env_vars: ENV_COLLECTION_NAME=${{ secrets.COLLECTION_NAME }},ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_DOCUMENT_ID=${{ secrets.DOCUMENT_ID }},ENV_TOPIC_NAME=${{ secrets.TOPIC_NAME }}          
