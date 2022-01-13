@@ -5,11 +5,11 @@ const { PubSub } = require('@google-cloud/pubsub');
 admin.initializeApp();
 
 const {
-  collectionname: collectionName,
-  projectid: projectId,
-  documentid: documentId,
-  topicname: topicName,
-} = functions.config().surveytester;
+  ENV_COLLECTION_NAME: collectionName,
+  ENV_PROJECT_ID: projectId,
+  ENV_DOCUMENT_ID: documentId,
+  ENV_TOPIC_NAME: topicName,
+} = process.env;
 
 const database = admin.firestore();
 const pubsub = new PubSub({ projectId });
