@@ -27,9 +27,7 @@
                   "type": "record",
                   "name": "choice",
                   "fields": [
-                    { "name": "answer", "type": "string" },
-                    { "name": "hasNoValue", "type": ["null", "boolean"] },
-                    { "name": "isSelected", "type": ["null", "boolean"] }
+                    { "name": "answer", "type": "string" }
                   ]
                 }
               }
