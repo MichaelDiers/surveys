@@ -17,6 +17,8 @@ const pubsub = new PubSub({ projectId });
 exports.SurveyTester = functions.https.onRequest(async (req, res) => {
   const docRef = database.collection(collectionName).doc(documentId);
   const doc = await docRef.get();
+  console.log(doc);
+  console.log(doc.exists);
   if (doc.exists) {
     const data = doc.data();
 
