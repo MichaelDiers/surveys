@@ -2,19 +2,15 @@
   "type": "record",
   "name": "survey",
   "fields": [
-    { "name": "name", "type": "string" },
-    { "name": "participants", "type": {
-        "type": "array",
-        "items": {
-          "type": "record",
-          "name": "participant",
-          "fields": [
-            { "name": "email", "type": "string" },
-            { "name": "name", "type": "string" }
-          ]
-        }
-      } 
-    },
+    { "name": "replyToEmail", "type": {
+        "type": "record",
+        "name": "organizer",
+        "fields": [
+		{ "name": "name", "type": "string" },         
+		{ "name": "email", "type": "string" }          
+        ]
+      }
+    },    
     { "name": "questions", "type": {
         "type": "array",
         "items": {
@@ -37,14 +33,18 @@
         }
       }
     },
-    { "name": "replyToEmail", "type": {
-        "type": "record",
-        "name": "organizer",
-        "fields": [
-          { "name": "email", "type": "string" },
-          { "name": "name", "type": "string" }
-        ]
-      }
-    }
+    { "name": "participants", "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "participant",
+          "fields": [
+            { "name": "email", "type": "string" },
+            { "name": "name", "type": "string" }
+          ]
+        }
+      } 
+    },
+    { "name": "name", "type": "string" }
   ]
 }
