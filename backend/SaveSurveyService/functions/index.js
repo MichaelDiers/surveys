@@ -1,20 +1,14 @@
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
+const Firestore = require('@google-cloud/firestore');
 const { PubSub } = require('@google-cloud/pubsub');
 const { v4: uuidv4 } = require('uuid');
-const { firestore } = require('firebase-admin');
-
-admin.initializeApp();
-const database = admin.firestore();
 
 const {
   ENV_COLLECTION_NAME: collectionName,
-  ENV_TOPIC_NAME_SUB: topicNameSub,
-  ENV_PROJECT_ID: projectId,
   ENV_TOPIC_NAME_PUB: topicNamePub,
 } = process.env;
 
-const pubsub = new PubSub({ projectId });
+const database = new Firestore();
+const pubsub = new PubSub();
 
 /**
  * Pubsub trigger for topic with name topicName.
@@ -22,8 +16,8 @@ const pubsub = new PubSub({ projectId });
  * - saves the messages to firestore
  * - publishes the message to topic topicNameCreated if the data is saved
  */
-exports.SaveSurveyService = functions.pubsub.topic(topicNameSub).onPublish(async (message) => {
-  const { json } = message;
+exports.SaveSurveyService = async (message) => {
+  const json = JSON.parse(Buffer.from(message.data, 'base64').toString());
 
   json.status = 'CREATED';
   json.participants.forEach((_, index) => {
@@ -40,7 +34,7 @@ exports.SaveSurveyService = functions.pubsub.topic(topicNameSub).onPublish(async
       }
     });
   });
-  json.timestamp = firestore.FieldValue.serverTimestamp();
+  json.timestamp = Firestore.FieldValue.serverTimestamp();
 
   const docRef = database.collection(collectionName).doc(uuidv4());
   await docRef.set(json);
@@ -48,4 +42,4 @@ exports.SaveSurveyService = functions.pubsub.topic(topicNameSub).onPublish(async
 
   const data = Buffer.from(JSON.stringify(json));
   await pubsub.topic(topicNamePub).publishMessage({ data });
-});
+};

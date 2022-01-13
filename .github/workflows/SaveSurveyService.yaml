@@ -9,25 +9,31 @@ on:
 env:
   FUNCTION_NAME: SaveSurveyService
   SOURCE_DIR: 'backend/SaveSurveyService/functions'
+  COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
+  TOPIC_NAME_SUB: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}
+  TOPIC_NAME_PUB: ${{ secrets.GLOBAL_SURVEY_CREATED_SERVICE_PUB }}
 jobs:
   test:
     runs-on: ubuntu-latest
     environment:
       name: SaveSurveyService-Test
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
     steps:
       - name: checkout
         uses: actions/checkout@v2
       - name: auth
         uses: google-github-actions/auth@v0
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
       - name: deploy
         uses: google-github-actions/deploy-cloud-functions@v0
         with:
           name: ${{ env.FUNCTION_NAME }}
           runtime: nodejs14
-          project_id: ${{ secrets.PROJECT_ID }}
+          project_id: ${{ env.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_COLLECTION_NAME=${{ secrets.COLLECTION_NAME }},ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_TOPIC_NAME_SUB=${{ secrets.TOPIC_NAME_SUB }},ENV_TOPIC_NAME_PUB=${{ secrets.TOPIC_NAME_PUB }}
+          env_vars: ENV_COLLECTION_NAME=${{ env.COLLECTION_NAME }},ENV_TOPIC_NAME_PUB=${{ env.TOPIC_NAME_PUB }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
           event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ secrets.PROJECT_ID }}/topics/${{ secrets.TOPIC_NAME_SUB }}
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
