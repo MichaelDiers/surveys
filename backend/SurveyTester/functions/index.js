@@ -1,4 +1,3 @@
-const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { PubSub } = require('@google-cloud/pubsub');
 
@@ -14,7 +13,7 @@ const {
 const database = admin.firestore();
 const pubsub = new PubSub({ projectId });
 
-exports.SurveyTester = functions.https.onRequest(async (req, res) => {
+exports.SurveyTester = async (req, res) => {
   const docRef = database.collection(collectionName).doc(documentId);
   const doc = await docRef.get();
 
@@ -27,4 +26,4 @@ exports.SurveyTester = functions.https.onRequest(async (req, res) => {
   } else {
     res.send('no data').end();
   }
-});
+};
