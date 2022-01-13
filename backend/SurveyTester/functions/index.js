@@ -1,17 +1,14 @@
-const admin = require('firebase-admin');
+const Firestore = require('@google-cloud/firestore');
 const { PubSub } = require('@google-cloud/pubsub');
-
-admin.initializeApp();
 
 const {
   ENV_COLLECTION_NAME: collectionName,
-  ENV_PROJECT_ID: projectId,
   ENV_DOCUMENT_ID: documentId,
   ENV_TOPIC_NAME: topicName,
 } = process.env;
 
-const database = admin.firestore();
-const pubsub = new PubSub({ projectId });
+const database = new Firestore();
+const pubsub = new PubSub();
 
 exports.SurveyTester = async (req, res) => {
   const docRef = database.collection(collectionName).doc(documentId);
