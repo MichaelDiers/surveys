@@ -29,3 +29,5 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
           env_vars: ENV_COLLECTION_NAME=${{ secrets.COLLECTION_NAME }},ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_TOPIC_NAME_SUB=${{ secrets.TOPIC_NAME_SUB }},ENV_TOPIC_NAME_PUB=${{ secrets.TOPIC_NAME_PUB }}
+          event_trigger_type: google.pubsub.topic.publish
+          event_trigger_resource: projects/${{ secrets.PROJECT_ID }}/topics/${{ secrets.TOPIC_NAME_SUB }}
