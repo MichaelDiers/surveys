@@ -10,25 +10,31 @@ env:
   FUNCTION_NAME: SurveyTester
   SOURCE_DIR: 'backend/SurveyTester/functions'
 jobs:
-  test:
+  test:    
     runs-on: ubuntu-latest
     environment:
-      name: SurveyTester-Test2
+      name: SurveyTester-Test
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
+      DOCUMENT_ID: ${{ secrets.DOCUMENT_ID }}
+      TOPIC_NAME_PUB: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}
     steps:
       - name: checkout
         uses: actions/checkout@v2
       - name: auth
         uses: google-github-actions/auth@v0
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
       - name: deploy
         uses: google-github-actions/deploy-cloud-functions@v0
         with:
           name: ${{ env.FUNCTION_NAME }}
           runtime: nodejs14
-          project_id: ${{ secrets.PROJECT_ID }}
+          project_id: ${{ env.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_COLLECTION_NAME=${{ secrets.COLLECTION_NAME }},ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_DOCUMENT_ID=${{ secrets.DOCUMENT_ID }},ENV_TOPIC_NAME=${{ secrets.TOPIC_NAME }},GCLOUD_PROJECT=${{ secrets.PROJECT_ID }}
+          env_vars: ENV_COLLECTION_NAME=${{ env.COLLECTION_NAME }},ENV_DOCUMENT_ID=${{ env.DOCUMENT_ID }},ENV_TOPIC_NAME_PUB=${{ env.TOPIC_NAME_PUB }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
   stage:
     runs-on: ubuntu-latest
     needs:

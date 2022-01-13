@@ -4,7 +4,7 @@ const { PubSub } = require('@google-cloud/pubsub');
 const {
   ENV_COLLECTION_NAME: collectionName,
   ENV_DOCUMENT_ID: documentId,
-  ENV_TOPIC_NAME: topicName,
+  ENV_TOPIC_NAME_PUB: topicNamePub,
 } = process.env;
 
 const database = new Firestore();
@@ -18,7 +18,7 @@ exports.SurveyTester = async (req, res) => {
     const data = doc.data();
 
     const buffer = Buffer.from(JSON.stringify(data));
-    await pubsub.topic(topicName).publishMessage({ data: buffer });
+    await pubsub.topic(topicNamePub).publishMessage({ data: buffer });
     res.send('OK').end();
   } else {
     res.send('no data').end();
