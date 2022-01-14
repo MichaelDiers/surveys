@@ -14,6 +14,7 @@ env:
   TOPIC_NAME_PUB: ${{ secrets.GLOBAL_SURVEY_CREATED_SERVICE_PUB }}
   SCHEMA_FILE: 'backend/SaveSurveyService/SaveSurveySchema.avro'
   SCHEMA_NAME: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}_SCHEMA  
+  MESSAGE_ENCODING: json
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -54,7 +55,7 @@ jobs:
           PROJECT_ID: ${{ env.PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
         with:
-          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=binary --schema=${{ env.SCHEMA_NAME }}      
+          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=${{ env.MESSAGE_ENCODING }} --schema=${{ env.SCHEMA_NAME }}      
       - name: auth
         uses: google-github-actions/auth@v0
         with:
@@ -109,7 +110,7 @@ jobs:
           PROJECT_ID: ${{ env.PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
         with:
-          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=binary --schema=${{ env.SCHEMA_NAME }}
+          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=${{ env.MESSAGE_ENCODING }} --schema=${{ env.SCHEMA_NAME }}
       - name: auth
         uses: google-github-actions/auth@v0
         with:
@@ -164,7 +165,7 @@ jobs:
           PROJECT_ID: ${{ env.PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
         with:
-          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=binary --schema=${{ env.SCHEMA_NAME }}
+          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=${{ env.MESSAGE_ENCODING }} --schema=${{ env.SCHEMA_NAME }}
       - name: auth
         uses: google-github-actions/auth@v0
         with:

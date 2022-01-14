@@ -32,8 +32,9 @@ exports.SurveyTester = async (req, res) => {
   const doc = await docRef.get();
 
   if (doc.exists) {
-    const data = Buffer.from(orderedStringify(doc.data()));
-    await pubsub.topic(topicNamePub).publishMessage({ data });
+    // const data = Buffer.from(orderedStringify(doc.data()));
+    const json = orderedStringify(doc.data());
+    await pubsub.topic(topicNamePub).publishMessage({ json });
     res.send('OK').end();
   } else {
     res.send('no data').end();
