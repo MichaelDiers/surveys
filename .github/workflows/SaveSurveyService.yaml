@@ -11,7 +11,6 @@ env:
   SOURCE_DIR: 'backend/SaveSurveyService/functions'
   COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
   TOPIC_NAME_SUB: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}
-  TOPIC_NAME_PUB: ${{ secrets.GLOBAL_SURVEY_CREATED_SERVICE_PUB }}
   SCHEMA_FILE: 'backend/SaveSurveyService/SaveSurveySchema.avro'
   SCHEMA_NAME: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}_SCHEMA  
   MESSAGE_ENCODING: json
@@ -67,7 +66,7 @@ jobs:
           runtime: nodejs14
           project_id: ${{ env.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_COLLECTION_NAME=${{ env.COLLECTION_NAME }},ENV_TOPIC_NAME_PUB=${{ env.TOPIC_NAME_PUB }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
+          env_vars: ENV_COLLECTION_NAME=${{ env.COLLECTION_NAME }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
   stage:
@@ -122,7 +121,7 @@ jobs:
           runtime: nodejs14
           project_id: ${{ env.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_COLLECTION_NAME=${{ env.COLLECTION_NAME }},ENV_TOPIC_NAME_PUB=${{ env.TOPIC_NAME_PUB }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
+          env_vars: ENV_COLLECTION_NAME=${{ env.COLLECTION_NAME }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
   prod:
@@ -177,6 +176,6 @@ jobs:
           runtime: nodejs14
           project_id: ${{ env.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_COLLECTION_NAME=${{ env.COLLECTION_NAME }},ENV_TOPIC_NAME_PUB=${{ env.TOPIC_NAME_PUB }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
+          env_vars: ENV_COLLECTION_NAME=${{ env.COLLECTION_NAME }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}

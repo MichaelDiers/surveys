@@ -1,45 +1,89 @@
 const Firestore = require('@google-cloud/firestore');
-const { PubSub } = require('@google-cloud/pubsub');
 const { v4: uuidv4 } = require('uuid');
 
+// read enironment variables
 const {
   ENV_COLLECTION_NAME: collectionName,
-  ENV_TOPIC_NAME_PUB: topicNamePub,
 } = process.env;
 
+// intialize firestore and pub/sub
 const database = new Firestore();
-const pubsub = new PubSub();
 
 /**
- * Pubsub trigger for topic with name topicName.
- * - enriches the data of the pubsub message
- * - saves the messages to firestore
- * - publishes the message to topic topicNameCreated if the data is saved
+ * Converts a Pub/Sub message to a survey object.
+ * @param {object} json The Pub/Sub message as json object.
+ * @returns An object that defines a new survey.
  */
-exports.SaveSurveyService = async (message) => {
-  const json = JSON.parse(Buffer.from(message.data, 'base64').toString());
+const convertMessageToSurvey = (json) => {
+  const survey = {
+    name: json.name,
+    status: 'CREATED',
+    timestamp: Firestore.FieldValue.serverTimestamp(),
+    participantIds: [],
+    questions: [
+      {
+        question: 'bitte auswählen',
+        value: undefined,
+      },
+    ],
+    organizer: {
+      name: json.replyToEmail.name,
+      email: json.replyToEmail.email,
+    },
+  };
 
-  json.status = 'CREATED';
-  json.participants.forEach((_, index) => {
-    json.participants[index].guid = uuidv4();
+  // reorganize participants and prepare for easier firebase updates
+  json.participants.forEach((participant) => {
+    const id = uuidv4();
+    survey[id] = {
+      name: participant.name,
+      email: participant.email,
+    };
+
+    survey.participantIds.push(id);
   });
-  json.participantIds = json.participants.map((participant) => participant.guid);
-  let value = 1;
-  json.questions.forEach((question, index) => {
-    json.questions[index].guid = uuidv4();
-    question.choices.forEach((choice, qindex) => {
-      if (choice.hasNoValue !== true) {
-        json.questions[index].choices[qindex].value = value;
-        value += 1;
-      }
+
+  // enrich questions
+  let questionValue = 1;
+  json.questions.forEach((question) => {
+    const surveyQuestion = {
+      question: question.question,
+      guid: uuidv4(),
+      choices: [],
+    };
+
+    question.choices.forEach(({ answer }) => {
+      surveyQuestion.choices.push({
+        answer,
+        value: questionValue,
+      });
+
+      questionValue += 1;
     });
+
+    survey.questions.push(surveyQuestion);
   });
-  json.timestamp = Firestore.FieldValue.serverTimestamp();
 
-  const docRef = database.collection(collectionName).doc(uuidv4());
-  await docRef.set(json);
-  json.id = docRef.id;
-
-  const data = Buffer.from(JSON.stringify(json));
-  await pubsub.topic(topicNamePub).publishMessage({ data });
+  return survey;
 };
+
+/**
+ * Background Cloud Function to be triggered by Pub/Sub.
+ * Creates a mew survey from the message data and
+ * sends the survey to firestore.
+ * @param {object} message The Pub/Sub message.
+ */
+const onMessagePublished = async (message) => {
+  // parse message and covert to survey
+  const json = JSON.parse(Buffer.from(message.data, 'base64').toString());
+  const survey = convertMessageToSurvey(json);
+
+  // send to firestore
+  const docRef = database.collection(collectionName).doc(uuidv4());
+  await docRef.set(survey);
+};
+
+/**
+ * Background Cloud Function to be triggered by Pub/Sub.
+ */
+exports.SaveSurveyService = onMessagePublished;
