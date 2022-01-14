@@ -23,7 +23,6 @@ const convertMessageToSurvey = (json) => {
     questions: [
       {
         question: 'bitte auswählen',
-        value: undefined,
       },
     ],
     organizer: {
