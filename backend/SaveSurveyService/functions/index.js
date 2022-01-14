@@ -20,11 +20,7 @@ const convertMessageToSurvey = (json) => {
     status: 'CREATED',
     timestamp: Firestore.FieldValue.serverTimestamp(),
     participantIds: [],
-    questions: [
-      {
-        question: 'bitte auswählen',
-      },
-    ],
+    questions: [],
     organizer: {
       name: json.replyToEmail.name,
       email: json.replyToEmail.email,
@@ -48,7 +44,9 @@ const convertMessageToSurvey = (json) => {
     const surveyQuestion = {
       question: question.question,
       guid: uuidv4(),
-      choices: [],
+      choices: [{
+        question: 'bitte auswählen',
+      }],
     };
 
     question.choices.forEach(({ answer }) => {
