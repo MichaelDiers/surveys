@@ -2,49 +2,78 @@
   "type": "record",
   "name": "survey",
   "fields": [
-    { "name": "name", "type": "string" }
-    { "name": "participants", "type": {
+    { 
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "participants",
+      "type": {
         "type": "array",
         "items": {
-          "type": "record",
           "name": "participant",
-          "fields": [
-            { "name": "email", "type": "string" },
-            { "name": "name", "type": "string" }
-          ]
-        }
-      } 
-    },        
-    { "name": "questions", "type": {
-        "type": "array",
-        "items": {
           "type": "record",
-          "name": "question",
           "fields": [
-            { "name": "choices", "type": {
-                "type": "array",                
-                "items": {
-                  "type": "record",
-                  "name": "choice",
-                  "fields": [
-                    { "name": "answer", "type": "string" }                    
-                  ]
-                }
-              }
+            {
+              "name": "email",
+              "type": "string"
             },
-            { "name": "question", "type": "string" }
+            {
+              "name": "name",
+              "type": "string"
+            }  
           ]
         }
       }
     },
-    { "name": "replyToEmail", "type": {
+    {
+      "name": "questions",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "question",
+          "type": "record",
+          "fields": [
+            {
+              "name": "choices",
+              "type": {
+                "type": "array",
+                "items": {
+                  "name": "choice",
+                  "type": "record",
+                  "fields": [
+                    {
+                      "name": "answer",
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+            {
+              "name": "question",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "replyToEmail",
+      "type": {
+        "name": "replyToEmailRecord",
         "type": "record",
-        "name": "organizer",
         "fields": [
-          { "name": "email", "type": "string" },
-		      { "name": "name", "type": "string" }		
+          {
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          }
         ]
       }
-    }        
-  ]
+    }
+  ]    
 }

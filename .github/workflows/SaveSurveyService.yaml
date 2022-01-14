@@ -14,7 +14,7 @@ env:
   TOPIC_NAME_PUB: ${{ secrets.GLOBAL_SURVEY_CREATED_SERVICE_PUB }}
   SCHEMA_FILE: 'backend/SaveSurveyService/SaveSurveySchema.avro'
   SCHEMA_NAME: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}_SCHEMA  
-  MESSAGE_ENCODING: binary
+  MESSAGE_ENCODING: json
 jobs:
   test:
     runs-on: ubuntu-latest
