@@ -12,7 +12,7 @@ env:
   COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
   TOPIC_NAME_SUB: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}
   TOPIC_NAME_PUB: ${{ secrets.GLOBAL_SURVEY_CREATED_SERVICE_PUB }}
-  SCHEMA_FILE: 'backend/Schemas/SaveSurveySchema.avro'
+  SCHEMA_FILE: 'backend/SaveSurveyService/SaveSurveySchema.avro'
   SCHEMA_NAME: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}_SCHEMA  
 jobs:
   test:
@@ -80,6 +80,36 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+     - name: delete topic
+        uses: actions-hub/gcloud@master
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub topics delete ${{ env.TOPIC_NAME_SUB }} 
+      - name: delete schema
+        uses: actions-hub/gcloud@master
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub schemas delete ${{ env.SCHEMA_NAME }} --quiet
+      - name: deploy schema
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=AVRO --definition-file=${{ env.SCHEMA_FILE }}
+      - name: deploy topic
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=binary --schema=${{ env.SCHEMA_NAME }}
       - name: auth
         uses: google-github-actions/auth@v0
         with:
@@ -105,6 +135,36 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - name: delete topic
+        uses: actions-hub/gcloud@master
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub topics delete ${{ env.TOPIC_NAME_SUB }} 
+      - name: delete schema
+        uses: actions-hub/gcloud@master
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub schemas delete ${{ env.SCHEMA_NAME }} --quiet
+      - name: deploy schema
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=AVRO --definition-file=${{ env.SCHEMA_FILE }}
+      - name: deploy topic
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=binary --schema=${{ env.SCHEMA_NAME }}
       - name: auth
         uses: google-github-actions/auth@v0
         with:
