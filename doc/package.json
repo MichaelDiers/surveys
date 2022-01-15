@@ -1,0 +1,16 @@
+{
+  "name": "doc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "mm1": "npx -p @mermaid-js/mermaid-cli mmdc index.bundle -i CreateSurvey.md",
+    "mm2": "npx -p @mermaid-js/mermaid-cli mmdc index.bundle -i ProcessSurvey.md",
+    "mm": "npm run mm1 && npm run mm2"    
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mermaid-js/mermaid-cli": "^8.13.8"
+  }
+}
