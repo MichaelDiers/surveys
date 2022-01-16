@@ -89,6 +89,7 @@ jobs:
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME }}
   stage:
+    needs: test
     runs-on: ubuntu-latest
     environment:
       name: UpdateSurveyStatusService-Stage
@@ -158,6 +159,7 @@ jobs:
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME }}
   prod:
+    needs: stage
     runs-on: ubuntu-latest
     environment:
       name: UpdateSurveyStatusService-Prod
