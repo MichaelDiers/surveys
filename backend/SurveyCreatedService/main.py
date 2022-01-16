@@ -10,7 +10,7 @@ publisher = pubsub_v1.PublisherClient()
 
 ENV_PROJECT_ID = os.environ['ENV_PROJECT_ID']
 
-ENV_TOPIC_SURVEY_STATUS_UPDATE = os.environ['SURVEY_STATUS_UPDATE']
+ENV_TOPIC_SURVEY_STATUS_UPDATE = os.environ['ENV_TOPIC_SURVEY_STATUS_UPDATE']
 ENV_TOPIC_SURVEY_STATUS_UPDATE_FORMAT = \
     '{{"id":"{f_survey_id}", "type":"SURVEY", "status":"{f_survey_status}"}}'
 ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED = \
