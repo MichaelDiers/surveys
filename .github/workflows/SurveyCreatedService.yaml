@@ -39,6 +39,6 @@ jobs:
           entry_point: ${{ env.ENTRY_POINT }}
           project_id: ${{ env.PROJECT_ID }}
           event_trigger_type: providers/cloud.firestore/eventTypes/document.create
-          event_trigger_resource: projects/${{ env.PROJECT_ID }}/databases/(default)/documents/{{ env.COLLECTION_NAME }}/{survey}
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/databases/(default)/documents/${{ env.COLLECTION_NAME }}/{survey}
           source_dir: ${{ env.SOURCE_DIR }}
           env_vars: ENV_PROJECT_ID=${{ env.PROJECT_ID }},ENV_TOPIC_SURVEY_STATUS_UPDATE=${{ env.TOPIC_SURVEY_STATUS_UPDATE}},ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED=${{ env.SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED}},ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK=${{ env.SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK}},ENV_TOPIC_SEND_MAIL=${{ env.TOPIC_SEND_MAIL }},ENV_SURVEY_VIEWER_LINK=${{ env.SURVEY_VIEWER_LINK }}
