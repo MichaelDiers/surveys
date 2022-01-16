@@ -1,116 +1,185 @@
-import base64
-import json
+"""Google cloud function that is triggered if a new survey document is created in Firebase"""
+# pylint: disable=broad-except
+
 import os
 import sys
 
 from google.cloud import pubsub_v1
 
-ENV_PROJECT_ID = 'ENV_PROJECT_ID'
-ENV_TOPIC_NAME_SEND_MAIL = 'ENV_TOPIC_NAME_SEND_MAIL'
-ENV_TOPIC_NAME_UPDATE_SURVEY = 'ENV_TOPIC_NAME_UPDATE_SURVEY'
-ENV_SURVEY_VIEWER_LINK = 'ENV_SURVEY_VIEWER_LINK'
-
-PARTICIPANTS = 'participants'
-PARTICIPANT_NAME = 'name'
-PARTICIPANT_EMAIL = 'email'
-PARTICIPANT_GUID = 'guid'
-SURVEY_NAME = 'name'
-REPLY_TO_EMAIL = 'replyToEmail'
-
-MESSAGE_EMAIL_TYPE = 'emailType'
-MESSAGE_EMAIL_TYPE_VALUE = 'surveyRequest'
-MESSAGE_RECIPIENTS = 'recipients'
-MESSAGE_RECIPIENT_NAME = 'name'
-MESSAGE_RECIPIENT_EMAIL = 'email'
-MESSAGE_SURVEY_LINK = 'surveyLink'
-MESSAGE_SURVEY_NAME = 'surveyName'
-MESSAGE_REPLY_TO = 'replyTo'
-
-MESSAGE_UPDATE_SURVEY_ID = 'surveyId'
-MESSAGE_UPDATE_SURVEY_TYPE = 'type'
-MESSAGE_UPDATE_SURVEY_TYPE_VALUE = 'status'
-MESSAGE_UPDATE_SURVEY_STATUS = 'status'
-MESSAGE_UPDATE_SURVEY_STATUS_VALUE = 'SEND_MAIL'
-
 publisher = pubsub_v1.PublisherClient()
 
-def create_message_send_mail(surveyName, participant, reply_to):
-    link = os.environ.get(ENV_SURVEY_VIEWER_LINK, f'Specified environment variable is not set: {ENV_SURVEY_VIEWER_LINK}')
+ENV_PROJECT_ID = os.environ['ENV_PROJECT_ID']
 
-    return {
-                MESSAGE_EMAIL_TYPE: MESSAGE_EMAIL_TYPE_VALUE,
-                MESSAGE_RECIPIENTS: [
-                    {
-                        MESSAGE_RECIPIENT_NAME: participant[PARTICIPANT_NAME],
-                        MESSAGE_RECIPIENT_EMAIL:participant[PARTICIPANT_EMAIL]
-                    }
-                ],
-                MESSAGE_SURVEY_LINK: f'{link}{participant[PARTICIPANT_GUID]}',
-                MESSAGE_SURVEY_NAME: surveyName,
-                MESSAGE_REPLY_TO: reply_to
-    }
+ENV_TOPIC_SURVEY_STATUS_UPDATE = os.environ['SURVEY_STATUS_UPDATE']
+ENV_TOPIC_SURVEY_STATUS_UPDATE_FORMAT = \
+    '{{"id":"{f_survey_id}", "type":"SURVEY", "status":"{f_survey_status}"}}'
+ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED = \
+    os.environ['ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED']
+ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK = \
+    os.environ['ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK']
 
-def send_update_survey(survey_id):
-    project_id = os.environ.get(ENV_PROJECT_ID, f'Specified environment variable is not set: {ENV_PROJECT_ID}')
-    topic_name = os.environ.get(ENV_TOPIC_NAME_UPDATE_SURVEY, f'Specified environment variable is not set: {ENV_TOPIC_NAME_UPDATE_SURVEY}')
-    topic_path = publisher.topic_path(project_id, topic_name)
+ENV_TOPIC_SEND_MAIL =  os.environ['ENV_TOPIC_SEND_MAIL']
+ENV_SURVEY_VIEWER_LINK = os.environ['ENV_SURVEY_VIEWER_LINK']
 
-    message = {
-        MESSAGE_UPDATE_SURVEY_ID: survey_id,
-        MESSAGE_UPDATE_SURVEY_TYPE: MESSAGE_UPDATE_SURVEY_TYPE_VALUE,
-        MESSAGE_UPDATE_SURVEY_STATUS: MESSAGE_UPDATE_SURVEY_STATUS_VALUE
-    }
+SEND_MAIL_PUB_FORMAT = """{{
+    "recipients": [
+        {{            
+            "email": "{f_recipient_email}",
+            "name": "{f_recipient_name}"
+        }}
+    ],
+    "replyTo": {{
+        "email": "{f_organizer_email}",
+        "name": "{f_organizer_name}"
+    }},
+    "subject": "{f_subject}",
+    "text": {{
+        "html": "{f_text_html}",
+        "plain": "{f_text_plain}"
+    }}
+}}"""
 
-    message_json = json.dumps(message)
-    message_bytes = message_json.encode('utf-8')
-    publish_future = publisher.publish(topic_path, data=message_bytes)
-    publish_future.result()
+MAIL_PLAIN_FORMAT = """Hej {f_participant_name},
 
-def send_mails(survey):
-    survey_name = survey[SURVEY_NAME]
-    reply_to_email = survey[REPLY_TO_EMAIL]
+eine neue Umfrage '{f_survey_name}' steht für dich bereit:
 
-    project_id = os.environ.get(ENV_PROJECT_ID, f'Specified environment variable is not set: {ENV_PROJECT_ID}')
-    topic_name_send_mail = os.environ.get(ENV_TOPIC_NAME_SEND_MAIL, f'Specified environment variable is not set: {ENV_TOPIC_NAME_SEND_MAIL}')
-    topic_path_send_mail = publisher.topic_path(project_id, topic_name_send_mail)
+{f_survey_link}{f_participant_id}
 
-    for participant in survey[PARTICIPANTS]:
-        message = create_message_send_mail(survey_name, participant, reply_to_email)
-        message_json = json.dumps(message)
-        message_bytes = message_json.encode('utf-8')
-        publish_future = publisher.publish(topic_path_send_mail, data=message_bytes)
-        publish_future.result()
+Viele Grüße,
 
-def validate(survey):
-    for name in [PARTICIPANTS, SURVEY_NAME, REPLY_TO_EMAIL]:
-        value = survey.get(name)
-        if value is None or len(value) == 0:
-            return False
+{f_organizer_name}
+"""
 
-    for participant in survey[PARTICIPANTS]:
-        if participant == None \
-            or PARTICIPANT_NAME not in participant or len(participant[PARTICIPANT_NAME]) == 0 \
-            or PARTICIPANT_EMAIL not in participant or len(participant[PARTICIPANT_EMAIL]) == 0:
-            return False
-    
-    return True
+MAIL_HTML_FORMAT = """
+<html>
+    <body>
+        <h1>Hej {f_participant_name}!</h1>
+        <p>Eine neue Umfrage <a href="{f_survey_link}{f_participant_id}">{f_survey_name}</a> steht für doch bereit!</p>
+        <p>Viele Grüße,<br><br>{f_organizer_name}</p>
+    </body>
+<html>
+"""
 
-def on_survey_created(event, context):
-    """Triggered from a message on a Cloud Pub/Sub topic.
+MAIL_SUBJECT_FORMAT = 'Neue Umfrage {f_survey_name}'
+
+def send_survey_invitations(survey):
+    """
+    Creates invitation emails in html and text format and sends a request to
+    Pub/Sub to send the emails to the participants.
     Args:
-         event (dict): Event payload.
-         context (google.cloud.functions.Context): Metadata for the event.
+        - survey (dict): The Firebase document of the survey in a data type enriched version.
+    Returns:
+        True if are mails are requested and False otherwise.
+    """
+    survey_name = survey['name']['stringValue']
+
+    organizer_email = survey['organizer']['mapValue']['fields']['email']['stringValue']
+    organizer_name = survey['organizer']['mapValue']['fields']['name']['stringValue']
+
+    subject = MAIL_SUBJECT_FORMAT.format(f_survey_name=survey_name)
+
+    # pylint: disable-next=no-member
+    topic_path = publisher.topic_path(ENV_PROJECT_ID, ENV_TOPIC_SEND_MAIL)
+
+    success = True
+    participant_ids = survey['participantIds']['arrayValue']['values']
+    for participant_id in [value['stringValue'] for value in participant_ids]:
+        participant_fields = survey[participant_id]['mapValue']['fields']
+        participant_email = participant_fields['email']['stringValue']
+        participant_name = participant_fields['name']['stringValue']
+
+        mail_html = MAIL_HTML_FORMAT.format(
+            f_participant_name=participant_name,
+            f_survey_name=survey_name,
+            f_survey_link=ENV_SURVEY_VIEWER_LINK,
+            f_participant_id=participant_email,
+            f_organizer_name=organizer_name)
+        mail_plain = MAIL_PLAIN_FORMAT.format(
+            f_participant_name=participant_name,
+            f_survey_name=survey_name,
+            f_survey_link=ENV_SURVEY_VIEWER_LINK,
+            f_participant_id=participant_email,
+            f_organizer_name=organizer_name)
+
+        message = SEND_MAIL_PUB_FORMAT.format(
+            f_recipient_email=organizer_email,
+            f_recipient_name=organizer_name,
+            f_organizer_email=organizer_email,
+            f_organizer_name=organizer_name,
+            f_subject=subject,
+            f_text_html=mail_html,
+            f_text_plain=mail_plain
+        )
+
+        message_bytes = message.encode('utf-8')
+
+        try:
+            publish_future = publisher.publish(topic_path, data=message_bytes)
+            publish_future.result()
+        except Exception as error:
+            success = False
+            print(
+                f'Pub/Sub request error: Topic path: {str(topic_path)}, Message: {message}',
+                file=sys.stderr)
+            print(str(error), file=sys.stderr)
+
+        return success
+
+def update_survey_status(survey_id, survey_status):
+    """
+    Send a request to Pub/Sub to update the status of a survey.
+    Args:
+        survey_id (string): The id of the survey.
+        survey_status (string): The new status of the survey.
+    """
+    message = ENV_TOPIC_SURVEY_STATUS_UPDATE_FORMAT.format(
+        f_survey_id = survey_id,
+        f_survey_status=survey_status)
+    message_bytes = message.encode('utf-8')
+
+    # pylint: disable-next=no-member
+    topic_path = publisher.topic_path(ENV_PROJECT_ID, ENV_TOPIC_SURVEY_STATUS_UPDATE)
+
+    try:
+        publish_future = publisher.publish(topic_path, data=message_bytes)
+        publish_future.result()
+    except Exception as error:
+        print(
+            f'Pub/Sub request error: Topic path: {str(topic_path)}, Message: {message}',
+            file=sys.stderr)
+        print(str(error), file=sys.stderr)
+
+# pylint: disable-next=unused-argument
+def on_survey_created(data, context):
+    """
+    Triggered by a create operation of a survey Firestore document.
+    Requests are sent to Pub/Sub
+        - request to send invitation emails to the survey participants
+        - request to update the status of the survey
+    Args:
+        data (dict): The event payload.
+        context (google.cloud.functions.Context): Metadata for the event.
+    Remarks:
+        Access the fields of the created document:
+            data['value']['fields']
+
+        The event payload includes a data type enriched version of the survey document.
+        Example:
+            Firestore document: { "name": "My survey name", ... }
+            Payload:            { "name": { "stringValue": "My survey name" }, ... }
     """
     try:
-        if 'data' in event:
-            json_message = base64.b64decode(event['data']).decode('utf-8')
-            survey = json.loads(json_message)
-            if not validate(survey):
-                print(f'Invalid data: {str(json_message)} - {str(survey)}', file = sys.stderr)
-            else:
-                send_mails(survey)
-                send_update_survey(survey['id'])
-        else:
-            print('No data!', file = sys.stderr)
+        survey = data["value"]
+        survey_id = survey["name"].split("/")[-1]
+        survey = survey['fields']
+
+        new_survey_status = ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK
+
+        # send an invitation email to the participants
+        if not send_survey_invitations(survey):
+            new_survey_status = ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED
+
+        # set the new survey status
+        update_survey_status(survey_id, new_survey_status)
     except Exception as error:
-        print(f'Unexpected error: {str(error)}', file = sys.stderr)
+        print(f'Global error: {str(error)}', file=sys.stderr)

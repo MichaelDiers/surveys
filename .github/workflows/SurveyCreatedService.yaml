@@ -8,28 +8,37 @@ on:
   workflow_dispatch:
 env:
   FUNCTION_NAME: SurveyCreatedService
-  ENTRY_POINT: on_survey_created  
+  ENTRY_POINT: on_survey_created
   SOURCE_DIR: 'backend/SurveyCreatedService'
+  TOPIC_SURVEY_STATUS_UPDATE: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_STATUS_UPDATE }}
+  SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED: ${{ secrets.GLOBAL_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED }}
+  SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK: ${{ secrets.GLOBAL_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK }}
+  TOPIC_SEND_MAIL: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}
+  COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
 jobs:
   test:
     runs-on: ubuntu-latest
     environment:
       name: SurveyCreatedService-Test
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      SURVEY_VIEWER_LINK: ${{ secrets.SURVEY_VIEWER_LINK }}
     steps:
       - name: checkout
         uses: actions/checkout@v2
       - name: auth
         uses: google-github-actions/auth@v0
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
       - name: deploy
         uses: google-github-actions/deploy-cloud-functions@v0
         with:
           name: ${{ env.FUNCTION_NAME }}
           runtime: python39
           entry_point: ${{ env.ENTRY_POINT }}
-          project_id: ${{ secrets.PROJECT_ID }}
-          event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ secrets.PROJECT_ID }}/topics/${{ secrets.TOPIC_NAME_SURVEY_CREATED }}
+          project_id: ${{ env.PROJECT_ID }}
+          event_trigger_type: providers/cloud.firestore/eventTypes/document.create
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/databases/(default)/documents/{{ env.COLLECTION_NAME }}/{survey}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_PROJECT_ID=${{ secrets.PROJECT_ID }},ENV_TOPIC_NAME_SEND_MAIL=${{ secrets.TOPIC_NAME_SEND_MAIL }},ENV_TOPIC_NAME_UPDATE_SURVEY=${{ secrets.TOPIC_NAME_UPDATE_SURVEY }},ENV_SURVEY_VIEWER_LINK=${{ secrets.SURVEY_VIEWER_LINK }}
+          env_vars: ENV_PROJECT_ID=${{ env.PROJECT_ID }},ENV_TOPIC_SURVEY_STATUS_UPDATE=${{ env.TOPIC_SURVEY_STATUS_UPDATE}},ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED=${{ env.SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED}},ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK=${{ env.SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK}},ENV_TOPIC_SEND_MAIL=${{ env.TOPIC_SEND_MAIL }},ENV_SURVEY_VIEWER_LINK=${{ env.SURVEY_VIEWER_LINK }}
