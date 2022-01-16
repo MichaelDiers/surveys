@@ -23,7 +23,61 @@ jobs:
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
-      SURVEY_VIEWER_LINK: ${{ secrets.SURVEY_VIEWER_LINK }}
+      SURVEY_VIEWER_LINK: ${{ secrets.GLOBAL_SURVEY_VIEWER_LINK_TEST }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: ${{ env.FUNCTION_NAME }}
+          runtime: python39
+          entry_point: ${{ env.ENTRY_POINT }}
+          project_id: ${{ env.PROJECT_ID }}
+          event_trigger_type: providers/cloud.firestore/eventTypes/document.create
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/databases/(default)/documents/${{ env.COLLECTION_NAME }}/{survey}
+          source_dir: ${{ env.SOURCE_DIR }}
+          env_vars: ENV_PROJECT_ID=${{ env.PROJECT_ID }},ENV_TOPIC_SURVEY_STATUS_UPDATE=${{ env.TOPIC_SURVEY_STATUS_UPDATE}},ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED=${{ env.SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED}},ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK=${{ env.SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK}},ENV_TOPIC_SEND_MAIL=${{ env.TOPIC_SEND_MAIL }},ENV_SURVEY_VIEWER_LINK=${{ env.SURVEY_VIEWER_LINK }}
+  stage:
+    needs: test
+    runs-on: ubuntu-latest
+    environment:
+      name: SurveyCreatedService-Stage
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
+      SURVEY_VIEWER_LINK: ${{ secrets.GLOBAL_SURVEY_VIEWER_LINK_STAGE }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: ${{ env.FUNCTION_NAME }}
+          runtime: python39
+          entry_point: ${{ env.ENTRY_POINT }}
+          project_id: ${{ env.PROJECT_ID }}
+          event_trigger_type: providers/cloud.firestore/eventTypes/document.create
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/databases/(default)/documents/${{ env.COLLECTION_NAME }}/{survey}
+          source_dir: ${{ env.SOURCE_DIR }}
+          env_vars: ENV_PROJECT_ID=${{ env.PROJECT_ID }},ENV_TOPIC_SURVEY_STATUS_UPDATE=${{ env.TOPIC_SURVEY_STATUS_UPDATE}},ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED=${{ env.SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED}},ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK=${{ env.SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK}},ENV_TOPIC_SEND_MAIL=${{ env.TOPIC_SEND_MAIL }},ENV_SURVEY_VIEWER_LINK=${{ env.SURVEY_VIEWER_LINK }}
+  prod:
+    needs: stage
+    runs-on: ubuntu-latest
+    environment:
+      name: SurveyCreatedService-Prod
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
+      SURVEY_VIEWER_LINK: ${{ secrets.GLOBAL_SURVEY_VIEWER_LINK_PROD }}
     steps:
       - name: checkout
         uses: actions/checkout@v2
