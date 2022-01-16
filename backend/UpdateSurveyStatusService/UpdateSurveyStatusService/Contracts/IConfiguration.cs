@@ -1,4 +1,4 @@
-﻿namespace UpdateSurveyService.Contracts
+﻿namespace UpdateSurveyStatusService.Contracts
 {
 	/// <summary>
 	///   The application configuration.

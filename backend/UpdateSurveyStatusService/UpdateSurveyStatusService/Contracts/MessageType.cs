@@ -1,4 +1,4 @@
-﻿namespace UpdateSurveyService.Contracts
+﻿namespace UpdateSurveyStatusService.Contracts
 {
 	/// <summary>
 	///   Specifies the type of the survey update.
@@ -13,6 +13,11 @@
 		/// <summary>
 		///   Update the status of a survey.
 		/// </summary>
-		Status = 1
+		Survey = 1,
+
+		/// <summary>
+		///   Update the participant status of a survey.
+		/// </summary>
+		Participant = 2
 	}
 }

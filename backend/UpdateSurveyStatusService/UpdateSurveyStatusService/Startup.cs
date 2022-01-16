@@ -1,13 +1,13 @@
-﻿namespace UpdateSurveyService
+﻿namespace UpdateSurveyStatusService
 {
 	using Google.Cloud.Functions.Hosting;
 	using Microsoft.AspNetCore.Hosting;
 	using Microsoft.Extensions.Configuration;
 	using Microsoft.Extensions.DependencyInjection;
-	using UpdateSurveyService.Contracts;
-	using UpdateSurveyService.Logic;
-	using UpdateSurveyService.Model;
-	using IConfiguration = UpdateSurveyService.Contracts.IConfiguration;
+	using UpdateSurveyStatusService.Contracts;
+	using UpdateSurveyStatusService.Logic;
+	using UpdateSurveyStatusService.Model;
+	using IConfiguration = UpdateSurveyStatusService.Contracts.IConfiguration;
 
 	/// <summary>
 	///   Entry point of the google cloud function at startup.

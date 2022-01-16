@@ -1,6 +1,6 @@
-﻿namespace UpdateSurveyService.Model
+﻿namespace UpdateSurveyStatusService.Model
 {
-	using UpdateSurveyService.Contracts;
+	using UpdateSurveyStatusService.Contracts;
 
 	/// <summary>
 	///   The application configuration.

@@ -1,11 +1,10 @@
-﻿namespace UpdateSurveyService.Logic
+﻿namespace UpdateSurveyStatusService.Logic
 {
 	using System;
-	using System.Collections.Generic;
 	using System.Threading.Tasks;
 	using Newtonsoft.Json;
-	using UpdateSurveyService.Contracts;
-	using UpdateSurveyService.Model;
+	using UpdateSurveyStatusService.Contracts;
+	using UpdateSurveyStatusService.Model;
 
 	/// <summary>
 	///   Provider for handling survey updates.
@@ -39,22 +38,22 @@
 			}
 
 			var message = JsonConvert.DeserializeObject<Message>(json);
-			if (message == null)
+			if (message == null || !message.IsValid())
 			{
 				throw new ArgumentException($"Cannot parse json message: {json}", nameof(json));
 			}
 
-			var updates = new Dictionary<string, object>();
 			switch (message.Type)
 			{
-				case MessageType.Status:
-					updates.Add("status", message.Status);
+				case MessageType.Survey:
+					await this.database.UpdateSurvey(message.Id, message.Status);
+					break;
+				case MessageType.Participant:
+					await this.database.UpdateParticipant(message.Id, message.Status);
 					break;
 				default:
-					throw new ArgumentOutOfRangeException(nameof(message.Type), message.Type, "Cannot handle value.");
+					throw new ArgumentOutOfRangeException(nameof(message.Type), message.Type, null);
 			}
-
-			await this.database.Update(message.SurveyId, updates);
 		}
 	}
 }

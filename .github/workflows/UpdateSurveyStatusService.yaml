@@ -1,23 +1,28 @@
-name: BE/UpdateSurveyService.yaml
+name: BE/UpdateSurveyStatusService.yaml
 on:
   push:
     branches:
       - main
     paths:
-      - 'backend/UpdateSurveyService/UpdateSurveyService/**'
+      - 'backend/UpdateSurveyStatusService/**'
   workflow_dispatch:
 env:
-  APP_SETTINGS_JSON: 'backend/UpdateSurveyService/UpdateSurveyService/appsettings.json'
+  APP_SETTINGS_JSON: 'backend/UpdateSurveyStatusService/UpdateSurveyStatusService/appsettings.json'
   CONFIG: Release
-  SOURCE_DIR: 'backend/UpdateSurveyService/UpdateSurveyService'
-  ENTRY_POINT: UpdateSurveyService.UpdateSurveyFunction
-  FUNCTION_NAME: UpdateSurveyService
-  SLN_FILE: 'backend/UpdateSurveyService/UpdateSurveyService.sln'
+  SOURCE_DIR: 'backend/UpdateSurveyStatusService/UpdateSurveyStatusService'
+  ENTRY_POINT: UpdateSurveyStatusService.UpdateSurveyStatusFunction
+  FUNCTION_NAME: UpdateSurveyStatusService
+  SLN_FILE: 'backend/UpdateSurveyStatusService/UpdateSurveyStatusService.sln'
+  COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
+  TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_STATUS_UPDATE }}
 jobs:  
   test:
     runs-on: ubuntu-latest
     environment:
-      name: UpdateSurveyService-Test    
+      name: UpdateSurveyStatusService-Test
+    env:
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
     steps:      
       - name: checkout source
         uses: actions/checkout@v2
@@ -26,8 +31,8 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          ProjectId: ${{ secrets.PROJECT_ID }}
-          SurveysCollectionName: ${{ secrets.COLLECTION_NAME_SURVEYS }}
+          ProjectId: ${{ env.PROJECT_ID }}
+          SurveysCollectionName: ${{ env.COLLECTION_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -39,14 +44,14 @@ jobs:
       - name: auth
         uses: google-github-actions/auth@v0
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
       - name: deploy
         uses: google-github-actions/deploy-cloud-functions@v0
         with:
           name: ${{ env.FUNCTION_NAME }}
           runtime: dotnet3          
-          project_id: ${{ secrets.PROJECT_ID }}          
+          project_id: ${{ env.PROJECT_ID }}          
           source_dir: ${{ env.SOURCE_DIR }}
           entry_point: ${{ env.ENTRY_POINT }}
           event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ secrets.PROJECT_ID }}/topics/${{ secrets.TOPIC_NAME }}
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME }}

@@ -1,11 +1,9 @@
-﻿namespace UpdateSurveyService.Logic
+﻿namespace UpdateSurveyStatusService.Logic
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
 	using System.Threading.Tasks;
 	using Google.Cloud.Firestore;
-	using UpdateSurveyService.Contracts;
+	using UpdateSurveyStatusService.Contracts;
 
 	/// <summary>
 	///   Specifies operations on firestore database.
@@ -33,18 +31,27 @@
 		}
 
 		/// <summary>
-		///   Updates the specifies survey by the given values.
+		///   Update the status of a participant.
 		/// </summary>
-		/// <param name="surveyId">The survey to update.</param>
-		/// <param name="updates">The new values of the survey.</param>
+		/// <param name="participantId">The id of the participant.</param>
+		/// <param name="status">The new status for the participant.</param>
 		/// <returns>A <see cref="Task" />.</returns>
-		public async Task Update(string surveyId, IDictionary<string, object> updates)
+		public Task UpdateParticipant(string participantId, Status status)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		///   Update the status of a survey.
+		/// </summary>
+		/// <param name="surveyId">The id of the survey.</param>
+		/// <param name="status">The new status of the survey.</param>
+		/// <returns>A <see cref="Task" />.</returns>
+		public async Task UpdateSurvey(string surveyId, Status status)
 		{
 			var collection = this.database.Collection(this.configuration.SurveysCollectionName);
 			var docRef = collection.Document(surveyId);
-			await docRef.UpdateAsync(
-				new Dictionary<FieldPath, object>(
-					updates.Select(x => new KeyValuePair<FieldPath, object>(new FieldPath(x.Key), x.Value))));
+			await docRef.UpdateAsync("status", StatusJsonConverter.ConvertStatusToString(status));
 		}
 	}
 }

@@ -1,7 +1,6 @@
-﻿namespace UpdateSurveyService.Contracts
+﻿namespace UpdateSurveyStatusService.Contracts
 {
 	using System.Threading.Tasks;
-	using UpdateSurveyService.Model;
 
 	/// <summary>
 	///   Provider for handling survey updates.
@@ -11,7 +10,7 @@
 		/// <summary>
 		///   Update a survey.
 		/// </summary>
-		/// <param name="json">A <see cref="Message" /> in json format.</param>
+		/// <param name="json">The incoming message in json format.</param>
 		/// <returns>A <see cref="Task" />.</returns>
 		Task Update(string json);
 	}

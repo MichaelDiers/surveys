@@ -1,4 +1,4 @@
-﻿namespace UpdateSurveyService
+﻿namespace UpdateSurveyStatusService
 {
 	using System;
 	using System.Threading;
@@ -8,34 +8,37 @@
 	using Google.Cloud.Functions.Hosting;
 	using Google.Events.Protobuf.Cloud.PubSub.V1;
 	using Microsoft.Extensions.Logging;
-	using UpdateSurveyService.Contracts;
+	using UpdateSurveyStatusService.Contracts;
 
 	/// <summary>
-	///   Google cloud function for sending emails using pub/sub.
+	///   Google cloud function for updating the status of a survey or its participants.
 	/// </summary>
 	[FunctionsStartup(typeof(Startup))]
-	public class UpdateSurveyFunction : ICloudEventFunction<MessagePublishedData>
+	public class UpdateSurveyStatusFunction : ICloudEventFunction<MessagePublishedData>
 	{
 		/// <summary>
 		///   Logger for error messages.
 		/// </summary>
-		private readonly ILogger<UpdateSurveyFunction> logger;
+		private readonly ILogger<UpdateSurveyStatusFunction> logger;
 
+		/// <summary>
+		///   Provider for updating the survey status or its participants.
+		/// </summary>
 		private readonly IUpdateProvider updateProvider;
 
 		/// <summary>
-		///   Creates a new instance of <see cref="UpdateSurveyFunction" />.
+		///   Creates a new instance of <see cref="UpdateSurveyStatusFunction" />.
 		/// </summary>
 		/// <param name="logger">Logger for error messages.</param>
 		/// <param name="updateProvider">Provider for updating surveys.</param>
-		public UpdateSurveyFunction(ILogger<UpdateSurveyFunction> logger, IUpdateProvider updateProvider)
+		public UpdateSurveyStatusFunction(ILogger<UpdateSurveyStatusFunction> logger, IUpdateProvider updateProvider)
 		{
 			this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			this.updateProvider = updateProvider ?? throw new ArgumentNullException(nameof(updateProvider));
 		}
 
 		/// <summary>
-		///   Handle cloud events and send email using <see cref="MessagePublishedData" />.
+		///   Update the status of surveys or its participants.
 		/// </summary>
 		/// <param name="cloudEvent">The cloud event that is handled.</param>
 		/// <param name="data">The message data.</param>
