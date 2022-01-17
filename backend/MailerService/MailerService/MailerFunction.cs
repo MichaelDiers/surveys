@@ -49,6 +49,7 @@
 		{
 			try
 			{
+				this.logger.LogInformation(data?.Message?.TextData);
 				await this.mailerProvider.SendAsync(data?.Message?.TextData);
 			}
 			catch (Exception e)
