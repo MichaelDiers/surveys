@@ -45,6 +45,7 @@
 			}
 
 			var message = $"{{\"surveyId\":\"{surveyId}\",\"participantId\":\"{participantId}\",\"status\":\"{status}\"}}";
+			Console.WriteLine(message);
 			await this.client.PublishAsync(message);
 		}
 	}
