@@ -16,8 +16,9 @@
 		/// </summary>
 		/// <param name="request">The data that is used to create the <see cref="MimeMessage" />.</param>
 		/// <param name="from">The sender data of the email.</param>
+		/// <param name="templateNewline">Handle for newlines in templates.</param>
 		/// <returns>An instance of <see cref="MimeMessage" />.</returns>
-		public MimeMessage ToMimeMessage(IMessage request, IEnumerable<InternetAddress> from)
+		public MimeMessage ToMimeMessage(IMessage request, IEnumerable<InternetAddress> from, string templateNewline)
 		{
 			if (request == null)
 			{
@@ -26,8 +27,8 @@
 
 			var builder = new BodyBuilder
 			{
-				TextBody = request.Body.Plain,
-				HtmlBody = request.Body.Html
+				TextBody = request.Body.Plain.Replace(templateNewline, Environment.NewLine),
+				HtmlBody = request.Body.Html.Replace(templateNewline, Environment.NewLine)
 			};
 
 			var mimeMessage = new MimeMessage(

@@ -65,7 +65,7 @@
 				new MailboxAddress(this.configuration.MailboxAddressFrom.Name, this.configuration.MailboxAddressFrom.Email)
 			};
 
-			var email = this.messageConverter.ToMimeMessage(message, mimeMessageFrom);
+			var email = this.messageConverter.ToMimeMessage(message, mimeMessageFrom, this.configuration.TemplateNewline);
 
 			await this.mailerSmtpClient.SendAsync(email, this.configuration.Smtp);
 		}

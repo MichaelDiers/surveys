@@ -55,7 +55,8 @@
 				new[]
 				{
 					new MailboxAddress(fromName, fromEmail)
-				});
+				},
+				"HANDLE");
 
 			Assert.Single(message.To.Mailboxes);
 			Assert.Contains(message.To.Mailboxes, mb => mb.Address == recipientEmail && mb.Name == recipientName);

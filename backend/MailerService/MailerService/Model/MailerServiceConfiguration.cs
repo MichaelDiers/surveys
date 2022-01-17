@@ -16,5 +16,10 @@
 		///   Gets or sets the connection data for smtp.
 		/// </summary>
 		public Smtp Smtp { get; set; }
+
+		/// <summary>
+		///   Gets or sets the handle for new lines in templates.
+		/// </summary>
+		public string TemplateNewline { get; set; }
 	}
 }
