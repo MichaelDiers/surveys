@@ -1,6 +1,7 @@
 ﻿namespace UpdateSurveyStatusService.Logic
 {
 	using System;
+	using System.Linq;
 	using System.Threading.Tasks;
 	using Google.Cloud.Firestore;
 	using UpdateSurveyStatusService.Contracts;
@@ -36,9 +37,17 @@
 		/// <param name="participantId">The id of the participant.</param>
 		/// <param name="status">The new status for the participant.</param>
 		/// <returns>A <see cref="Task" />.</returns>
-		public Task UpdateParticipant(string participantId, Status status)
+		public async Task UpdateParticipant(string participantId, Status status)
 		{
-			throw new NotImplementedException();
+			var collection = this.database.Collection(this.configuration.SurveysCollectionName);
+			var snapshot = await collection.WhereArrayContains("participantIds", participantId).Limit(1).GetSnapshotAsync();
+			if (snapshot.Count == 1)
+			{
+				var doc = snapshot.Documents.Single();
+				await doc.Reference.UpdateAsync(
+					$"{participantId}.status",
+					StatusJsonConverter.ConvertStatusToString(status));
+			}
 		}
 
 		/// <summary>

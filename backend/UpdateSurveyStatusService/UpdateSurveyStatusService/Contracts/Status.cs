@@ -18,6 +18,16 @@
 		/// <summary>
 		///   Invitation mails are requested for all participants. At least one request did fail.
 		/// </summary>
-		InvitationMailsRequestFailed = 2
+		InvitationMailsRequestFailed = 2,
+
+		/// <summary>
+		///   Mail is sent to a participant.
+		/// </summary>
+		MailSentOk = 3,
+
+		/// <summary>
+		///   Sending an email to a participant failed.
+		/// </summary>
+		MailSentFailed = 4
 	}
 }

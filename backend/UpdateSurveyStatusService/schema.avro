@@ -1,32 +1,34 @@
 {
-    "name": "statusUpdate",
-    "type": "record",
-    "fields": [
-        {
-            "name": "id",
-            "type": "string"
-        },
-        {
-            "name": "type",
-            "type": {
-                "name": "typeEnum",
-                "type": "enum",
-                "symbols": [
-                    "SURVEY",
-                    "PARTICIPANT"
-                ]
-            }
-        },
-        {
-            "name": "status",
-            "type": {
-                "name": "statusEnum",
-                "type": "enum",
-                "symbols": [
-                    "INVITATION_MAILS_REQUEST_OK",
-                    "INVITATION_MAILS_REQUEST_FAILED"
-                ]
-            }            
-        }
-    ]
+	"name": "statusUpdate",
+	"type": "record",
+	"fields": [
+		{
+			"name": "id",
+			"type": "string"
+		},
+		{
+			"name": "type",
+			"type": {
+				"name": "typeEnum",
+				"type": "enum",
+				"symbols": [
+					"SURVEY",
+					"PARTICIPANT"
+				]
+			}
+		},
+		{
+			"name": "status",
+			"type": {
+				"name": "statusEnum",
+				"type": "enum",
+				"symbols": [
+					"INVITATION_MAILS_REQUEST_OK",
+					"INVITATION_MAILS_REQUEST_FAILED",
+					"MAIL_SENT_OK",
+					"MAIL_SENT_FAILED"
+				]
+			}
+		}
+	]
 }

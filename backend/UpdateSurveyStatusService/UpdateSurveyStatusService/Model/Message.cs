@@ -41,7 +41,7 @@
 				case MessageType.Survey:
 					return this.Status == Status.InvitationMailsRequestFailed || this.Status == Status.InvitationMailsRequestOk;
 				case MessageType.Participant:
-					return false;
+					return this.Status == Status.MailSentFailed || this.Status == Status.MailSentOk;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(this.Type), this.Type, null);
 			}
