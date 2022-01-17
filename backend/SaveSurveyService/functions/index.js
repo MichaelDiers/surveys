@@ -1,13 +1,17 @@
 const Firestore = require('@google-cloud/firestore');
+const { PubSub } = require('@google-cloud/pubsub');
 const { v4: uuidv4 } = require('uuid');
 
 // read enironment variables
 const {
   ENV_COLLECTION_NAME: collectionName,
+  ENV_STATUS_CREATED: statusCreated,
+  ENV_TOPIC_NAME: topicName,
 } = process.env;
 
 // intialize firestore and pub/sub
 const database = new Firestore();
+const pubsub = new PubSub();
 
 /**
  * Converts a Pub/Sub message to a survey object.
@@ -17,7 +21,6 @@ const database = new Firestore();
 const convertMessageToSurvey = (json) => {
   const survey = {
     name: json.name,
-    status: 'CREATED',
     timestamp: Firestore.FieldValue.serverTimestamp(),
     participantIds: [],
     questions: [],
@@ -78,6 +81,11 @@ const onMessagePublished = async (message) => {
   // send to firestore
   const docRef = database.collection(collectionName).doc(uuidv4());
   await docRef.set(survey);
+
+  // send status update
+  const statusUpdate = `{"surveyId":"${json.surveyId}","participantId": null, "status": "${statusCreated}"}`;
+  const data = Buffer.from(statusUpdate);
+  await pubsub.topic(topicName).publishMessage({ data });
 };
 
 /**
