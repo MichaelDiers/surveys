@@ -13,7 +13,7 @@ ENV_TEMPLATE_NEWLINE = os.environ['ENV_TEMPLATE_NEWLINE']
 
 ENV_TOPIC_SURVEY_STATUS_UPDATE = os.environ['ENV_TOPIC_SURVEY_STATUS_UPDATE']
 ENV_TOPIC_SURVEY_STATUS_UPDATE_FORMAT = \
-    '{{"id":"{f_survey_id}", "type":"SURVEY", "status":"{f_survey_status}"}}'
+    '{{"surveyId":"{f_survey_id}", "participantId":null, "status":"{f_survey_status}"}}'
 ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED = \
     os.environ['ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED']
 ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK = \
