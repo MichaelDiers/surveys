@@ -38,7 +38,7 @@ SEND_MAIL_PUB_FORMAT = """{{
         "html": "{f_text_html}",
         "plain": "{f_text_plain}"
     }},
-    "participantOds": ["{f_participant_id}"]
+    "participantIds": ["{f_participant_id}"]
 }}"""
 
 MAIL_PLAIN_FORMAT = "Hej {f_participant_name},{f_newline}{f_newline}eine neue Umfrage '{f_survey_name}' steht für dich bereit:{f_newline}{f_newline}{f_survey_link}{f_participant_id}{f_newline}{f_newline}Viele Grüße,{f_newline}{f_newline}{f_organizer_name}{f_newline}"
