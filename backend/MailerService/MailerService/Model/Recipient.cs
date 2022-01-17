@@ -11,13 +11,13 @@
 		/// <summary>
 		///   Gets or sets the email address.
 		/// </summary>
-		[JsonProperty("email")]
+		[JsonProperty("email", Required = Required.Always)]
 		public string Email { get; set; }
 
 		/// <summary>
 		///   Gets or sets the name of the recipient.
 		/// </summary>
-		[JsonProperty("name")]
+		[JsonProperty("name", Required = Required.Always)]
 		public string Name { get; set; }
 	}
 }

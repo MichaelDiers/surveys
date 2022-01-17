@@ -11,7 +11,7 @@
 	{
 		[Theory]
 		[InlineData(
-			"{\"recipients\":[{\"email\":\"RecipientEmail\",\"name\":\"RecipientName\"}],\"replyTo\":{\"email\":\"ReplyToEmail\",\"name\":\"ReplyToName\"},\"subject\":\"subject\",\"text\":{\"html\":\"html body\",\"plain\":\"plain body\"}}")]
+			"{\"recipients\":[{\"email\":\"RecipientEmail\",\"name\":\"RecipientName\"}],\"replyTo\":{\"email\":\"ReplyToEmail\",\"name\":\"ReplyToName\"},\"subject\":\"subject\",\"text\":{\"html\":\"html body\",\"plain\":\"plain body\"},\"surveyId\":\"surveyId\",\"participantIds\":[\"participantId\"],\"statusOk\":\"statusOk\",\"statusFailed\":\"statusFailed\"}")]
 		public async void SendAsyncDeserializeObjectSucceeds(string json)
 		{
 			await new MailerProvider(
@@ -24,7 +24,8 @@
 							Email = "foo@bar",
 							Name = "foo"
 						}
-					})
+					},
+					new PubSubMock())
 				.SendAsync(json);
 		}
 
@@ -34,7 +35,11 @@
 		{
 			await Assert.ThrowsAsync<JsonReaderException>(
 				() =>
-					new MailerProvider(new MessageConverterMock(), new MailerSmtpClientMock(), new MailerServiceConfiguration())
+					new MailerProvider(
+							new MessageConverterMock(),
+							new MailerSmtpClientMock(),
+							new MailerServiceConfiguration(),
+							new PubSubMock())
 						.SendAsync(json));
 		}
 
@@ -45,7 +50,11 @@
 		{
 			await Assert.ThrowsAsync<ArgumentNullException>(
 				() =>
-					new MailerProvider(new MessageConverterMock(), new MailerSmtpClientMock(), new MailerServiceConfiguration())
+					new MailerProvider(
+							new MessageConverterMock(),
+							new MailerSmtpClientMock(),
+							new MailerServiceConfiguration(),
+							new PubSubMock())
 						.SendAsync(json));
 		}
 	}

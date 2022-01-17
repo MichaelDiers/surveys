@@ -29,8 +29,23 @@
 		Recipient ReplyTo { get; }
 
 		/// <summary>
+		///   Gets the status that indicates failure.
+		/// </summary>
+		string StatusFailed { get; }
+
+		/// <summary>
+		///   Gets the status that indicates success.
+		/// </summary>
+		string StatusOk { get; }
+
+		/// <summary>
 		///   Gets the subject of the email.
 		/// </summary>
 		string Subject { get; }
+
+		/// <summary>
+		///   Gets  the id of the survey.
+		/// </summary>
+		string SurveyId { get; }
 	}
 }

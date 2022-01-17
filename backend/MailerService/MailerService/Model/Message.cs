@@ -12,31 +12,49 @@
 		/// <summary>
 		///   Gets or ses the body of the message.
 		/// </summary>
-		[JsonProperty("text", Required = Required.DisallowNull)]
+		[JsonProperty("text", Required = Required.Always)]
 		public Body Body { get; set; }
 
 		/// <summary>
 		///   Gets or sets the id of the recipients or participants.
 		/// </summary>
-		[JsonProperty("participantIds", Required = Required.DisallowNull)]
+		[JsonProperty("participantIds", Required = Required.Always)]
 		public IEnumerable<string> ParticipantIds { get; set; }
 
 		/// <summary>
 		///   Gets or sets the recipients of the email.
 		/// </summary>
-		[JsonProperty("recipients", Required = Required.DisallowNull)]
+		[JsonProperty("recipients", Required = Required.Always)]
 		public IEnumerable<Recipient> Recipients { get; set; }
 
 		/// <summary>
 		///   Gets or sets the reply to email address.
 		/// </summary>
-		[JsonProperty("replyTo", Required = Required.DisallowNull)]
+		[JsonProperty("replyTo", Required = Required.Always)]
 		public Recipient ReplyTo { get; set; }
+
+		/// <summary>
+		///   Gets or sets the status that indicates failure.
+		/// </summary>
+		[JsonProperty("statusFailed", Required = Required.Always)]
+		public string StatusFailed { get; set; }
+
+		/// <summary>
+		///   Gets or sets the status that indicates success.
+		/// </summary>
+		[JsonProperty("statusOk", Required = Required.Always)]
+		public string StatusOk { get; set; }
 
 		/// <summary>
 		///   Gets or sets the subject of the email.
 		/// </summary>
-		[JsonProperty("subject", Required = Required.DisallowNull)]
+		[JsonProperty("subject", Required = Required.Always)]
 		public string Subject { get; set; }
+
+		/// <summary>
+		///   Gets or sets the id of the survey.
+		/// </summary>
+		[JsonProperty("surveyId", Required = Required.Always)]
+		public string SurveyId { get; set; }
 	}
 }

@@ -24,6 +24,7 @@
 			context.Configuration.Bind(mailerServiceConfiguration);
 			services.AddScoped<IMailerServiceConfiguration>(_ => mailerServiceConfiguration);
 
+			services.AddScoped<IPubSub, PubSub>();
 			services.AddScoped<IMailerSmtpClient, MailerSmtpClient>();
 			services.AddScoped<IMessageConverter, MessageConverter>();
 			services.AddScoped<IMailerProvider, MailerProvider>();

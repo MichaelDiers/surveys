@@ -15,6 +15,7 @@ env:
   SLN_FILE: 'backend/MailerService/MailerService.sln'
   TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}
   TEMPLATE_NEWLINE: ${{ secrets.GLOBAL_TEMPLATE_NEWLINE }}
+  TOPIC_NAME_STATUS_UPDATE: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_STATUS_UPDATE }}
 jobs:  
   test:
     runs-on: ubuntu-latest
@@ -44,6 +45,8 @@ jobs:
           Smtp.Server: ${{ env.SMTP_SERVER }}
           Smtp.UserName: ${{ env.SMTP_USERNAME }}
           TemplateNewline: ${{ env.TEMPLATE_NEWLINE }}
+          ProjectId: ${{ env.PROJECT_ID }}
+          TopicName: ${{ env.TOPIC_NAME_STATUS_UPDATE }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
