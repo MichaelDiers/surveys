@@ -11,13 +11,18 @@
 		None = 0,
 
 		/// <summary>
+		///   Survey is created.
+		/// </summary>
+		Created = 1,
+
+		/// <summary>
 		///   Indicates that sending an invitation mail failed.
 		/// </summary>
-		InvitationMailFailed = 1,
+		InvitationMailFailed = 2,
 
 		/// <summary>
 		///   Indicates that sending an invitation mail is sent.
 		/// </summary>
-		InvitationMailOk = 2
+		InvitationMailOk = 3
 	}
 }

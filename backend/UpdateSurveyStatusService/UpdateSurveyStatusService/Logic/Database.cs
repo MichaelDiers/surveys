@@ -44,7 +44,8 @@
 			{
 				{"surveyId", surveyId},
 				{"participantId", participantId},
-				{"status", status}
+				{"status", status},
+				{"timestamp", FieldValue.ServerTimestamp}
 			};
 
 			var docReference = this.database.Collection(this.configuration.CollectionName).Document();

@@ -16,6 +16,7 @@
 		/// </summary>
 		private static readonly IDictionary<Status, string> StatusToString = new Dictionary<Status, string>
 		{
+			{Status.Created, "CREATED"},
 			{Status.InvitationMailOk, "INVITATION_MAIL_OK"},
 			{Status.InvitationMailFailed, "INVITATION_MAIL_FAILED"}
 		};

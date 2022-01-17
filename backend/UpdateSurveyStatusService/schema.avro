@@ -16,6 +16,7 @@
 				"name": "statusEnum",
 				"type": "enum",
 				"symbols": [
+					"CREATED",
 					"INVITATION_MAIL_OK",
 					"INVITATION_MAIL_FAILED"
 				]
