@@ -9,6 +9,7 @@ from google.cloud import pubsub_v1
 publisher = pubsub_v1.PublisherClient()
 
 ENV_PROJECT_ID = os.environ['ENV_PROJECT_ID']
+ENV_TEMPLATE_NEWLINE = os.environ['ENV_TEMPLATE_NEWLINE']
 
 ENV_TOPIC_SURVEY_STATUS_UPDATE = os.environ['ENV_TOPIC_SURVEY_STATUS_UPDATE']
 ENV_TOPIC_SURVEY_STATUS_UPDATE_FORMAT = \
@@ -39,26 +40,9 @@ SEND_MAIL_PUB_FORMAT = """{{
     }}
 }}"""
 
-MAIL_PLAIN_FORMAT = """Hej {f_participant_name},
+MAIL_PLAIN_FORMAT = "Hej {f_participant_name},{f_newline}{f_newline}eine neue Umfrage '{f_survey_name}' steht für dich bereit:{f_newline}{f_newline}{f_survey_link}{f_participant_id}{f_newline}{f_newline}Viele Grüße,{f_newline}{f_newline}{f_organizer_name}{f_newline}"
 
-eine neue Umfrage '{f_survey_name}' steht für dich bereit:
-
-{f_survey_link}{f_participant_id}
-
-Viele Grüße,
-
-{f_organizer_name}
-"""
-
-MAIL_HTML_FORMAT = """
-<html>
-    <body>
-        <h1>Hej {f_participant_name}!</h1>
-        <p>Eine neue Umfrage <a href="{f_survey_link}{f_participant_id}">{f_survey_name}</a> steht für doch bereit!</p>
-        <p>Viele Grüße,<br><br>{f_organizer_name}</p>
-    </body>
-<html>
-"""
+MAIL_HTML_FORMAT = "<html><body><h1>Hej {f_participant_name}!</h1><p>Eine neue Umfrage <a href='{f_survey_link}{f_participant_id}'>{f_survey_name}</a> steht für doch bereit!</p><p>Viele Grüße,<br><br>{f_organizer_name}</p></body><html>"
 
 MAIL_SUBJECT_FORMAT = 'Neue Umfrage {f_survey_name}'
 
@@ -99,7 +83,8 @@ def send_survey_invitations(survey):
             f_survey_name=survey_name,
             f_survey_link=ENV_SURVEY_VIEWER_LINK,
             f_participant_id=participant_email,
-            f_organizer_name=organizer_name)
+            f_organizer_name=organizer_name,
+            f_newline="###TEMPLATE_BR###")
 
         message = SEND_MAIL_PUB_FORMAT.format(
             f_recipient_email=organizer_email,
