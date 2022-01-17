@@ -82,7 +82,7 @@ def send_survey_invitations(survey):
             f_participant_name=participant_name,
             f_survey_name=survey_name,
             f_survey_link=ENV_SURVEY_VIEWER_LINK,
-            f_participant_id=participant_email,
+            f_participant_id=participant_id,
             f_organizer_name=organizer_name,
             f_newline="###TEMPLATE_BR###")
 
@@ -157,6 +157,7 @@ def on_survey_created(data, context):
         survey = data["value"]
         survey_id = survey["name"].split("/")[-1]
         survey = survey['fields']
+        print(survey)
 
         new_survey_status = ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK
 
