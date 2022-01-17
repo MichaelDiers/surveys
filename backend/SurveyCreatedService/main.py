@@ -38,7 +38,10 @@ SEND_MAIL_PUB_FORMAT = """{{
         "html": "{f_text_html}",
         "plain": "{f_text_plain}"
     }},
-    "participantIds": ["{f_participant_id}"]
+    "surveyId": "{f_survey_id}",
+    "participantIds": ["{f_participant_id}"],
+    "status_ok": "{f_status_ok}",
+    "status_failed": "{f_status_failed}",
 }}"""
 
 MAIL_PLAIN_FORMAT = "Hej {f_participant_name},{f_newline}{f_newline}eine neue Umfrage '{f_survey_name}' steht für dich bereit:{f_newline}{f_newline}{f_survey_link}{f_participant_id}{f_newline}{f_newline}Viele Grüße,{f_newline}{f_newline}{f_organizer_name}{f_newline}"
@@ -47,7 +50,7 @@ MAIL_HTML_FORMAT = "<html><body><h1>Hej {f_participant_name}!</h1><p>Eine neue U
 
 MAIL_SUBJECT_FORMAT = 'Neue Umfrage {f_survey_name}'
 
-def send_survey_invitations(survey):
+def send_survey_invitations(survey, survey_id, status_ok, status_failed):
     """
     Creates invitation emails in html and text format and sends a request to
     Pub/Sub to send the emails to the participants.
@@ -95,7 +98,10 @@ def send_survey_invitations(survey):
             f_subject=subject,
             f_text_html=mail_html,
             f_text_plain=mail_plain,
-            f_participant_id=participant_id
+            f_survey_id=survey_id,
+            f_participant_id=participant_id,
+            f_status_ok=status_ok,
+            f_status_failed=status_failed
         )
 
         message_bytes = message.encode('utf-8')
@@ -163,7 +169,11 @@ def on_survey_created(data, context):
         new_survey_status = ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK
 
         # send an invitation email to the participants
-        if not send_survey_invitations(survey):
+        if not send_survey_invitations(
+            survey, survey_id,
+            ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK,
+            ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED
+        ):
             new_survey_status = ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_FAILED
 
         # set the new survey status
