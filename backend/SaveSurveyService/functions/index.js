@@ -84,7 +84,7 @@ const onMessagePublished = async (message) => {
   await docRef.set(survey);
 
   // send status update
-  const statusUpdate = `{"surveyId":"${surveyId}","participantId": null, "status": "${statusCreated}"}`;
+  const statusUpdate = `{"surveyId":"${surveyId}","participantId": \"\", "status": "${statusCreated}"}`;
   const data = Buffer.from(statusUpdate);
   await pubsub.topic(topicName).publishMessage({ data });
 };
