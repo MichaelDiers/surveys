@@ -76,7 +76,7 @@ def send_survey_invitations(survey):
             f_participant_name=participant_name,
             f_survey_name=survey_name,
             f_survey_link=ENV_SURVEY_VIEWER_LINK,
-            f_participant_id=participant_email,
+            f_participant_id=participant_id,
             f_organizer_name=organizer_name)
         mail_plain = MAIL_PLAIN_FORMAT.format(
             f_participant_name=participant_name,
@@ -87,8 +87,8 @@ def send_survey_invitations(survey):
             f_newline="###TEMPLATE_BR###")
 
         message = SEND_MAIL_PUB_FORMAT.format(
-            f_recipient_email=organizer_email,
-            f_recipient_name=organizer_name,
+            f_recipient_email=participant_email,
+            f_recipient_name=participant_name,
             f_organizer_email=organizer_email,
             f_organizer_name=organizer_name,
             f_subject=subject,
@@ -108,7 +108,7 @@ def send_survey_invitations(survey):
                 file=sys.stderr)
             print(str(error), file=sys.stderr)
 
-        return success
+    return success
 
 def update_survey_status(survey_id, survey_status):
     """
@@ -157,7 +157,6 @@ def on_survey_created(data, context):
         survey = data["value"]
         survey_id = survey["name"].split("/")[-1]
         survey = survey['fields']
-        print(survey)
 
         new_survey_status = ENV_SURVEY_STATUS_INVITATION_MAILS_REQUEST_OK
 
