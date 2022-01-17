@@ -16,6 +16,12 @@
 		public Body Body { get; set; }
 
 		/// <summary>
+		///   Gets or sets the id of the recipients or participants.
+		/// </summary>
+		[JsonProperty("participantIds", Required = Required.DisallowNull)]
+		public IEnumerable<string> ParticipantIds { get; set; }
+
+		/// <summary>
 		///   Gets or sets the recipients of the email.
 		/// </summary>
 		[JsonProperty("recipients", Required = Required.DisallowNull)]

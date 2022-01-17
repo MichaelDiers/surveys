@@ -14,6 +14,11 @@
 		Body Body { get; }
 
 		/// <summary>
+		///   Gets the id of the recipients or participants.
+		/// </summary>
+		IEnumerable<string> ParticipantIds { get; }
+
+		/// <summary>
 		///   Gets the recipients of the email.
 		/// </summary>
 		IEnumerable<Recipient> Recipients { get; }
