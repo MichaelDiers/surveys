@@ -37,7 +37,7 @@ jobs:
     steps:      
       - name: checkout source
         uses: actions/checkout@v2
-       - name: delete topic
+      - name: delete topic
         uses: actions-hub/gcloud@master
         continue-on-error: true
         env:
