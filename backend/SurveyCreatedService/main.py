@@ -37,7 +37,8 @@ SEND_MAIL_PUB_FORMAT = """{{
     "text": {{
         "html": "{f_text_html}",
         "plain": "{f_text_plain}"
-    }}
+    }},
+    "participantOd": "{f_participant_id}"
 }}"""
 
 MAIL_PLAIN_FORMAT = "Hej {f_participant_name},{f_newline}{f_newline}eine neue Umfrage '{f_survey_name}' steht für dich bereit:{f_newline}{f_newline}{f_survey_link}{f_participant_id}{f_newline}{f_newline}Viele Grüße,{f_newline}{f_newline}{f_organizer_name}{f_newline}"
@@ -93,7 +94,8 @@ def send_survey_invitations(survey):
             f_organizer_name=organizer_name,
             f_subject=subject,
             f_text_html=mail_html,
-            f_text_plain=mail_plain
+            f_text_plain=mail_plain,
+            f_participant_id=participant_id
         )
 
         message_bytes = message.encode('utf-8')
