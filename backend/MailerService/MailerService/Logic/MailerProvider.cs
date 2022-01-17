@@ -23,14 +23,14 @@
 		private readonly IMailerSmtpClient mailerSmtpClient;
 
 		/// <summary>
-		///   Converter for <see cref="IMailerServiceRequest" /> to <see cref="MimeMessage" />.
+		///   Converter for <see cref="IMessage" /> to <see cref="MimeMessage" />.
 		/// </summary>
 		private readonly IMessageConverter messageConverter;
 
 		/// <summary>
 		///   Creates a new instance of <see cref="MailerProvider" />.
 		/// </summary>
-		/// <param name="messageConverter">Converter for <see cref="IMailerServiceRequest" /> to <see cref="MimeMessage" />.</param>
+		/// <param name="messageConverter">Converter for <see cref="IMessage" /> to <see cref="MimeMessage" />.</param>
 		/// <param name="mailerSmtpClient">Sends mails via smtp.</param>
 		/// <param name="configuration">The application configuration.</param>
 		public MailerProvider(
@@ -46,7 +46,7 @@
 		/// <summary>
 		///   Sends an email message.
 		/// </summary>
-		/// <param name="json">A <see cref="MailerServiceRequest" /> serialized as json.</param>
+		/// <param name="json">A <see cref="Message" /> serialized as json.</param>
 		public async Task SendAsync(string json)
 		{
 			if (string.IsNullOrWhiteSpace(json))
@@ -54,15 +54,15 @@
 				throw new ArgumentNullException(nameof(json));
 			}
 
-			var message = JsonConvert.DeserializeObject<MailerServiceRequest>(json);
+			var message = JsonConvert.DeserializeObject<Message>(json);
 			if (message == null)
 			{
-				throw new ArgumentNullException(nameof(json), "Cannot deserialize to MailerServiceRequest object.");
+				throw new ArgumentNullException(nameof(json), "Cannot deserialize to Message object.");
 			}
 
 			var mimeMessageFrom = new[]
 			{
-				new MailboxAddress(this.configuration.MailboxAddressFrom.Name, this.configuration.MailboxAddressFrom.Address)
+				new MailboxAddress(this.configuration.MailboxAddressFrom.Name, this.configuration.MailboxAddressFrom.Email)
 			};
 
 			var email = this.messageConverter.ToMimeMessage(message, mimeMessageFrom);

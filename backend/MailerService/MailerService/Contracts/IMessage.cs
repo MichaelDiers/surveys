@@ -6,12 +6,12 @@
 	/// <summary>
 	///   Specifies the data of a <see cref="MailerFunction" /> request.
 	/// </summary>
-	public interface IMailerServiceRequest
+	public interface IMessage
 	{
 		/// <summary>
-		///   Gets the type of the requested email.
+		///   Gets the body of the message.
 		/// </summary>
-		EmailType EmailType { get; }
+		Body Body { get; }
 
 		/// <summary>
 		///   Gets the recipients of the email.
@@ -21,21 +21,11 @@
 		/// <summary>
 		///   Gets the reply to email address.
 		/// </summary>
-		public Recipient ReplyTo { get; }
+		Recipient ReplyTo { get; }
 
 		/// <summary>
-		///   Gets or sets the results.
+		///   Gets the subject of the email.
 		/// </summary>
-		IEnumerable<string> Results { get; set; }
-
-		/// <summary>
-		///   Gets the link to the survey.
-		/// </summary>
-		string SurveyLink { get; }
-
-		/// <summary>
-		///   Gets the name of the survey.
-		/// </summary>
-		string SurveyName { get; }
+		string Subject { get; }
 	}
 }

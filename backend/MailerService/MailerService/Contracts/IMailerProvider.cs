@@ -10,7 +10,7 @@
 		/// <summary>
 		///   Sends an email message.
 		/// </summary>
-		/// <param name="json">An <see cref="IMailerServiceRequest" /> serialized as json.</param>
+		/// <param name="json">An <see cref="IMessage" /> serialized as json.</param>
 		Task SendAsync(string json);
 	}
 }

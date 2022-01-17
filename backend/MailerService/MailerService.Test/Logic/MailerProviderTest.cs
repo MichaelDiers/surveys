@@ -11,7 +11,7 @@
 	{
 		[Theory]
 		[InlineData(
-			"{\"EmailType\":\"SurveyRequest\",\"Recipients\":[{\"Name\":\"EmailName\",\"Email\":\"the@email.foo\"}],\"SurveyLink\":\"my link\",\"SurveyName\":\"my survey name\"}")]
+			"{\"recipients\":[{\"email\":\"RecipientEmail\",\"name\":\"RecipientName\"}],\"replyTo\":{\"email\":\"ReplyToEmail\",\"name\":\"ReplyToName\"},\"subject\":\"subject\",\"text\":{\"html\":\"html body\",\"plain\":\"plain body\"}}")]
 		public async void SendAsyncDeserializeObjectSucceeds(string json)
 		{
 			await new MailerProvider(
@@ -19,9 +19,9 @@
 					new MailerSmtpClientMock(),
 					new MailerServiceConfiguration
 					{
-						MailboxAddressFrom = new MailboxAddressFrom
+						MailboxAddressFrom = new Recipient
 						{
-							Address = "foo@bar",
+							Email = "foo@bar",
 							Name = "foo"
 						}
 					})

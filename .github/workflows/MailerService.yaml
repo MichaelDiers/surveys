@@ -13,11 +13,21 @@ env:
   ENTRY_POINT: MailerService.MailerFunction
   FUNCTION_NAME: MailerService
   SLN_FILE: 'backend/MailerService/MailerService.sln'
+  TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}
 jobs:  
   test:
     runs-on: ubuntu-latest
     environment:
-      name: MailerService-Test    
+      name: MailerService-Test
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      MAILBOX_ADDRESS_FROM_NAME: ${{ secrets.MAILBOX_ADDRESS_FROM_NAME }}
+      MAILBOX_ADDRESS_FROM_EMAIL: ${{ secrets.MAILBOX_ADDRESS_FROM_EMAIL }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+      SMTP_USERNAME: secrets.SMTP_USERNAME
     steps:      
       - name: checkout source
         uses: actions/checkout@v2
@@ -26,17 +36,12 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          MailboxAddressFrom.Name: ${{ secrets.MAILBOX_ADDRESS_FROM_NAME }}
-          MailboxAddressFrom.Address: ${{ secrets.MAILBOX_ADDRESS_FROM_ADDRESS }}
-          Smtp.Password: ${{ secrets.SMTP_PASSWORD }}
-          Smtp.Port: ${{ secrets.SMTP_PORT }}
-          Smtp.Server: ${{ secrets.SMTP_SERVER }}
-          Smtp.UserName: ${{ secrets.SMTP_USERNAME }}
-          SurveyRequestTemplate.Text: ${{ secrets.SURVEY_REQUEST_TEXT }}
-          SurveyRequestTemplate.Html: ${{ secrets.SURVEY_REQUEST_HTML }}
-          ThankYouTemplate.Text: ${{ secrets.THANK_YOU_TEXT }}
-          ThankYouTemplate.Html: ${{ secrets.THANK_YOU_HTML }}
-          ThankYouTemplate.HtmlElement: ${{ secrets.THANK_YOU_HTML_ELEMENT }}
+          MailboxAddressFrom.Name: ${{ env.MAILBOX_ADDRESS_FROM_NAME }}
+          MailboxAddressFrom.Email: ${{ env.MAILBOX_ADDRESS_FROM_EMAIL }}
+          Smtp.Password: ${{ env.SMTP_PASSWORD }}
+          Smtp.Port: ${{ env.SMTP_PORT }}
+          Smtp.Server: ${{ env.SMTP_SERVER }}
+          Smtp.UserName: ${{ env.SMTP_USERNAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -48,14 +53,14 @@ jobs:
       - name: auth
         uses: google-github-actions/auth@v0
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
       - name: deploy
         uses: google-github-actions/deploy-cloud-functions@v0
         with:
           name: ${{ env.FUNCTION_NAME }}
           runtime: dotnet3          
-          project_id: ${{ secrets.PROJECT_ID }}          
+          project_id: ${{ env.PROJECT_ID }}          
           source_dir: ${{ env.SOURCE_DIR }}
           entry_point: ${{ env.ENTRY_POINT }}
           event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ secrets.PROJECT_ID }}/topics/${{ secrets.TOPIC_NAME }}
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME }}
