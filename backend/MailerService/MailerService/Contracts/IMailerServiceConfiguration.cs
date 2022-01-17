@@ -10,7 +10,7 @@
 		/// <summary>
 		///   Gets the sender data of emails.
 		/// </summary>
-		public Recipient MailboxAddressFrom { get; }
+		public MailboxAddressFromConfiguration MailboxAddressFrom { get; }
 
 		/// <summary>
 		///   Gets the configuration for the smtp client.

@@ -19,7 +19,7 @@
 					new MailerSmtpClientMock(),
 					new MailerServiceConfiguration
 					{
-						MailboxAddressFrom = new Recipient
+						MailboxAddressFrom = new MailboxAddressFromConfiguration
 						{
 							Email = "foo@bar",
 							Name = "foo"

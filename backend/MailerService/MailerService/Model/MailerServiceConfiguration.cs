@@ -10,7 +10,7 @@
 		/// <summary>
 		///   Gets or sets the sender data of an email.
 		/// </summary>
-		public Recipient MailboxAddressFrom { get; set; }
+		public MailboxAddressFromConfiguration MailboxAddressFrom { get; set; }
 
 		/// <summary>
 		///   Gets or sets the connection data for smtp.
