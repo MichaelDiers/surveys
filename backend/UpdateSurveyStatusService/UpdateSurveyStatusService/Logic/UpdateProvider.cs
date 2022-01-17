@@ -43,6 +43,18 @@
 				throw new ArgumentException($"Cannot parse json message: {json}", nameof(json));
 			}
 
+			if (string.IsNullOrWhiteSpace(message.SurveyId)
+			    || !Guid.TryParse(message.SurveyId, out var surveyId)
+			    || surveyId == Guid.Empty)
+			{
+				throw new ArgumentException($"Invalid surveyId: {json}", nameof(json));
+			}
+
+			if (string.IsNullOrWhiteSpace(message.ParticipantId))
+			{
+				message.ParticipantId = null;
+			}
+
 			await this.database.InsertStatus(
 				message.SurveyId,
 				message.ParticipantId,
