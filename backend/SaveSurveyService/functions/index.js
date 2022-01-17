@@ -79,11 +79,12 @@ const onMessagePublished = async (message) => {
   const survey = convertMessageToSurvey(json);
 
   // send to firestore
-  const docRef = database.collection(collectionName).doc(uuidv4());
+  const surveyId = uuidv4();
+  const docRef = database.collection(collectionName).doc(surveyId);
   await docRef.set(survey);
 
   // send status update
-  const statusUpdate = `{"surveyId":"${json.surveyId}","participantId": null, "status": "${statusCreated}"}`;
+  const statusUpdate = `{"surveyId":"${surveyId}","participantId": null, "status": "${statusCreated}"}`;
   const data = Buffer.from(statusUpdate);
   await pubsub.topic(topicName).publishMessage({ data });
 };
