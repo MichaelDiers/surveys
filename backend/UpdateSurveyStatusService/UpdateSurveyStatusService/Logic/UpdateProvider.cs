@@ -32,28 +32,21 @@
 		/// <returns>A <see cref="Task" />.</returns>
 		public async Task Update(string json)
 		{
-			if (json == null)
+			if (string.IsNullOrWhiteSpace(json))
 			{
 				throw new ArgumentNullException(nameof(json));
 			}
 
 			var message = JsonConvert.DeserializeObject<Message>(json);
-			if (message == null || !message.IsValid())
+			if (message == null || message.Status == Status.None)
 			{
 				throw new ArgumentException($"Cannot parse json message: {json}", nameof(json));
 			}
 
-			switch (message.Type)
-			{
-				case MessageType.Survey:
-					await this.database.UpdateSurvey(message.Id, message.Status);
-					break;
-				case MessageType.Participant:
-					await this.database.UpdateParticipant(message.Id, message.Status);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(message.Type), message.Type, null);
-			}
+			await this.database.InsertStatus(
+				message.SurveyId,
+				message.ParticipantId,
+				StatusJsonConverter.ConvertStatusToString(message.Status));
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿namespace UpdateSurveyStatusService.Logic
 {
 	using System;
-	using System.Linq;
+	using System.Collections.Generic;
 	using System.Threading.Tasks;
 	using Google.Cloud.Firestore;
 	using UpdateSurveyStatusService.Contracts;
@@ -32,35 +32,23 @@
 		}
 
 		/// <summary>
-		///   Update the status of a participant.
-		/// </summary>
-		/// <param name="participantId">The id of the participant.</param>
-		/// <param name="status">The new status for the participant.</param>
-		/// <returns>A <see cref="Task" />.</returns>
-		public async Task UpdateParticipant(string participantId, Status status)
-		{
-			var collection = this.database.Collection(this.configuration.SurveysCollectionName);
-			var snapshot = await collection.WhereArrayContains("participantIds", participantId).Limit(1).GetSnapshotAsync();
-			if (snapshot.Count == 1)
-			{
-				var doc = snapshot.Documents.Single();
-				await doc.Reference.UpdateAsync(
-					$"{participantId}.status",
-					StatusJsonConverter.ConvertStatusToString(status));
-			}
-		}
-
-		/// <summary>
-		///   Update the status of a survey.
+		///   Inserts a new document into the status collection.
 		/// </summary>
 		/// <param name="surveyId">The id of the survey.</param>
-		/// <param name="status">The new status of the survey.</param>
+		/// <param name="participantId">The id of the participant.</param>
+		/// <param name="status">The new status.</param>
 		/// <returns>A <see cref="Task" />.</returns>
-		public async Task UpdateSurvey(string surveyId, Status status)
+		public async Task InsertStatus(string surveyId, string participantId, string status)
 		{
-			var collection = this.database.Collection(this.configuration.SurveysCollectionName);
-			var docRef = collection.Document(surveyId);
-			await docRef.UpdateAsync("status", StatusJsonConverter.ConvertStatusToString(status));
+			var document = new Dictionary<string, object>
+			{
+				{"surveyId", surveyId},
+				{"participantId", participantId},
+				{"status", status}
+			};
+
+			var docReference = this.database.Collection(this.configuration.CollectionName).Document();
+			await docReference.SetAsync(document);
 		}
 	}
 }

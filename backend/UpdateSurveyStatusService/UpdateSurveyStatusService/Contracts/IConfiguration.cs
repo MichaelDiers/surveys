@@ -6,13 +6,13 @@
 	public interface IConfiguration
 	{
 		/// <summary>
+		///   Gets the collection name.
+		/// </summary>
+		string CollectionName { get; }
+
+		/// <summary>
 		///   Gets the project id.
 		/// </summary>
 		string ProjectId { get; }
-
-		/// <summary>
-		///   Gets the surveys collection name.
-		/// </summary>
-		string SurveysCollectionName { get; }
 	}
 }

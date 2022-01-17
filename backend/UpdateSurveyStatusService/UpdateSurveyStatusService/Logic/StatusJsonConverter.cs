@@ -16,10 +16,8 @@
 		/// </summary>
 		private static readonly IDictionary<Status, string> StatusToString = new Dictionary<Status, string>
 		{
-			{Status.InvitationMailsRequestFailed, "INVITATION_MAILS_REQUEST_FAILED"},
-			{Status.InvitationMailsRequestOk, "INVITATION_MAILS_REQUEST_OK"},
-			{Status.MailSentOk, "MAIL_SENT_OK"},
-			{Status.MailSentFailed, "MAIL_SENT_FAILED"}
+			{Status.InvitationMailOk, "INVITATION_MAIL_OK"},
+			{Status.InvitationMailFailed, "INVITATION_MAIL_FAILED"}
 		};
 
 		/// <summary>
