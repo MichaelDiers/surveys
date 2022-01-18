@@ -23,6 +23,7 @@ const convertMessageToSurvey = (json) => {
     name: json.name,
     timestamp: Firestore.FieldValue.serverTimestamp(),
     participantIds: [],
+    participants: [],    
     questions: [],
     organizer: {
       name: json.replyToEmail.name,
@@ -33,10 +34,11 @@ const convertMessageToSurvey = (json) => {
   // reorganize participants and prepare for easier firebase updates
   json.participants.forEach((participant) => {
     const id = uuidv4();
-    survey[id] = {
+    survey.participants.push({
+      id,
       name: participant.name,
       email: participant.email,
-    };
+    });
 
     survey.participantIds.push(id);
   });
