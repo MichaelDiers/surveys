@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyViewerService", "SurveyViewerService\SurveyViewerService.csproj", "{37A90780-6B84-4EB7-93B7-3524D55B5B74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyViewerService.Tests", "SurveyViewerService.Tests\SurveyViewerService.Tests.csproj", "{168BF4EB-4C51-47B4-A90D-DB109346DB2F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37A90780-6B84-4EB7-93B7-3524D55B5B74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37A90780-6B84-4EB7-93B7-3524D55B5B74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37A90780-6B84-4EB7-93B7-3524D55B5B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37A90780-6B84-4EB7-93B7-3524D55B5B74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{168BF4EB-4C51-47B4-A90D-DB109346DB2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{168BF4EB-4C51-47B4-A90D-DB109346DB2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{168BF4EB-4C51-47B4-A90D-DB109346DB2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{168BF4EB-4C51-47B4-A90D-DB109346DB2F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C1291017-8F92-4ADD-B77D-D1F49A8D1DFB}
+	EndGlobalSection
+EndGlobal
