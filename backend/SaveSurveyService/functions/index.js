@@ -48,7 +48,7 @@ const convertMessageToSurvey = (json) => {
       question: question.question,
       guid: uuidv4(),
       choices: [{
-        question: 'bitte auswählen',
+        answer: 'bitte auswählen',
       }],
     };
 
