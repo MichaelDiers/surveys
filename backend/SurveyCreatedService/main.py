@@ -70,11 +70,11 @@ def send_survey_invitations(survey, survey_id, status_ok, status_failed):
     topic_path = publisher.topic_path(ENV_PROJECT_ID, ENV_TOPIC_SEND_MAIL)
 
     success = True
-    participant_ids = survey['participantIds']['arrayValue']['values']
-    for participant_id in [value['stringValue'] for value in participant_ids]:
-        participant_fields = survey[participant_id]['mapValue']['fields']
+    for participant in survey['participants']['arrayValue']['values']:
+        participant_fields = participant['mapValue']['fields']
         participant_email = participant_fields['email']['stringValue']
         participant_name = participant_fields['name']['stringValue']
+        participant_id = participant_fields['id']['stringValue']
 
         mail_html = MAIL_HTML_FORMAT.format(
             f_participant_name=participant_name,
