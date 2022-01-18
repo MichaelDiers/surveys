@@ -6,7 +6,8 @@
   "scripts": {
     "mm1": "npx -p @mermaid-js/mermaid-cli mmdc index.bundle -i CreateSurvey.md",
     "mm2": "npx -p @mermaid-js/mermaid-cli mmdc index.bundle -i ProcessSurvey.md",
-    "mm": "npm run mm1 && npm run mm2"    
+    "mm3": "npx -p @mermaid-js/mermaid-cli mmdc index.bundle -i Vote.md",
+    "mm": "npm run mm1 && npm run mm2 && npm run mm3"
   },
   "author": "",
   "license": "ISC",
