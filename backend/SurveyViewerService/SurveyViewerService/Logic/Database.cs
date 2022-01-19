@@ -56,6 +56,24 @@
 		}
 
 		/// <summary>
+		///   Read all results for a given survey id.
+		/// </summary>
+		/// <param name="surveyId">The id of the survey.</param>
+		/// <returns>An <see cref="IEnumerable{T}" /> of <see cref="ISurveyResult" />.</returns>
+		public async Task<IEnumerable<ISurveyResult>> ReadSurveyResults(string surveyId)
+		{
+			var snapshot = await this.database.Collection(this.configuration.CollectionNameSurveysResult)
+				.WhereEqualTo("surveyId", surveyId).GetSnapshotAsync();
+			var result = new List<ISurveyResult>();
+			if (snapshot.Any())
+			{
+				result.AddRange(snapshot.Where(doc => doc.Exists).Select(doc => doc.ConvertTo<SurveyResult>()));
+			}
+
+			return result;
+		}
+
+		/// <summary>
 		///   Read all status updates for a given survey id.
 		/// </summary>
 		/// <param name="surveyId">The id of the survey.</param>

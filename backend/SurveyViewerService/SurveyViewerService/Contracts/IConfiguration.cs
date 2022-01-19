@@ -11,6 +11,11 @@
 		string CollectionNameSurveys { get; }
 
 		/// <summary>
+		///   Gets the name of the collection of survey result data.
+		/// </summary>
+		string CollectionNameSurveysResult { get; }
+
+		/// <summary>
 		///   Gets the name of the collection of survey status data.
 		/// </summary>
 		string CollectionNameSurveysStatus { get; }

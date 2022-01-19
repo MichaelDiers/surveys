@@ -16,6 +16,13 @@
 		Task<ISurvey> ReadSurvey(string participantId);
 
 		/// <summary>
+		///   Read all results for a given survey id.
+		/// </summary>
+		/// <param name="surveyId">The id of the survey.</param>
+		/// <returns>An <see cref="IEnumerable{T}" /> of <see cref="ISurveyResult" />.</returns>
+		Task<IEnumerable<ISurveyResult>> ReadSurveyResults(string surveyId);
+
+		/// <summary>
 		///   Read all status updates for a given survey id.
 		/// </summary>
 		/// <param name="surveyId">The id of the survey.</param>

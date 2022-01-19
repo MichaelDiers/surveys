@@ -13,6 +13,11 @@
 			return Task.FromResult<ISurvey>(new Survey());
 		}
 
+		public Task<IEnumerable<ISurveyResult>> ReadSurveyResults(string surveyId)
+		{
+			return Task.FromResult(Enumerable.Empty<ISurveyResult>());
+		}
+
 		public Task<IEnumerable<ISurveyStatus>> ReadSurveyStatus(string surveyId)
 		{
 			return Task.FromResult(Enumerable.Empty<ISurveyStatus>());

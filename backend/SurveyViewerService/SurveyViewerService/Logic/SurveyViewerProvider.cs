@@ -51,9 +51,13 @@
 
 			var survey = await this.database.ReadSurvey(participantId);
 			var surveyStatus = await this.database.ReadSurveyStatus(survey.SurveyId);
+			var surveyResults = await this.database.ReadSurveyResults(survey.SurveyId);
+
 			var json = JsonConvert.SerializeObject(survey);
 			Console.WriteLine(json);
 			json = JsonConvert.SerializeObject(surveyStatus);
+			Console.WriteLine(json);
+			json = JsonConvert.SerializeObject(surveyResults);
 			Console.WriteLine(json);
 			return new SurveyViewData();
 		}
