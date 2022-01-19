@@ -1,5 +1,6 @@
 ﻿namespace SurveyViewerService.Contracts
 {
+	using System.Collections.Generic;
 	using System.Threading.Tasks;
 
 	/// <summary>
@@ -13,5 +14,12 @@
 		/// <param name="participantId">The id of the survey participant.</param>
 		/// <returns>An <see cref="ISurvey" />.</returns>
 		Task<ISurvey> ReadSurvey(string participantId);
+
+		/// <summary>
+		///   Read all status updates for a given survey id.
+		/// </summary>
+		/// <param name="surveyId">The id of the survey.</param>
+		/// <returns>An <see cref="IEnumerable{T}" /> of <see cref="ISurveyStatus" />.</returns>
+		Task<IEnumerable<ISurveyStatus>> ReadSurveyStatus(string surveyId);
 	}
 }

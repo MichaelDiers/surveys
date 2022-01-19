@@ -11,6 +11,11 @@
 		string CollectionNameSurveys { get; }
 
 		/// <summary>
+		///   Gets the name of the collection of survey status data.
+		/// </summary>
+		string CollectionNameSurveysStatus { get; }
+
+		/// <summary>
 		///   Gets the id of the project.
 		/// </summary>
 		string ProjectId { get; }

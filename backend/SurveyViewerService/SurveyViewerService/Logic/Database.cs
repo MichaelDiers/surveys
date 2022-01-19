@@ -1,6 +1,7 @@
 ﻿namespace SurveyViewerService.Logic
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Linq;
 	using System.Threading.Tasks;
 	using Google.Cloud.Firestore;
@@ -52,6 +53,24 @@
 			var survey = documentSnapshot.ConvertTo<Survey>();
 			survey.SurveyId = documentSnapshot.Id;
 			return survey;
+		}
+
+		/// <summary>
+		///   Read all status updates for a given survey id.
+		/// </summary>
+		/// <param name="surveyId">The id of the survey.</param>
+		/// <returns>An <see cref="IEnumerable{T}" /> of <see cref="ISurveyStatus" />.</returns>
+		public async Task<IEnumerable<ISurveyStatus>> ReadSurveyStatus(string surveyId)
+		{
+			var snapshot = await this.database.Collection(this.configuration.CollectionNameSurveysStatus)
+				.WhereEqualTo("surveyId", surveyId).GetSnapshotAsync();
+			var result = new List<ISurveyStatus>();
+			if (snapshot.Any())
+			{
+				result.AddRange(snapshot.Where(doc => doc.Exists).Select(doc => doc.ConvertTo<SurveyStatus>()));
+			}
+
+			return result;
 		}
 	}
 }

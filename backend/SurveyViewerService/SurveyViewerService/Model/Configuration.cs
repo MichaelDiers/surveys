@@ -13,6 +13,11 @@
 		public string CollectionNameSurveys { get; set; }
 
 		/// <summary>
+		///   Gets or sets the name of the collection of survey status data.
+		/// </summary>
+		public string CollectionNameSurveysStatus { get; set; }
+
+		/// <summary>
 		///   Gets or sets the id of the project.
 		/// </summary>
 		public string ProjectId { get; set; }
