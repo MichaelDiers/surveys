@@ -12,7 +12,8 @@ env:
   SOURCE_DIR: 'backend/SurveyViewerService/SurveyViewerService'
   ENTRY_POINT: SurveyViewerService.SurveyViewerFunction
   FUNCTION_NAME: SurveyViewerService
-  SLN_FILE: 'backend/SurveyViewerService/SurveyViewerService.sln'  
+  SLN_FILE: 'backend/SurveyViewerService/SurveyViewerService.sln'
+  CollectionNameSurveys: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }} 
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -30,6 +31,7 @@ jobs:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
           ProjectId: ${{ env.PROJECT_ID }}
+          CollectionNameSurveys: ${{ env.CollectionNameSurveys }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:

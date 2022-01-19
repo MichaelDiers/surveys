@@ -25,6 +25,7 @@
 			context.Configuration.Bind(configuration);
 			services.AddScoped<IConfiguration>(_ => configuration);
 
+			services.AddScoped<IDatabase, Database>();
 			services.AddScoped<ISurveyViewerProvider, SurveyViewerProvider>();
 		}
 	}

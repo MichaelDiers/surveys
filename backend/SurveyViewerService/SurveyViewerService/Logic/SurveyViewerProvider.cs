@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Threading.Tasks;
+	using Newtonsoft.Json;
 	using SurveyViewerService.Contracts;
 	using SurveyViewerService.Model;
 
@@ -16,12 +17,19 @@
 		private readonly IConfiguration configuration;
 
 		/// <summary>
+		///   Access to the firestore database.
+		/// </summary>
+		private readonly IDatabase database;
+
+		/// <summary>
 		///   Creates a new instance of <see cref="SurveyViewerProvider" />.
 		/// </summary>
 		/// <param name="configuration">Access to the application configuration.</param>
-		public SurveyViewerProvider(IConfiguration configuration)
+		/// <param name="database">Access to the firestore database.</param>
+		public SurveyViewerProvider(IConfiguration configuration, IDatabase database)
 		{
 			this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+			this.database = database ?? throw new ArgumentNullException(nameof(database));
 		}
 
 		/// <summary>
@@ -29,7 +37,7 @@
 		/// </summary>
 		/// <param name="participantId">The id of the participant.</param>
 		/// <returns>A <see cref="SurveyViewData" /> instance containing the survey data.</returns>
-		public Task<SurveyViewData> ReadSurveyData(string participantId)
+		public async Task<SurveyViewData> ReadSurveyData(string participantId)
 		{
 			if (string.IsNullOrWhiteSpace(participantId))
 			{
@@ -41,7 +49,10 @@
 				throw new ArgumentException($"Invalid participantId: '{participantId}'", nameof(participantId));
 			}
 
-			return Task.FromResult(new SurveyViewData());
+			var survey = await this.database.ReadSurvey(participantId);
+			var json = JsonConvert.SerializeObject(survey);
+			Console.WriteLine(json);
+			return new SurveyViewData();
 		}
 	}
 }

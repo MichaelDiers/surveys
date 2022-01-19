@@ -50,16 +50,24 @@
 		/// <returns>A <see cref="Task" />.</returns>
 		private async Task HandleGetAsync(HttpContext context)
 		{
-			var participantId = context.Request?.Path.HasValue == true ? context.Request.Path.Value.Substring(1) : null;
+			var participantId = context.Request?.Path.HasValue == true ? context.Request.Path.Value[1..] : null;
 			if (string.IsNullOrWhiteSpace(participantId))
 			{
 				context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
 				return;
 			}
 
-			var data = await this.surveyViewerProvider.ReadSurveyData(participantId);
-			context.Response.StatusCode = (int) HttpStatusCode.OK;
-			await context.Response.WriteAsync(DateTime.Now.ToString());
+			try
+			{
+				var data = await this.surveyViewerProvider.ReadSurveyData(participantId);
+				context.Response.StatusCode = (int) HttpStatusCode.OK;
+				await context.Response.WriteAsync(DateTime.Now.ToString());
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+			}
 		}
 	}
 }
