@@ -5,7 +5,7 @@
 		/// <summary>
 		///   Gets the answer of a survey question.
 		/// </summary>
-		string Answer { get; }
+		int Answer { get; }
 
 		/// <summary>
 		///   Gets the id of the question.

@@ -24,7 +24,7 @@
 						},
 						{
 							"name": "answer",
-							"type": "string"
+							"type": "int"
 						}
 					]
 				}

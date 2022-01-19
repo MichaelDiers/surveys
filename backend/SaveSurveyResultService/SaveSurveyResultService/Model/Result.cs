@@ -12,7 +12,7 @@
 		///   Gets or sets the answer of a survey question.
 		/// </summary>
 		[JsonProperty("answer", Required = Required.Always)]
-		public string Answer { get; set; }
+		public int Answer { get; set; }
 
 		/// <summary>
 		///   Gets or sets the id of the question.

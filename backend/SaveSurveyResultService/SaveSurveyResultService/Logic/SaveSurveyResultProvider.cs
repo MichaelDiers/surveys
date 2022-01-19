@@ -48,8 +48,7 @@
 			    || participantId == Guid.Empty
 			    || surveyId == participantId
 			    || message.Results?.Any(
-				    result => string.IsNullOrWhiteSpace(result.Answer)
-				              || !int.TryParse(result.Answer, out _)
+				    result => result.Answer == 0
 				              || string.IsNullOrWhiteSpace(result.QuestionId)
 				              || !Guid.TryParse(result.QuestionId, out var questionId)
 				              || questionId == Guid.Empty)
