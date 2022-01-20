@@ -1,5 +1,6 @@
 ﻿namespace SurveyViewerService.Model
 {
+	using System;
 	using System.Collections.Generic;
 	using Google.Cloud.Firestore;
 	using SurveyViewerService.Contracts;
@@ -28,5 +29,11 @@
 		/// </summary>
 		[FirestoreProperty("surveyId")]
 		public string SurveyId { get; set; }
+
+		/// <summary>
+		///   Gets the creation data of the data.
+		/// </summary>
+		[FirestoreProperty("timestamp")]
+		public DateTime TimeStamp { get; set; }
 	}
 }

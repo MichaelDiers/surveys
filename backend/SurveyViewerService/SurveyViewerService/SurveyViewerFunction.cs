@@ -6,6 +6,7 @@
 	using Google.Cloud.Functions.Framework;
 	using Google.Cloud.Functions.Hosting;
 	using Microsoft.AspNetCore.Http;
+	using Newtonsoft.Json;
 	using SurveyViewerService.Contracts;
 
 	/// <summary>
@@ -60,8 +61,10 @@
 			try
 			{
 				var data = await this.surveyViewerProvider.ReadSurveyData(participantId);
+				var json = JsonConvert.SerializeObject(data);
 				context.Response.StatusCode = (int) HttpStatusCode.OK;
-				await context.Response.WriteAsync(DateTime.Now.ToString());
+				context.Response.ContentType = "application/json";
+				await context.Response.WriteAsync(json);
 			}
 			catch (Exception e)
 			{

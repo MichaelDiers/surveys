@@ -1,8 +1,8 @@
 ﻿namespace SurveyViewerService.Logic
 {
 	using System;
+	using System.Linq;
 	using System.Threading.Tasks;
-	using Newtonsoft.Json;
 	using SurveyViewerService.Contracts;
 	using SurveyViewerService.Model;
 
@@ -12,11 +12,6 @@
 	public class SurveyViewerProvider : ISurveyViewerProvider
 	{
 		/// <summary>
-		///   Access the application configuration.
-		/// </summary>
-		private readonly IConfiguration configuration;
-
-		/// <summary>
 		///   Access to the firestore database.
 		/// </summary>
 		private readonly IDatabase database;
@@ -24,11 +19,9 @@
 		/// <summary>
 		///   Creates a new instance of <see cref="SurveyViewerProvider" />.
 		/// </summary>
-		/// <param name="configuration">Access to the application configuration.</param>
 		/// <param name="database">Access to the firestore database.</param>
-		public SurveyViewerProvider(IConfiguration configuration, IDatabase database)
+		public SurveyViewerProvider(IDatabase database)
 		{
-			this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 			this.database = database ?? throw new ArgumentNullException(nameof(database));
 		}
 
@@ -50,16 +43,50 @@
 			}
 
 			var survey = await this.database.ReadSurvey(participantId);
+			if (survey == null)
+			{
+				return null;
+			}
+
 			var surveyStatus = await this.database.ReadSurveyStatus(survey.SurveyId);
 			var surveyResults = await this.database.ReadSurveyResults(survey.SurveyId);
 
-			var json = JsonConvert.SerializeObject(survey);
-			Console.WriteLine(json);
-			json = JsonConvert.SerializeObject(surveyStatus);
-			Console.WriteLine(json);
-			json = JsonConvert.SerializeObject(surveyResults);
-			Console.WriteLine(json);
-			return new SurveyViewData();
+			var result = new SurveyViewData
+			{
+				IsClosed = surveyStatus.Any(status => status.Status == "CLOSED"),
+				SurveyName = survey.Name,
+				ParticipantId = participantId,
+				ParticipantName = survey.Participants.FirstOrDefault(p => p.Id == participantId)?.Name,
+				Questions = survey.Questions.Select(
+					question => new SurveyViewDataQuestion
+					{
+						Id = question.Id,
+						Text = question.Text,
+						Choices = question.Choices.Select(
+							choice => new SurveyViewDataChoice
+							{
+								Text = choice.Answer,
+								Value = choice.Value
+							}).ToArray()
+					}).ToArray()
+			};
+
+			var lastResult = surveyResults.Where(sr => sr.ParticipantId == participantId)
+				.OrderByDescending(sr => sr.TimeStamp).FirstOrDefault();
+
+			foreach (var surveyViewDataQuestion in result.Questions)
+			{
+				foreach (var surveyViewDataChoice in surveyViewDataQuestion.Choices)
+				{
+					surveyViewDataChoice.IsSelected = lastResult == null && string.IsNullOrWhiteSpace(surveyViewDataChoice.Value)
+					                                  || lastResult?.Answers.Any(
+						                                  answer => answer.QuestionId == surveyViewDataQuestion.Id
+						                                            && answer.Value.ToString() == surveyViewDataChoice.Value)
+					                                  == true;
+				}
+			}
+
+			return result;
 		}
 	}
 }

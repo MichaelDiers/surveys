@@ -1,5 +1,6 @@
 ﻿namespace SurveyViewerService.Contracts
 {
+	using System;
 	using System.Collections.Generic;
 
 	/// <summary>
@@ -21,5 +22,10 @@
 		///   Gets the id of the survey.
 		/// </summary>
 		string SurveyId { get; }
+
+		/// <summary>
+		///   Gets the creation data of the data.
+		/// </summary>
+		DateTime TimeStamp { get; }
 	}
 }
