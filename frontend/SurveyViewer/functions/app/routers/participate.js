@@ -26,8 +26,16 @@ const initialize = (config = {}) => {
   });
 
   router.post('/submit', async (req, res) => {
-    console.log(req.body);
-    res.status(200).end();
+    const data = JSON.parse(JSON.stringify(req.body));
+    delete data._csrf; // eslint-disable-line no-underscore-dangle
+
+    try {
+      await controller.submit(data);
+      res.status(200).end();
+    } catch (err) {
+      console.error(err);
+      res.status(500).end();
+    }
   });
 
   return router;
