@@ -6,15 +6,24 @@ const initialize = (config = {}) => {
     router = Router(),
   } = config;
 
-  router.get('/:surveyId', async (req, res) => {
-    const result = await controller.viewSurvey(req.params.surveyId);
+  router.get('/:participantId', async (req, res) => {
+    const result = await controller.viewSurvey(req.params.participantId);
     const { view, options } = result;
     res.render(view, options);
   });
 
-  router.post('/', async (req, res) => {
-    const values = await controller.updateSurvey(req.body);
-    res.redirect(303, `../thankyou/pid/${req.body.participantId}/${values}`);
+  router.post('/:participantId', async (req, res) => {    
+    try {
+      var result = await controller.viewSurveyAjax(req.params.participantId);     
+      console.log(result) ;
+      if (result) {
+        res.json(result).end();
+      } else {
+        res.status(404).end();
+      }
+    } catch {
+      res.status(404).end();
+    }
   });
 
   return router;

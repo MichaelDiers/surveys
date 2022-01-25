@@ -4,6 +4,7 @@ block variables
   - var title= surveyName
 
 block content
-  h1 Hej #{participantName}!
-  h2 Wilkommen zur Umfrage #{surveyName}!
-  include ../includes/survey-form
+  input#csrf(type='hidden', name='_csrf', value=csurfToken)
+  div#survey
+  
+  //include ../includes/survey-form

@@ -1,14 +1,10 @@
+const { Console } = require('console');
+const http = require('http');
+
 const DB_FIELD_PARTICIPATE_IDS = 'participantIds';
 const DB_VALUE_STATUS_CLOSED = 'CLOSED';
 
 const initialize = (config = {}) => {
-  const {
-    database,
-    pubsub,
-    topicNameEvaluateSurvey,
-    collectionName,
-  } = config;
-
   const controller = {
     updateSurvey: async (surveyResult) => {
       const result = JSON.parse(JSON.stringify(surveyResult));
@@ -18,7 +14,32 @@ const initialize = (config = {}) => {
       delete result.participantId;
       return Object.values(result).join('/');
     },
+    viewSurveyAjax: async (participantId) => {
+      return new Promise((resolve, reject) => {
+        const req = http.request(`http://127.0.0.1:8080/${participantId}`, {}, (response) => {
+          let result = '';
+          response.on('data', (chunk) => result += chunk);
+          response.on('end', () => {            
+            if (response.statusCode === 200) {              
+              resolve(JSON.parse(result));
+            } else {
+              reject(null);
+            }
+          });
+        });
+
+        req.on('error', (e) => {
+          console.error(e);
+          reject(null);
+        });
+
+        req.end();
+      });
+    },
     viewSurvey: async (participantId) => {
+      return {
+        view: 'participate/index'
+      };
       const snapshot = await database.collection(collectionName).where(DB_FIELD_PARTICIPATE_IDS, 'array-contains', participantId).limit(1).get();
       if (!snapshot.empty) {
         const survey = snapshot.docs[0].data();

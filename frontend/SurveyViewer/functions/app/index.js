@@ -5,13 +5,6 @@ const middleware = require('./middleware/index');
 const routers = require('./routers/index');
 
 const initialize = (config = {}) => {
-  const {
-    database,
-    pubsub,
-    topicNameEvaluateSurvey,
-    collectionName,
-  } = config;
-
   const router = express.Router();
 
   const statics = express.static('./app/static', { index: false });
@@ -20,19 +13,11 @@ const initialize = (config = {}) => {
   router.use(middleware.base());
 
   router.use('/participate', routers.participateRouter({
-    controller: controllers.participate({
-      database,
-      pubsub,
-      topicNameEvaluateSurvey,
-      collectionName,
-    }),
+    controller: controllers.participate(),
   }));
 
   router.use('/thankyou', routers.thankyou({
-    controller: controllers.thankyou({
-      database,
-      collectionName,
-    }),
+    controller: controllers.thankyou(),
   }));
 
   const app = express();
