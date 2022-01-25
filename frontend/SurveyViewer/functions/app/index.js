@@ -4,7 +4,7 @@ const controllers = require('./controllers/index');
 const middleware = require('./middleware/index');
 const routers = require('./routers/index');
 
-const initialize = (config = {}) => {
+const initialize = () => {
   const router = express.Router();
 
   const statics = express.static('./app/static', { index: false });

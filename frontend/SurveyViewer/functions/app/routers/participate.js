@@ -12,10 +12,9 @@ const initialize = (config = {}) => {
     res.render(view, options);
   });
 
-  router.post('/:participantId', async (req, res) => {    
+  router.post('/:participantId', async (req, res) => {
     try {
-      var result = await controller.viewSurveyAjax(req.params.participantId);     
-      console.log(result) ;
+      const result = await controller.viewSurveyAjax(req.params.participantId);
       if (result) {
         res.json(result).end();
       } else {
