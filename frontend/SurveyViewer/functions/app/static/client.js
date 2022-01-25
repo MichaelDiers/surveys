@@ -81,7 +81,7 @@ const showOpenSurvey = async (survey) => {
     surveyElement,
     [
       { name: 'method', value: 'POST' },
-      { name: 'action', value: './submit' },
+      { name: 'action', value: '../submit' },
     ],
   );
 

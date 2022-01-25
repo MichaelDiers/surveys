@@ -6,13 +6,13 @@ const initialize = (config = {}) => {
     router = Router(),
   } = config;
 
-  router.get('/:participantId', async (req, res) => {
+  router.get('/id/:participantId', async (req, res) => {
     const result = await controller.viewSurvey(req.params.participantId);
     const { view, options } = result;
     res.render(view, options);
   });
 
-  router.post('/:participantId', async (req, res) => {
+  router.post('/id/:participantId', async (req, res) => {
     try {
       const result = await controller.viewSurveyAjax(req.params.participantId);
       if (result) {
@@ -23,6 +23,11 @@ const initialize = (config = {}) => {
     } catch {
       res.status(404).end();
     }
+  });
+
+  router.post('/submit', async (req, res) => {
+    console.log(req.body);
+    res.status(200).end();
   });
 
   return router;
