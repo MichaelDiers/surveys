@@ -9,6 +9,13 @@
 	public interface ISurveyViewerProvider
 	{
 		/// <summary>
+		///   Process the survey result of a survey participant.
+		/// </summary>
+		/// <param name="json">The json formatted survey result.</param>
+		/// <returns>A <see cref="Task" />.</returns>
+		Task HandleSurveySubmitResult(string json);
+
+		/// <summary>
 		///   Read survey data by the id of a participant.
 		/// </summary>
 		/// <param name="participantId">The id of the participant.</param>

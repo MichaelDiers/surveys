@@ -1,6 +1,7 @@
 ﻿namespace SurveyViewerService
 {
 	using System;
+	using System.IO;
 	using System.Net;
 	using System.Threading.Tasks;
 	using Google.Cloud.Functions.Framework;
@@ -38,6 +39,9 @@
 				case "GET":
 					await this.HandleGetAsync(context);
 					break;
+				case "POST":
+					await this.HandlePostAsync(context);
+					break;
 				default:
 					context.Response.StatusCode = (int) HttpStatusCode.NotFound;
 					break;
@@ -70,6 +74,27 @@
 			{
 				Console.WriteLine(e);
 				context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+			}
+		}
+
+		/// <summary>
+		///   Handle http post requests.
+		/// </summary>
+		/// <param name="context">The context of the current function execution.</param>
+		/// <returns>A <see cref="Task" />.</returns>
+		private async Task HandlePostAsync(HttpContext context)
+		{
+			try
+			{
+				using TextReader reader = new StreamReader(context.Request.Body);
+				var json = await reader.ReadToEndAsync();
+				await this.surveyViewerProvider.HandleSurveySubmitResult(json);
+				context.Response.StatusCode = 200;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				context.Response.StatusCode = 500;
 			}
 		}
 	}

@@ -3,6 +3,7 @@
 	using System;
 	using System.Linq;
 	using System.Threading.Tasks;
+	using Newtonsoft.Json;
 	using SurveyViewerService.Contracts;
 	using SurveyViewerService.Model;
 
@@ -23,6 +24,28 @@
 		public SurveyViewerProvider(IDatabase database)
 		{
 			this.database = database ?? throw new ArgumentNullException(nameof(database));
+		}
+
+		/// <summary>
+		///   Process the survey result of a survey participant.
+		/// </summary>
+		/// <param name="json">The json formatted survey result.</param>
+		/// <returns>A <see cref="Task" />.</returns>
+		public Task HandleSurveySubmitResult(string json)
+		{
+			if (string.IsNullOrWhiteSpace(json))
+			{
+				throw new ArgumentNullException(nameof(json));
+			}
+
+			if (!(JsonConvert.DeserializeObject<SurveySubmitResult>(json) is ISurveySubmitResult submitResult)
+			    || string.IsNullOrWhiteSpace(submitResult.ParticipantId)
+			    || submitResult.Questions?.Any() != true)
+			{
+				throw new ArgumentException($"Unable to parse survey result: {json}");
+			}
+
+			return Task.CompletedTask;
 		}
 
 		/// <summary>

@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using Newtonsoft.Json.Linq;
 	using SurveyViewerService.Contracts;
 	using SurveyViewerService.Logic;
 	using SurveyViewerService.Model;
@@ -11,6 +12,54 @@
 
 	public class SurveyViewerProviderTests
 	{
+		[Theory]
+		[InlineData(
+			"participantId",
+			"questionId1",
+			"questionsValue1",
+			"questionId2",
+			"questionsValue2")]
+		public async void HandleSurveySubmitResult(
+			string participantId,
+			string questionId1,
+			string questionsValue1,
+			string questionId2,
+			string questionsValue2)
+		{
+			var data = new JObject
+			{
+				["participantId"] = participantId,
+				["questions"] = new JArray(
+					new JObject
+					{
+						["questionId"] = questionId1,
+						["value"] = questionsValue1
+					},
+					new JObject
+					{
+						["questionId"] = questionId2,
+						["value"] = questionsValue2
+					})
+			};
+
+			await InitSurveyViewerProvider().HandleSurveySubmitResult(data.ToString());
+		}
+
+		[Theory]
+		[InlineData("{\"foo\":\"bar\"}")]
+		public async void HandleSurveySubmitResultThrowsArgumentException(string json)
+		{
+			await Assert.ThrowsAsync<ArgumentException>(() => InitSurveyViewerProvider().HandleSurveySubmitResult(json));
+		}
+
+		[Theory]
+		[InlineData(null)]
+		[InlineData("")]
+		public async void HandleSurveySubmitResultThrowsArgumentNullException(string json)
+		{
+			await Assert.ThrowsAsync<ArgumentNullException>(() => InitSurveyViewerProvider().HandleSurveySubmitResult(json));
+		}
+
 		[Fact]
 		public async void ReadSurveyReturnNullIfNoSurveyExists()
 		{
