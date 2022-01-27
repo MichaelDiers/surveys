@@ -15,7 +15,7 @@ const initialize = (config = {}) => {
             if (key === 'participantId') {
               data[key] = value;
             } else if (uuid.validate(key)) {
-              data.questions.push({ questiomId: key, value });
+              data.questions.push({ questionId: key, value });
             }
           }
         });
