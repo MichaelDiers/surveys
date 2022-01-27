@@ -27,7 +27,6 @@ const initialize = (config = {}) => {
 
   router.post('/submit', async (req, res) => {
     const data = JSON.parse(JSON.stringify(req.body));
-    delete data._csrf; // eslint-disable-line no-underscore-dangle
 
     try {
       await controller.submit(data);

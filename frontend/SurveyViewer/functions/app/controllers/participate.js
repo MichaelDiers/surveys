@@ -1,3 +1,4 @@
+const uuid = require('uuid');
 const http = require('http');
 
 const initialize = (config = {}) => {
@@ -8,7 +9,18 @@ const initialize = (config = {}) => {
   const controller = {
     submit: async function submit(vote) {
       return new Promise((resolve, reject) => {
-        const postData = JSON.stringify(vote);
+        const data = { questions: [] };
+        Object.entries(vote).forEach(([key, value]) => {
+          if (key !== '_csrf') {
+            if (key === 'participantId') {
+              data[key] = value;
+            } else if (uuid.validate(key)) {
+              data.questions.push({ questiomId: key, value });
+            }
+          }
+        });
+
+        const postData = JSON.stringify(data);
         const url = `${surveyViewerServiceUrl}submit`;
         const req = http.request(
           url,
