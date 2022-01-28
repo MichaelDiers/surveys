@@ -20,7 +20,8 @@ const initialize = (config = {}) => {
       } else {
         res.status(404).end();
       }
-    } catch {
+    } catch (e) {
+      console.log(e);
       res.status(404).end();
     }
   });
