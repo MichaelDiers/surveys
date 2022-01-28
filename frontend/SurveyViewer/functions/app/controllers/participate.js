@@ -1,5 +1,5 @@
 const uuid = require('uuid');
-const http = require('http');
+const http = require('https');
 
 const initialize = (config = {}) => {
   const {
@@ -33,7 +33,9 @@ const initialize = (config = {}) => {
           },
           (res) => {
             if (res.statusCode >= 400) {
-              reject(new Error(`Error: url: ${url}, status: ${res.statusCode}`));
+              const error = `Error: url: ${url}, status: ${res.statusCode}`;
+              console.error(error);
+              reject(new Error(error));
             } else if (res.statusCode === 200) {
               resolve();
             } else {
@@ -41,7 +43,8 @@ const initialize = (config = {}) => {
                 if (res.statusCode === 200) {
                   resolve();
                 } else {
-                  reject(new Error(`Error: url: ${url}, status: ${res.statusCode}`));
+                  const error = `Error: url: ${url}, status: ${res.statusCode}`;
+                  reject(new Error(error));
                 }
               });
             }
