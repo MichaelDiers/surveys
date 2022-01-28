@@ -64,7 +64,7 @@ const initialize = (config = {}) => {
     },
     viewSurveyAjax: async function viewSurveyAjax(participantId) {
       const url2 = `${surveyViewerServiceUrl}${participantId}`;
-      const client = await auth.getIdTokenClient('https://us-central1-surveys-services-test.cloudfunctions.net/');
+      const client = await auth.getIdTokenClient('https://us-central1-surveys-services-test.cloudfunctions.net/SurveyViewerService/');
       const res = await client.request({url: url2});
       console.info(res.data);
 
