@@ -4,6 +4,10 @@ const controllers = require('./controllers/index');
 const middleware = require('./middleware/index');
 const routers = require('./routers/index');
 
+const {
+  ENV_SURVEY_VIEWER_SERVICE_URL: surveyViewerServiceUrl,
+} = process.env;
+
 const initialize = () => {
   const router = express.Router();
 
@@ -13,7 +17,7 @@ const initialize = () => {
   router.use(middleware.base());
 
   router.use('/participate', routers.participateRouter({
-    controller: controllers.participate(),
+    controller: controllers.participate({ surveyViewerServiceUrl }),
   }));
 
   router.use('/thankyou', routers.thankyou({

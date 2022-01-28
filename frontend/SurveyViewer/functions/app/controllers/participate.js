@@ -1,9 +1,9 @@
 const uuid = require('uuid');
-const http = require('http');
+const http = require('https');
 
 const initialize = (config = {}) => {
   const {
-    surveyViewerServiceUrl = 'http://127.0.0.1:8080/',
+    surveyViewerServiceUrl,
   } = config;
 
   const controller = {
