@@ -1,5 +1,8 @@
+const {GoogleAuth} = require('google-auth-library');
 const uuid = require('uuid');
 const http = require('https');
+
+const auth = new GoogleAuth();
 
 const initialize = (config = {}) => {
   const {
@@ -61,6 +64,12 @@ const initialize = (config = {}) => {
     },
     viewSurveyAjax: async function viewSurveyAjax(participantId) {
       return new Promise((resolve, reject) => {
+        const url2 = `${surveyViewerServiceUrl}${participantId}`;
+        const client = await auth.getIdTokenClient(surveyViewerServiceUrl);
+        const res = await client.request({url2});
+        console.info(res.data);
+
+        // ----
         const url = `${surveyViewerServiceUrl}${participantId}`;
         const req = http.request(url, {}, (response) => {
           let result = '';
