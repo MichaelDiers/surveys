@@ -17,7 +17,7 @@ sequenceDiagram
     PS--)USSS: SURVEY_STATUS_UPDATE
     deactivate PS
     activate USSS
-    USSS->>+FS: insert status    
+    USSS->>+FS: insert status
     FS-->>USSS: response
     deactivate FS
     deactivate USSS
