@@ -4,8 +4,8 @@ sequenceDiagram
     participant FS as Firestore
     participant SCS as SurveyCreatedService<br>python
     participant PS as Pub/Sub
-    participant MS as MailerService<br>.net
-    participant USS as UpdateSurveyStatus<br>.net
+    participant MS as MailerService<br>.net core
+    participant USS as UpdateSurveyStatus<br>.net core
     participant C as Client
     FS--)+SCS: created trigger
     SCS--)+PS: SEND_MAIL
