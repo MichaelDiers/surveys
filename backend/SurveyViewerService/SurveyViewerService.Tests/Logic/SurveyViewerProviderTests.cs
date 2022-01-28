@@ -364,7 +364,7 @@
 			IEnumerable<ISurveyResult> results,
 			IEnumerable<ISurveyStatus> status)
 		{
-			return new SurveyViewerProvider(new DatabaseMock(survey, results, status));
+			return new SurveyViewerProvider(new DatabaseMock(survey, results, status), new PubSubMock());
 		}
 	}
 }
