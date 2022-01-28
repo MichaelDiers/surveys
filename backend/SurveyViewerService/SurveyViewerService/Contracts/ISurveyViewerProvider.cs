@@ -13,7 +13,7 @@
 		/// </summary>
 		/// <param name="json">The json formatted survey result.</param>
 		/// <returns>A <see cref="Task" />.</returns>
-		Task HandleSurveySubmitResult(string json);
+		Task<bool> HandleSurveySubmitResult(string json);
 
 		/// <summary>
 		///   Read survey data by the id of a participant.

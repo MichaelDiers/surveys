@@ -26,5 +26,10 @@
 		///   Gets or sets the id of the project.
 		/// </summary>
 		public string ProjectId { get; set; }
+
+		/// <summary>
+		///   Gets or sets the Pub/Sub topic name.
+		/// </summary>
+		public string PubSubTopic { get; set; }
 	}
 }

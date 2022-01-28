@@ -26,6 +26,7 @@
 			services.AddScoped<IConfiguration>(_ => configuration);
 
 			services.AddScoped<IDatabase, Database>();
+			services.AddScoped<IPubSub, PubSub>();
 			services.AddScoped<ISurveyViewerProvider, SurveyViewerProvider>();
 		}
 	}

@@ -24,5 +24,10 @@
 		///   Gets the id of the project.
 		/// </summary>
 		string ProjectId { get; }
+
+		/// <summary>
+		///   Gets the Pub/Sub topic name.
+		/// </summary>
+		string PubSubTopic { get; }
 	}
 }

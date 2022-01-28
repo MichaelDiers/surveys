@@ -17,13 +17,17 @@
 		/// </summary>
 		private readonly IDatabase database;
 
+		private readonly IPubSub pubSub;
+
 		/// <summary>
 		///   Creates a new instance of <see cref="SurveyViewerProvider" />.
 		/// </summary>
 		/// <param name="database">Access to the firestore database.</param>
-		public SurveyViewerProvider(IDatabase database)
+		/// <param name="pubSub">Access google cloud Pub/Sub.</param>
+		public SurveyViewerProvider(IDatabase database, IPubSub pubSub)
 		{
 			this.database = database ?? throw new ArgumentNullException(nameof(database));
+			this.pubSub = pubSub ?? throw new ArgumentNullException(nameof(pubSub));
 		}
 
 		/// <summary>
@@ -31,7 +35,7 @@
 		/// </summary>
 		/// <param name="json">The json formatted survey result.</param>
 		/// <returns>A <see cref="Task" />.</returns>
-		public Task HandleSurveySubmitResult(string json)
+		public async Task<bool> HandleSurveySubmitResult(string json)
 		{
 			if (string.IsNullOrWhiteSpace(json))
 			{
@@ -45,7 +49,15 @@
 				throw new ArgumentException($"Unable to parse survey result: {json}");
 			}
 
-			return Task.CompletedTask;
+			var survey = await this.database.ReadSurvey(submitResult.ParticipantId);
+			if (string.IsNullOrWhiteSpace(survey?.SurveyId))
+			{
+				return false;
+			}
+
+			await this.pubSub.PublishMessageAsync(survey.SurveyId, submitResult);
+
+			return true;
 		}
 
 		/// <summary>

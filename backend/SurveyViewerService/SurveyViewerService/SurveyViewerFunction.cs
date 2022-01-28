@@ -88,8 +88,8 @@
 			{
 				using TextReader reader = new StreamReader(context.Request.Body);
 				var json = await reader.ReadToEndAsync();
-				await this.surveyViewerProvider.HandleSurveySubmitResult(json);
-				context.Response.StatusCode = 200;
+				var result = await this.surveyViewerProvider.HandleSurveySubmitResult(json);
+				context.Response.StatusCode = result ? 200 : 404;
 			}
 			catch (Exception e)
 			{
