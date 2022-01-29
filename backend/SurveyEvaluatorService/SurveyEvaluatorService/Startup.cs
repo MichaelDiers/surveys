@@ -5,6 +5,7 @@
 	using Microsoft.Extensions.Configuration;
 	using Microsoft.Extensions.DependencyInjection;
 	using SurveyEvaluatorService.Contracts;
+	using SurveyEvaluatorService.Logic;
 	using SurveyEvaluatorService.Model;
 
 	/// <summary>
@@ -23,7 +24,7 @@
 			context.Configuration.Bind(configuration);
 
 			services.AddScoped<ISurveyEvaluatorConfiguration>(_ => configuration);
-			services.AddScoped<ISurveyEvaluatorProvider, ISurveyEvaluatorProvider>();
+			services.AddScoped<ISurveyEvaluatorProvider, SurveyEvaluatorProvider>();
 		}
 	}
 }
