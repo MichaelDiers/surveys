@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyEvaluatorService", "SurveyEvaluatorService\SurveyEvaluatorService.csproj", "{2B1699F2-E75D-432C-A0F7-02C348C27681}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SurveyEvaluatorService.Test", "SurveyEvaluatorService.Test\SurveyEvaluatorService.Test.csproj", "{B2181A1D-31C0-4C8C-8F9C-698074DD3195}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B1699F2-E75D-432C-A0F7-02C348C27681}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B1699F2-E75D-432C-A0F7-02C348C27681}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B1699F2-E75D-432C-A0F7-02C348C27681}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B1699F2-E75D-432C-A0F7-02C348C27681}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2181A1D-31C0-4C8C-8F9C-698074DD3195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2181A1D-31C0-4C8C-8F9C-698074DD3195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2181A1D-31C0-4C8C-8F9C-698074DD3195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2181A1D-31C0-4C8C-8F9C-698074DD3195}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9A0B41D3-FB4C-44BC-9A46-5B69A94E1DA4}
+	EndGlobalSection
+EndGlobal
