@@ -23,6 +23,7 @@
 			context.Configuration.Bind(configuration);
 
 			services.AddScoped<ISurveyEvaluatorConfiguration>(_ => configuration);
+			services.AddScoped<ISurveyEvaluatorProvider, ISurveyEvaluatorProvider>();
 		}
 	}
 }
