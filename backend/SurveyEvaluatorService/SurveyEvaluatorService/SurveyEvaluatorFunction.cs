@@ -5,6 +5,7 @@
 	using System.Threading.Tasks;
 	using CloudNative.CloudEvents;
 	using Google.Cloud.Functions.Framework;
+	using Google.Cloud.Functions.Hosting;
 	using Google.Events.Protobuf.Cloud.Firestore.V1;
 	using Microsoft.Extensions.Logging;
 	using Newtonsoft.Json;
@@ -14,6 +15,7 @@
 	/// <summary>
 	///   Google cloud function that is triggered if a survey result is created in firestore.
 	/// </summary>
+	[FunctionsStartup(typeof(Startup))]
 	public class SurveyEvaluatorFunction : ICloudEventFunction<DocumentEventData>
 	{
 		/// <summary>

@@ -32,6 +32,11 @@
 		/// <returns>A <see cref="Task" />.</returns>
 		public Task Evaluate(ISurveyResult surveyResult)
 		{
+			if (surveyResult == null)
+			{
+				throw new ArgumentNullException(nameof(surveyResult));
+			}
+
 			this.logger.LogInformation(JsonConvert.SerializeObject(surveyResult));
 			return Task.CompletedTask;
 		}
