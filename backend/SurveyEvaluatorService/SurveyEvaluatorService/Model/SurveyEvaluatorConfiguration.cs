@@ -21,5 +21,10 @@
 		///   Gets or sets the id of the project.
 		/// </summary>
 		public string ProjectId { get; set; }
+
+		/// <summary>
+		///   Gets or sets the name of the pub/sub topic for sending emails.
+		/// </summary>
+		public string TopicNameSendMail { get; set; }
 	}
 }

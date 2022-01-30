@@ -26,6 +26,7 @@
 			services.AddScoped<ISurveyEvaluatorConfiguration>(_ => configuration);
 			services.AddScoped<IDatabase, Database>();
 			services.AddScoped<IPubSub, PubSub>();
+			services.AddScoped<IMailerProvider, MailerProvider>();
 			services.AddScoped<ISurveyEvaluatorProvider, SurveyEvaluatorProvider>();
 		}
 	}

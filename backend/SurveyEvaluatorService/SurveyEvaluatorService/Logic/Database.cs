@@ -38,19 +38,19 @@
 		/// </summary>
 		/// <param name="surveyId">The id of the survey.</param>
 		/// <returns>A <see cref="Task" /> whose result is a <see cref="Survey" />.</returns>
-		public async Task<Survey> ReadSurveyAsync(string surveyId)
+		public async Task<ISurvey> ReadSurveyAsync(string surveyId)
 		{
 			if (string.IsNullOrWhiteSpace(surveyId))
 			{
 				throw new ArgumentNullException(nameof(surveyId));
 			}
 
-			var snapshot = await this.database.Collection(this.configuration.CollectionNameSurveys)
-				.WhereEqualTo("surveyId", surveyId).Limit(1)
+			var snapshot = await this.database.Collection(this.configuration.CollectionNameSurveys).Document(surveyId)
 				.GetSnapshotAsync();
-			if (snapshot.Count > 0)
+			if (snapshot.Exists)
 			{
-				return snapshot.Documents.Single(doc => doc.Exists).ConvertTo<Survey>();
+				var survey = snapshot.ConvertTo<Survey>();
+				survey.Id = snapshot.Id;
 			}
 
 			return null;

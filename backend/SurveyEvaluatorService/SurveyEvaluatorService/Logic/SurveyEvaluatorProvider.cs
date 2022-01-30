@@ -22,6 +22,11 @@
 		private readonly ILogger<SurveyEvaluatorProvider> logger;
 
 		/// <summary>
+		///   Provider for creating emails.
+		/// </summary>
+		private readonly IMailerProvider mailerProvider;
+
+		/// <summary>
 		///   Access to google cloud Pub/Sub.
 		/// </summary>
 		private readonly IPubSub pubSub;
@@ -32,11 +37,17 @@
 		/// <param name="logger">Access the error logger.</param>
 		/// <param name="database">Access the firestore database.</param>
 		/// <param name="pubSub">Access to google cloud Pub/Sub.</param>
-		public SurveyEvaluatorProvider(ILogger<SurveyEvaluatorProvider> logger, IDatabase database, IPubSub pubSub)
+		/// <param name="mailerProvider">Provider for creating emails.</param>
+		public SurveyEvaluatorProvider(
+			ILogger<SurveyEvaluatorProvider> logger,
+			IDatabase database,
+			IPubSub pubSub,
+			IMailerProvider mailerProvider)
 		{
 			this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			this.database = database ?? throw new ArgumentNullException(nameof(database));
 			this.pubSub = pubSub ?? throw new ArgumentNullException(nameof(pubSub));
+			this.mailerProvider = mailerProvider ?? throw new ArgumentNullException(nameof(mailerProvider));
 		}
 
 		/// <summary>
@@ -57,12 +68,13 @@
 			{
 				// already closed
 				// send sorry mail
-				await this.pubSub.SendMailAsync();
+				await this.pubSub.SendMailAsync(null);
 			}
 			else
 			{
+				var email = await this.mailerProvider.CreateThankYouEmailAsync(survey, surveyResult);
 				// send thank you mail
-				await this.pubSub.SendMailAsync();
+				await this.pubSub.SendMailAsync(email);
 			}
 		}
 	}

@@ -19,5 +19,10 @@
 		///   Gets the id of the project.
 		/// </summary>
 		string ProjectId { get; }
+
+		/// <summary>
+		///   Gets the name of the pub/sub topic for sending emails.
+		/// </summary>
+		string TopicNameSendMail { get; }
 	}
 }

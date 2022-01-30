@@ -16,6 +16,7 @@ env:
   COLLECTION_NAME_SURVEY_RESULTS: ${{ secrets.GLOBAL_SURVEY_RESULTS_COLLECTION_NAME }}
   COLLECTION_NAME_SURVEY_STATUS: ${{ secrets.GLOBAL_SURVEYS_STATUS_COLLECTION_NAME }}
   COLLECTION_NAME_SURVEYS: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
+  TOPIC_SEND_MAIL: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}  
 jobs:  
   test:
     runs-on: ubuntu-latest
@@ -35,6 +36,7 @@ jobs:
           ProjectId: ${{ env.PROJECT_ID }}
           CollectionNameStatus: ${{ env.COLLECTION_NAME_SURVEY_STATUS }}
           CollectionNameSurveys: ${{ env.COLLECTION_NAME_SURVEYS }}
+          TopicNameSendMail: ${{ env.TOPIC_SEND_MAIL }}          
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:

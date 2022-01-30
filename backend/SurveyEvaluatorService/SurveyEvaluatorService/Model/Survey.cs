@@ -3,13 +3,25 @@
 	using System;
 	using System.Collections.Generic;
 	using Google.Cloud.Firestore;
+	using SurveyEvaluatorService.Contracts;
 
 	/// <summary>
 	///   Describes the data of a survey.
 	/// </summary>
 	[FirestoreData]
-	public class Survey
+	public class Survey : ISurvey
 	{
+		/// <summary>
+		///   Gets or sets the id of the survey-
+		/// </summary>
+		public string Id { get; set; }
+
+		/// <summary>
+		///   Gets or sets the name of the survey.
+		/// </summary>
+		[FirestoreProperty("name")]
+		public string Name { get; set; }
+
 		/// <summary>
 		///   Gets or sets the organizer of the survey.
 		/// </summary>

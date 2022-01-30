@@ -10,7 +10,8 @@
 		/// <summary>
 		///   Send a mail request to pub/sub.
 		/// </summary>
+		/// <param name="request">The request data.</param>
 		/// <returns>A <see cref="Task" />.</returns>
-		Task SendMailAsync();
+		Task SendMailAsync(ISendMailRequest request);
 	}
 }

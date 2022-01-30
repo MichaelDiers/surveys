@@ -1,11 +1,12 @@
 ﻿namespace SurveyEvaluatorService.Model
 {
 	using Newtonsoft.Json;
+	using SurveyEvaluatorService.Contracts;
 
 	/// <summary>
 	///   Describes an email recipient.
 	/// </summary>
-	public class SendMailRequestRecipient
+	public class SendMailRequestRecipient : ISendMailRequestRecipient
 	{
 		/// <summary>
 		///   Gets or sets the email address.

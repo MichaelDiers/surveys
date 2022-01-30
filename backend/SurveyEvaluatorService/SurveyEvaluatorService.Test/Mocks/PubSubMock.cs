@@ -5,7 +5,7 @@
 
 	public class PubSubMock : IPubSub
 	{
-		public Task SendMailAsync()
+		public Task SendMailAsync(ISendMailRequest request)
 		{
 			return Task.CompletedTask;
 		}

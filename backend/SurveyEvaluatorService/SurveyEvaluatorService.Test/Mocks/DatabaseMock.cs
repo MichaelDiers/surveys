@@ -12,21 +12,21 @@
 	{
 		private readonly string expectedSurveyId;
 		private readonly IEnumerable<ISurveyStatus> status;
-		private readonly Survey survey;
+		private readonly ISurvey survey;
 
 		public DatabaseMock()
 			: this(null, new Survey(), Enumerable.Empty<ISurveyStatus>())
 		{
 		}
 
-		public DatabaseMock(string expectedSurveyId, Survey survey, IEnumerable<ISurveyStatus> status)
+		public DatabaseMock(string expectedSurveyId, ISurvey survey, IEnumerable<ISurveyStatus> status)
 		{
 			this.expectedSurveyId = expectedSurveyId;
 			this.survey = survey ?? throw new ArgumentNullException(nameof(survey));
 			this.status = status ?? throw new ArgumentNullException(nameof(status));
 		}
 
-		public Task<Survey> ReadSurveyAsync(string surveyId)
+		public Task<ISurvey> ReadSurveyAsync(string surveyId)
 		{
 			if (this.expectedSurveyId != null)
 			{
