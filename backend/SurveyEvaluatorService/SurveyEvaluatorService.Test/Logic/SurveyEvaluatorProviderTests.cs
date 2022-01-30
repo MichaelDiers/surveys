@@ -63,6 +63,45 @@
 				new MailerProvider()).Evaluate(surveyResult);
 		}
 
+		[Fact(Skip = "Integration only")]
+		public async void EvaluateIntegration()
+		{
+			var configuration = new SurveyEvaluatorConfiguration
+			{
+				CollectionNameSurveys = "surveys",
+				TopicNameSendMail = "SEND_MAIL",
+				CollectionNameStatus = "surveys-status",
+				ProjectId = "surveys-services-test"
+			};
+
+			var provider = new SurveyEvaluatorProvider(
+				new LoggerMock<SurveyEvaluatorProvider>(),
+				new Database(configuration),
+				new PubSub(configuration),
+				new MailerProvider());
+
+			await provider.Evaluate(
+				new SurveyResult
+				{
+					ParticipantId = "ba893854-0ed4-4d13-8aec-341b4d445849",
+					SurveyId = "e5ade11a-093a-4bc0-b01b-7b6971f9e9bf",
+					Results = new[]
+					{
+						new SurveyResultAnswer
+						{
+							AnswerValue = "1",
+							QuestionId = "f3df32c0-3104-4596-a864-4b76b852b97b"
+						},
+						new SurveyResultAnswer
+						{
+							AnswerValue = "4",
+							QuestionId = "c6efd18d-3049-4451-a1cd-6bd5b1cde759"
+						}
+					},
+					Timestamp = DateTime.Now
+				});
+		}
+
 		[Fact]
 		public async void EvaluateThrowsArgumentNullExceptionForNull()
 		{

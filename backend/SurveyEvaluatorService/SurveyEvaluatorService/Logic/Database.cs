@@ -51,6 +51,7 @@
 			{
 				var survey = snapshot.ConvertTo<Survey>();
 				survey.Id = snapshot.Id;
+				return survey;
 			}
 
 			return null;
@@ -73,7 +74,7 @@
 				.OrderBy("timestamp").GetSnapshotAsync();
 			if (snapshot.Count > 0)
 			{
-				return snapshot.Documents.Where(doc => doc.Exists).Select(doc => doc.ConvertTo<ISurveyStatus>());
+				return snapshot.Documents.Where(doc => doc.Exists).Select(doc => doc.ConvertTo<SurveyStatus>());
 			}
 
 			return Enumerable.Empty<ISurveyStatus>();

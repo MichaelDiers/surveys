@@ -8,6 +8,7 @@
 	/// <summary>
 	///   Describes a survey status update.
 	/// </summary>
+	[FirestoreData]
 	public class SurveyStatus : ISurveyStatus
 	{
 		/// <summary>

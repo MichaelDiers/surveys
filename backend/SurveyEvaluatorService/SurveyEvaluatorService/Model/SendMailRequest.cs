@@ -40,8 +40,8 @@
 		[JsonProperty(
 			"statusFailed",
 			Order = 8,
-			Required = Required.Always,
-			ItemConverterType = typeof(SurveyStatusValueConverter))]
+			Required = Required.Always)]
+		[JsonConverter(typeof(SurveyStatusValueConverter))]
 		public SurveyStatusValue StatusFailed { get; set; }
 
 		/// <summary>
@@ -50,8 +50,8 @@
 		[JsonProperty(
 			"statusOk",
 			Order = 7,
-			Required = Required.Always,
-			ItemConverterType = typeof(SurveyStatusValueConverter))]
+			Required = Required.Always)]
+		[JsonConverter(typeof(SurveyStatusValueConverter))]
 		public SurveyStatusValue StatusOk { get; set; }
 
 		/// <summary>
