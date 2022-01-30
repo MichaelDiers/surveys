@@ -14,6 +14,7 @@ env:
   FUNCTION_NAME: SurveyEvaluatorService
   SLN_FILE: 'backend/SurveyEvaluatorService/SurveyEvaluatorService.sln'
   COLLECTION_NAME_SURVEY_RESULTS: ${{ secrets.GLOBAL_SURVEY_RESULTS_COLLECTION_NAME }}
+  COLLECTION_NAME_SURVEY_STATUS: ${{ secrets.GLOBAL_SURVEYS_STATUS_COLLECTION_NAME }}  
 jobs:  
   test:
     runs-on: ubuntu-latest
@@ -31,6 +32,7 @@ jobs:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:          
           ProjectId: ${{ env.PROJECT_ID }}
+          CollectionNameStatus: ${{ env.COLLECTION_NAME_SURVEY_STATUS }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
