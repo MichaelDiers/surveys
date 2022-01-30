@@ -21,7 +21,7 @@
 
 			await new SurveyEvaluatorProvider(
 				new LoggerMock<SurveyEvaluatorProvider>(),
-				new DatabaseMock(surveyId, Enumerable.Empty<ISurveyStatus>()),
+				new DatabaseMock(surveyId, new Survey(), Enumerable.Empty<ISurveyStatus>()),
 				new PubSubMock()).Evaluate(surveyResult);
 		}
 

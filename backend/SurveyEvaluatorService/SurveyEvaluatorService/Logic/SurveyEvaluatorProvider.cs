@@ -51,6 +51,7 @@
 				throw new ArgumentNullException(nameof(surveyResult));
 			}
 
+			var survey = await this.database.ReadSurveyAsync(surveyResult.SurveyId);
 			var surveyStatus = (await this.database.ReadSurveyStatusAsync(surveyResult.SurveyId)).ToArray();
 			if (surveyStatus.Any(status => status.Status == SurveyStatusValue.Closed))
 			{

@@ -6,6 +6,7 @@
 	using System.Threading.Tasks;
 	using Google.Cloud.Firestore;
 	using SurveyEvaluatorService.Contracts;
+	using SurveyEvaluatorService.Model;
 
 	/// <summary>
 	///   Access to the firestore database.
@@ -33,12 +34,40 @@
 		}
 
 		/// <summary>
+		///   Reads a survey by its id.
+		/// </summary>
+		/// <param name="surveyId">The id of the survey.</param>
+		/// <returns>A <see cref="Task" /> whose result is a <see cref="Survey" />.</returns>
+		public async Task<Survey> ReadSurveyAsync(string surveyId)
+		{
+			if (string.IsNullOrWhiteSpace(surveyId))
+			{
+				throw new ArgumentNullException(nameof(surveyId));
+			}
+
+			var snapshot = await this.database.Collection(this.configuration.CollectionNameSurveys)
+				.WhereEqualTo("surveyId", surveyId).Limit(1)
+				.GetSnapshotAsync();
+			if (snapshot.Count > 0)
+			{
+				return snapshot.Documents.Single(doc => doc.Exists).ConvertTo<Survey>();
+			}
+
+			return null;
+		}
+
+		/// <summary>
 		///   Reads all status updates for a survey. The result is ordered by the timestamp.
 		/// </summary>
 		/// <param name="surveyId">The id of the survey.</param>
 		/// <returns>The status updates.</returns>
 		public async Task<IEnumerable<ISurveyStatus>> ReadSurveyStatusAsync(string surveyId)
 		{
+			if (string.IsNullOrWhiteSpace(surveyId))
+			{
+				throw new ArgumentNullException(nameof(surveyId));
+			}
+
 			var snapshot = await this.database.Collection(this.configuration.CollectionNameStatus)
 				.WhereEqualTo("surveyId", surveyId)
 				.OrderBy("timestamp").GetSnapshotAsync();

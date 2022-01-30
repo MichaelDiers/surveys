@@ -23,6 +23,16 @@
 		/// <summary>
 		///   The survey is closed.
 		/// </summary>
-		Closed = 3
+		Closed = 3,
+
+		/// <summary>
+		///   Thank you mail is sent to participants.
+		/// </summary>
+		ThankYouMailOk = 4,
+
+		/// <summary>
+		///   Thank you mail sending failed.
+		/// </summary>
+		ThankYouMailFailed = 5
 	}
 }
