@@ -24,6 +24,8 @@
 			context.Configuration.Bind(configuration);
 
 			services.AddScoped<ISurveyEvaluatorConfiguration>(_ => configuration);
+			services.AddScoped<IDatabase, Database>();
+			services.AddScoped<IPubSub, PubSub>();
 			services.AddScoped<ISurveyEvaluatorProvider, SurveyEvaluatorProvider>();
 		}
 	}
