@@ -108,6 +108,7 @@ bin/
 obj/
 .vs/
 *.DotSettings.user
+appsettings.Development.json
 
 # python
 __pycache__

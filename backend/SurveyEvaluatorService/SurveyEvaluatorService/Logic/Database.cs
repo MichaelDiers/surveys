@@ -73,7 +73,7 @@
 				.WhereEqualTo("surveyId", surveyId).GetSnapshotAsync();
 			if (snapshot.Count > 0)
 			{
-				return snapshot.Documents.Where(doc => doc.Exists).Select(doc => doc.ConvertTo<SurveyResult>());
+				return snapshot.Documents.Where(doc => doc.Exists).Select(doc => doc.ConvertTo<SurveyResult>()).ToArray();
 			}
 
 			return Enumerable.Empty<ISurveyResult>();
@@ -96,7 +96,7 @@
 				.OrderBy("timestamp").GetSnapshotAsync();
 			if (snapshot.Count > 0)
 			{
-				return snapshot.Documents.Where(doc => doc.Exists).Select(doc => doc.ConvertTo<SurveyStatus>());
+				return snapshot.Documents.Where(doc => doc.Exists).Select(doc => doc.ConvertTo<SurveyStatus>()).ToArray();
 			}
 
 			return Enumerable.Empty<ISurveyStatus>();

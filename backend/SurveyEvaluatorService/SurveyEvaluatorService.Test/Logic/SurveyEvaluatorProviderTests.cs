@@ -1,7 +1,9 @@
 ﻿namespace SurveyEvaluatorService.Test.Logic
 {
 	using System;
+	using System.IO;
 	using System.Linq;
+	using Newtonsoft.Json;
 	using SurveyEvaluatorService.Contracts;
 	using SurveyEvaluatorService.Logic;
 	using SurveyEvaluatorService.Model;
@@ -82,21 +84,18 @@
 		}
 
 		[Fact(Skip = "Integration only")]
+		//[Fact]
 		public async void EvaluateIntegration()
 		{
-			var configuration = new SurveyEvaluatorConfiguration
-			{
-				CollectionNameSurveys = "surveys",
-				TopicNameSendMail = "SEND_MAIL",
-				CollectionNameStatus = "surveys-status",
-				ProjectId = "surveys-services-test"
-			};
+			var configuration =
+				JsonConvert.DeserializeObject<SurveyEvaluatorConfiguration>(
+					await File.ReadAllTextAsync("appsettings.Development.json"));
 
 			var provider = new SurveyEvaluatorProvider(
 				new LoggerMock<SurveyEvaluatorProvider>(),
 				new Database(configuration),
 				new PubSub(configuration),
-				new MailerProvider(new SurveyEvaluatorConfiguration()));
+				new MailerProvider(configuration));
 
 			await provider.Evaluate(
 				new SurveyResult
