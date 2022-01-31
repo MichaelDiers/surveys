@@ -165,7 +165,7 @@
 				{
 					ParticipantId = participantId,
 					SurveyId = survey.SurveyId,
-					TimeStamp = lastResult.TimeStamp.AddMinutes(1),
+					TimeStamp = lastResult.TimeStamp.AddMinutes(-1),
 					Answers = lastResult.Answers.Select(
 						a => new Answer
 						{
