@@ -31,7 +31,7 @@
 						Email = $"{nameof(SurveyParticipant)}-Email-{id}",
 						Id = id,
 						Name = $"{nameof(SurveyParticipant)}-Name-{id}"
-					}),
+					}).ToArray(),
 				Questions = Enumerable.Range(1, 6).Select(
 					i => new SurveyQuestion
 					{
@@ -40,27 +40,45 @@
 							{
 								Answer = $"{i}-{j}-choice",
 								Value = i * j + j
-							}).ToArray()
-					}),
+							}).ToArray(),
+						Id = Guid.NewGuid().ToString(),
+						Text = $"Question-{i}"
+					}).ToArray(),
 				Timestamp = DateTime.Now
 			};
 		}
 
 
-		[Theory]
-		[InlineData("surveyId")]
-		public async void Evaluate(string surveyId)
+		[Fact]
+		public async void Evaluate()
 		{
 			var surveyResult = new SurveyResult
 			{
-				SurveyId = surveyId
+				SurveyId = Survey.Id,
+				ParticipantId = Survey.ParticipantIds.First(),
+				Timestamp = DateTime.Now,
+				Results = Survey.Questions.Select(
+					q => new SurveyResultAnswer
+					{
+						AnswerValue = q.Choices.Last().Value,
+						QuestionId = q.Id
+					}).ToArray()
 			};
 
 			await new SurveyEvaluatorProvider(
 				new LoggerMock<SurveyEvaluatorProvider>(),
-				new DatabaseMock(surveyId, Survey, Enumerable.Empty<ISurveyStatus>()),
+				new DatabaseMock(Survey.Id, Survey, Enumerable.Empty<ISurveyStatus>()),
 				new PubSubMock(),
-				new MailerProvider()).Evaluate(surveyResult);
+				new MailerProvider(
+					new SurveyEvaluatorConfiguration
+					{
+						TemplateThankYouSubject = "",
+						TemplateHtmlThankYou = "",
+						TemplateHtmlThankYouAnswer = "",
+						TemplatePlainNewline = "",
+						TemplatePlainThankYou = "",
+						TemplatePlainThankYouAnswer = ""
+					})).Evaluate(surveyResult);
 		}
 
 		[Fact(Skip = "Integration only")]
@@ -78,7 +96,7 @@
 				new LoggerMock<SurveyEvaluatorProvider>(),
 				new Database(configuration),
 				new PubSub(configuration),
-				new MailerProvider());
+				new MailerProvider(new SurveyEvaluatorConfiguration()));
 
 			await provider.Evaluate(
 				new SurveyResult
@@ -89,12 +107,12 @@
 					{
 						new SurveyResultAnswer
 						{
-							AnswerValue = "1",
+							AnswerValue = 1,
 							QuestionId = "f3df32c0-3104-4596-a864-4b76b852b97b"
 						},
 						new SurveyResultAnswer
 						{
-							AnswerValue = "4",
+							AnswerValue = 4,
 							QuestionId = "c6efd18d-3049-4451-a1cd-6bd5b1cde759"
 						}
 					},
@@ -110,7 +128,7 @@
 					new LoggerMock<SurveyEvaluatorProvider>(),
 					new DatabaseMock(),
 					new PubSubMock(),
-					new MailerProvider()).Evaluate(null));
+					new MailerProvider(new SurveyEvaluatorConfiguration())).Evaluate(null));
 		}
 	}
 }

@@ -8,7 +8,7 @@
 		/// <summary>
 		///   Gets the value of the answer.
 		/// </summary>
-		string AnswerValue { get; }
+		int AnswerValue { get; }
 
 		/// <summary>
 		///   Gets the id of the question.
