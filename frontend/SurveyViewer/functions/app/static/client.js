@@ -112,14 +112,20 @@ const showOpenSurvey = async (survey) => {
       ],
     );
     choices.forEach(({ isSelected, text: choiceText, value }) => {
+      const attributes = [];
+      if (value) {
+        attributes.push({ name: 'value', value });
+      }
+
+      if (isSelected) {
+        attributes.push({ name: 'selected', value: 'selected' });
+      }
+
       createElement(
         'option',
         choiceText,
         select,
-        [
-          { name: 'value', value },
-          { name: 'selected', value: isSelected },
-        ],
+        attributes,
       );
     });
   });
