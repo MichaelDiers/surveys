@@ -58,6 +58,28 @@
 		}
 
 		/// <summary>
+		///   Read all survey results for a given survey.
+		/// </summary>
+		/// <param name="surveyId">The id the survey.</param>
+		/// <returns>A <see cref="Task" /> whose result is an <see cref="IEnumerable{T}" /> of <see cref="ISurveyResult" />.</returns>
+		public async Task<IEnumerable<ISurveyResult>> ReadSurveyResultsAsync(string surveyId)
+		{
+			if (string.IsNullOrWhiteSpace(surveyId))
+			{
+				throw new ArgumentNullException(nameof(surveyId));
+			}
+
+			var snapshot = await this.database.Collection(this.configuration.CollectionNameResults)
+				.WhereEqualTo("surveyId", surveyId).GetSnapshotAsync();
+			if (snapshot.Count > 0)
+			{
+				return snapshot.Documents.Where(doc => doc.Exists).Select(doc => doc.ConvertTo<SurveyResult>());
+			}
+
+			return Enumerable.Empty<ISurveyResult>();
+		}
+
+		/// <summary>
 		///   Reads all status updates for a survey. The result is ordered by the timestamp.
 		/// </summary>
 		/// <param name="surveyId">The id of the survey.</param>

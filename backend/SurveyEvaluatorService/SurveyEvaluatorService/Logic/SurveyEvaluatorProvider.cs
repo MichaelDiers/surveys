@@ -5,6 +5,7 @@
 	using System.Threading.Tasks;
 	using Microsoft.Extensions.Logging;
 	using SurveyEvaluatorService.Contracts;
+	using SurveyEvaluatorService.Model;
 
 	/// <summary>
 	///   Evaluate a survey result.
@@ -63,7 +64,9 @@
 			}
 
 			var survey = await this.database.ReadSurveyAsync(surveyResult.SurveyId);
+			var surveyResults = await this.database.ReadSurveyResultsAsync(surveyResult.SurveyId);
 			var surveyStatus = (await this.database.ReadSurveyStatusAsync(surveyResult.SurveyId)).ToArray();
+
 			if (surveyStatus.Any(status => status.Status == SurveyStatusValue.Closed))
 			{
 				// already closed
@@ -73,8 +76,19 @@
 			else
 			{
 				var email = await this.mailerProvider.CreateThankYouEmailAsync(survey, surveyResult);
-				// send thank you mail
 				await this.pubSub.SendMailAsync(email);
+			}
+
+			// all participants voted
+			if (survey.ParticipantIds.All(pid => surveyResults.Any(sr => sr.ParticipantId == pid)))
+			{
+				await this.pubSub.SendStatusUpdateAsync(
+					new SurveyStatusUpdateRequest
+					{
+						ParticipantId = surveyResult.ParticipantId,
+						SurveyId = surveyResult.SurveyId,
+						Status = SurveyStatusValue.Closed
+					});
 			}
 		}
 	}

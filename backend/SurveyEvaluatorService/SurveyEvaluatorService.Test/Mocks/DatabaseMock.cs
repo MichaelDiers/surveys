@@ -36,6 +36,11 @@
 			return Task.FromResult(this.survey);
 		}
 
+		public Task<IEnumerable<ISurveyResult>> ReadSurveyResultsAsync(string surveyId)
+		{
+			return Task.FromResult(Enumerable.Empty<ISurveyResult>());
+		}
+
 		public Task<IEnumerable<ISurveyStatus>> ReadSurveyStatusAsync(string surveyId)
 		{
 			if (this.expectedSurveyId != null)

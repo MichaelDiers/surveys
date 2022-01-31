@@ -6,6 +6,11 @@
 	public interface ISurveyEvaluatorConfiguration
 	{
 		/// <summary>
+		///   Gets the name of the collection that contains survey results.
+		/// </summary>
+		string CollectionNameResults { get; }
+
+		/// <summary>
 		///   Gets the name of the collection that contains survey status updates.
 		/// </summary>
 		string CollectionNameStatus { get; }
@@ -59,5 +64,10 @@
 		///   Gets the name of the pub/sub topic for sending emails.
 		/// </summary>
 		string TopicNameSendMail { get; }
+
+		/// <summary>
+		///   Gets the name of the pub/sub topic for sending status updates of surveys.
+		/// </summary>
+		string TopicNameStatusUpdate { get; }
 	}
 }

@@ -13,5 +13,12 @@
 		/// <param name="request">The request data.</param>
 		/// <returns>A <see cref="Task" />.</returns>
 		Task SendMailAsync(ISendMailRequest request);
+
+		/// <summary>
+		///   Send a status update request for a survey.
+		/// </summary>
+		/// <param name="request">The request data.</param>
+		/// <returns>A <see cref="Task" />.</returns>
+		Task SendStatusUpdateAsync(ISurveyStatusUpdateRequest request);
 	}
 }

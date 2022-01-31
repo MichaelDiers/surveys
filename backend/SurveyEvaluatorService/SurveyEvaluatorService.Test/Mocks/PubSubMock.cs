@@ -9,5 +9,10 @@
 		{
 			return Task.CompletedTask;
 		}
+
+		public Task SendStatusUpdateAsync(ISurveyStatusUpdateRequest request)
+		{
+			return Task.CompletedTask;
+		}
 	}
 }

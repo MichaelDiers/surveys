@@ -17,9 +17,14 @@
 		private readonly ISurveyEvaluatorConfiguration configuration;
 
 		/// <summary>
-		///   Access google cloud Pub/Sub.
+		///   Access google cloud Pub/Sub for sending emails.
 		/// </summary>
-		private PublisherClient client;
+		private PublisherClient sendMailClient;
+
+		/// <summary>
+		///   Access google cloud Pub/Sub for updaing the status of a survey.
+		/// </summary>
+		private PublisherClient statusUpdateClient;
 
 		/// <summary>
 		///   Create a new instance of <see cref="PubSub" />.
@@ -37,14 +42,31 @@
 		/// <returns>A <see cref="Task" />.</returns>
 		public async Task SendMailAsync(ISendMailRequest request)
 		{
-			if (this.client == null)
+			if (this.sendMailClient == null)
 			{
 				var topic = TopicName.FromProjectTopic(this.configuration.ProjectId, this.configuration.TopicNameSendMail);
-				this.client = await PublisherClient.CreateAsync(topic);
+				this.sendMailClient = await PublisherClient.CreateAsync(topic);
 			}
 
 			var json = JsonConvert.SerializeObject(request);
-			await this.client.PublishAsync(json);
+			await this.sendMailClient.PublishAsync(json);
+		}
+
+		/// <summary>
+		///   Send a status update request for a survey.
+		/// </summary>
+		/// <param name="request">The request data.</param>
+		/// <returns>A <see cref="Task" />.</returns>
+		public async Task SendStatusUpdateAsync(ISurveyStatusUpdateRequest request)
+		{
+			if (this.statusUpdateClient == null)
+			{
+				var topic = TopicName.FromProjectTopic(this.configuration.ProjectId, this.configuration.TopicNameStatusUpdate);
+				this.statusUpdateClient = await PublisherClient.CreateAsync(topic);
+			}
+
+			var json = JsonConvert.SerializeObject(request);
+			await this.statusUpdateClient.PublishAsync(json);
 		}
 	}
 }

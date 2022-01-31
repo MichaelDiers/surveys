@@ -8,6 +8,11 @@
 	public class SurveyEvaluatorConfiguration : ISurveyEvaluatorConfiguration
 	{
 		/// <summary>
+		///   Gets or sets the name of the collection that contains survey results.
+		/// </summary>
+		public string CollectionNameResults { get; set; }
+
+		/// <summary>
 		///   Gets or sets the name of the collection that contains survey status updates.
 		/// </summary>
 		public string CollectionNameStatus { get; set; }
@@ -61,5 +66,10 @@
 		///   Gets or sets the name of the pub/sub topic for sending emails.
 		/// </summary>
 		public string TopicNameSendMail { get; set; }
+
+		/// <summary>
+		///   Gets or sets the name of the pub/sub topic for sending status updates of surveys.
+		/// </summary>
+		public string TopicNameStatusUpdate { get; set; }
 	}
 }
