@@ -25,6 +25,11 @@
 		private const string Created = "CREATED";
 
 		/// <summary>
+		///   Invitation mail sent failed status.
+		/// </summary>
+		private const string InvitationMailFailed = "INVITATION_MAIL_FAILED";
+
+		/// <summary>
 		///   Invitation mail sent ok status.
 		/// </summary>
 		private const string InvitationMailOk = "INVITATION_MAIL_OK";
@@ -50,7 +55,8 @@
 					{InvitationMailOk, SurveyStatusValue.InvitationMailOk},
 					{Closed, SurveyStatusValue.Closed},
 					{ThankYouMailOk, SurveyStatusValue.ThankYouMailOk},
-					{ThankYouMailFailed, SurveyStatusValue.ThankYouMailFailed}
+					{ThankYouMailFailed, SurveyStatusValue.ThankYouMailFailed},
+					{InvitationMailFailed, SurveyStatusValue.InvitationMailFailed}
 				});
 
 		/// <summary>

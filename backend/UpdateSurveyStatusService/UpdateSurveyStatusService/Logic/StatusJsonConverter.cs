@@ -18,7 +18,10 @@
 		{
 			{Status.Created, "CREATED"},
 			{Status.InvitationMailOk, "INVITATION_MAIL_OK"},
-			{Status.InvitationMailFailed, "INVITATION_MAIL_FAILED"}
+			{Status.InvitationMailFailed, "INVITATION_MAIL_FAILED"},
+			{Status.Closed, "CLOSED"},
+			{Status.ThankYouMailOk, "THANK_YOU_MAIL_OK"},
+			{Status.ThankYouMailFailed, "THANK_YOU_MAIL_FAILED"}
 		};
 
 		/// <summary>

@@ -23,6 +23,21 @@
 		/// <summary>
 		///   Indicates that sending an invitation mail is sent.
 		/// </summary>
-		InvitationMailOk = 3
+		InvitationMailOk = 3,
+
+		/// <summary>
+		///   The survey is closed.
+		/// </summary>
+		Closed = 4,
+
+		/// <summary>
+		///   Thank you mail is sent to participants.
+		/// </summary>
+		ThankYouMailOk = 5,
+
+		/// <summary>
+		///   Thank you mail sending failed.
+		/// </summary>
+		ThankYouMailFailed = 6
 	}
 }

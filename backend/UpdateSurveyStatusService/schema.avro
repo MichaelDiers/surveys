@@ -16,9 +16,12 @@
 				"name": "statusEnum",
 				"type": "enum",
 				"symbols": [
+					"CLOSED",
 					"CREATED",
+					"INVITATION_MAIL_FAILED",
 					"INVITATION_MAIL_OK",
-					"INVITATION_MAIL_FAILED"
+					"THANK_YOU_MAIL_FAILED",
+					"THANK_YOU_MAIL_OK"
 				]
 			}
 		}

@@ -21,18 +21,23 @@
 		InvitationMailOk = 2,
 
 		/// <summary>
+		///   Invitation mails sending failed.
+		/// </summary>
+		InvitationMailFailed = 3,
+
+		/// <summary>
 		///   The survey is closed.
 		/// </summary>
-		Closed = 3,
+		Closed = 4,
 
 		/// <summary>
 		///   Thank you mail is sent to participants.
 		/// </summary>
-		ThankYouMailOk = 4,
+		ThankYouMailOk = 5,
 
 		/// <summary>
 		///   Thank you mail sending failed.
 		/// </summary>
-		ThankYouMailFailed = 5
+		ThankYouMailFailed = 6
 	}
 }
