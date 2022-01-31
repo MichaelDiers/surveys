@@ -107,7 +107,7 @@
 			};
 
 			var lastResult = surveyResults.Where(sr => sr.ParticipantId == participantId)
-				.OrderByDescending(sr => sr.TimeStamp).FirstOrDefault();
+				.OrderBy(sr => sr.TimeStamp).FirstOrDefault();
 
 			foreach (var surveyViewDataQuestion in result.Questions)
 			{

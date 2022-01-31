@@ -159,13 +159,13 @@
 			var (survey, results, status) = InitSurveyData();
 			var participantId = survey.Participants.First().Id;
 			var newResults = new List<ISurveyResult>(results);
-			var lastResult = newResults.Where(x => x.ParticipantId == participantId).OrderBy(x => x.TimeStamp).Last();
+			var lastResult = newResults.Where(x => x.ParticipantId == participantId).OrderBy(x => x.TimeStamp).First();
 			newResults.Add(
 				new SurveyResult
 				{
 					ParticipantId = participantId,
 					SurveyId = survey.SurveyId,
-					TimeStamp = lastResult.TimeStamp.AddMinutes(-1),
+					TimeStamp = lastResult.TimeStamp.AddMinutes(1),
 					Answers = lastResult.Answers.Select(
 						a => new Answer
 						{
@@ -326,12 +326,13 @@
 				SurveyId = Guid.NewGuid().ToString()
 			};
 
+			var seconds = 0;
 			var results = survey.Participants.Select(
 				participant => new SurveyResult
 				{
 					SurveyId = survey.SurveyId,
 					ParticipantId = participant.Id,
-					TimeStamp = DateTime.Now,
+					TimeStamp = DateTime.Now.AddSeconds(++seconds),
 					Answers = survey.Questions.Select(
 						question => new Answer
 						{
