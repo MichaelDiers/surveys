@@ -84,8 +84,8 @@
 					})).Evaluate(surveyResult);
 		}
 
-		//[Fact(Skip = "Integration only")]
-		[Fact]
+		[Fact(Skip = "Integration only")]
+		//[Fact]
 		public async void EvaluateIntegration()
 		{
 			var configuration =
