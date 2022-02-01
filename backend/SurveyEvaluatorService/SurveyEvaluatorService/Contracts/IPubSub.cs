@@ -20,5 +20,12 @@
 		/// <param name="request">The request data.</param>
 		/// <returns>A <see cref="Task" />.</returns>
 		Task SendStatusUpdateAsync(ISurveyStatusUpdateRequest request);
+
+		/// <summary>
+		///   Sends the result of the survey to Pub/Sub.
+		/// </summary>
+		/// <param name="request">The survey result data.</param>
+		/// <returns>A <see cref="Task" />.</returns>
+		Task SendSurveyClosed(ISurveyClosedRequest request);
 	}
 }

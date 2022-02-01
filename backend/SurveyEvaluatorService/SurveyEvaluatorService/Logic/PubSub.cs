@@ -68,5 +68,16 @@
 			var json = JsonConvert.SerializeObject(request);
 			await this.statusUpdateClient.PublishAsync(json);
 		}
+
+		/// <summary>
+		///   Sends the result of the survey to Pub/Sub.
+		/// </summary>
+		/// <param name="request">The survey result data.</param>
+		/// <returns>A <see cref="Task" />.</returns>
+		public Task SendSurveyClosed(ISurveyClosedRequest request)
+		{
+			var json = JsonConvert.SerializeObject(request);
+			return Task.CompletedTask;
+		}
 	}
 }

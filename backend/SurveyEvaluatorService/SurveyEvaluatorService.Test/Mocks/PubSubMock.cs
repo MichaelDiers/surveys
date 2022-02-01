@@ -14,5 +14,10 @@
 		{
 			return Task.CompletedTask;
 		}
+
+		public Task SendSurveyClosed(ISurveyClosedRequest request)
+		{
+			return Task.CompletedTask;
+		}
 	}
 }
