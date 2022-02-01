@@ -4,10 +4,10 @@
   "scripts": {
     "lint": "eslint -c .eslintrc.js ../",
     "git": "git add .. && git status",
-    "gitadd": "npm run lintall && npm run git",
+    "gitadd": "npm run lintall && npm run ugly && npm run git",
     "start": "npx functions-framework --target=SurveyViewer --port=8081",
-    "ugly": "uglifyjs js/*.js --compress --mangle -o app/public/client.min.js",
-    "uglybeauty": "uglifyjs js/*.js --beautify -o app/public/main.min.js",
+    "ugly": "uglifyjs ../client/js/*.js --compress --mangle -o app/static/client.min.js",
+    "uglybeauty": "uglifyjs ../client/js/*.js --beautify -o app/static/client.min.js",
     "csslint": "npx stylelint --config ../.stylelintrc.json ../client/scss/**/*",
     "puglint": "pug-lint -c ../.pug-lintrc.json -r inline ./app/views/",
     "lintall": "npm run lint && npm run csslint && npm run puglint"
