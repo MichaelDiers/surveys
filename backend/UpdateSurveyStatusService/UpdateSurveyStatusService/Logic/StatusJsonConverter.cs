@@ -21,7 +21,9 @@
 			{Status.InvitationMailFailed, "INVITATION_MAIL_FAILED"},
 			{Status.Closed, "CLOSED"},
 			{Status.ThankYouMailOk, "THANK_YOU_MAIL_OK"},
-			{Status.ThankYouMailFailed, "THANK_YOU_MAIL_FAILED"}
+			{Status.ThankYouMailFailed, "THANK_YOU_MAIL_FAILED"},
+			{Status.SurveyClosedMailFailed, "SURVEY_CLOSED_MAIL_FAILED"},
+			{Status.SurveyClosedMailOk, "SURVEY_CLOSED_MAIL_OK"}
 		};
 
 		/// <summary>

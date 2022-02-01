@@ -38,6 +38,16 @@
 		/// <summary>
 		///   Thank you mail sending failed.
 		/// </summary>
-		ThankYouMailFailed = 6
+		ThankYouMailFailed = 6,
+
+		/// <summary>
+		///   Survey closed mail is sent to participants.
+		/// </summary>
+		SurveyClosedMailOk = 7,
+
+		/// <summary>
+		///   Survey closed mail sending failed.
+		/// </summary>
+		SurveyClosedMailFailed = 8
 	}
 }
