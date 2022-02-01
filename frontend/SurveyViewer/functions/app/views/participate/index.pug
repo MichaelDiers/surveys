@@ -1,10 +1,10 @@
 extends ../extends/layout
 
-block variables 
+block variables
   - var title= surveyName
 
 block content
   input#csrf(type='hidden', name='_csrf', value=csurfToken)
-  div#survey
-  
+  #survey
+
   //include ../includes/survey-form
