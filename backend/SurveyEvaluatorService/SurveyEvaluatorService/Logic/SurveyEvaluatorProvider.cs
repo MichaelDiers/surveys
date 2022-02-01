@@ -64,14 +64,19 @@
 			}
 
 			var survey = await this.database.ReadSurveyAsync(surveyResult.SurveyId);
-			var surveyResults = await this.database.ReadSurveyResultsAsync(surveyResult.SurveyId);
+			var surveyResults = (await this.database.ReadSurveyResultsAsync(surveyResult.SurveyId)).ToArray();
 			var surveyStatus = (await this.database.ReadSurveyStatusAsync(surveyResult.SurveyId)).ToArray();
 
-			if (surveyStatus.Any(status => status.Status == SurveyStatusValue.Closed))
+			var closedStatus = surveyStatus.FirstOrDefault(status => status.Status == SurveyStatusValue.Closed);
+			if (closedStatus != null)
 			{
-				// already closed
-				// send sorry mail
-				await this.pubSub.SendMailAsync(null);
+				// find last valid vote
+				var lastValidVote = surveyResults
+					.Where(
+						result => result.ParticipantId == surveyResult.ParticipantId && result.Timestamp < closedStatus.Timestamp)
+					.OrderByDescending(status => status.Timestamp).First();
+				var email = await this.mailerProvider.CreateSorryClosedEmailAsync(survey, lastValidVote);
+				await this.pubSub.SendMailAsync(email);
 			}
 			else
 			{
@@ -80,7 +85,7 @@
 			}
 
 			// all participants voted
-			if (survey.ParticipantIds.All(pid => surveyResults.Any(sr => sr.ParticipantId == pid)))
+			if (closedStatus == null && survey.ParticipantIds.All(pid => surveyResults.Any(sr => sr.ParticipantId == pid)))
 			{
 				await this.pubSub.SendStatusUpdateAsync(
 					new SurveyStatusUpdateRequest

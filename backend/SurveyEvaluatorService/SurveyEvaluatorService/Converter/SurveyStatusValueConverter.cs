@@ -35,6 +35,16 @@
 		private const string InvitationMailOk = "INVITATION_MAIL_OK";
 
 		/// <summary>
+		///   Survey closed mail sent failed status.
+		/// </summary>
+		private const string SurveyClosedMailFailed = "SURVEY_CLOSED_MAIL_FAILED";
+
+		/// <summary>
+		///   Survey closed mail sent ok status.
+		/// </summary>
+		private const string SurveyClosedMailOk = "SURVEY_CLOSED_MAIL_OK";
+
+		/// <summary>
 		///   Thank you mail sent failed status.
 		/// </summary>
 		private const string ThankYouMailFailed = "THANK_YOU_MAIL_FAILED";
@@ -56,7 +66,9 @@
 					{Closed, SurveyStatusValue.Closed},
 					{ThankYouMailOk, SurveyStatusValue.ThankYouMailOk},
 					{ThankYouMailFailed, SurveyStatusValue.ThankYouMailFailed},
-					{InvitationMailFailed, SurveyStatusValue.InvitationMailFailed}
+					{InvitationMailFailed, SurveyStatusValue.InvitationMailFailed},
+					{SurveyClosedMailOk, SurveyStatusValue.SurveyClosedMailOk},
+					{SurveyClosedMailFailed, SurveyStatusValue.SurveyClosedMailFailed}
 				});
 
 		/// <summary>

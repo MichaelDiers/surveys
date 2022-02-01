@@ -33,6 +33,12 @@ jobs:
       TEMPLATE_PLAIN_THANK_YOU: ${{ secrets.TEMPLATE_PLAIN_THANK_YOU }}
       TEMPLATE_PLAIN_THANK_YOU_ANSWER: ${{ secrets.TEMPLATE_PLAIN_THANK_YOU_ANSWER }}
       TEMPLATE_THANK_YOU_SUBJECT: ${{ secrets.TEMPLATE_THANK_YOU_SUBJECT }}
+      TEMPLATE_HTML_CLOSED_SURVEY: ${{ secrets.TEMPLATE_HTML_CLOSED_SURVEY }}
+      TEMPLATE_HTML_CLOSED_SURVEY_ANSWER: ${{ secrets.TEMPLATE_HTML_CLOSED_SURVEY_ANSWER }}
+      TEMPLATE_PLAIN_CLOSED_SURVEY: ${{ secrets.TEMPLATE_PLAIN_CLOSED_SURVEY }}
+      TEMPLATE_PLAIN_CLOSED_SURVEY_ANSWER: ${{ secrets.TEMPLATE_PLAIN_CLOSED_SURVEY_ANSWER }}
+      TEMPLATE_CLOSED_SURVEY_SUBJECT: ${{ secrets.TEMPLATE_CLOSED_SURVEY_SUBJECT }}
+      TEMPLATE_NO_ANSWER: ${{ secrets.TEMPLATE_NO_ANSWER }}
     steps:      
       - name: checkout source
         uses: actions/checkout@v2
@@ -54,6 +60,12 @@ jobs:
           TemplateThankYouSubject: ${{ env.TEMPLATE_THANK_YOU_SUBJECT }}
           CollectionNameResults: ${{ env.COLLECTION_NAME_SURVEY_RESULTS }}
           TopicNameStatusUpdate: ${{ env.TOPIC_STATUS_UPDATE }}
+          TemplateHtmlClosedSurvey: ${{ env.TEMPLATE_HTML_CLOSED_SURVEY }}
+          TemplateHtmlClosedSurveyAnswer: ${{ env.TEMPLATE_HTML_CLOSED_SURVEY_ANSWER }}
+          TemplatePlainClosedSurvey: ${{ env.TEMPLATE_PLAIN_CLOSED_SURVEY }}
+          TemplatePlainClosedSurveyAnswer: ${{ env.TEMPLATE_PLAIN_CLOSED_SURVEY_ANSWER }}
+          TemplateClosedSurveySubject: ${{ env.TEMPLATE_CLOSED_SURVEY_SUBJECT }}
+          TemplateNoAnswer: ${{ env.TEMPLATE_NO_ANSWER }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:

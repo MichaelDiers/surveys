@@ -31,6 +31,21 @@
 		string SurveyViewerUrl { get; }
 
 		/// <summary>
+		///   Gets template for the subject of closed survey emails.
+		/// </summary>
+		string TemplateClosedSurveySubject { get; }
+
+		/// <summary>
+		///   Gets the html template for closed survey emails.
+		/// </summary>
+		string TemplateHtmlClosedSurvey { get; }
+
+		/// <summary>
+		///   Gets the html template for the answer part of closed survey emails.
+		/// </summary>
+		string TemplateHtmlClosedSurveyAnswer { get; }
+
+		/// <summary>
 		///   Gets the html template for thank you mails.
 		/// </summary>
 		string TemplateHtmlThankYou { get; }
@@ -39,6 +54,21 @@
 		///   Gets the html template for the answer part of thank you mails.
 		/// </summary>
 		string TemplateHtmlThankYouAnswer { get; }
+
+		/// <summary>
+		///   Gets the text for survey questions without an answer.
+		/// </summary>
+		string TemplateNoAnswer { get; }
+
+		/// <summary>
+		///   Gets the plain text template for closed survey emails.
+		/// </summary>
+		string TemplatePlainClosedSurvey { get; }
+
+		/// <summary>
+		///   Gets the plain text template for the answer part of closed survey emails.
+		/// </summary>
+		string TemplatePlainClosedSurveyAnswer { get; }
 
 		/// <summary>
 		///   Gets the newline replacement for text emails.

@@ -3,6 +3,7 @@
 	using System;
 	using System.IO;
 	using System.Linq;
+	using System.Text;
 	using Newtonsoft.Json;
 	using SurveyEvaluatorService.Contracts;
 	using SurveyEvaluatorService.Logic;
@@ -83,13 +84,13 @@
 					})).Evaluate(surveyResult);
 		}
 
-		[Fact(Skip = "Integration only")]
-		//[Fact]
+		//[Fact(Skip = "Integration only")]
+		[Fact]
 		public async void EvaluateIntegration()
 		{
 			var configuration =
 				JsonConvert.DeserializeObject<SurveyEvaluatorConfiguration>(
-					await File.ReadAllTextAsync("appsettings.Development.json"));
+					await File.ReadAllTextAsync("appsettings.Development.json", Encoding.UTF7));
 
 			var provider = new SurveyEvaluatorProvider(
 				new LoggerMock<SurveyEvaluatorProvider>(),
