@@ -1,0 +1,79 @@
+{  
+  "type": "record",
+  "name": "survey",
+  "fields": [
+    { 
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "participants",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "participant",
+          "type": "record",
+          "fields": [
+            {
+              "name": "email",
+              "type": "string"
+            },
+            {
+              "name": "name",
+              "type": "string"
+            }  
+          ]
+        }
+      }
+    },
+    {
+      "name": "questions",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "question",
+          "type": "record",
+          "fields": [
+            {
+              "name": "choices",
+              "type": {
+                "type": "array",
+                "items": {
+                  "name": "choice",
+                  "type": "record",
+                  "fields": [
+                    {
+                      "name": "answer",
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "question",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "replyToEmail",
+      "type": {
+        "name": "replyToEmailRecord",
+        "type": "record",
+        "fields": [
+          {
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ]    
+}

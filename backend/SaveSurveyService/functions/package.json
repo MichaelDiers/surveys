@@ -2,7 +2,7 @@
   "name": "savesurveyservice",
   "description": "Cloud service for saving surveys to firestore.",
   "scripts": {
-    "lint": "eslint -c .eslintrc.js ../",
+    "lint": "eslint -c .eslintrc.js ../ --fix",
     "git": "git add .. && git status",
     "gitadd": "npm run lint && npm run git"
   },

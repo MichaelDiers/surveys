@@ -1,0 +1,33 @@
+{
+  "name": "The name of the survey",
+  "participants": [
+    {
+      "email": "foo@bar.nonsense_domain_for_test",
+      "name": "foo"
+    },
+    {
+      "email": "bar@foo.nonsense_domain_for_test",
+      "name": "bar"
+    }
+  ],
+  "questions": [
+    {
+      "choices": [
+        {
+          "answer": "The answer 1 of question 1"
+        },
+        {
+          "answer": "The answer 2 of question 1"
+        },
+        {
+          "answer": "The answer 3 of question 1"
+        }
+      ],
+      "question": "The text of question 1 of question 1"
+    }
+  ],
+  "replyToEmail": {
+    "email": "organizer@organizer.nonsense_domain_for_test",
+    "name": "name of the organizer"
+  }
+}

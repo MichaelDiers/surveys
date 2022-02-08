@@ -23,7 +23,7 @@ const convertMessageToSurvey = (json) => {
     name: json.name,
     timestamp: Firestore.FieldValue.serverTimestamp(),
     participantIds: [],
-    participants: [],    
+    participants: [],
     questions: [],
     organizer: {
       name: json.replyToEmail.name,
@@ -86,7 +86,7 @@ const onMessagePublished = async (message) => {
   await docRef.set(survey);
 
   // send status update
-  const statusUpdate = `{"surveyId":"${surveyId}","participantId": \"\", "status": "${statusCreated}"}`;
+  const statusUpdate = `{"surveyId":"${surveyId}","participantId": "", "status": "${statusCreated}"}`;
   const data = Buffer.from(statusUpdate);
   await pubsub.topic(topicName).publishMessage({ data });
 };

@@ -11,7 +11,7 @@ env:
   SOURCE_DIR: 'backend/SaveSurveyService/functions'
   COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
   TOPIC_NAME_SUB: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}
-  SCHEMA_FILE: 'backend/SaveSurveyService/SaveSurveySchema.avro'
+  SCHEMA_FILE: 'backend/SaveSurveyService/schema/SaveSurveySchema.avro'
   SCHEMA_NAME: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}_SCHEMA  
   MESSAGE_ENCODING: json
   STATUS_CREATED: ${{ secrets.GLOBAL_STATUS_CREATED }}
