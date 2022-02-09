@@ -1,5 +1,3 @@
-const Firestore = require('@google-cloud/firestore');
-
 const Base = require('./base');
 const Person = require('./person');
 const Question = require('./question');
@@ -32,7 +30,6 @@ class Survey extends Base {
 
     this.id = Base.validate('id', json.id, uuidValidator);
     this.name = Base.validate('name', json.name);
-    this.timestamp = Firestore.FieldValue.serverTimestamp();
     this.organizer = new Person(json.organizer);
     this.participants = json.participants?.map((p) => new Person(p));
     this.questions = json.questions?.map((q) => new Question(q));

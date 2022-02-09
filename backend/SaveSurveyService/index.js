@@ -24,7 +24,8 @@ const onMessagePublished = async (message) => {
   try {
     // parse message and covert to survey
     const json = JSON.parse(Buffer.from(message.data, 'base64').toString());
-    const survey = new Survey(json);
+    const survey = JSON.parse(JSON.stringify(new Survey(json)));
+    survey.timestamp = Firestore.FieldValue.serverTimestamp();
 
     // send to firestore
     const docRef = database.collection(collectionName).doc(survey.id);

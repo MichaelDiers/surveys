@@ -81,11 +81,4 @@ describe('survey.js', () => {
       expect(json.questions.length).to.equal(survey.questions.length);
     });
   });
-
-  describe('timestamp', () => {
-    it('timestamp is set', () => {
-      // eslint-disable-next-line no-unused-expressions
-      expect(new Survey(testHelper.surveyTestData).timestamp).to.be.not.undefined;
-    });
-  });
 });
