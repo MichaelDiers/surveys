@@ -2,8 +2,21 @@
   "type": "record",
   "name": "survey",
   "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "logicalType": "uuid"
+    },
     { 
       "name": "name",
+      "type": "string"
+    },
+    {
+      "name": "info",
+      "type": "string"
+    },
+    {
+      "name": "link",
       "type": "string"
     },
     {
@@ -21,7 +34,12 @@
             {
               "name": "name",
               "type": "string"
-            }  
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "logicalType": "uuid"
+            }
           ]
         }
       }
@@ -45,6 +63,11 @@
                     {
                       "name": "answer",
                       "type": "string"
+                    },
+                    {
+                      "name": "id",
+                      "type": "string",
+                      "logicalType": "uuid"
                     }
                   ]
                 }
@@ -53,15 +76,20 @@
             {
               "name": "question",
               "type": "string"
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "logicalType": "uuid"
             }
           ]
         }
       }
     },
     {
-      "name": "replyToEmail",
+      "name": "organizer",
       "type": {
-        "name": "replyToEmailRecord",
+        "name": "organizerRecord",
         "type": "record",
         "fields": [
           {
@@ -71,9 +99,14 @@
           {
             "name": "name",
             "type": "string"
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "logicalType": "uuid"
           }
         ]
       }
     }
-  ]    
+  ]
 }

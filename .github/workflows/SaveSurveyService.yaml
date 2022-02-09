@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 env:
   FUNCTION_NAME: SaveSurveyService
-  SOURCE_DIR: 'backend/SaveSurveyService/functions'
+  SOURCE_DIR: 'backend/SaveSurveyService'
   COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
   TOPIC_NAME_SUB: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}
   SCHEMA_FILE: 'backend/SaveSurveyService/schema/SaveSurveySchema.avro'
@@ -27,6 +27,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install
+      - run: npm test
       - name: delete topic
         uses: actions-hub/gcloud@master
         continue-on-error: true
@@ -82,6 +87,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install
+      - run: npm test
       - name: delete topic
         uses: actions-hub/gcloud@master
         continue-on-error: true
@@ -137,6 +147,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: npm install
+      - run: npm test
       - name: delete topic
         uses: actions-hub/gcloud@master
         continue-on-error: true

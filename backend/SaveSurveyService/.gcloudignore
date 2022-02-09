@@ -1,0 +1,7 @@
+.vscode
+configs
+node_modules
+schema
+tests
+.gcloudignore
+.gitignore

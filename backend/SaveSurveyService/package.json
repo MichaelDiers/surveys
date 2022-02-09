@@ -2,9 +2,10 @@
   "name": "savesurveyservice",
   "description": "Cloud service for saving surveys to firestore.",
   "scripts": {
-    "lint": "eslint -c .eslintrc.js ../ --fix",
+    "lint": "eslint -c configs/.eslintrc.js . --fix",
     "git": "git add .. && git status",
-    "gitadd": "npm run lint && npm run git"
+    "gitadd": "npm run lint && npm run git",
+    "test": "mocha tests/**/*-tests.js --config configs/.mocharc.json"
   },
   "engines": {
     "node": "14"
@@ -16,9 +17,11 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "chai": "^4.3.6",
     "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "mocha": "^9.2.0"
   },
   "private": true
 }
