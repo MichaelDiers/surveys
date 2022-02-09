@@ -30,8 +30,12 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: npm install
-      - run: npm test
+      - name: npm install
+        run: npm install
+        working-directory: ${{ env.SOURCE_DIR }} 
+      - name: npm test
+        run: npm test
+        working-directory: ${{ env.SOURCE_DIR }}
       - name: delete topic
         uses: actions-hub/gcloud@master
         continue-on-error: true
@@ -90,8 +94,12 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: npm install
-      - run: npm test
+      - name: npm install
+        run: npm install
+        working-directory: ${{ env.SOURCE_DIR }} 
+      - name: npm test
+        run: npm test
+        working-directory: ${{ env.SOURCE_DIR }}
       - name: delete topic
         uses: actions-hub/gcloud@master
         continue-on-error: true
@@ -150,8 +158,12 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: npm install
-      - run: npm test
+      - name: npm install
+        run: npm install
+        working-directory: ${{ env.SOURCE_DIR }} 
+      - name: npm test
+        run: npm test
+        working-directory: ${{ env.SOURCE_DIR }}
       - name: delete topic
         uses: actions-hub/gcloud@master
         continue-on-error: true
