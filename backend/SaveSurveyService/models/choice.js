@@ -14,8 +14,9 @@ class Choice extends Base {
   constructor(json) {
     super(json);
 
-    this.answer = Base.validate('answer', json?.answer);
-    this.id = Base.validate('id', json?.id, uuidValidator);
+    this.answer = Base.validate('answer', json.answer);
+    this.id = Base.validate('id', json.id, uuidValidator);
+    this.selectable = Base.validateBoolean('selectable', json.selectable);
   }
 }
 

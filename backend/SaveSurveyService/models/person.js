@@ -3,7 +3,7 @@ const emailValidator = require('../validators/email-validator');
 const uuidValidator = require('../validators/uuid-validator');
 
 /**
- * Describes a participant and an organizer of a survey.
+ * Describes the organizer of a survey and is base class for Participant.
  */
 class Person extends Base {
   /**

@@ -7,28 +7,56 @@
     {
       "email": "foo@bar.nonsense_domain_for_test",
       "name": "foo",
-      "id": "16f06c70-3928-48f9-9959-07bf075322ed"
+      "id": "16f06c70-3928-48f9-9959-07bf075322ed",
+      "questions": [
+        {
+          "questionId": "0844caec-f8b2-4836-8895-c9d1757fcf06",
+          "choiceId": "fa6ba970-1029-4f79-ba31-39dbfc6c32e0"
+        },
+        {
+          "questionId": "15732487-725f-443b-ac82-41af07fc42d3",
+          "choiceId": "ba94734d-075d-4d08-afb1-eae85bb84112"
+        }
+      ]
     },
     {
       "email": "bar@foo.nonsense_domain_for_test",
       "name": "bar",
-      "id": "b3144549-54ba-4839-8b64-7c4565ca80f4"
+      "id": "b3144549-54ba-4839-8b64-7c4565ca80f4",
+      "questions": [
+        {
+          "questionId": "0844caec-f8b2-4836-8895-c9d1757fcf06",
+          "choiceId": "52e23da7-02e8-49ae-91a2-b63f16f1f123"
+        },
+        {
+          "questionId": "15732487-725f-443b-ac82-41af07fc42d3",
+          "choiceId": "ba94734d-075d-4d08-afb1-eae85bb84112"
+        }
+      ]
     }
   ],
   "questions": [
     {
       "choices": [
         {
+          "answer": "Please select",
+          "id": "416cd415-820f-4b9a-b6db-b0c0fed34939",
+          "selectable": false
+        },
+        {
           "answer": "The answer 1 of question 1",
-          "id": "fa6ba970-1029-4f79-ba31-39dbfc6c32e0"
+          "id": "fa6ba970-1029-4f79-ba31-39dbfc6c32e0",
+          "selectable": true
         },
         {
           "answer": "The answer 2 of question 1",
-          "id": "52e23da7-02e8-49ae-91a2-b63f16f1f123"
+          "id": "52e23da7-02e8-49ae-91a2-b63f16f1f123",
+          "selectable": true
         },
         {
           "answer": "The answer 3 of question 1",
-          "id": "f0672fcf-ddf9-4fcf-89a4-9442c8bd4a2b"
+          "id": "f0672fcf-ddf9-4fcf-89a4-9442c8bd4a2b",
+          "selectable": true
         }
       ],
       "question": "The text of question 1",
@@ -38,12 +66,19 @@
     {
       "choices": [
         {
+          "answer": "Please select",
+          "id": "3ec389e0-0533-404c-9bd2-957439390dfa",
+          "selectable": false
+        },
+        {
           "answer": "The answer 1 of question 2",
-          "id": "86988464-6ec9-4e80-909e-751c465b08d6"
+          "id": "86988464-6ec9-4e80-909e-751c465b08d6",
+          "selectable": true
         },
         {
           "answer": "The answer 2 of question 2",
-          "id": "ba94734d-075d-4d08-afb1-eae85bb84112"
+          "id": "ba94734d-075d-4d08-afb1-eae85bb84112",
+          "selectable": true
         }
       ],
       "question": "The text of question 2",

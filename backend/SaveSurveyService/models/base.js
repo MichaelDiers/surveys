@@ -28,6 +28,22 @@ class Base {
 
     throw new Error(`Invalid ${propertyName}: '${value}'`);
   }
+
+  /**
+   * Validate a boolean property.
+   * @param {string} propertyName The name of the property to be validated.
+   * @param {any} value The value of the property.
+   * @param {function} validateFunc An additional validation function '(value) => true'.
+   * @returns The value if the validation succeeds. If the validation fails
+   *  an Error is thrown.
+   */
+  static validateBoolean(propertyName, value, validateFunc) {
+    if ((value || value === false) && (!validateFunc || validateFunc(value))) {
+      return value;
+    }
+
+    throw new Error(`Invalid ${propertyName}: '${value}'`);
+  }
 }
 
 module.exports = Base;

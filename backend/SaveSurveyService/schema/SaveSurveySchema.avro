@@ -39,6 +39,28 @@
               "name": "id",
               "type": "string",
               "logicalType": "uuid"
+            },
+            {
+              "name": "questions",
+              "type": {
+                "type": "array",
+                "items": {
+                  "name": "questionRef",
+                  "type": "record",
+                  "fields": [
+                    {
+                      "name": "questionId",
+                      "type": "string",
+                      "logicalType": "uuid"
+                    },
+                    {
+                      "name": "choiceId",
+                      "type": "string",
+                      "logicalType": "uuid"
+                    }
+                  ]
+                }
+              }
             }
           ]
         }
@@ -68,6 +90,10 @@
                       "name": "id",
                       "type": "string",
                       "logicalType": "uuid"
+                    },
+                    {
+                      "name": "selectable",
+                      "type": "boolean"
                     }
                   ]
                 }

@@ -1,4 +1,5 @@
 const Base = require('./base');
+const Participant = require('./participant');
 const Person = require('./person');
 const Question = require('./question');
 
@@ -14,7 +15,7 @@ class Survey extends Base {
    * @param {string} json.id The id of the survey as a v4 guid.
    * @param {string} json.name The name of the survey.
    * @param {Person} json.organizer The organizer of the survey.
-   * @param {Person[]} json.participants The participants of the survey.
+   * @param {Participant[]} json.participants The participants of the survey.
    * @param {Question[]} json.questions The questions of the survey.
    */
   constructor(json) {
@@ -31,7 +32,7 @@ class Survey extends Base {
     this.id = Base.validate('id', json.id, uuidValidator);
     this.name = Base.validate('name', json.name);
     this.organizer = new Person(json.organizer);
-    this.participants = json.participants?.map((p) => new Person(p));
+    this.participants = json.participants?.map((p) => new Participant(p));
     this.questions = json.questions?.map((q) => new Question(q));
     this.link = Base.validate('link', json.link);
     this.info = Base.validate('info', json.info);
