@@ -36,6 +36,37 @@ class Survey extends Base {
     this.questions = json.questions?.map((q) => new Question(q));
     this.link = Base.validate('link', json.link);
     this.info = Base.validate('info', json.info);
+
+    this.participants.forEach((participant, i) => {
+      for (let j = i + 1; j < this.participants.length; j += 1) {
+        if (participant.id === this.participants[j].id) {
+          throw new Error(`Invalid participants (duplicate id): ${JSON.stringify(this.participants)}`);
+        }
+      }
+    });
+
+    this.participants.forEach((participant) => {
+      participant.questions.forEach(({ questionId, choiceId }) => {
+        const question = this.questions.find((q) => q.id === questionId);
+        if (!question) {
+          throw new Error(`Invalid participants (questionId does not match): ${JSON.stringify(this.participants)}`);
+        }
+
+        if (!question.choices.some((choice) => choice.id === choiceId)) {
+          throw new Error(`Invalid participants (choiceId does not match): ${JSON.stringify(this.participants)}`);
+        }
+      });
+    });
+
+    this.questions.forEach((question) => {
+      question.choices.forEach(({ id }, i) => {
+        for (let j = i + 1; j < question.choices.length; j += 1) {
+          if (id === question.choices[j].id) {
+            throw new Error('Invalid choices (duplicate choiceId):');
+          }
+        }
+      });
+    });
   }
 }
 

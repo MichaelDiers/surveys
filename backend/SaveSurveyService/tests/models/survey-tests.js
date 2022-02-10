@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const uuid = require('uuid');
 
 const testHelper = require('../test-helper');
 const Survey = require('../../models/survey');
@@ -79,6 +80,51 @@ describe('survey.js', () => {
       });
 
       expect(json.questions.length).to.equal(survey.questions.length);
+    });
+  });
+
+  describe('dependencies', () => {
+    describe('check participant ids', () => {
+      it('participant ids are unique', () => {
+        const data = JSON.parse(JSON.stringify(testHelper.surveyTestData));
+        expect(() => new Survey(data)).not.to.throw(Error);
+      });
+
+      it('participant ids are not unique', () => {
+        const data = JSON.parse(JSON.stringify(testHelper.surveyTestData));
+        data.participants.push(data.participants[0]);
+        expect(() => new Survey(data)).to.throw(Error, 'Invalid participants (duplicate id):');
+      });
+    });
+
+    describe('check participant default answers', () => {
+      it('participant answer matches questions', () => {
+        const data = JSON.parse(JSON.stringify(testHelper.surveyTestData));
+        expect(() => new Survey(data)).not.to.throw(Error);
+      });
+
+      it('questionId does not match questions', () => {
+        const data = JSON.parse(JSON.stringify(testHelper.surveyTestData));
+        data.participants[0].questions[1].questionId = uuid.v4();
+
+        expect(() => new Survey(data)).to.throw(Error, 'Invalid participants (questionId does not match):');
+      });
+
+      it('choiceId does not match questions', () => {
+        const data = JSON.parse(JSON.stringify(testHelper.surveyTestData));
+        data.participants[0].questions[1].choiceId = uuid.v4();
+
+        expect(() => new Survey(data)).to.throw(Error, 'Invalid participants (choiceId does not match):');
+      });
+    });
+
+    describe('check question choices', () => {
+      it('duplicate choice id', () => {
+        const data = JSON.parse(JSON.stringify(testHelper.surveyTestData));
+        data.questions[1].choices[1].id = data.questions[1].choices[0].id;
+
+        expect(() => new Survey(data)).to.throw(Error, 'Invalid choices (duplicate choiceId):');
+      });
     });
   });
 });
