@@ -83,7 +83,7 @@
               "logicalType": "uuid"
             },
             {
-              "name": "order".
+              "name": "order",
               "type": "int"
             }
           ]
