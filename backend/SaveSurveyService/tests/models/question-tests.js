@@ -11,6 +11,21 @@ describe('question.js', () => {
     testHelper.passTest(Question, testHelper.surveyTestData.questions[0], 'id');
   });
 
+  describe('order', () => {
+    testHelper.raiseErrorIfNotExists(Question, testHelper.surveyTestData.questions[0], 'order');
+    testHelper.passTest(Question, testHelper.surveyTestData.questions[0], 'order');
+
+    describe('check invalid order values', () => {
+      [-1, '1'].forEach((order) => {
+        it(`order = ${order}`, () => {
+          const json = JSON.parse(JSON.stringify(testHelper.surveyTestData.questions[0]));
+          json.order = order;
+          expect(() => new Question(json)).to.throw(Error, 'Invalid order:');
+        });
+      });
+    });
+  });
+
   describe('question', () => {
     testHelper.raiseErrorIfNotExists(Question, testHelper.surveyTestData.questions[0], 'question');
     testHelper.passTest(Question, testHelper.surveyTestData.questions[0], 'question');

@@ -3,7 +3,7 @@
   "description": "Cloud service for saving surveys to firestore.",
   "scripts": {
     "lint": "eslint -c configs/.eslintrc.js . --fix",
-    "git": "git add .. && git status",
+    "git": "git add . && git add ../../.github/workflows/SaveSurveyResultService.yaml && git status",
     "gitadd": "npm run lint && npm run git",
     "test": "mocha tests/**/*-tests.js --config configs/.mocharc.json"
   },

@@ -32,7 +32,8 @@
         }
       ],
       "question": "The text of question 1",
-      "id": "0844caec-f8b2-4836-8895-c9d1757fcf06"
+      "id": "0844caec-f8b2-4836-8895-c9d1757fcf06",
+      "order": 1
     },
     {
       "choices": [
@@ -46,7 +47,8 @@
         }
       ],
       "question": "The text of question 2",
-      "id": "15732487-725f-443b-ac82-41af07fc42d3"
+      "id": "15732487-725f-443b-ac82-41af07fc42d3",
+      "order": 2
     }
   ],
   "organizer": {

@@ -23,6 +23,7 @@ class Question extends Base {
     this.choices = json.choices.map((choice) => new Choice(choice));
     this.id = Base.validate('id', json?.id, uuidValidator);
     this.question = Base.validate('question', json?.question);
+    this.order = Base.validate('order', json.order, (value) => Number.isInteger(value) && value > -1);
   }
 }
 
