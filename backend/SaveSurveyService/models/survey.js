@@ -35,19 +35,22 @@ const create = (json, validator = new Validator(json)) => {
     questions: json.questions.map((q) => createQuestion(q)),
   };
 
-  survey.participants.forEach((participant) => {
-    if (participant.questions.length !== survey.questions.length) {
-      validator.throwError(participant, 'participant', 'questions references and questions do not match');
-    }
+  // more or less suggested ansers than questions
+  if (survey.participants.some(({ questions }) => questions.length !== survey.questions.length)) {
+    validator.throwError(survey.participants, 'participants', 'Missing or too many suggested answers');
+  }
 
-    participant.questions.forEach((qr) => {
-      const question = survey.questions.find((q) => q.id === qr.questionId);
+  // referenced questionId does not exists
+  survey.participants.forEach(({ questions }) => {
+    questions.forEach(({ questionId, choiceId }) => {
+      const question = survey.questions.find((q) => q.id === questionId);
       if (!question) {
-        validator.throwError(participant, 'participant', 'unknown reference to question id');
+        validator.throwError(survey.participants, 'participants', 'referenced questionId does not exists');
       }
 
-      if (!question.choices.some((q) => q.choiceId === qr.choiceId)) {
-        validator.throwError(participant, 'participant', 'unknown reference to choice id');
+      // referenced choiceId does not exists
+      if (question.choices.every((choice) => choice.id !== choiceId)) {
+        validator.throwError(survey.participants, 'participants', 'referenced choiceId does not exists');
       }
     });
   });

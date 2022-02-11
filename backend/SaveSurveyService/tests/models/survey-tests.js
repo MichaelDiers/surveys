@@ -32,18 +32,28 @@ describe('survey.js', () => {
   usingInvalidUuidsThrowsAnError(create, survey, 'id');
 
   describe('cross check data', () => {
-    it('missing suggested answer for a question throws an error', () => {
+    it('more suggested ansers than questions throws an error', () => {
       const testData = JSON.parse(JSON.stringify(survey));
-      testData.participants[0].questions.pop();
-      expect(() => create(testData)).to.throw(Error, 'questions references and questions do not match');
+      testData.participants[0].questions.push({ questionId: uuid.v4(), choiceId: uuid.v4() });
+      expect(() => create(testData)).to.throw(Error, 'Missing or too many suggested answers');
     });
 
-    it('additional suggested answer for an unknown question throws an error', () => {
+    it('less suggested ansers than questions throws an error', () => {
       const testData = JSON.parse(JSON.stringify(survey));
-      const reference = JSON.parse(JSON.stringify(testData.participants[0].questions[0]));
-      reference.questionId = uuid.v4();
-      testData.participants[0].questions.push(reference);
-      expect(() => create(testData)).to.throw(Error, 'questions references and questions do not match');
+      testData.participants[0].questions.pop();
+      expect(() => create(testData)).to.throw(Error, 'Missing or too many suggested answers');
+    });
+
+    it('question id referenced that does not exists throws an error', () => {
+      const testData = JSON.parse(JSON.stringify(survey));
+      testData.participants[0].questions[0].questionId = uuid.v4();
+      expect(() => create(testData)).to.throw(Error, 'referenced questionId does not exists');
+    });
+
+    it('choice id referenced that does not exists throws an error', () => {
+      const testData = JSON.parse(JSON.stringify(survey));
+      testData.participants[0].questions[0].choiceId = uuid.v4();
+      expect(() => create(testData)).to.throw(Error, 'referenced choiceId does not exists');
     });
 
     it('duplicate suggested answer for a question throws an error', () => {
@@ -53,10 +63,9 @@ describe('survey.js', () => {
       expect(() => create(testData)).to.throw(Error, 'Duplicate values');
     });
 
-    it('unknown choiceId for a question throws an error', () => {
+    it('run example', () => {
       const testData = JSON.parse(JSON.stringify(survey));
-      testData.participants[0].questions[0].choiceId = uuid.v4();
-      expect(() => create(testData)).to.throw(Error, 'unknown reference to choice id');
+      create(testData);
     });
   });
 });
