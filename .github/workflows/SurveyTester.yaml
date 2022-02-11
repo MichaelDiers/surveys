@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 env:
   FUNCTION_NAME: SurveyTester
-  SOURCE_DIR: 'backend/SurveyTester/functions'
+  SOURCE_DIR: 'backend/SurveyTester'
 jobs:
   test:    
     runs-on: ubuntu-latest

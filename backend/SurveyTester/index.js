@@ -10,30 +10,13 @@ const {
 const database = new Firestore();
 const pubsub = new PubSub();
 
-// https://stackoverflow.com/questions/16167581/sort-object-properties-and-json-stringify
-const orderedStringify = (obj) => {
-  const allKeys = [];
-  const seen = {};
-  JSON.stringify(obj, (key, value) => {
-    if (!(key in seen)) {
-      allKeys.push(key);
-      seen[key] = null;
-    }
-
-    return value;
-  });
-
-  allKeys.sort();
-  return JSON.stringify(obj, allKeys);
-};
-
 exports.SurveyTester = async (req, res) => {
   const docRef = database.collection(collectionName).doc(documentId);
   const doc = await docRef.get();
 
   if (doc.exists) {
-    const stringify = orderedStringify(doc.data());
-    const data = Buffer.from(stringify);
+    const { json } = doc.data();
+    const data = Buffer.from(json);
     await pubsub.topic(topicNamePub).publishMessage({ data });
     res.send('OK').end();
   } else {
