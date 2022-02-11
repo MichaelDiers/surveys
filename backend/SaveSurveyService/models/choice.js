@@ -1,23 +1,25 @@
-const Base = require('./base');
-const uuidValidator = require('../validators/uuid-validator');
+const Validator = require('../validator');
 
 /**
- * Describes a choice of a survey question.
+ * Creates a choice object.
+ * @param {object} json The choice is initialized from the given json.
+ * @param {string} json.answer The text of the answer.
+ * @param {string} json.id The id of the choice. A string that represents a v4 guid.
+ * @param {boolean} json.selectable Indicates if the answer is a valid answer or an info text.
+ * @param {Validator} validator An input validator.
  */
-class Choice extends Base {
-  /**
-   * Creates a new instance of Choice.
-   * @param {object} json The choice is initialized from that object.
-   * @param {string} json.answer The text of the answer.
-   * @param {string} json.id The id of the choice. A string that represents a v4 guid.
-   */
-  constructor(json) {
-    super(json);
+const create = (json, validator = new Validator(json)) => {
+  validator.validate({ json });
+  validator.validateIsObject({ json });
+  validator.validateString({ answer: json.answer });
+  validator.validateUuid({ id: json.id });
+  validator.validateBoolean({ selectable: json.selectable });
 
-    this.answer = Base.validate('answer', json.answer);
-    this.id = Base.validate('id', json.id, uuidValidator);
-    this.selectable = Base.validateBoolean('selectable', json.selectable);
-  }
-}
+  return {
+    answer: json.answer,
+    id: json.id,
+    selectable: json.selectable,
+  };
+};
 
-module.exports = Choice;
+module.exports = create;

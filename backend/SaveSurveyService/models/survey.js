@@ -1,73 +1,58 @@
-const Base = require('./base');
-const Participant = require('./participant');
-const Person = require('./person');
-const Question = require('./question');
-
-const uuidValidator = require('../validators/uuid-validator');
+const createParticipant = require('./participant');
+const createPerson = require('./person');
+const createQuestion = require('./question');
+const Validator = require('../validator');
 
 /**
- * Describes the data of a survey.
+ * Creates a survey object.
+ * @param {object} json The survey is initialized from the given json.
+ * @param {string} json.id The id of the survey as a v4 guid.
+ * @param {string} json.info A description of the survey.Base
+ * @param {string} json.link A link to additional survey information.
+ * @param {string} json.name The name of the survey.
+ * @param {object} json.organizer The organizer of the survey.
+ * @param {object[]} json.participants The participants of the survey.
+ * @param {object[]} json.questions The questions of the survey.
+ * @param {Validator} validator An input validator.
  */
-class Survey extends Base {
-  /**
-   * Creates a new instance of Survey.
-   * @param {object} json The survey is initialized from the given json.
-   * @param {string} json.id The id of the survey as a v4 guid.
-   * @param {string} json.name The name of the survey.
-   * @param {Person} json.organizer The organizer of the survey.
-   * @param {Participant[]} json.participants The participants of the survey.
-   * @param {Question[]} json.questions The questions of the survey.
-   */
-  constructor(json) {
-    super(json);
+const create = (json, validator = new Validator(json)) => {
+  validator.validateIsObject({ json });
+  validator.validateUuid({ id: json.id });
+  validator.validateString({ info: json.info });
+  validator.validateString({ link: json.link });
+  validator.validateString({ name: json.name });
+  validator.validateArray({ participants: json.participants });
+  validator.validateArray({ questions: json.questions });
+  validator.validateIsObject({ organizer: json.organizer });
 
-    if (!json.participants || !json.participants.map) {
-      throw new Error(`Invalid participants: '${json.participants}'`);
+  const survey = {
+    id: json.id,
+    info: json.info,
+    link: json.link,
+    name: json.name,
+    organizer: createPerson(json.organizer),
+    participants: json.participants.map((p) => createParticipant(p)),
+    questions: json.questions.map((q) => createQuestion(q)),
+  };
+
+  survey.participants.forEach((participant) => {
+    if (participant.questions.length !== survey.questions.length) {
+      validator.throwError(participant, 'participant', 'questions references and questions do not match');
     }
 
-    if (!json.questions || !json.questions.map) {
-      throw new Error(`Invalid questions: '${json.questions}'`);
-    }
+    participant.questions.forEach((qr) => {
+      const question = survey.questions.find((q) => q.id === qr.questionId);
+      if (!question) {
+        validator.throwError(participant, 'participant', 'unknown reference to question id');
+      }
 
-    this.id = Base.validate('id', json.id, uuidValidator);
-    this.name = Base.validate('name', json.name);
-    this.organizer = new Person(json.organizer);
-    this.participants = json.participants?.map((p) => new Participant(p));
-    this.questions = json.questions?.map((q) => new Question(q));
-    this.link = Base.validate('link', json.link);
-    this.info = Base.validate('info', json.info);
-
-    this.participants.forEach((participant, i) => {
-      for (let j = i + 1; j < this.participants.length; j += 1) {
-        if (participant.id === this.participants[j].id) {
-          throw new Error(`Invalid participants (duplicate id): ${JSON.stringify(this.participants)}`);
-        }
+      if (!question.choices.some((q) => q.choiceId === qr.choiceId)) {
+        validator.throwError(participant, 'participant', 'unknown reference to choice id');
       }
     });
+  });
 
-    this.participants.forEach((participant) => {
-      participant.questions.forEach(({ questionId, choiceId }) => {
-        const question = this.questions.find((q) => q.id === questionId);
-        if (!question) {
-          throw new Error(`Invalid participants (questionId does not match): ${JSON.stringify(this.participants)}`);
-        }
+  return survey;
+};
 
-        if (!question.choices.some((choice) => choice.id === choiceId)) {
-          throw new Error(`Invalid participants (choiceId does not match): ${JSON.stringify(this.participants)}`);
-        }
-      });
-    });
-
-    this.questions.forEach((question) => {
-      question.choices.forEach(({ id }, i) => {
-        for (let j = i + 1; j < question.choices.length; j += 1) {
-          if (id === question.choices[j].id) {
-            throw new Error('Invalid choices (duplicate choiceId):');
-          }
-        }
-      });
-    });
-  }
-}
-
-module.exports = Survey;
+module.exports = create;

@@ -1,30 +1,32 @@
-const Base = require('./base');
-const Choice = require('./choice');
-const uuidValidator = require('../validators/uuid-validator');
+const createChoice = require('./choice');
+const Validator = require('../validator');
 
 /**
- * Describes a question of a survey.
+ * Creates a question object.
+ * @param {object} json The object is initialized from the given json.
+ * @param {object[]} json.choices The choices of the question.
+ * @param {string} json.id The id of the question as a v4 guid.
+ * @param {string} json.question The text of the question.
+ * @param {int} json.order Used for sorting questions.
  */
-class Question extends Base {
-  /**
-   * Creates a new instance of Question.
-   * @param {object} json The object is initialized from the given json.
-   * @param {Choice[]} json.choices The choices of the question.
-   * @param {string} json.id The id of the question as a v4 guid.
-   * @param {string} json.question The text of the question.
-   */
-  constructor(json) {
-    super(json);
+const create = (json, validator = new Validator(json)) => {
+  validator.validate({ json });
+  validator.validateIsObject({ json });
+  validator.validateArray({ choices: json.choices });
+  validator.validateUuid({ id: json.id });
+  validator.validateString({ question: json.question });
+  validator.validateIntGreaterThanZero({ order: json.order });
 
-    if (!json.choices || !json.choices.map) {
-      throw new Error(`Invalid choices: '${json.choices}'`);
-    }
+  const question = {
+    choices: json.choices.map((choice) => createChoice(choice)),
+    id: json.id,
+    question: json.question,
+    order: json.order,
+  };
 
-    this.choices = json.choices.map((choice) => new Choice(choice));
-    this.id = Base.validate('id', json?.id, uuidValidator);
-    this.question = Base.validate('question', json?.question);
-    this.order = Base.validate('order', json.order, (value) => Number.isInteger(value) && value > -1);
-  }
-}
+  validator.validateUnique({ choices: question.choices.map((c) => c.id) });
 
-module.exports = Question;
+  return question;
+};
+
+module.exports = create;

@@ -1,20 +1,44 @@
 /**
- * Tests for class Choice.
+ * Tests for creating choices.
  */
-
-const Choice = require('../../models/choice');
-const testHelper = require('../test-helper');
+const { expect } = require('chai');
+const create = require('../../models/choice');
+const {
+  data: {
+    choice,
+  },
+  createFromEmptyParameterThrowsError,
+  createFromEmptyThrowsError,
+  createFromNonObjectThrowsError,
+  serializeTest,
+  usingInvalidUuidsThrowsAnError,
+} = require('../test-helper');
 
 describe('choice.js', () => {
-  testHelper.raiseErrorEmptyJson(Choice);
+  createFromEmptyThrowsError(create);
+  createFromEmptyParameterThrowsError(create, choice, 'answer', 'id', 'selectable');
+  createFromNonObjectThrowsError(create);
 
-  describe('id', () => {
-    testHelper.raiseErrorIfNotExists(Choice, testHelper.surveyTestData.questions[0].choices[0], 'id');
-    testHelper.testIds(Choice, testHelper.surveyTestData.questions[0].choices[0]);
+  describe('using invalid types for paramters throws an error', () => {
+    it('using boolean for answer throws an error', () => {
+      const testData = JSON.parse(JSON.stringify(choice));
+      testData.answer = true;
+      expect(() => create(testData)).to.throw(Error, 'Invalid value for answer = ');
+    });
+
+    it('using boolean for id throws an error', () => {
+      const testData = JSON.parse(JSON.stringify(choice));
+      testData.id = true;
+      expect(() => create(testData)).to.throw(Error, 'Invalid value for id = ');
+    });
+
+    it('using string for selectable throws an error', () => {
+      const testData = JSON.parse(JSON.stringify(choice));
+      testData.selectable = 'true';
+      expect(() => create(testData)).to.throw(Error, 'Invalid value for selectable = ');
+    });
   });
 
-  describe('answer', () => {
-    testHelper.raiseErrorIfNotExists(Choice, testHelper.surveyTestData.questions[0].choices[0], 'answer');
-    testHelper.passTest(Choice, testHelper.surveyTestData.questions[0].choices[0], 'answer');
-  });
+  usingInvalidUuidsThrowsAnError(create, choice, 'id');
+  serializeTest(create, choice);
 });

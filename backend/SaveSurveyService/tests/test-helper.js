@@ -1,88 +1,153 @@
 const { expect } = require('chai');
 const uuid = require('uuid');
 
-const surveyTestData = require('../schema/example.json');
+const survey = require('../schema/example.json');
 
-const guids = {
-  invalid: [
-    undefined,
-    null,
-    '',
-    uuid.v4().substring(0, uuid.v4().length - 2),
-    'dfghjklö',
-    '456789',
-  ],
-  valid: [
-    uuid.v4(),
-  ],
+const choice = {
+  answer: 'text',
+  id: uuid.v4(),
+  selectable: true,
 };
 
-const passTest = (CtorFunc, data, propertyName) => {
-  describe(`initialize ${CtorFunc.name} with valid value`, () => {
-    it(`check ${propertyName}`, () => {
-      const json = JSON.parse(JSON.stringify(data));
-      expect(new CtorFunc(json)[propertyName]).to.equal(data[propertyName]);
+const person = {
+  email: 'example@domain.example',
+  id: uuid.v4(),
+  name: 'name of the game',
+};
+
+const participant = JSON.parse(JSON.stringify(person));
+participant.questions = [
+  {
+    choiceId: uuid.v4(),
+    questionId: uuid.v4(),
+  },
+  {
+    choiceId: uuid.v4(),
+    questionId: uuid.v4(),
+  },
+];
+
+const question = {
+  question: 'question text',
+  id: uuid.v4(),
+  order: 1,
+  choices: [1, 2, 3].map((i) => {
+    const created = {
+      answer: `text-${i}`,
+      id: uuid.v4(),
+      selectable: true,
+    };
+
+    return created;
+  }),
+};
+
+const questionReference = {
+  questionId: uuid.v4(),
+  choiceId: uuid.v4(),
+};
+
+const empty = [undefined, null, ''];
+
+const invalidGuid = [
+  'abc',
+  uuid.v4().substring(0, uuid.v4().length - 2),
+  '5678',
+  56789,
+];
+
+const createFromNonObjectThrowsError = (create) => {
+  describe('create throws an Error if input is not an object', () => {
+    it('json=true', () => {
+      expect(() => create(true)).to.throw(Error, 'Invalid value for json = true');
     });
   });
 };
 
-const raiseErrorEmptyJson = (CtorFunc) => {
-  describe('raise error if input is invalid', () => {
-    [undefined, null, ''].forEach((json) => {
-      it(`new ${CtorFunc.name}(${json})`, () => {
-        expect(() => new CtorFunc(json)).to.throw(Error, `${CtorFunc.name}: Empty json`);
+const createFromEmptyThrowsError = (create) => {
+  describe('create throws an Error if input is empty', () => {
+    empty.forEach((json) => {
+      it(`json=${json}`, () => {
+        expect(() => create(json)).to.throw(Error, 'Invalid value for json =');
       });
     });
   });
 };
 
-const raiseErrorIfNotExists = (CtorFunc, data, propertyName, error) => {
-  describe(`raise error if ${propertyName} does not exists`, () => {
-    it(`delete ${propertyName}`, () => {
-      const json = JSON.parse(JSON.stringify(data));
-      delete json[propertyName];
-      expect(() => new CtorFunc(json)).to.throw(Error, error || `Invalid ${propertyName}: 'undefined'`);
-    });
-  });
+const createFromEmptyParameterThrowsError = (create, data, ...parameters) => {
+  describe('throw error if parameter is not set', () => {
+    parameters.forEach((parameter) => {
+      describe(`parameter: ${parameter}`, () => {
+        it(`delete ${parameter}`, () => {
+          const testData = JSON.parse(JSON.stringify(data));
+          delete testData[parameter];
+          expect(() => create(testData)).to.throw(Error, `Invalid value for ${parameter} =`);
+        });
 
-  describe(`raise error if ${propertyName} is invalid`, () => {
-    [undefined, null, ''].forEach((value) => {
-      it(`${propertyName} = ${value}`, () => {
-        const json = JSON.parse(JSON.stringify(data));
-        json[propertyName] = value;
-        expect(() => new CtorFunc(json)).to.throw(Error, error || `Invalid ${propertyName}: '${value}'`);
+        empty.forEach((parameterValue) => {
+          it(`${parameter}=${parameterValue}`, () => {
+            const testData = JSON.parse(JSON.stringify(data));
+            testData[parameter] = parameterValue;
+            expect(() => create(testData)).to.throw(Error, `Invalid value for ${parameter} =`);
+          });
+        });
       });
     });
   });
 };
 
-const testIds = (CtorFunc, data) => {
-  describe('expect initialization to throw error for invalid id', () => {
-    guids.invalid.forEach((id) => {
-      it(`id = ${id}`, () => {
-        const json = JSON.parse(JSON.stringify(data));
-        json.id = id;
-        expect(() => new CtorFunc(json)).to.throw(`Invalid id: '${id}'`);
+const emailCheck = (create, data, parameter) => {
+  describe('using invalid emails throws an error', () => {
+    ['foobar', '@bar.de', 'foo@'].forEach((email) => {
+      it(`${parameter} = ${email}`, () => {
+        const testData = JSON.parse(JSON.stringify(data));
+        testData[parameter] = email;
+        expect(() => create(testData)).to.throw(`Invalid value for ${parameter} = ${email}`);
       });
     });
   });
+};
 
-  describe('expect initialization to pass for valid id', () => {
-    guids.valid.forEach((id) => {
-      it(`id = ${id}`, () => {
-        const json = JSON.parse(JSON.stringify(data));
-        json.id = id;
-        expect(new CtorFunc(json).id).to.equal(id);
+const serializeTest = (create, data) => {
+  describe('serialize check', () => {
+    it('original and created object should be equal', () => {
+      const testData = JSON.parse(JSON.stringify(data));
+      const created = create(testData);
+      expect(Object.keys(data).length).to.equal(Object.keys(created).length);
+      Object.keys(data).forEach((key) => {
+        expect(data[key]).to.equal(created[key]);
+      });
+    });
+  });
+};
+
+const usingInvalidUuidsThrowsAnError = (create, data, parameter) => {
+  describe('using a non uuid v4 throws an error', () => {
+    invalidGuid.forEach((guid) => {
+      it(`${parameter} = ${guid}`, () => {
+        const testData = JSON.parse(JSON.stringify(data));
+        testData[parameter] = guid;
+        expect(() => create(testData)).to.throw(Error, `Invalid value for ${parameter} = ${guid}`);
       });
     });
   });
 };
 
 module.exports = {
-  surveyTestData,
-  raiseErrorIfNotExists,
-  raiseErrorEmptyJson,
-  passTest,
-  testIds,
-  guids,
+  data: {
+    choice,
+    empty,
+    invalidGuid,
+    participant,
+    person,
+    question,
+    questionReference,
+    survey,
+  },
+  createFromEmptyParameterThrowsError,
+  createFromEmptyThrowsError,
+  createFromNonObjectThrowsError,
+  emailCheck,
+  serializeTest,
+  usingInvalidUuidsThrowsAnError,
 };

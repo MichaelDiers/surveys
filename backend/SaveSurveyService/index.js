@@ -1,7 +1,7 @@
 const Firestore = require('@google-cloud/firestore');
 const { PubSub } = require('@google-cloud/pubsub');
 
-const Survey = require('./models/survey');
+const create = require('./models/survey');
 
 // read enironment variables
 const {
@@ -24,15 +24,15 @@ const onMessagePublished = async (message) => {
   try {
     // parse message and covert to survey
     const json = JSON.parse(Buffer.from(message.data, 'base64').toString());
-    const survey = JSON.parse(JSON.stringify(new Survey(json)));
+    const survey = create(json);
     survey.timestamp = Firestore.FieldValue.serverTimestamp();
 
     // send to firestore
-    const docRef = database.collection(collectionName).doc(survey.id);
+    const docRef = database.collection(collectionName).doc();
     await docRef.set(survey);
 
     // send status update
-    const statusUpdate = `{"surveyId":"${survey.id}","participantId": "", "status": "${statusCreated}"}`;
+    const statusUpdate = `{"surveyId":"${docRef.id}","participantId": "", "status": "${statusCreated}"}`;
     const data = Buffer.from(statusUpdate);
     await pubsub.topic(topicName).publishMessage({ data });
   } catch (error) {

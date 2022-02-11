@@ -1,27 +1,26 @@
-const Person = require('./person');
-const QuestionReference = require('./question-reference');
+const createPerson = require('./person');
+const createQuestionReference = require('./question-reference');
+const Validator = require('../validator');
 
 /**
- * Describes a participant of a survey.
- */
-class Participant extends Person {
-  /**
-   * Creates a new instance of Participant.
-   * @param {object} json The object is initialized from that object.
-   * @param {string} json.email The email address of the participant.
-   * @param {string} json.id The id of the participant as a v4 guid.
-   * @param {string} json.name The name of the participant.
-   * @param {QuestionReference[]} json.questions The answer suggestions for the participant.
-   */
-  constructor(json) {
-    super(json);
+ * Creates a participant object.
+ * @param {object} json The object is initialized from that object.
+ * @param {string} json.email The email address of the participant.
+ * @param {string} json.id The id of the participant as a v4 guid.
+ * @param {string} json.name The name of the participant.
+ * @param {object[]} json.questions The answer suggestions for the participant.
+ * @param {Validator} validator An input validator.
+*/
+const create = (json, validator = new Validator(json)) => {
+  const participant = createPerson(json);
 
-    if (!json.questions || !json.questions.map) {
-      throw new Error(`Invalid questions: '${json.questions}'`);
-    }
+  validator.validateArray({ questions: json.questions });
 
-    this.questions = json.questions.map((q) => new QuestionReference(q));
-  }
-}
+  participant.questions = json.questions.map((q) => createQuestionReference(q));
 
-module.exports = Participant;
+  validator.validateUnique({ questions: participant.questions.map((q) => q.questionId) });
+
+  return participant;
+};
+
+module.exports = create;

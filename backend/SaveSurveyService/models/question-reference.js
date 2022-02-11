@@ -1,22 +1,22 @@
-const Base = require('./base');
-const uuidValidator = require('../validators/uuid-validator');
+const Validator = require('../validator');
 
 /**
- * Describes a suggested answer for a survey question.
+ * Creates a reference to a question.
+ * @param {object} json The question reference is initialized from the given json.
+ * @param {string} json.questionId The id of the referenced question.
+ * @param {string} json.choiceId The id of the choice of the references question.
+ * @param {Validator} validator An input validator.
  */
-class QuestionReference extends Base {
-  /**
-   * Creates a new instance of QuestionReference.
-   * @param {object} json The question reference is initialized from that object.
-   * @param {string} json.questionId The id of the referenced question.
-   * @param {string} json.choiceId The id of the choice of the references question.
-   */
-  constructor(json) {
-    super(json);
+const create = (json, validator = new Validator(json)) => {
+  validator.validate({ json });
+  validator.validateIsObject({ json });
+  validator.validateUuid({ questionId: json.questionId });
+  validator.validateUuid({ choiceId: json.choiceId });
 
-    this.questionId = Base.validate('questionId', json.questionId, uuidValidator);
-    this.choiceId = Base.validate('choiceId', json.choiceId, uuidValidator);
-  }
-}
+  return {
+    questionId: json.questionId,
+    choiceId: json.choiceId,
+  };
+};
 
-module.exports = QuestionReference;
+module.exports = create;
