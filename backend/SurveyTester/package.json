@@ -2,7 +2,7 @@
   "name": "surveytester",
   "description": "Create survey by http triggered cloud function",
   "scripts": {
-    "lint": "eslint -c .eslintrc.js --fix .",
+    "lint": "eslint -c configs/.eslintrc.js --fix .",
     "git": "git add . && git status",
     "gitadd": "npm run lint && npm run git",
     "start": "npx functions-framework --target=SurveyTester"
