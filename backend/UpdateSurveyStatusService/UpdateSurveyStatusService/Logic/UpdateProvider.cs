@@ -43,9 +43,7 @@
 				throw new ArgumentException($"Cannot parse json message: {json}", nameof(json));
 			}
 
-			if (string.IsNullOrWhiteSpace(message.SurveyId)
-			    || !Guid.TryParse(message.SurveyId, out var surveyId)
-			    || surveyId == Guid.Empty)
+			if (string.IsNullOrWhiteSpace(message.SurveyId))
 			{
 				throw new ArgumentException($"Invalid surveyId: {json}", nameof(json));
 			}

@@ -23,13 +23,6 @@
 		}
 
 		[Theory]
-		[InlineData("{\"surveyId\":\"surveyId\",\"participantId\":\"participantId\",\"status\":\"INVITATION_MAIL_OK\"}")]
-		public async void UpdateThrowsArgumentException(string json)
-		{
-			await Assert.ThrowsAsync<ArgumentException>(() => new UpdateProvider(new DatabaseMock()).Update(json));
-		}
-
-		[Theory]
 		[InlineData(
 			"{\"surveyId\":\"a0341d33-8404-4763-bb7f-7ebe004eb3b9\",\"participantId\":\"participantId\",\"status\":\"INVITATION_MAIL_OK1\"}")]
 		[InlineData(
