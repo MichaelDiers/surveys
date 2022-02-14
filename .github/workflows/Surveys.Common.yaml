@@ -1,0 +1,26 @@
+name: nugets/Surveys.Common.yaml
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'nugets/Surveys.Common/Surveys.Common/**'
+  workflow_dispatch:
+env:
+  SLN_FILE: 'nugets/Surveys.Common/Surveys.Common.sln'
+  CONFIG: Release
+jobs:  
+  prod:
+    runs-on: ubuntu-latest
+    steps:      
+      - name: checkout source
+        uses: actions/checkout@v2
+      - name: use .net core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
+      - name: build
+        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
+      - name: test
+        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
+  
