@@ -33,4 +33,4 @@ jobs:
       - name: pack
         run: dotnet pack "${{ env.CSPROJ_FOLDER }}/${{ env.CSPROJ_NAME }}.csproj" -c "${{ env.CONFIG }}" -p:PackageVersion=${{ env.PACKAGE_VERSION }}.$GITHUB_RUN_NUMBER --no-build
       - name: publish
-        run: dotnet nuget push "${{ env.CSPROJ_FOLDER }}/bin/${{ env.CONFIG }}/*.nupkg" 
+        run: dotnet nuget push "${{ env.CSPROJ_FOLDER }}/bin/${{ env.CONFIG }}/*.nupkg" --source https://nuget.pkg.github.com/MichaelDiers --api-key ${{${{env.NUGET_AUTH_TOKEN}}}} --skip-duplicate --no-symbols true
