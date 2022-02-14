@@ -13,19 +13,16 @@ env:
   CONFIG: Release
   NUGET_AUTH_TOKEN: ${{ secrets.NUGET_AUTH_TOKEN }}
   PACKAGE_VERSION: '1.0'
-jobs:  
+jobs:
   prod:
     runs-on: ubuntu-latest
-    steps:      
+    steps:
       - name: checkout source
         uses: actions/checkout@v2
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 3.1.x
-          source-url: https://nuget.pkg.github.com/MichaelDiers/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{env.NUGET_AUTH_TOKEN}}    
       - name: build
         run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
       - name: test
