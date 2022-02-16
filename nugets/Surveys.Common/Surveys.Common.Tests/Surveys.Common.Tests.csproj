@@ -23,4 +23,10 @@
     <ProjectReference Include="..\Surveys.Common\Surveys.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Models\SurveyTests.Serialize.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
