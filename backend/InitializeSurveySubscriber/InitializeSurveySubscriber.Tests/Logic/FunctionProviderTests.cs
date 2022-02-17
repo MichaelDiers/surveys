@@ -31,8 +31,7 @@
         private static async Task<IFunctionProvider> InitAsync()
         {
             var configuration =
-                JsonConvert.DeserializeObject<FunctionConfiguration>(
-                    await File.ReadAllTextAsync("appsettings.Development.json"));
+                JsonConvert.DeserializeObject<FunctionConfiguration>(await File.ReadAllTextAsync("appsettings.json"));
             var provider = new FunctionProvider(configuration);
             return provider;
         }
