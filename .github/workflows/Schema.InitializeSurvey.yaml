@@ -1,15 +1,15 @@
-name: schemas\Scehma.InitializeSurvey.yaml
+name: schemas/Scehma.InitializeSurvey.yaml
 on:
   push:
     branches:
       - main
     paths:
-      - 'schemas\InitializeSurveySchema.avro'
+      - 'schemas/InitializeSurveySchema.avro'
   workflow_dispatch:
 env:
   TOPIC_NAME_SUB: INITIALIZE_SURVEY
   SCHEMA_NAME: INITIALIZE_SURVEY_SCHEMA  
-  SCHEMA_FILE: 'schemas\InitializeSurveySchema.avro'
+  SCHEMA_FILE: 'schemas/InitializeSurveySchema.avro'
   MESSAGE_ENCODING: json
 jobs:
   test:
