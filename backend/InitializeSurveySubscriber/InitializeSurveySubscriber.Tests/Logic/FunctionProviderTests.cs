@@ -20,7 +20,7 @@
         [Fact]
         public async void HandleAsync_Null_ArgumentNullException()
         {
-            var provider = await this.InitAsync();
+            var provider = await InitAsync();
             await Assert.ThrowsAsync<ArgumentNullException>(() => provider.HandleAsync(null));
         }
 
@@ -28,7 +28,7 @@
         ///     Initialize the provider and its dependencies.
         /// </summary>
         /// <returns>A <see cref="Task" /> whose result is an <see cref="IFunctionProvider" />.</returns>
-        private async Task<IFunctionProvider> InitAsync()
+        private static async Task<IFunctionProvider> InitAsync()
         {
             var configuration =
                 JsonConvert.DeserializeObject<FunctionConfiguration>(
