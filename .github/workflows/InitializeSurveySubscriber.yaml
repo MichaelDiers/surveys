@@ -17,7 +17,7 @@ env:
   NUGET_USERNAME: MichaelDiers
   NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
   CSPROJ_NUGET: 'backend/InitializeSurveySubscriber/InitializeSurveySubscriber/nuget.config'
-  CSPROJ_TEST_NUGET: 'backend/InitializeSurveySubscriber/InitializeSurveySubscriber.Testd/nuget.config'
+  CSPROJ_TEST_NUGET: 'backend/InitializeSurveySubscriber/InitializeSurveySubscriber.Tests/nuget.config'
 jobs:
   test:
     runs-on: ubuntu-latest
