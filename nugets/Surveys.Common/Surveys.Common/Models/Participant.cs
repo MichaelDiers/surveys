@@ -5,7 +5,7 @@
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
 
-    public class ExtendedParticipant : Person, IExtendedParticipant
+    public class Participant : Person, IParticipant
     {
         /// <summary>
         ///     Creates a new instance of <see cref="Person" />.
@@ -18,7 +18,7 @@
         /// <exception cref="ArgumentException">Is thrown if <paramref name="id" /> is not a guid.</exception>
         /// <exception cref="ArgumentException">Is thrown if <paramref name="email" /> is null or whitespace.</exception>
         /// <exception cref="ArgumentException">Is thrown if <paramref name="name" /> is null or whitespace.</exception>
-        public ExtendedParticipant(
+        public Participant(
             string id,
             string email,
             string name,

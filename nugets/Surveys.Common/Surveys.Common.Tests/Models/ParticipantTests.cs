@@ -8,9 +8,9 @@
     using Xunit;
 
     /// <summary>
-    ///     Tests for <see cref="ExtendedParticipant" />.
+    ///     Tests for <see cref="Participant" />.
     /// </summary>
-    public class ExtendedParticipantTests
+    public class ParticipantTests
     {
         [Theory]
         [InlineData(
@@ -27,7 +27,7 @@
             string choiceId
         )
         {
-            var participant = new ExtendedParticipant(
+            var participant = new Participant(
                 id,
                 email,
                 name,
@@ -58,7 +58,7 @@
             string choiceId
         )
         {
-            var participant = JsonConvert.DeserializeObject<ExtendedParticipant>(json);
+            var participant = JsonConvert.DeserializeObject<Participant>(json);
             Assert.NotNull(participant);
             Assert.Equal(id, participant.Id);
             Assert.Equal(email, participant.Email);
@@ -71,7 +71,7 @@
         public void ParticipantImplementsIBase()
         {
             Assert.IsAssignableFrom<IBase>(
-                new ExtendedParticipant(
+                new Participant(
                     Guid.NewGuid().ToString(),
                     "foo@bar.example",
                     "foo",
@@ -84,8 +84,8 @@
         [Fact]
         public void ParticipantImplementsIParticipant()
         {
-            Assert.IsAssignableFrom<IExtendedParticipant>(
-                new ExtendedParticipant(
+            Assert.IsAssignableFrom<IParticipant>(
+                new Participant(
                     Guid.NewGuid().ToString(),
                     "foo@bar.example",
                     "foo",
@@ -114,7 +114,7 @@
             string choiceId2
         )
         {
-            var participant = new ExtendedParticipant(
+            var participant = new Participant(
                 id,
                 email,
                 name,

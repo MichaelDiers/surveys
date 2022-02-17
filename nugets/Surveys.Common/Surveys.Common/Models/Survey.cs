@@ -8,7 +8,7 @@
     /// <summary>
     ///     Describes the data of a survey.
     /// </summary>
-    public class ExtendedSurvey : Base, IExtendedSurvey
+    public class Survey : Base, ISurvey
     {
         /// <summary>
         ///     Creates a new instance of <see cref="Base" />.
@@ -22,13 +22,13 @@
         /// <param name="questions">The survey questions.</param>
         /// <exception cref="ArgumentException">Is thrown if <paramref name="id" /> is null or whitespace.</exception>
         /// <exception cref="ArgumentException">Is thrown if <paramref name="id" /> is not a guid.</exception>
-        public ExtendedSurvey(
+        public Survey(
             string id,
             string name,
             string info,
             string link,
             Person organizer,
-            IEnumerable<ExtendedParticipant> participants,
+            IEnumerable<Participant> participants,
             IEnumerable<Question> questions
         )
             : base(id)
@@ -74,7 +74,7 @@
         ///     Gets the participants of the survey.
         /// </summary>
         [JsonProperty("participants", Required = Required.Always, Order = 14)]
-        public IEnumerable<IExtendedParticipant> Participants { get; }
+        public IEnumerable<IParticipant> Participants { get; }
 
         /// <summary>
         ///     Gets the questions of the survey.

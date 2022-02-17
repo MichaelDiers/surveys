@@ -9,15 +9,15 @@
     using Xunit;
 
     /// <summary>
-    ///     Tests for <see cref="ExtendedSurvey" />.
+    ///     Tests for <see cref="Survey" />.
     /// </summary>
-    public class ExtendedSurveyTests
+    public class SurveyTests
     {
         [Fact]
         public void DeserializeObject()
         {
-            var json = new FileInfo("Models/ExtendedSurveyTests.Serialize.json").OpenText().ReadToEnd();
-            var _ = JsonConvert.DeserializeObject<ExtendedSurvey>(json);
+            var json = new FileInfo("Models/SurveyTests.Serialize.json").OpenText().ReadToEnd();
+            var _ = JsonConvert.DeserializeObject<Survey>(json);
         }
 
 
@@ -50,7 +50,7 @@
                     10)
             };
 
-            var survey = new ExtendedSurvey(
+            var survey = new Survey(
                 Guid.NewGuid().ToString(),
                 "The survey",
                 "The info",
@@ -58,7 +58,7 @@
                 new Person(Guid.NewGuid().ToString(), "my@foo.example", "foobar"),
                 new[]
                 {
-                    new ExtendedParticipant(
+                    new Participant(
                         Guid.NewGuid().ToString(),
                         "foobar@example.example",
                         "name",
@@ -88,7 +88,7 @@
             };
 
             Assert.IsAssignableFrom<IBase>(
-                new ExtendedSurvey(
+                new Survey(
                     Guid.NewGuid().ToString(),
                     "The survey",
                     "The info",
@@ -96,7 +96,7 @@
                     new Person(Guid.NewGuid().ToString(), "my@foo.example", "foobar"),
                     new[]
                     {
-                        new ExtendedParticipant(
+                        new Participant(
                             Guid.NewGuid().ToString(),
                             "foobar@example.example",
                             "name",
@@ -124,8 +124,8 @@
                     10)
             };
 
-            Assert.IsAssignableFrom<IExtendedSurvey>(
-                new ExtendedSurvey(
+            Assert.IsAssignableFrom<ISurvey>(
+                new Survey(
                     Guid.NewGuid().ToString(),
                     "The survey",
                     "The info",
@@ -133,7 +133,7 @@
                     new Person(Guid.NewGuid().ToString(), "my@foo.example", "foobar"),
                     new[]
                     {
-                        new ExtendedParticipant(
+                        new Participant(
                             Guid.NewGuid().ToString(),
                             "foobar@example.example",
                             "name",

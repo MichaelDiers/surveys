@@ -5,7 +5,7 @@
     /// <summary>
     ///     Describes the data of a survey.
     /// </summary>
-    public interface IExtendedSurvey : IBase
+    public interface ISurvey : IBase
     {
         /// <summary>
         ///     Gets an info text for the survey.
@@ -30,7 +30,7 @@
         /// <summary>
         ///     Gets the participants of the survey.
         /// </summary>
-        IEnumerable<IExtendedParticipant> Participants { get; }
+        IEnumerable<IParticipant> Participants { get; }
 
         /// <summary>
         ///     Gets the questions of the survey.
