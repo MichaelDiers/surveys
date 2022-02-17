@@ -8,6 +8,7 @@
     using Google.Events.Protobuf.Cloud.PubSub.V1;
     using InitializeSurveySubscriber.Contracts;
     using InitializeSurveySubscriber.Model;
+    using InitializeSurveySubscriber.Tests.Data;
     using InitializeSurveySubscriber.Tests.Mocks;
     using Newtonsoft.Json;
     using Xunit;
@@ -20,7 +21,8 @@
         [Fact]
         public async void HandleAsync()
         {
-            var message = new Message();
+            var survey = TestData.InitializeSurvey();
+            var message = new Message(survey, Guid.NewGuid().ToString());
             await HandleAsyncForMessage(message);
         }
 
