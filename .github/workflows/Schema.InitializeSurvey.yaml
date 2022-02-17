@@ -7,8 +7,8 @@ on:
       - 'schemas/InitializeSurveySchema.avro'
   workflow_dispatch:
 env:
-  TOPIC_NAME_SUB: INITIALIZE_SURVEY
-  SCHEMA_NAME: INITIALIZE_SURVEY_SCHEMA  
+  TOPIC_NAME_SUB: ${{ secrets.GLOBAL_PUBSUB_TOPIC_INITIALIZE_SURVEY }}
+  SCHEMA_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_INITIALIZE_SURVEY }}_SCHEMA  
   SCHEMA_FILE: 'schemas/InitializeSurveySchema.avro'
   MESSAGE_ENCODING: json
 jobs:
