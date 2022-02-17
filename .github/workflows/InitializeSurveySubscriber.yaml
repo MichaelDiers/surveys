@@ -28,6 +28,7 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
+          Logging.LogLevel.Microsoft: 'Warning'
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -64,6 +65,7 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
+          Logging.LogLevel.Microsoft: 'Warning'
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -102,6 +104,7 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
+          Logging.LogLevel.Microsoft: 'Warning'
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
