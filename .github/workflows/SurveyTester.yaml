@@ -19,7 +19,7 @@ jobs:
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
       COLLECTION_NAME: ${{ secrets.COLLECTION_NAME }}
       DOCUMENT_ID: ${{ secrets.DOCUMENT_ID }}
-      TOPIC_NAME_PUB: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}
+      TOPIC_NAME_PUB: ${{ secrets.GLOBAL_PUBSUB_TOPIC_INITIALIZE_SURVEY }}
     steps:
       - name: checkout
         uses: actions/checkout@v2
