@@ -6,10 +6,10 @@
     using CloudNative.CloudEvents;
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
-    using SaveSurveySubscriber.Contracts;
-    using SaveSurveySubscriber.Model;
-    using SaveSurveySubscriber.Tests.Mocks;
     using Newtonsoft.Json;
+    using SaveSurveySubscriber.Contracts;
+    using SaveSurveySubscriber.Tests.Data;
+    using SaveSurveySubscriber.Tests.Mocks;
     using Xunit;
 
     /// <summary>
@@ -20,7 +20,7 @@
         [Fact]
         public async void HandleAsync()
         {
-            var message = new Message();
+            var message = TestData.InitializeMessage();
             await HandleAsyncForMessage(message);
         }
 
