@@ -17,7 +17,7 @@
                 return s;
             }
 
-            return $"{s.Substring(0, 1)}{s.Substring(1)}";
+            return $"{s.Substring(0, 1).ToLower()}{s.Substring(1)}";
         }
     }
 }
