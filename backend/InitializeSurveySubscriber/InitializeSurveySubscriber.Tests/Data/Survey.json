@@ -22,7 +22,8 @@
           "questionId": "221c84cc-7459-4c37-aceb-85965ebae741",
           "choiceId": "5cae6765-8594-4d77-9847-4d8ce4f8c072"
         }
-      ]
+      ],
+      "order": 1
     },
     {
       "id": "c98f8ef5-95a9-4e2d-a56f-f8a71452b8af",
@@ -37,7 +38,8 @@
           "questionId": "221c84cc-7459-4c37-aceb-85965ebae741",
           "choiceId": "50839fe3-64a1-4489-a121-da1e2ab8772f"
         }
-      ]
+      ],
+      "order": 1
     }
   ],
   "questions": [
