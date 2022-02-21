@@ -1,12 +1,9 @@
 ﻿namespace SaveSurveySubscriber.Tests.Logic
 {
     using System;
-    using System.IO;
     using System.Threading.Tasks;
-    using Newtonsoft.Json;
     using SaveSurveySubscriber.Contracts;
     using SaveSurveySubscriber.Logic;
-    using SaveSurveySubscriber.Model;
     using SaveSurveySubscriber.Tests.Mocks;
     using Xunit;
 
@@ -29,12 +26,10 @@
         ///     Initialize the provider and its dependencies.
         /// </summary>
         /// <returns>A <see cref="Task" /> whose result is an <see cref="IFunctionProvider" />.</returns>
-        private static async Task<IFunctionProvider> InitAsync()
+        private static Task<IFunctionProvider> InitAsync()
         {
-            var configuration =
-                JsonConvert.DeserializeObject<FunctionConfiguration>(await File.ReadAllTextAsync("appsettings.json"));
-            var provider = new FunctionProvider(configuration, new DatabaseMock());
-            return provider;
+            var provider = new FunctionProvider(new DatabaseMock());
+            return Task.FromResult<IFunctionProvider>(provider);
         }
     }
 }

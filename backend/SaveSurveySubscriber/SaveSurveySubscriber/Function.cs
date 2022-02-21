@@ -10,7 +10,7 @@ namespace SaveSurveySubscriber
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using SaveSurveySubscriber.Contracts;
-    using SaveSurveySubscriber.Model;
+    using Surveys.Common.Messages;
 
     /// <summary>
     ///     Google cloud function that handles Pub/Sub messages.
@@ -62,11 +62,11 @@ namespace SaveSurveySubscriber
                         nameof(MessagePublishedData.Message.TextData));
                 }
 
-                var message = JsonConvert.DeserializeObject<Message>(json);
+                var message = JsonConvert.DeserializeObject<SaveSurveyMessage>(json);
                 if (message == null)
                 {
                     throw new ArgumentException(
-                        $"Cannot deserialize json to ${nameof(Message)}: '{json}'",
+                        $"Cannot deserialize json to ${nameof(SaveSurveyMessage)}: '{json}'",
                         nameof(MessagePublishedData.Message.TextData));
                 }
 

@@ -7,9 +7,9 @@
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
     using Newtonsoft.Json;
-    using SaveSurveySubscriber.Contracts;
     using SaveSurveySubscriber.Tests.Data;
     using SaveSurveySubscriber.Tests.Mocks;
+    using Surveys.Common.Contracts;
     using Xunit;
 
     /// <summary>
@@ -24,7 +24,7 @@
             await HandleAsyncForMessage(message);
         }
 
-        private static async Task HandleAsyncForMessage(IMessage message)
+        private static async Task HandleAsyncForMessage(ISaveSurveyMessage message)
         {
             var json = JsonConvert.SerializeObject(message);
             var data = new MessagePublishedData

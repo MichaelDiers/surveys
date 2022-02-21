@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using Google.Cloud.Firestore;
     using SaveSurveySubscriber.Contracts;
+    using Surveys.Common.Contracts;
 
     /// <summary>
     ///     Access the survey database.
@@ -36,7 +37,7 @@
         /// </summary>
         /// <param name="message">The survey data.</param>
         /// <returns>A <see cref="Task" />.</returns>
-        public async Task Insert(IMessage message)
+        public async Task Insert(ISaveSurveyMessage message)
         {
             var documentReference = this.database.Collection(this.configuration.CollectionName)
                 .Document(message.InternalSurveyId);

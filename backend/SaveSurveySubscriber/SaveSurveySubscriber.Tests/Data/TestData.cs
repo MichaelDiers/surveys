@@ -1,22 +1,23 @@
 ﻿namespace SaveSurveySubscriber.Tests.Data
 {
+    using System;
     using System.IO;
     using Newtonsoft.Json;
-    using SaveSurveySubscriber.Contracts;
-    using SaveSurveySubscriber.Model;
+    using Surveys.Common.Contracts;
+    using Surveys.Common.Messages;
 
     internal static class TestData
     {
-        public static IMessage InitializeMessage()
+        public static ISaveSurveyMessage InitializeMessage()
         {
             const string file = "Data/Message.json";
-            return JsonConvert.DeserializeObject<Message>(File.ReadAllText(file));
+            return JsonConvert.DeserializeObject<SaveSurveyMessage>(File.ReadAllText(file));
         }
 
-        public static IMessage InitializeMessage(string internalSurveyId)
+        public static ISaveSurveyMessage InitializeMessage(string internalSurveyId)
         {
             var message = InitializeMessage();
-            return new Message(message.Survey, internalSurveyId);
+            return new SaveSurveyMessage(message.Survey, internalSurveyId, Guid.NewGuid().ToString());
         }
     }
 }

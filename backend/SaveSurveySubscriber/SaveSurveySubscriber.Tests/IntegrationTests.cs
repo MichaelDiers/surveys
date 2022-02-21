@@ -8,10 +8,10 @@
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
     using Newtonsoft.Json;
-    using SaveSurveySubscriber.Contracts;
     using SaveSurveySubscriber.Logic;
     using SaveSurveySubscriber.Model;
     using SaveSurveySubscriber.Tests.Data;
+    using Surveys.Common.Contracts;
     using Xunit;
 
     /// <summary>
@@ -26,7 +26,7 @@
             await HandleAsyncForMessage(message);
         }
 
-        private static async Task HandleAsyncForMessage(IMessage message)
+        private static async Task HandleAsyncForMessage(ISaveSurveyMessage message)
         {
             var json = JsonConvert.SerializeObject(message);
             var data = new MessagePublishedData
@@ -50,7 +50,7 @@
                 JsonConvert.DeserializeObject<FunctionConfiguration>(await File.ReadAllTextAsync("appsettings.json"));
 
             var logger = new MemoryLogger<Function>();
-            var provider = new FunctionProvider(configuration, new Database(configuration));
+            var provider = new FunctionProvider(new Database(configuration));
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 

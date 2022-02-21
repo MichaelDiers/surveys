@@ -3,17 +3,13 @@
     using System;
     using System.Threading.Tasks;
     using SaveSurveySubscriber.Contracts;
+    using Surveys.Common.Contracts;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
     /// </summary>
     public class FunctionProvider : IFunctionProvider
     {
-        /// <summary>
-        ///     Access the application settings.
-        /// </summary>
-        private readonly IFunctionConfiguration configuration;
-
         /// <summary>
         ///     Access to the survey database.
         /// </summary>
@@ -22,11 +18,9 @@
         /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
-        /// <param name="configuration">Access to the application settings.</param>
         /// <param name="database">Access to the survey database.</param>
-        public FunctionProvider(IFunctionConfiguration configuration, IDatabase database)
+        public FunctionProvider(IDatabase database)
         {
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.database = database ?? throw new ArgumentNullException(nameof(database));
         }
 
@@ -35,7 +29,7 @@
         /// </summary>
         /// <param name="message">The incoming message from pub/sub.</param>
         /// <returns>A <see cref="Task" /> without a result.</returns>
-        public async Task HandleAsync(IMessage message)
+        public async Task HandleAsync(ISaveSurveyMessage message)
         {
             if (message == null)
             {
