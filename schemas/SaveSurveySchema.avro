@@ -3,6 +3,11 @@
   "name": "saveSurveyMessage",
   "fields": [
     {
+      "name": "processId",
+      "type": "string",
+      "logicalType": "uuid"
+    },
+    {
       "name": "internalSurveyId",
       "type": "string",
       "logicalType": "uuid"
@@ -159,11 +164,6 @@
           }
         ]
       }
-    },
-    {
-      "name": "processId",
-      "type": "string",
-      "logicalType": "uuid"
-    }
+    }    
   ]
 }

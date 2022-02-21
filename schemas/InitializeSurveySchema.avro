@@ -3,6 +3,11 @@
   "name": "initializeSurveyMessage",
   "fields": [
     {
+      "name": "processId",
+      "type": "string",
+      "logicalType": "uuid"
+    },
+    {
       "name": "survey",
       "type": {
         "name": "surveyRecord",
@@ -154,11 +159,6 @@
           }
         ]
       }
-    },
-    {
-      "name": "processId",
-      "type": "string",
-      "logicalType": "uuid"
-    }
+    }    
   ]
 }
