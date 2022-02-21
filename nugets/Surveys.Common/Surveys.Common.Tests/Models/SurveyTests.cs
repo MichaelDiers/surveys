@@ -159,5 +159,14 @@
                     },
                     questions));
         }
+
+        [Fact]
+        public void ToDictionary()
+        {
+            var json = new FileInfo("Models/SurveyTests.Serialize.json").OpenText().ReadToEnd();
+            var survey = JsonConvert.DeserializeObject<Survey>(json);
+            Assert.NotNull(survey);
+            var _ = survey.ToDictionary();
+        }
     }
 }

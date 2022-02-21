@@ -1,8 +1,10 @@
 ﻿namespace Surveys.Common.Models
 {
     using System;
+    using System.Collections.Generic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Extensions;
 
     /// <summary>
     ///     Describes a suggested answer of a survey question.
@@ -42,6 +44,28 @@
 
             this.ChoiceId = choiceId;
             this.QuestionId = questionId;
+        }
+
+        /// <summary>
+        ///     Add the object values to a dictionary.
+        /// </summary>
+        /// <param name="document">The data is added to the given dictionary.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
+        public void AddToDictionary(Dictionary<string, object> document)
+        {
+            document.Add(nameof(this.QuestionId).FirstCharacterToLower(), this.QuestionId);
+            document.Add(nameof(this.ChoiceId).FirstCharacterToLower(), this.ChoiceId);
+        }
+
+        /// <summary>
+        ///     Convert the object values to a dictionary.
+        /// </summary>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
+        public Dictionary<string, object> ToDictionary()
+        {
+            var document = new Dictionary<string, object>();
+            this.AddToDictionary(document);
+            return document;
         }
 
         /// <summary>

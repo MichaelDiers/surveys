@@ -3,7 +3,7 @@
     /// <summary>
     ///     Describes a suggested answer of a survey question.
     /// </summary>
-    public interface IQuestionReference
+    public interface IQuestionReference : IDictionaryConverter
     {
         /// <summary>
         ///     Gets the id of the choice.

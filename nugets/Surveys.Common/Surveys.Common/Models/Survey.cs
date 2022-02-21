@@ -2,14 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using Google.Cloud.Firestore;
+    using System.Linq;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Extensions;
 
     /// <summary>
     ///     Describes the data of a survey.
     /// </summary>
-    [FirestoreData]
     public class Survey : Base, ISurvey
     {
         /// <summary>
@@ -49,24 +49,40 @@
         }
 
         /// <summary>
+        ///     Add the object values to a dictionary.
+        /// </summary>
+        /// <param name="document">The data is added to the given dictionary.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
+        public override void AddToDictionary(Dictionary<string, object> document)
+        {
+            base.AddToDictionary(document);
+            document.Add(nameof(this.Info).FirstCharacterToLower(), this.Info);
+            document.Add(nameof(this.Link).FirstCharacterToLower(), this.Link);
+            document.Add(nameof(this.Name).FirstCharacterToLower(), this.Name);
+
+            document.Add(nameof(this.Organizer).FirstCharacterToLower(), this.Organizer.ToDictionary());
+            document.Add(
+                nameof(this.Participants).FirstCharacterToLower(),
+                this.Participants.Select(p => p.ToDictionary()));
+            document.Add(nameof(this.Questions).FirstCharacterToLower(), this.Questions.Select(q => q.ToDictionary()));
+        }
+
+        /// <summary>
         ///     Gets an info text for the survey.
         /// </summary>
         [JsonProperty("info", Required = Required.Always, Order = 11)]
-        [FirestoreProperty("info")]
         public string Info { get; }
 
         /// <summary>
         ///     Gets a link that provides additional survey info.
         /// </summary>
         [JsonProperty("link", Required = Required.Always, Order = 12)]
-        [FirestoreProperty("link")]
         public string Link { get; }
 
         /// <summary>
         ///     Gets the name of the survey.
         /// </summary>
         [JsonProperty("name", Required = Required.Always, Order = 10)]
-        [FirestoreProperty("name")]
         public string Name { get; }
 
         /// <summary>

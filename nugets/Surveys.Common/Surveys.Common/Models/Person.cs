@@ -1,8 +1,10 @@
 ﻿namespace Surveys.Common.Models
 {
     using System;
+    using System.Collections.Generic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Extensions;
 
     /// <summary>
     ///     Describes a survey organizer and is base class for participants.
@@ -34,6 +36,18 @@
 
             this.Email = email;
             this.Name = name;
+        }
+
+        /// <summary>
+        ///     Add the object values to a dictionary.
+        /// </summary>
+        /// <param name="document">The data is added to the given dictionary.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
+        public override void AddToDictionary(Dictionary<string, object> document)
+        {
+            base.AddToDictionary(document);
+            document.Add(nameof(this.Name).FirstCharacterToLower(), this.Name);
+            document.Add(nameof(this.Email).FirstCharacterToLower(), this.Email);
         }
 
         /// <summary>

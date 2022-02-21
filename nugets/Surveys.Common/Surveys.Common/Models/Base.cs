@@ -1,8 +1,10 @@
 ﻿namespace Surveys.Common.Models
 {
     using System;
+    using System.Collections.Generic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Extensions;
 
     /// <summary>
     ///     Describes the base for models.
@@ -31,9 +33,31 @@
         }
 
         /// <summary>
+        ///     Add the object values to a dictionary.
+        /// </summary>
+        /// <param name="document">The data is added to the given dictionary.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
+        public virtual void AddToDictionary(Dictionary<string, object> document)
+        {
+            document.Add(nameof(this.Id).FirstCharacterToLower(), this.Id);
+        }
+
+        /// <summary>
         ///     Gets or sets the id.
         /// </summary>
         [JsonProperty("id", Required = Required.Always, Order = 1)]
         public string Id { get; }
+
+
+        /// <summary>
+        ///     Convert the object values to a dictionary.
+        /// </summary>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
+        public virtual Dictionary<string, object> ToDictionary()
+        {
+            var document = new Dictionary<string, object>();
+            this.AddToDictionary(document);
+            return document;
+        }
     }
 }

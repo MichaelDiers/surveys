@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Extensions;
 
     public class Question : Base, IQuestion, ISortable
     {
@@ -33,6 +35,19 @@
             this.Text = text;
             this.Choices = choices ?? throw new ArgumentNullException(nameof(choices));
             this.Order = order;
+        }
+
+        /// <summary>
+        ///     Add the object values to a dictionary.
+        /// </summary>
+        /// <param name="document">The data is added to the given dictionary.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
+        public override void AddToDictionary(Dictionary<string, object> document)
+        {
+            base.AddToDictionary(document);
+            document.Add(nameof(this.Order).FirstCharacterToLower(), this.Order);
+            document.Add(nameof(this.Text).FirstCharacterToLower(), this.Text);
+            document.Add(nameof(this.Choices).FirstCharacterToLower(), this.Choices.Select(c => c.ToDictionary()));
         }
 
         /// <summary>

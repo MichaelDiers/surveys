@@ -3,7 +3,7 @@
     /// <summary>
     ///     Describes the base for models.
     /// </summary>
-    public interface IBase
+    public interface IBase : IDictionaryConverter
     {
         /// <summary>
         ///     Gets the id.
