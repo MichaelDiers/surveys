@@ -2,12 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using Google.Cloud.Firestore;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
 
     /// <summary>
     ///     Describes the data of a survey.
     /// </summary>
+    [FirestoreData]
     public class Survey : Base, ISurvey
     {
         /// <summary>
@@ -50,18 +52,21 @@
         ///     Gets an info text for the survey.
         /// </summary>
         [JsonProperty("info", Required = Required.Always, Order = 11)]
+        [FirestoreProperty("info")]
         public string Info { get; }
 
         /// <summary>
         ///     Gets a link that provides additional survey info.
         /// </summary>
         [JsonProperty("link", Required = Required.Always, Order = 12)]
+        [FirestoreProperty("link")]
         public string Link { get; }
 
         /// <summary>
         ///     Gets the name of the survey.
         /// </summary>
         [JsonProperty("name", Required = Required.Always, Order = 10)]
+        [FirestoreProperty("name")]
         public string Name { get; }
 
         /// <summary>
