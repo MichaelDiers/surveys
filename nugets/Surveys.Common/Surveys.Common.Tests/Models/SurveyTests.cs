@@ -72,7 +72,8 @@
                         new[]
                         {
                             new QuestionReference(questions.First().Id, questions.First().Choices.First().Id)
-                        })
+                        },
+                        1)
                 },
                 questions);
             var _ = JsonConvert.SerializeObject(survey);
@@ -114,7 +115,8 @@
                             new[]
                             {
                                 new QuestionReference(questions.First().Id, questions.First().Choices.First().Id)
-                            })
+                            },
+                            1)
                     },
                     questions));
         }
@@ -155,7 +157,8 @@
                             new[]
                             {
                                 new QuestionReference(questions.First().Id, questions.First().Choices.First().Id)
-                            })
+                            },
+                            1)
                     },
                     questions));
         }

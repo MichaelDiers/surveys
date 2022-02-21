@@ -18,13 +18,15 @@
             "foo@bar.example",
             "the name",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
-            "bcb28b2d-e9a8-450c-a25e-7412e66d244d")]
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244d",
+            1)]
         public void Ctor(
             string id,
             string email,
             string name,
             string questionId,
-            string choiceId
+            string choiceId,
+            int order
         )
         {
             var participant = new Participant(
@@ -34,28 +36,32 @@
                 new[]
                 {
                     new QuestionReference(questionId, choiceId)
-                });
+                },
+                order);
             Assert.Equal(id, participant.Id);
             Assert.Equal(email, participant.Email);
             Assert.Equal(name, participant.Name);
+            Assert.Equal(order, participant.Order);
         }
 
 
         [Theory]
         [InlineData(
-            "{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244b',email:'foo@bar.example',name:'the name',questionReferences:[{questionId:'bcb28b2d-e9a8-450c-a25e-7412e66d244c',choiceId:'bcb28b2d-e9a8-450c-a25e-7412e66d244d'}]}",
+            "{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244b',email:'foo@bar.example',name:'the name',questionReferences:[{questionId:'bcb28b2d-e9a8-450c-a25e-7412e66d244c',choiceId:'bcb28b2d-e9a8-450c-a25e-7412e66d244d'}],order:1}",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244b",
             "foo@bar.example",
             "the name",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
-            "bcb28b2d-e9a8-450c-a25e-7412e66d244d")]
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244d",
+            1)]
         public void Deserialize(
             string json,
             string id,
             string email,
             string name,
             string questionId,
-            string choiceId
+            string choiceId,
+            int order
         )
         {
             var participant = JsonConvert.DeserializeObject<Participant>(json);
@@ -65,6 +71,7 @@
             Assert.Equal(name, participant.Name);
             Assert.Equal(questionId, participant.QuestionReferences.Single().QuestionId);
             Assert.Equal(choiceId, participant.QuestionReferences.Single().ChoiceId);
+            Assert.Equal(order, participant.Order);
         }
 
         [Fact]
@@ -78,7 +85,8 @@
                     new[]
                     {
                         new QuestionReference(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
-                    }));
+                    },
+                    1));
         }
 
         [Fact]
@@ -92,7 +100,8 @@
                     new[]
                     {
                         new QuestionReference(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
-                    }));
+                    },
+                    1));
         }
 
         [Theory]
@@ -103,7 +112,8 @@
             "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244d",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244e",
-            "bcb28b2d-e9a8-450c-a25e-7412e66d244f")]
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244f",
+            1)]
         public void Serialize(
             string id,
             string email,
@@ -111,7 +121,8 @@
             string questionId1,
             string choiceId1,
             string questionId2,
-            string choiceId2
+            string choiceId2,
+            int order
         )
         {
             var participant = new Participant(
@@ -122,9 +133,10 @@
                 {
                     new QuestionReference(questionId1, choiceId1),
                     new QuestionReference(questionId2, choiceId2)
-                });
+                },
+                order);
             var expected =
-                $"{{\"id\":\"{id}\",\"email\":\"{email}\",\"name\":\"{name}\",\"questionReferences\":[{{\"questionId\":\"{questionId1}\",\"choiceId\":\"{choiceId1}\"}},{{\"questionId\":\"{questionId2}\",\"choiceId\":\"{choiceId2}\"}}]}}";
+                $"{{\"id\":\"{id}\",\"email\":\"{email}\",\"name\":\"{name}\",\"questionReferences\":[{{\"questionId\":\"{questionId1}\",\"choiceId\":\"{choiceId1}\"}},{{\"questionId\":\"{questionId2}\",\"choiceId\":\"{choiceId2}\"}}],\"order\":{order}}}";
             var actual = JsonConvert.SerializeObject(participant);
             Assert.Equal(expected, actual);
         }

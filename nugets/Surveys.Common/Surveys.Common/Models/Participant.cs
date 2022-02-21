@@ -16,6 +16,7 @@
         /// <param name="email">The email of the person.</param>
         /// <param name="name">The name of the person.</param>
         /// <param name="questionReferences">Suggested answers for questions.</param>
+        /// <param name="order">The sorting order.</param>
         /// <exception cref="ArgumentException">Is thrown if <paramref name="id" /> is null or whitespace.</exception>
         /// <exception cref="ArgumentException">Is thrown if <paramref name="id" /> is not a guid.</exception>
         /// <exception cref="ArgumentException">Is thrown if <paramref name="email" /> is null or whitespace.</exception>
@@ -24,11 +25,13 @@
             string id,
             string email,
             string name,
-            IEnumerable<QuestionReference> questionReferences
+            IEnumerable<QuestionReference> questionReferences,
+            int order
         )
             : base(id, email, name)
         {
             this.QuestionReferences = questionReferences;
+            this.Order = order;
         }
 
         /// <summary>
@@ -42,6 +45,7 @@
             document.Add(
                 nameof(this.QuestionReferences).FirstCharacterToLower(),
                 this.QuestionReferences.Select(qr => qr.ToDictionary()));
+            document.Add(nameof(this.Order).FirstCharacterToLower(), this.Order);
         }
 
         /// <summary>
@@ -49,5 +53,11 @@
         /// </summary>
         [JsonProperty("questionReferences", Required = Required.Always, Order = 100)]
         public IEnumerable<IQuestionReference> QuestionReferences { get; }
+
+        /// <summary>
+        ///     Gets the sorting order.
+        /// </summary>
+        [JsonProperty("order", Required = Required.Always, Order = 101)]
+        public int Order { get; }
     }
 }

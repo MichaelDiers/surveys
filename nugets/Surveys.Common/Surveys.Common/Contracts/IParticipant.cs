@@ -5,7 +5,7 @@
     /// <summary>
     ///     Describes a participant of a survey.
     /// </summary>
-    public interface IParticipant : IPerson
+    public interface IParticipant : IPerson, ISortable
     {
         /// <summary>
         ///     Gets the suggested answers of survey questions.
