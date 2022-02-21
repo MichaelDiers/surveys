@@ -1,11 +1,12 @@
 ﻿namespace Surveys.Common.Firestore.Logic
 {
     using System;
+    using Surveys.Common.Firestore.Contracts;
 
     /// <summary>
     ///     Configuration of the database.
     /// </summary>
-    public class DatabaseConfiguration
+    public class DatabaseConfiguration : IDatabaseConfiguration
     {
         /// <summary>
         ///     Creates a new instance of <see cref="DatabaseConfiguration" />.
