@@ -9,7 +9,7 @@
     {
         public static IMessage InitializeMessage()
         {
-            const string file = "Data\\Message.json";
+            const string file = "Data/Message.json";
             return JsonConvert.DeserializeObject<Message>(File.ReadAllText(file));
         }
 
