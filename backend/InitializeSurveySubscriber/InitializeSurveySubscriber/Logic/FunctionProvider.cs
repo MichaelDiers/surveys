@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using InitializeSurveySubscriber.Contracts;
+    using Surveys.Common.Contracts;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
@@ -28,7 +29,7 @@
         /// </summary>
         /// <param name="message">The incoming message from pub/sub.</param>
         /// <returns>A <see cref="Task" /> without a result.</returns>
-        public Task HandleAsync(IMessage message)
+        public Task HandleAsync(IInitializeSurveyMessage message)
         {
             if (message == null)
             {

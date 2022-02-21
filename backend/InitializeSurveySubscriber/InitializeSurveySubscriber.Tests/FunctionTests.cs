@@ -6,11 +6,11 @@
     using CloudNative.CloudEvents;
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
-    using InitializeSurveySubscriber.Contracts;
-    using InitializeSurveySubscriber.Model;
     using InitializeSurveySubscriber.Tests.Data;
     using InitializeSurveySubscriber.Tests.Mocks;
     using Newtonsoft.Json;
+    using Surveys.Common.Contracts;
+    using Surveys.Common.Messages;
     using Xunit;
 
     /// <summary>
@@ -22,11 +22,11 @@
         public async void HandleAsync()
         {
             var survey = TestData.InitializeSurvey();
-            var message = new Message(survey, Guid.NewGuid().ToString());
+            var message = new InitializeSurveyMessage(survey, Guid.NewGuid().ToString());
             await HandleAsyncForMessage(message);
         }
 
-        private static async Task HandleAsyncForMessage(IMessage message)
+        private static async Task HandleAsyncForMessage(IInitializeSurveyMessage message)
         {
             var json = JsonConvert.SerializeObject(message);
             var data = new MessagePublishedData

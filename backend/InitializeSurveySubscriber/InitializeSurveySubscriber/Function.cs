@@ -8,9 +8,9 @@ namespace InitializeSurveySubscriber
     using Google.Cloud.Functions.Hosting;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
     using InitializeSurveySubscriber.Contracts;
-    using InitializeSurveySubscriber.Model;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
+    using Surveys.Common.Messages;
 
     /// <summary>
     ///     Google cloud function that handles Pub/Sub messages.
@@ -62,7 +62,7 @@ namespace InitializeSurveySubscriber
                         nameof(MessagePublishedData.Message.TextData));
                 }
 
-                var message = JsonConvert.DeserializeObject<Message>(json);
+                var message = JsonConvert.DeserializeObject<InitializeSurveyMessage>(json);
                 if (message == null)
                 {
                     throw new ArgumentException(
