@@ -20,8 +20,7 @@
     /// </summary>
     public class IntegrationTests
     {
-        //[Fact(Skip = "Integration only")]
-        [Fact]
+        [Fact(Skip = "Integration only")]
         public async void HandleAsync()
         {
             var message = TestData.InitializeMessage(Guid.NewGuid().ToString());
