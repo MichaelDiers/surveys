@@ -3,6 +3,9 @@
     using Surveys.Common.Extensions;
     using Xunit;
 
+    /// <summary>
+    ///     Tests for <see cref="StringExtensions" />.
+    /// </summary>
     public class StringExtensionsTests
     {
         [Theory]
@@ -13,7 +16,7 @@
         [InlineData("AB", "aB")]
         [InlineData("A", "a")]
         [InlineData("a", "a")]
-        public void C(string input, string expected)
+        public void FirstCharacterToLower(string input, string expected)
         {
             Assert.Equal(expected, input.FirstCharacterToLower());
         }
