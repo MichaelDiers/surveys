@@ -1,12 +1,12 @@
 namespace SaveSurveySubscriber
 {
     using Google.Cloud.Functions.Hosting;
-    using SaveSurveySubscriber.Contracts;
-    using SaveSurveySubscriber.Logic;
-    using SaveSurveySubscriber.Model;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using SaveSurveySubscriber.Contracts;
+    using SaveSurveySubscriber.Logic;
+    using SaveSurveySubscriber.Model;
 
     /// <summary>
     ///     Initialize the function.
@@ -24,6 +24,7 @@ namespace SaveSurveySubscriber
             context.Configuration.Bind(configuration);
 
             services.AddScoped<IFunctionConfiguration>(_ => configuration);
+            services.AddScoped<IDatabase, Database>();
             services.AddScoped<IFunctionProvider, FunctionProvider>();
         }
     }

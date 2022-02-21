@@ -18,7 +18,20 @@
         /// <param name="internalSurveyId">THe internal id of the survey.</param>
         /// <exception cref="ArgumentNullException">Is thrown if <paramref name="survey" /> is null.</exception>
         /// <exception cref="ArgumentException">It thrown if <paramref name="internalSurveyId" /> is null or whitespace.</exception>
+        [JsonConstructor]
         public Message(Survey survey, string internalSurveyId)
+            : this(survey as ISurvey, internalSurveyId)
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new instance of <see cref="Message" />.
+        /// </summary>
+        /// <param name="survey">The data of the survey.</param>
+        /// <param name="internalSurveyId">THe internal id of the survey.</param>
+        /// <exception cref="ArgumentNullException">Is thrown if <paramref name="survey" /> is null.</exception>
+        /// <exception cref="ArgumentException">It thrown if <paramref name="internalSurveyId" /> is null or whitespace.</exception>
+        public Message(ISurvey survey, string internalSurveyId)
         {
             if (string.IsNullOrWhiteSpace(internalSurveyId))
             {

@@ -1,9 +1,9 @@
 ﻿namespace SaveSurveySubscriber.Tests.Mocks
 {
     using System.Threading.Tasks;
+    using Newtonsoft.Json;
     using SaveSurveySubscriber.Contracts;
     using SaveSurveySubscriber.Logic;
-    using Newtonsoft.Json;
     using Xunit;
 
     /// <summary>

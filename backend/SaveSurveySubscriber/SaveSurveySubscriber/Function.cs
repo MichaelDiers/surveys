@@ -7,10 +7,10 @@ namespace SaveSurveySubscriber
     using Google.Cloud.Functions.Framework;
     using Google.Cloud.Functions.Hosting;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
-    using SaveSurveySubscriber.Contracts;
-    using SaveSurveySubscriber.Model;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
+    using SaveSurveySubscriber.Contracts;
+    using SaveSurveySubscriber.Model;
 
     /// <summary>
     ///     Google cloud function that handles Pub/Sub messages.

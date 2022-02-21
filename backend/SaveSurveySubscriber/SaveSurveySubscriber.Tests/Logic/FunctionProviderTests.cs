@@ -3,10 +3,11 @@
     using System;
     using System.IO;
     using System.Threading.Tasks;
+    using Newtonsoft.Json;
     using SaveSurveySubscriber.Contracts;
     using SaveSurveySubscriber.Logic;
     using SaveSurveySubscriber.Model;
-    using Newtonsoft.Json;
+    using SaveSurveySubscriber.Tests.Mocks;
     using Xunit;
 
     /// <summary>
@@ -32,7 +33,7 @@
         {
             var configuration =
                 JsonConvert.DeserializeObject<FunctionConfiguration>(await File.ReadAllTextAsync("appsettings.json"));
-            var provider = new FunctionProvider(configuration);
+            var provider = new FunctionProvider(configuration, new DatabaseMock());
             return provider;
         }
     }
