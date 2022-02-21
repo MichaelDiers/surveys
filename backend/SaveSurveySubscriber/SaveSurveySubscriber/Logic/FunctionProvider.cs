@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using SaveSurveySubscriber.Contracts;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Firestore.Contracts;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
@@ -36,7 +37,7 @@
                 throw new ArgumentNullException(nameof(message));
             }
 
-            await this.database.Insert(message);
+            await this.database.InsertAsync(message.InternalSurveyId, message.Survey);
         }
     }
 }

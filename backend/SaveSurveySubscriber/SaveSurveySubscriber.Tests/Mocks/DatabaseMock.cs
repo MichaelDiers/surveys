@@ -1,8 +1,8 @@
 ﻿namespace SaveSurveySubscriber.Tests.Mocks
 {
     using System.Threading.Tasks;
-    using SaveSurveySubscriber.Contracts;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Firestore.Contracts;
 
     /// <summary>
     ///     Mock for databases.
@@ -10,11 +10,12 @@
     internal class DatabaseMock : IDatabase
     {
         /// <summary>
-        ///     Insert a new survey.
+        ///     Insert a new object to the database.
         /// </summary>
-        /// <param name="message">The survey data.</param>
+        /// <param name="documentId">The id of the document.</param>
+        /// <param name="data">The data to be saved.</param>
         /// <returns>A <see cref="Task" />.</returns>
-        public Task Insert(ISaveSurveyMessage message)
+        public Task InsertAsync(string documentId, IDictionaryConverter data)
         {
             return Task.CompletedTask;
         }

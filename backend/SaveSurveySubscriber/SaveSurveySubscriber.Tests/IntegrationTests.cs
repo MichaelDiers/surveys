@@ -12,6 +12,7 @@
     using SaveSurveySubscriber.Model;
     using SaveSurveySubscriber.Tests.Data;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Firestore.Logic;
     using Xunit;
 
     /// <summary>
@@ -19,7 +20,8 @@
     /// </summary>
     public class IntegrationTests
     {
-        [Fact(Skip = "Integration only")]
+        //[Fact(Skip = "Integration only")]
+        [Fact]
         public async void HandleAsync()
         {
             var message = TestData.InitializeMessage(Guid.NewGuid().ToString());
@@ -48,9 +50,11 @@
 
             var configuration =
                 JsonConvert.DeserializeObject<FunctionConfiguration>(await File.ReadAllTextAsync("appsettings.json"));
+            Assert.NotNull(configuration);
 
             var logger = new MemoryLogger<Function>();
-            var provider = new FunctionProvider(new Database(configuration));
+            var provider = new FunctionProvider(
+                new Database(new DatabaseConfiguration(configuration.ProjectId, configuration.CollectionName)));
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 

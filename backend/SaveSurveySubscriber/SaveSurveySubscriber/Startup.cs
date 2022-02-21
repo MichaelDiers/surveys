@@ -7,6 +7,10 @@ namespace SaveSurveySubscriber
     using SaveSurveySubscriber.Contracts;
     using SaveSurveySubscriber.Logic;
     using SaveSurveySubscriber.Model;
+    using Surveys.Common.Firestore.Contracts;
+    using Surveys.Common.Firestore.Logic;
+    using Database = Surveys.Common.Firestore.Logic.Database;
+    using IDatabase = Surveys.Common.Firestore.Contracts.IDatabase;
 
     /// <summary>
     ///     Initialize the function.
@@ -24,6 +28,8 @@ namespace SaveSurveySubscriber
             context.Configuration.Bind(configuration);
 
             services.AddScoped<IFunctionConfiguration>(_ => configuration);
+            services.AddScoped<IDatabaseConfiguration>(
+                _ => new DatabaseConfiguration(configuration.ProjectId, configuration.CollectionName));
             services.AddScoped<IDatabase, Database>();
             services.AddScoped<IFunctionProvider, FunctionProvider>();
         }

@@ -11,6 +11,7 @@
 		<PackageReference Include="Google.Events.Protobuf" Version="1.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Surveys.Common" Version="1.0.21" />
+		<PackageReference Include="Surveys.Common.Firestore" Version="1.0.2" />
 	</ItemGroup>
 
 </Project>
