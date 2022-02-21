@@ -13,7 +13,7 @@
         /// </summary>
         /// <param name="projectId">The id of the google cloud project.</param>
         /// <param name="topicName">The name of the pub/sub topic.</param>
-        private PubSubConfiguration(string projectId, string topicName)
+        public PubSubConfiguration(string projectId, string topicName)
         {
             if (string.IsNullOrWhiteSpace(projectId))
             {
