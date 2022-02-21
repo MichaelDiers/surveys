@@ -7,6 +7,7 @@ namespace InitializeSurveySubscriber
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Surveys.Common.PubSub.Logic;
 
     /// <summary>
     ///     Initialize the function.
@@ -24,6 +25,10 @@ namespace InitializeSurveySubscriber
             context.Configuration.Bind(configuration);
 
             services.AddScoped<IFunctionConfiguration>(_ => configuration);
+
+            services.AddScoped<ISaveSurveyPubSub>(
+                _ => new SaveSurveyPubSub(
+                    new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyTopicName)));
             services.AddScoped<IFunctionProvider, FunctionProvider>();
         }
     }

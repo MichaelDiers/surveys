@@ -6,6 +6,7 @@
     using InitializeSurveySubscriber.Contracts;
     using InitializeSurveySubscriber.Logic;
     using InitializeSurveySubscriber.Model;
+    using InitializeSurveySubscriber.Tests.Mocks;
     using Newtonsoft.Json;
     using Xunit;
 
@@ -32,7 +33,7 @@
         {
             var configuration =
                 JsonConvert.DeserializeObject<FunctionConfiguration>(await File.ReadAllTextAsync("appsettings.json"));
-            var provider = new FunctionProvider(configuration);
+            var provider = new FunctionProvider(configuration, new SaveSurveyPubSubMock());
             return provider;
         }
     }
