@@ -20,7 +20,6 @@
             var _ = JsonConvert.DeserializeObject<Survey>(json);
         }
 
-
         [Fact]
         public void QuestionImplementsIQuestion()
         {
@@ -30,7 +29,11 @@
                     "question",
                     new[]
                     {
-                        new Choice(Guid.NewGuid().ToString(), "answer", true)
+                        new Choice(
+                            Guid.NewGuid().ToString(),
+                            "answer",
+                            true,
+                            1)
                     },
                     1));
         }
@@ -45,7 +48,11 @@
                     "question",
                     new[]
                     {
-                        new Choice(Guid.NewGuid().ToString(), "answer", true)
+                        new Choice(
+                            Guid.NewGuid().ToString(),
+                            "answer",
+                            true,
+                            1)
                     },
                     10)
             };
@@ -82,7 +89,11 @@
                     "question",
                     new[]
                     {
-                        new Choice(Guid.NewGuid().ToString(), "answer", true)
+                        new Choice(
+                            Guid.NewGuid().ToString(),
+                            "answer",
+                            true,
+                            1)
                     },
                     10)
             };
@@ -119,7 +130,11 @@
                     "question",
                     new[]
                     {
-                        new Choice(Guid.NewGuid().ToString(), "answer", true)
+                        new Choice(
+                            Guid.NewGuid().ToString(),
+                            "answer",
+                            true,
+                            1)
                     },
                     10)
             };

@@ -14,15 +14,17 @@
     {
         [Theory]
         [InlineData(
-            "{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244b',question:'the question',choices:[{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244c',answer:'choice answer 1',selectable:true},{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244d',answer:'choice answer 2',selectable:false}],order:1}",
+            "{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244b',question:'the question',choices:[{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244c',answer:'choice answer 1',selectable:true,order:1},{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244d',answer:'choice answer 2',selectable:false,order:2}],order:1}",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244b",
             "the question",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
             "choice answer 1",
             true,
+            1,
             "bcb28b2d-e9a8-450c-a25e-7412e66d244d",
             "choice answer 2",
             false,
+            2,
             1)]
         public void Deserialize(
             string json,
@@ -31,9 +33,11 @@
             string choiceId1,
             string answer1,
             bool selectable1,
+            int order1,
             string choiceId2,
             string answer2,
             bool selectable2,
+            int order2,
             int order
         )
         {
@@ -45,10 +49,12 @@
             Assert.Equal(choiceId1, question.Choices.First().Id);
             Assert.Equal(answer1, question.Choices.First().Answer);
             Assert.Equal(selectable1, question.Choices.First().Selectable);
+            Assert.Equal(order1, question.Choices.First().Order);
 
             Assert.Equal(choiceId2, question.Choices.Skip(1).First().Id);
             Assert.Equal(answer2, question.Choices.Skip(1).First().Answer);
             Assert.Equal(selectable2, question.Choices.Skip(1).First().Selectable);
+            Assert.Equal(order2, question.Choices.Skip(1).First().Order);
 
             Assert.Equal(order, question.Order);
         }
@@ -62,7 +68,11 @@
                     "question",
                     new[]
                     {
-                        new Choice(Guid.NewGuid().ToString(), "answer", true)
+                        new Choice(
+                            Guid.NewGuid().ToString(),
+                            "answer",
+                            true,
+                            1)
                     },
                     1));
         }
@@ -76,22 +86,28 @@
                     "question",
                     new[]
                     {
-                        new Choice(Guid.NewGuid().ToString(), "answer", true)
+                        new Choice(
+                            Guid.NewGuid().ToString(),
+                            "answer",
+                            true,
+                            1)
                     },
                     1));
         }
 
         [Theory]
         [InlineData(
-            "{\"id\":\"bcb28b2d-e9a8-450c-a25e-7412e66d244b\",\"question\":\"the question\",\"choices\":[{\"id\":\"bcb28b2d-e9a8-450c-a25e-7412e66d244c\",\"answer\":\"choice answer 1\",\"selectable\":true},{\"id\":\"bcb28b2d-e9a8-450c-a25e-7412e66d244d\",\"answer\":\"choice answer 2\",\"selectable\":false}],\"order\":1}",
+            "{\"id\":\"bcb28b2d-e9a8-450c-a25e-7412e66d244b\",\"question\":\"the question\",\"choices\":[{\"id\":\"bcb28b2d-e9a8-450c-a25e-7412e66d244c\",\"answer\":\"choice answer 1\",\"selectable\":true,\"order\":1},{\"id\":\"bcb28b2d-e9a8-450c-a25e-7412e66d244d\",\"answer\":\"choice answer 2\",\"selectable\":false,\"order\":2}],\"order\":1}",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244b",
             "the question",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
             "choice answer 1",
             true,
+            1,
             "bcb28b2d-e9a8-450c-a25e-7412e66d244d",
             "choice answer 2",
             false,
+            2,
             1)]
         public void Serialize(
             string json,
@@ -100,9 +116,11 @@
             string choiceId1,
             string answer1,
             bool selectable1,
+            int order1,
             string choiceId2,
             string answer2,
             bool selectable2,
+            int order2,
             int order
         )
         {
@@ -111,8 +129,16 @@
                 text,
                 new[]
                 {
-                    new Choice(choiceId1, answer1, selectable1),
-                    new Choice(choiceId2, answer2, selectable2)
+                    new Choice(
+                        choiceId1,
+                        answer1,
+                        selectable1,
+                        order1),
+                    new Choice(
+                        choiceId2,
+                        answer2,
+                        selectable2,
+                        order2)
                 },
                 order);
             var actual = JsonConvert.SerializeObject(question);

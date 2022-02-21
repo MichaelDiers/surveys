@@ -5,7 +5,7 @@
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
 
-    public class Question : Base, IQuestion
+    public class Question : Base, IQuestion, ISortable
     {
         /// <summary>
         ///     Creates a new instance of <see cref="Base" />.

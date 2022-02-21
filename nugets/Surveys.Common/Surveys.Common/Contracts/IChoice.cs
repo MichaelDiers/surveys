@@ -3,7 +3,7 @@
     /// <summary>
     ///     Describe the choice of a question.
     /// </summary>
-    public interface IChoice : IBase
+    public interface IChoice : IBase, ISortable
     {
         /// <summary>
         ///     Gets the answer of a question.

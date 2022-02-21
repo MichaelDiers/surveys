@@ -14,21 +14,48 @@
         [Fact]
         public void ChoiceImplementsIBase()
         {
-            Assert.IsAssignableFrom<IBase>(new Choice(Guid.NewGuid().ToString(), "answer", true));
+            Assert.IsAssignableFrom<IBase>(
+                new Choice(
+                    Guid.NewGuid().ToString(),
+                    "answer",
+                    true,
+                    1));
         }
 
         [Fact]
         public void ChoiceImplementsIChoice()
         {
-            Assert.IsAssignableFrom<IChoice>(new Choice(Guid.NewGuid().ToString(), "answer", true));
+            Assert.IsAssignableFrom<IChoice>(
+                new Choice(
+                    Guid.NewGuid().ToString(),
+                    "answer",
+                    true,
+                    1));
         }
 
         [Theory]
-        [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244b", "the answer", true)]
-        [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244a", "the other answer", false)]
-        public void Ctor(string id, string answer, bool selectable)
+        [InlineData(
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244b",
+            "the answer",
+            true,
+            1)]
+        [InlineData(
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244a",
+            "the other answer",
+            false,
+            -1)]
+        public void Ctor(
+            string id,
+            string answer,
+            bool selectable,
+            int order
+        )
         {
-            var baseObject = new Choice(id, answer, selectable);
+            var baseObject = new Choice(
+                id,
+                answer,
+                selectable,
+                order);
             Assert.Equal(id, baseObject.Id);
             Assert.Equal(answer, baseObject.Answer);
             Assert.Equal(selectable, baseObject.Selectable);
@@ -39,7 +66,12 @@
         [InlineData("")]
         public void Ctor_ThrowsArgumentException_Answer(string answer)
         {
-            Assert.Throws<ArgumentException>(() => new Choice("bcb28b2d-e9a8-450c-a25e-7412e66d244b", answer, true));
+            Assert.Throws<ArgumentException>(
+                () => new Choice(
+                    "bcb28b2d-e9a8-450c-a25e-7412e66d244b",
+                    answer,
+                    true,
+                    1));
         }
 
         [Theory]
@@ -51,20 +83,27 @@
         [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244ba")]
         public void Ctor_ThrowsArgumentException_Id(string id)
         {
-            Assert.Throws<ArgumentException>(() => new Choice(id, "answer", true));
+            Assert.Throws<ArgumentException>(
+                () => new Choice(
+                    id,
+                    "answer",
+                    true,
+                    1));
         }
 
         [Theory]
         [InlineData(
-            "{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244b',answer:'my answer',selectable:true}",
+            "{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244b',answer:'my answer',selectable:true,order:1}",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244b",
             "my answer",
-            true)]
+            true,
+            1)]
         public void Deserialize(
             string json,
             string id,
             string answer,
-            bool selectable
+            bool selectable,
+            int order
         )
         {
             var choice = JsonConvert.DeserializeObject<Choice>(json);
@@ -72,6 +111,7 @@
             Assert.Equal(id, choice.Id);
             Assert.Equal(answer, choice.Answer);
             Assert.Equal(selectable, choice.Selectable);
+            Assert.Equal(order, choice.Order);
         }
 
         [Theory]
@@ -106,13 +146,30 @@
         }
 
         [Theory]
-        [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244b", "the answer", true)]
-        [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244b", "the answer", false)]
-        public void Serialize(string id, string answer, bool selectable)
+        [InlineData(
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244b",
+            "the answer",
+            true,
+            1)]
+        [InlineData(
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244b",
+            "the answer",
+            false,
+            -1)]
+        public void Serialize(
+            string id,
+            string answer,
+            bool selectable,
+            int order
+        )
         {
-            var choice = new Choice(id, answer, selectable);
+            var choice = new Choice(
+                id,
+                answer,
+                selectable,
+                order);
             var expected =
-                $"{{\"id\":\"{id}\",\"answer\":\"{answer}\",\"selectable\":{selectable.ToString().ToLower()}}}";
+                $"{{\"id\":\"{id}\",\"answer\":\"{answer}\",\"selectable\":{selectable.ToString().ToLower()},\"order\":{order}}}";
             var actual = JsonConvert.SerializeObject(choice);
             Assert.Equal(expected, actual);
         }

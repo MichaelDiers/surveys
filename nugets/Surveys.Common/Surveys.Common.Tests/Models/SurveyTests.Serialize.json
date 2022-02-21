@@ -48,17 +48,20 @@
         {
           "id": "e2b079d3-135f-4a39-bd23-4206df396b2a",
           "answer": "the first answer",
-          "selectable": true
+          "selectable": true,
+          "order": 1
         },
         {
           "id": "f2eccf0a-c93b-4094-aa37-2ebfe4559db4",
           "answer": "the second answer",
-          "selectable": false
+          "selectable": false,
+          "order": 2
         },
         {
           "id": "c41a2d14-70ac-4db8-88ce-3f6ecfc3f641",
           "answer": "the third answer",
-          "selectable": true
+          "selectable": true,
+          "order": 3
         }
       ],
       "order": 1
@@ -70,17 +73,20 @@
         {
           "id": "50839fe3-64a1-4489-a121-da1e2ab8772f",
           "answer": "the first answer",
-          "selectable": true
+          "selectable": true,
+          "order": 2
         },
         {
           "id": "7e8effea-4f13-455a-8d51-0f1938766c3c",
           "answer": "the second answer",
-          "selectable": false
+          "selectable": false,
+          "order": 1
         },
         {
           "id": "5cae6765-8594-4d77-9847-4d8ce4f8c072",
           "answer": "the third answer",
-          "selectable": true
+          "selectable": true,
+          "order": 3
         }
       ],
       "order": 2
