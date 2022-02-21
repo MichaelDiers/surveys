@@ -131,6 +131,10 @@
                           {
                             "name": "selectable",
                             "type": "boolean"
+                          },
+                          {
+                            "name": "order",
+                            "type": "int"
                           }
                         ]
                       }
