@@ -6,6 +6,7 @@
     using Surveys.Common.Contracts;
     using Surveys.Common.Messages;
     using Surveys.Common.Models;
+    using Surveys.Common.PubSub.Contracts;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
@@ -20,12 +21,12 @@
         /// <summary>
         ///     Access the pub/sub client for saving surveys.
         /// </summary>
-        private readonly ISaveSurveyPubSub saveSurveyPubSub;
+        private readonly IPubSub saveSurveyPubSub;
 
         /// <summary>
         ///     Access the pub/sub client for saving survey results.
         /// </summary>
-        private readonly ISaveSurveyResultPubSub saveSurveyResultPubSub;
+        private readonly IPubSub saveSurveyResultPubSub;
 
         /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
@@ -35,8 +36,8 @@
         /// <param name="saveSurveyResultPubSub">Access the pub/sub client for saving survey results.</param>
         public FunctionProvider(
             IFunctionConfiguration configuration,
-            ISaveSurveyPubSub saveSurveyPubSub,
-            ISaveSurveyResultPubSub saveSurveyResultPubSub
+            IPubSub saveSurveyPubSub,
+            IPubSub saveSurveyResultPubSub
         )
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));

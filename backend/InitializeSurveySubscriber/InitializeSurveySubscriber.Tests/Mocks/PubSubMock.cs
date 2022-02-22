@@ -1,9 +1,9 @@
 ﻿namespace InitializeSurveySubscriber.Tests.Mocks
 {
     using System.Threading.Tasks;
-    using InitializeSurveySubscriber.Contracts;
+    using Surveys.Common.PubSub.Contracts;
 
-    public class SaveSurveyResultPubSubMock : ISaveSurveyResultPubSub
+    public class PubSubMock : IPubSub
     {
         public Task PublishAsync<T>(T message)
         {

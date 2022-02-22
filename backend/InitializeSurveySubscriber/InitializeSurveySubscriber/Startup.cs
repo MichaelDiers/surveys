@@ -26,13 +26,12 @@ namespace InitializeSurveySubscriber
 
             services.AddScoped<IFunctionConfiguration>(_ => configuration);
 
-            services.AddScoped<ISaveSurveyPubSub>(
-                _ => new SaveSurveyPubSub(
-                    new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyTopicName)));
-            services.AddScoped<ISaveSurveyResultPubSub>(
-                _ => new SaveSurveyResultPubSub(
-                    new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyResultTopicName)));
-            services.AddScoped<IFunctionProvider, FunctionProvider>();
+            services.AddScoped<IFunctionProvider>(
+                _ => new FunctionProvider(
+                    configuration,
+                    new PubSub(new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyTopicName)),
+                    new PubSub(
+                        new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyResultTopicName))));
         }
     }
 }
