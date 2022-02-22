@@ -18,6 +18,11 @@
         public string SaveSurveyResultTopicName { get; set; }
 
         /// <summary>
+        ///     Gets the name of the pub/sub topic for saving survey status updates.
+        /// </summary>
+        public string SaveSurveyStatusTopicName { get; set; }
+
+        /// <summary>
         ///     Gets the name of the pub/sub topic for saving surveys.
         /// </summary>
         public string SaveSurveyTopicName { get; set; }
