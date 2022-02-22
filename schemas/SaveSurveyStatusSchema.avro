@@ -1,0 +1,37 @@
+{
+	"name": "surveyStatus",
+	"type": "record",
+	"fields": [
+		{
+			"name": "processId",
+      		"type": "string",
+      		"logicalType": "uuid"
+		},
+		{
+			"name": "surveyStatus",
+			"type": {
+				"name": "surveyStatusRecord",
+				"type": "record",
+				"fields": [
+					{
+						"name": "internalSurveyId",
+						"type": "string",
+      					"logicalType": "uuid"
+					},
+					{
+						"name": "participantId",
+						"type": "string",
+      					"logicalType": "uuid"
+					},
+					{
+						"name": "status",
+						"type": "enum",
+						"symbols": [
+							"Created"
+						]
+					}					
+				]
+			}
+		}
+	]
+}

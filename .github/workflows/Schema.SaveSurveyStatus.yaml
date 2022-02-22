@@ -1,0 +1,132 @@
+name: schemas/Schema.SaveSurveyStatus.yaml
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'schemas/SaveSurveyStatusSchema.avro'
+  workflow_dispatch:
+env:
+  TOPIC_NAME_SUB: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}
+  SCHEMA_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}_SCHEMA  
+  SCHEMA_FILE: 'schemas/SaveSurveyStatusSchema.avro'
+  MESSAGE_ENCODING: json
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: delete topic
+        uses: actions-hub/gcloud@master
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub topics delete ${{ env.TOPIC_NAME_SUB }}
+      - name: delete schema
+        uses: actions-hub/gcloud@master
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID }}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub schemas delete ${{ env.SCHEMA_NAME }} --quiet
+      - name: deploy schema
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID }}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=AVRO --definition-file=${{ env.SCHEMA_FILE }}
+      - name: deploy topic
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=${{ env.MESSAGE_ENCODING }} --schema=${{ env.SCHEMA_NAME }}
+  stage:
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: delete topic
+        uses: actions-hub/gcloud@master
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub topics delete ${{ env.TOPIC_NAME_SUB }}
+      - name: delete schema
+        uses: actions-hub/gcloud@master
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub schemas delete ${{ env.SCHEMA_NAME }} --quiet
+      - name: deploy schema
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=AVRO --definition-file=${{ env.SCHEMA_FILE }}
+      - name: deploy topic
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=${{ env.MESSAGE_ENCODING }} --schema=${{ env.SCHEMA_NAME }}
+  prod:
+    needs: stage
+    runs-on: ubuntu-latest    
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD}}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
+    environment:
+      name: Schema.SaveSurveyStatus-Prod
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: delete topic
+        uses: actions-hub/gcloud@master
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub topics delete ${{ env.TOPIC_NAME_SUB }} 
+      - name: delete schema
+        uses: actions-hub/gcloud@master
+        continue-on-error: true
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub schemas delete ${{ env.SCHEMA_NAME }} --quiet
+      - name: deploy schema
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=AVRO --definition-file=${{ env.SCHEMA_FILE }}
+      - name: deploy topic
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID}}
+          APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+        with:
+          args: pubsub topics create ${{ env.TOPIC_NAME_SUB }} --message-encoding=${{ env.MESSAGE_ENCODING }} --schema=${{ env.SCHEMA_NAME }}
