@@ -39,19 +39,6 @@
         }
 
         /// <summary>
-        ///     Add the object values to a dictionary.
-        /// </summary>
-        /// <param name="document">The data is added to the given dictionary.</param>
-        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        public override void AddToDictionary(Dictionary<string, object> document)
-        {
-            base.AddToDictionary(document);
-            document.Add(nameof(this.Answer).FirstCharacterToLower(), this.Answer);
-            document.Add(nameof(this.Selectable).FirstCharacterToLower(), this.Selectable);
-            document.Add(nameof(this.Order).FirstCharacterToLower(), this.Order);
-        }
-
-        /// <summary>
         ///     Gets the answer of a question.
         /// </summary>
         [JsonProperty("answer", Required = Required.Always, Order = 10)]
@@ -62,6 +49,19 @@
         /// </summary>
         [JsonProperty("selectable", Required = Required.Always, Order = 11)]
         public bool Selectable { get; }
+
+        /// <summary>
+        ///     Add the object values to a dictionary.
+        /// </summary>
+        /// <param name="document">The data is added to the given dictionary.</param>
+        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
+        public override void AddToDictionary(Dictionary<string, object?> document)
+        {
+            base.AddToDictionary(document);
+            document.Add(nameof(this.Answer).FirstCharacterToLower(), this.Answer);
+            document.Add(nameof(this.Selectable).FirstCharacterToLower(), this.Selectable);
+            document.Add(nameof(this.Order).FirstCharacterToLower(), this.Order);
+        }
 
         /// <summary>
         ///     Gets the sorting order.
