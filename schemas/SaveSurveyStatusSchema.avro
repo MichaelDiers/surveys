@@ -25,10 +25,13 @@
 					},
 					{
 						"name": "status",
-						"type": "enum",
-						"symbols": [
-							"Created"
-						]
+						"type": {
+							"name": "statusEnum",
+							"type": "enum",
+							"symbols": [
+								"Created"
+							]
+						}
 					}					
 				]
 			}
