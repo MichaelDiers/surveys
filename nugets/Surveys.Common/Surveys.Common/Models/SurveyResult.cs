@@ -27,6 +27,27 @@
             bool isSuggested,
             IEnumerable<QuestionReference> results
         )
+            : this(
+                internalSurveyId,
+                participantId,
+                isSuggested,
+                results as IEnumerable<IQuestionReference>)
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new instance of <see cref="SaveSurveyResultMessage" />.
+        /// </summary>
+        /// <param name="internalSurveyId">The internal id of the survey.</param>
+        /// <param name="participantId">The id of the participant.</param>
+        /// <param name="isSuggested">A value that indicates if the result is a suggested result or a real survey result.</param>
+        /// <param name="results">The survey results.</param>
+        public SurveyResult(
+            string internalSurveyId,
+            string participantId,
+            bool isSuggested,
+            IEnumerable<IQuestionReference> results
+        )
         {
             if (string.IsNullOrWhiteSpace(internalSurveyId))
             {
