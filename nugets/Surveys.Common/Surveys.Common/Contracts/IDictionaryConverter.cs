@@ -11,12 +11,12 @@
         ///     Add the object to a dictionary.
         /// </summary>
         /// <param name="document">The data is added to the given dictionary.</param>
-        void AddToDictionary(Dictionary<string, object?> document);
+        void AddToDictionary(Dictionary<string, object> document);
 
         /// <summary>
         ///     Convert the object values to a dictionary.
         /// </summary>
         /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        Dictionary<string, object?> ToDictionary();
+        Dictionary<string, object> ToDictionary();
     }
 }

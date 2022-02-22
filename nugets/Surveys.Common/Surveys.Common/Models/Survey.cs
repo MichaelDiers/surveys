@@ -53,7 +53,7 @@
         /// </summary>
         /// <param name="document">The data is added to the given dictionary.</param>
         /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        public override void AddToDictionary(Dictionary<string, object?> document)
+        public override void AddToDictionary(Dictionary<string, object> document)
         {
             base.AddToDictionary(document);
             document.Add(nameof(this.Info).FirstCharacterToLower(), this.Info);

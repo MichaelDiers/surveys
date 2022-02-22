@@ -43,7 +43,7 @@
         /// </summary>
         /// <param name="document">The data is added to the given dictionary.</param>
         /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        public virtual void AddToDictionary(Dictionary<string, object?> document)
+        public virtual void AddToDictionary(Dictionary<string, object> document)
         {
             document.Add(nameof(this.Id).FirstCharacterToLower(), this.Id);
         }
@@ -53,9 +53,9 @@
         ///     Convert the object values to a dictionary.
         /// </summary>
         /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        public virtual Dictionary<string, object?> ToDictionary()
+        public virtual Dictionary<string, object> ToDictionary()
         {
-            var document = new Dictionary<string, object?>();
+            var document = new Dictionary<string, object>();
             this.AddToDictionary(document);
             return document;
         }

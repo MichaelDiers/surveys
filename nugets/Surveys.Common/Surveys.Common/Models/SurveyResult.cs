@@ -72,7 +72,7 @@
         ///     Add the object to a dictionary.
         /// </summary>
         /// <param name="document">The data is added to the given dictionary.</param>
-        public void AddToDictionary(Dictionary<string, object?> document)
+        public void AddToDictionary(Dictionary<string, object> document)
         {
             document.Add(nameof(this.InternalSurveyId).FirstCharacterToLower(), this.InternalSurveyId);
             document.Add(nameof(this.ParticipantId).FirstCharacterToLower(), this.ParticipantId);
@@ -84,9 +84,9 @@
         ///     Convert the object values to a dictionary.
         /// </summary>
         /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        public Dictionary<string, object?> ToDictionary()
+        public Dictionary<string, object> ToDictionary()
         {
-            var document = new Dictionary<string, object?>();
+            var document = new Dictionary<string, object>();
             this.AddToDictionary(document);
             return document;
         }

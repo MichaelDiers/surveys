@@ -13,7 +13,7 @@
         /// <summary>
         ///     Gets the id of the participant.
         /// </summary>
-        string? ParticipantId { get; }
+        string ParticipantId { get; }
 
         /// <summary>
         ///     Gets the status of the survey.
