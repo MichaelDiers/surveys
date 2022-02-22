@@ -19,6 +19,7 @@ env:
   CSPROJ_NUGET: 'backend/InitializeSurveySubscriber/InitializeSurveySubscriber/nuget.config'
   CSPROJ_TEST_NUGET: 'backend/InitializeSurveySubscriber/InitializeSurveySubscriber.Tests/nuget.config'
   SAVE_SURVEY_TOPIC_NAME: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}
+  SAVE_SURVEY_RESULT_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_RESULT }}  
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -35,6 +36,7 @@ jobs:
         env:
           ProjectId: ${{ env.PROJECT_ID }}
           SaveSurveyTopicName: ${{ env.SAVE_SURVEY_TOPIC_NAME }}
+          SaveSurveyResultTopicName: ${{ env.SAVE_SURVEY_RESULT_TOPIC_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -77,6 +79,7 @@ jobs:
         env:
           ProjectId: ${{ env.PROJECT_ID }}
           SaveSurveyTopicName: ${{ env.SAVE_SURVEY_TOPIC_NAME }}
+          SaveSurveyResultTopicName: ${{ env.SAVE_SURVEY_RESULT_TOPIC_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -121,6 +124,7 @@ jobs:
         env:
           ProjectId: ${{ env.PROJECT_ID }}
           SaveSurveyTopicName: ${{ env.SAVE_SURVEY_TOPIC_NAME }}
+          SaveSurveyResultTopicName: ${{ env.SAVE_SURVEY_RESULT_TOPIC_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:

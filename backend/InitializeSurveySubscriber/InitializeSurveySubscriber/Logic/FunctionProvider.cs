@@ -5,6 +5,7 @@
     using InitializeSurveySubscriber.Contracts;
     using Surveys.Common.Contracts;
     using Surveys.Common.Messages;
+    using Surveys.Common.Models;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
@@ -22,14 +23,26 @@
         private readonly ISaveSurveyPubSub saveSurveyPubSub;
 
         /// <summary>
+        ///     Access the pub/sub client for saving survey results.
+        /// </summary>
+        private readonly ISaveSurveyResultPubSub saveSurveyResultPubSub;
+
+        /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
         /// <param name="configuration">Access to the application settings.</param>
         /// <param name="saveSurveyPubSub">Access the pub/sub client for saving surveys.</param>
-        public FunctionProvider(IFunctionConfiguration configuration, ISaveSurveyPubSub saveSurveyPubSub)
+        /// <param name="saveSurveyResultPubSub">Access the pub/sub client for saving survey results.</param>
+        public FunctionProvider(
+            IFunctionConfiguration configuration,
+            ISaveSurveyPubSub saveSurveyPubSub,
+            ISaveSurveyResultPubSub saveSurveyResultPubSub
+        )
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.saveSurveyPubSub = saveSurveyPubSub ?? throw new ArgumentNullException(nameof(saveSurveyPubSub));
+            this.saveSurveyResultPubSub = saveSurveyResultPubSub
+                                          ?? throw new ArgumentNullException(nameof(saveSurveyResultPubSub));
         }
 
         /// <summary>
@@ -48,6 +61,18 @@
 
             await this.saveSurveyPubSub.PublishAsync(
                 new SaveSurveyMessage(message.Survey, internalSurveyId, message.ProcessId));
+
+            foreach (var surveyParticipant in message.Survey.Participants)
+            {
+                var saveSurveyResultMessage = new SaveSurveyResultMessage(
+                    message.ProcessId,
+                    new SurveyResult(
+                        internalSurveyId,
+                        surveyParticipant.Id,
+                        true,
+                        surveyParticipant.QuestionReferences));
+                await this.saveSurveyResultPubSub.PublishAsync(saveSurveyResultMessage);
+            }
         }
     }
 }

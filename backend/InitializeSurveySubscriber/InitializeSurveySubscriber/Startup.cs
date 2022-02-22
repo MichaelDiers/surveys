@@ -29,6 +29,9 @@ namespace InitializeSurveySubscriber
             services.AddScoped<ISaveSurveyPubSub>(
                 _ => new SaveSurveyPubSub(
                     new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyTopicName)));
+            services.AddScoped<ISaveSurveyResultPubSub>(
+                _ => new SaveSurveyResultPubSub(
+                    new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyResultTopicName)));
             services.AddScoped<IFunctionProvider, FunctionProvider>();
         }
     }
