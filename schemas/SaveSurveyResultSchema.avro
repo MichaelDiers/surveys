@@ -1,0 +1,56 @@
+{
+	"name": "surveyResult",
+	"type": "record",
+	"fields": [
+		{
+			"name": "processId",
+      		"type": "string",
+      		"logicalType": "uuid"
+		},
+		{
+			"name": "surveyResult",
+			"type": {
+				"name": "surveyResultRecord",
+				"type": "record",
+				"fields": [
+					{
+						"name": "internalSurveyId",
+						"type": "string",
+      					"logicalType": "uuid"
+					},
+					{
+						"name": "participantId",
+						"type": "string",
+      					"logicalType": "uuid"
+					},
+					{
+						"name": "isSuggested",
+						"type": "boolean"      					
+					},
+					{
+						"name": "results",
+						"type": {
+							"type": "array",
+							"items": {
+								"name": "result",
+								"type": "record",
+								"fields": [
+									{
+										"name": "questionId",
+										"type": "string",
+      									"logicalType": "uuid"
+									},
+									{
+										"name": "choiceId",
+										"type": "string",
+      									"logicalType": "uuid"
+									}
+								]
+							}
+						}
+					}
+				]
+			}
+		}
+	]
+}
