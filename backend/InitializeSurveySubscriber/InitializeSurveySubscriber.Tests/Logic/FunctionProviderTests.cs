@@ -33,7 +33,11 @@
         {
             var configuration =
                 JsonConvert.DeserializeObject<FunctionConfiguration>(await File.ReadAllTextAsync("appsettings.json"));
-            var provider = new FunctionProvider(configuration, new PubSubMock(), new PubSubMock());
+            var provider = new FunctionProvider(
+                configuration,
+                new PubSubMock(),
+                new PubSubMock(),
+                new PubSubMock());
             return provider;
         }
     }
