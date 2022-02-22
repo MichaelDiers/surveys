@@ -73,9 +73,7 @@
                 new SaveSurveyMessage(message.Survey, internalSurveyId, message.ProcessId));
 
             await this.saveSurveyStatusPubSub.PublishAsync(
-                new SaveSurveyStatusMessage(
-                    message.ProcessId,
-                    new SurveyStatus(internalSurveyId, null, Status.Created)));
+                new SaveSurveyStatusMessage(message.ProcessId, new SurveyStatus(internalSurveyId, Status.Created)));
 
             foreach (var surveyParticipant in message.Survey.Participants)
             {
