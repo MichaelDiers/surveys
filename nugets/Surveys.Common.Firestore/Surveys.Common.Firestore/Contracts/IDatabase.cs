@@ -15,5 +15,12 @@
         /// <param name="data">The data to be saved.</param>
         /// <returns>A <see cref="Task" />.</returns>
         Task InsertAsync(string documentId, IDictionaryConverter data);
+
+        /// <summary>
+        ///     Insert a new object to the database.
+        /// </summary>
+        /// <param name="data">The data to be saved.</param>
+        /// <returns>A <see cref="Task" />.</returns>
+        Task InsertAsync(IDictionaryConverter data);
     }
 }

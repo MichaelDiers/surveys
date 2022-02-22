@@ -42,6 +42,28 @@
         {
             var documentReference =
                 this.database.Collection(this.databaseConfiguration.CollectionName).Document(documentId);
+            await this.InsertAsync(documentReference, data);
+        }
+
+        /// <summary>
+        ///     Insert a new object to the database.
+        /// </summary>
+        /// <param name="data">The data to be saved.</param>
+        /// <returns>A <see cref="Task" />.</returns>
+        public async Task InsertAsync(IDictionaryConverter data)
+        {
+            var documentReference = this.database.Collection(this.databaseConfiguration.CollectionName).Document();
+            await this.InsertAsync(documentReference, data);
+        }
+
+        /// <summary>
+        ///     Insert a new object to the database.
+        /// </summary>
+        /// <param name="documentReference">The document reference used for inserting.</param>
+        /// <param name="data">The data to be saved.</param>
+        /// <returns>A <see cref="Task" />.</returns>
+        private async Task InsertAsync(DocumentReference documentReference, IDictionaryConverter data)
+        {
             var document = data.ToDictionary();
             document.Add("created", FieldValue.ServerTimestamp);
             await documentReference.CreateAsync(document);
