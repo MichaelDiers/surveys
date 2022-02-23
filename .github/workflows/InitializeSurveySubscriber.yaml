@@ -20,7 +20,8 @@ env:
   CSPROJ_TEST_NUGET: 'backend/InitializeSurveySubscriber/InitializeSurveySubscriber.Tests/nuget.config'
   SAVE_SURVEY_TOPIC_NAME: ${{ secrets.GLOBAL_SAVE_SURVEY_SERVICE_SUB }}
   SAVE_SURVEY_RESULT_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_RESULT }}
-  SAVE_SURVEY_STATUS_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}  
+  SAVE_SURVEY_STATUS_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}
+  CREATE_MAIL_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_CREATE_MAIL }}  
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -39,6 +40,7 @@ jobs:
           SaveSurveyTopicName: ${{ env.SAVE_SURVEY_TOPIC_NAME }}
           SaveSurveyResultTopicName: ${{ env.SAVE_SURVEY_RESULT_TOPIC_NAME }}
           SaveSurveyStatusTopicName: ${{ env.SAVE_SURVEY_STATUS_TOPIC_NAME }}
+          CreateMailTopicName: ${{ env.CREATE_MAIL_TOPIC_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -83,6 +85,7 @@ jobs:
           SaveSurveyTopicName: ${{ env.SAVE_SURVEY_TOPIC_NAME }}
           SaveSurveyResultTopicName: ${{ env.SAVE_SURVEY_RESULT_TOPIC_NAME }}
           SaveSurveyStatusTopicName: ${{ env.SAVE_SURVEY_STATUS_TOPIC_NAME }}
+          CreateMailTopicName: ${{ env.CREATE_MAIL_TOPIC_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -129,6 +132,7 @@ jobs:
           SaveSurveyTopicName: ${{ env.SAVE_SURVEY_TOPIC_NAME }}
           SaveSurveyResultTopicName: ${{ env.SAVE_SURVEY_RESULT_TOPIC_NAME }}
           SaveSurveyStatusTopicName: ${{ env.SAVE_SURVEY_STATUS_TOPIC_NAME }}
+          CreateMailTopicName: ${{ env.CREATE_MAIL_TOPIC_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
