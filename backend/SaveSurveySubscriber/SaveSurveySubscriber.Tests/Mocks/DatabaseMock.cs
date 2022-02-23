@@ -19,5 +19,10 @@
         {
             return Task.CompletedTask;
         }
+
+        public Task InsertAsync(IDictionaryConverter data)
+        {
+            return Task.CompletedTask;
+        }
     }
 }
