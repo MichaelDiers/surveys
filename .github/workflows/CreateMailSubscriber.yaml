@@ -17,7 +17,9 @@ env:
   NUGET_USERNAME: MichaelDiers
   NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
   CSPROJ_NUGET: 'backend/CreateMailSubscriber/CreateMailSubscriber/nuget.config'
-  CSPROJ_TEST_NUGET: 'backend/CreateMailSubscriber/CreateMailSubscriber.Tests/nuget.config'  
+  CSPROJ_TEST_NUGET: 'backend/CreateMailSubscriber/CreateMailSubscriber.Tests/nuget.config' 
+  TOPIC_NAME_SEND_MAIL: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}
+  COLLECTION_NAME: ${{ secrets.GLOBAL_COLLECTION_EMAIL_TEMPLATES }}
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -32,7 +34,9 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          ProjectId: ${{ env.PROJECT_ID }}          
+          ProjectId: ${{ env.PROJECT_ID }}
+          SendMailTopicName: ${{ env.TOPIC_NAME_SEND_MAIL }}
+          CollectionName: ${{ env.COLLECTION_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -73,7 +77,9 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          ProjectId: ${{ env.PROJECT_ID }}          
+          ProjectId: ${{ env.PROJECT_ID }}
+          SendMailTopicName: ${{ env.TOPIC_NAME_SEND_MAIL }}
+          CollectionName: ${{ env.COLLECTION_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -116,7 +122,9 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          ProjectId: ${{ env.PROJECT_ID }}          
+          ProjectId: ${{ env.PROJECT_ID }}
+          SendMailTopicName: ${{ env.TOPIC_NAME_SEND_MAIL }}
+          CollectionName: ${{ env.COLLECTION_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:

@@ -6,6 +6,11 @@
     public interface IFunctionConfiguration
     {
         /// <summary>
+        ///     Gets the name of the email template collection.
+        /// </summary>
+        string CollectionName { get; }
+
+        /// <summary>
         ///     Gets the id of the google cloud project.
         /// </summary>
         string ProjectId { get; }

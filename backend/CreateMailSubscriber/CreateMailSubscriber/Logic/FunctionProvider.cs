@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using CreateMailSubscriber.Contracts;
+    using Surveys.Common.Contracts.Databases;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.PubSub.Contracts;
 
@@ -22,14 +23,25 @@
         private readonly IPubSub sendMailPubSub;
 
         /// <summary>
+        ///     Reader for email templates.
+        /// </summary>
+        private readonly ITemplateReader templateReader;
+
+        /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
         /// <param name="configuration">Access to the application settings.</param>
         /// <param name="sendMailPubSub">Access the pub/sub client for sending emails.</param>
-        public FunctionProvider(IFunctionConfiguration configuration, IPubSub sendMailPubSub)
+        /// <param name="templateReader">Reader for email templates.</param>
+        public FunctionProvider(
+            IFunctionConfiguration configuration,
+            IPubSub sendMailPubSub,
+            ITemplateReader templateReader
+        )
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.sendMailPubSub = sendMailPubSub ?? throw new ArgumentNullException(nameof(sendMailPubSub));
+            this.templateReader = templateReader ?? throw new ArgumentNullException(nameof(templateReader));
         }
 
         /// <summary>
@@ -37,14 +49,14 @@
         /// </summary>
         /// <param name="message">The incoming message from pub/sub.</param>
         /// <returns>A <see cref="Task" /> without a result.</returns>
-        public Task HandleAsync(ICreateMailMessage message)
+        public async Task HandleAsync(ICreateMailMessage message)
         {
             if (message == null)
             {
                 throw new ArgumentNullException(nameof(message));
             }
 
-            return Task.CompletedTask;
+            var templates = await this.templateReader.ReadTemplate(message.MailType);
         }
     }
 }
