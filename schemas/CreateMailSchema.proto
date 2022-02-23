@@ -49,6 +49,7 @@ message CreateMailMessage {
     }
 
     enum MailType {
+        Undefined = 0;
         RequestForParticipation = 1;
     }
 
