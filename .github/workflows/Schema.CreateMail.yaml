@@ -97,7 +97,7 @@ jobs:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD}}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
     environment:
-      name: Schema.SaveSurvey-Prod
+      name: Schema.CreateMail-Prod
     steps:
       - name: checkout
         uses: actions/checkout@v2

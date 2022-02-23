@@ -3,58 +3,58 @@ message CreateMailMessage {
     message RequestForParticipationMessage {
         message Survey {
             message Organizer {
-            required string id = 1;
-            required string email = 2;
-            required string name = 3;
+                string id = 1;
+                string email = 2;
+                string name = 3;
             }
 
             message QuestionReference {
-                required string questionId = 1;
-                required string choiceId = 2;
+                string questionId = 1;
+                string choiceId = 2;
             }
 
             message Participant {
-                required string id = 1;
-                required string email = 2;
-                required string name = 3;
-                required repeated QuestionReference questionReferences = 4;
-                required int32 order = 5; 
+                string id = 1;
+                string email = 2;
+                string name = 3;
+                repeated QuestionReference questionReferences = 4;
+                int32 order = 5; 
             }
 
             message Choice {
-                required string id = 1;
-                required string answer = 2;
-                required bool selectable = 3;
-                required int32 order = 4; 
+                string id = 1;
+                string answer = 2;
+                bool selectable = 3;
+                int32 order = 4; 
             }
 
             message Question {
-                required string id = 1;
-                required string question = 2;
-                required repeated Choice choices = 3;
-                required int32 order = 4;
+                string id = 1;
+                string question = 2;
+                repeated Choice choices = 3;
+                int32 order = 4;
             }
 
-            required string id = 1;
-            required string name = 2;
-            required string info = 3;
-            required string link = 4;
-            required Organizer organizer = 4;
-            required repeated Participant participants = 5;
-            required repeated Question questions = 6;
+            string id = 1;
+            string name = 2;
+            string info = 3;
+            string link = 4;
+            Organizer organizer = 5;
+            repeated Participant participants = 6;
+            repeated Question questions = 7;
         }
 
-        required string internalSurveyId = 1;
-        required Survey survey = 2;
+        string internalSurveyId = 1;
+        Survey survey = 2;
     }
 
     enum MailType {
-        RequestForParticipation = 1
+        RequestForParticipation = 1;
     }
 
-    required string processId = 1;
-    required MailType mailType = 2;
+    string processId = 1;
+    MailType mailType = 2;
     oneof data {
-        RequestForParticipationMessage requestForParticipation = 1;
+        RequestForParticipationMessage requestForParticipation = 3;
     }
 }
