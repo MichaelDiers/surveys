@@ -41,11 +41,13 @@
         /// <summary>
         ///     Gets the internal survey id.
         /// </summary>
+        [JsonProperty("internalSurveyId", Required = Required.Always, Order = 1)]
         public string InternalSurveyId { get; }
 
         /// <summary>
         ///     Gets the data of the survey.
         /// </summary>
+        [JsonProperty("survey", Required = Required.Always, Order = 2)]
         public ISurvey Survey { get; }
     }
 }
