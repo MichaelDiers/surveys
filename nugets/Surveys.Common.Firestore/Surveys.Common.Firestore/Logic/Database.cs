@@ -1,6 +1,5 @@
 ﻿namespace Surveys.Common.Firestore.Logic
 {
-    using System;
     using System.Threading.Tasks;
     using Google.Cloud.Firestore;
     using Surveys.Common.Contracts;
@@ -9,27 +8,15 @@
     /// <summary>
     ///     Access to the database.
     /// </summary>
-    public class Database : IDatabase
+    public class Database : DatabaseBase, IDatabase
     {
-        /// <summary>
-        ///     Access to the database implementation.
-        /// </summary>
-        private readonly FirestoreDb database;
-
-        /// <summary>
-        ///     Configuration of the database.
-        /// </summary>
-        private readonly IDatabaseConfiguration databaseConfiguration;
-
         /// <summary>
         ///     Creates a new instance of <see cref="Database" />.
         /// </summary>
         /// <param name="databaseConfiguration">Configuration of the database.</param>
         public Database(IDatabaseConfiguration databaseConfiguration)
+            : base(databaseConfiguration)
         {
-            this.databaseConfiguration =
-                databaseConfiguration ?? throw new ArgumentNullException(nameof(databaseConfiguration));
-            this.database = FirestoreDb.Create(databaseConfiguration.ProjectId);
         }
 
         /// <summary>
@@ -40,8 +27,7 @@
         /// <returns>A <see cref="Task" />.</returns>
         public async Task InsertAsync(string documentId, IDictionaryConverter data)
         {
-            var documentReference =
-                this.database.Collection(this.databaseConfiguration.CollectionName).Document(documentId);
+            var documentReference = this.Collection().Document(documentId);
             await this.InsertAsync(documentReference, data);
         }
 
@@ -52,7 +38,7 @@
         /// <returns>A <see cref="Task" />.</returns>
         public async Task InsertAsync(IDictionaryConverter data)
         {
-            var documentReference = this.database.Collection(this.databaseConfiguration.CollectionName).Document();
+            var documentReference = this.Collection().Document();
             await this.InsertAsync(documentReference, data);
         }
 
