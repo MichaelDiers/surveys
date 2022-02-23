@@ -58,7 +58,8 @@
                 configuration,
                 new PubSub(new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyTopicName)),
                 new PubSub(new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyResultTopicName)),
-                new PubSub(new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName)));
+                new PubSub(new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName)),
+                new PubSub(new PubSubConfiguration(configuration.ProjectId, configuration.CreateMailTopicName)));
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 

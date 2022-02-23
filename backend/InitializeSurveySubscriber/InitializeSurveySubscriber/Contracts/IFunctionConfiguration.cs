@@ -6,6 +6,11 @@
     public interface IFunctionConfiguration
     {
         /// <summary>
+        ///     Gets the name of the pub/sub topic for creating emails.
+        /// </summary>
+        string CreateMailTopicName { get; }
+
+        /// <summary>
         ///     Gets the id of the google cloud project.
         /// </summary>
         string ProjectId { get; }

@@ -33,7 +33,8 @@ namespace InitializeSurveySubscriber
                     new PubSub(
                         new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyResultTopicName)),
                     new PubSub(
-                        new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName))));
+                        new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName)),
+                    new PubSub(new PubSubConfiguration(configuration.ProjectId, configuration.CreateMailTopicName))));
         }
     }
 }

@@ -8,6 +8,11 @@
     public class FunctionConfiguration : IFunctionConfiguration
     {
         /// <summary>
+        ///     Gets the name of the pub/sub topic for creating emails.
+        /// </summary>
+        public string CreateMailTopicName { get; set; }
+
+        /// <summary>
         ///     Gets the id of the google cloud project.
         /// </summary>
         public string ProjectId { get; set; }

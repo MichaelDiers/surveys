@@ -37,6 +37,7 @@
                 configuration,
                 new PubSubMock(),
                 new PubSubMock(),
+                new PubSubMock(),
                 new PubSubMock());
             return provider;
         }
