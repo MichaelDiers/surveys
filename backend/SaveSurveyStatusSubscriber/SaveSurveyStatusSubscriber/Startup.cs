@@ -1,16 +1,16 @@
 namespace SaveSurveyStatusSubscriber
 {
     using Google.Cloud.Functions.Hosting;
+    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloud.Base.Logic;
+    using Md.GoogleCloudFirestore.Logic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using SaveSurveyStatusSubscriber.Contracts;
     using SaveSurveyStatusSubscriber.Logic;
     using SaveSurveyStatusSubscriber.Model;
-    using Surveys.Common.Firestore.Contracts;
-    using Surveys.Common.Firestore.Logic;
-    using Database = Surveys.Common.Firestore.Logic.Database;
-    using IDatabase = Surveys.Common.Firestore.Contracts.IDatabase;
+    using Surveys.Common.Contracts;
 
     /// <summary>
     ///     Initialize the function.
@@ -31,7 +31,7 @@ namespace SaveSurveyStatusSubscriber
             services.AddScoped<IDatabaseConfiguration>(
                 _ => new DatabaseConfiguration(configuration.ProjectId, configuration.CollectionName));
             services.AddScoped<IDatabase, Database>();
-            services.AddScoped<IFunctionProvider, FunctionProvider>();
+            services.AddScoped<IPubSubProvider<ISaveSurveyStatusMessage>, FunctionProvider>();
         }
     }
 }

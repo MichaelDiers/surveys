@@ -2,14 +2,15 @@
 {
     using System;
     using System.Threading.Tasks;
-    using SaveSurveyStatusSubscriber.Contracts;
+    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloud.Base.Logic;
+    using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
-    using Surveys.Common.Firestore.Contracts;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
     /// </summary>
-    public class FunctionProvider : IFunctionProvider
+    public class FunctionProvider : PubSubProvider<ISaveSurveyStatusMessage, Function>
     {
         /// <summary>
         ///     Access to the survey database.
@@ -19,8 +20,10 @@
         /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
+        /// <param name="logger">An error logger.</param>
         /// <param name="database">Access to the survey database.</param>
-        public FunctionProvider(IDatabase database)
+        public FunctionProvider(ILogger<Function> logger, IDatabase database)
+            : base(logger)
         {
             this.database = database ?? throw new ArgumentNullException(nameof(database));
         }
@@ -30,7 +33,7 @@
         /// </summary>
         /// <param name="message">The incoming message from pub/sub.</param>
         /// <returns>A <see cref="Task" /> without a result.</returns>
-        public async Task HandleAsync(ISaveSurveyStatusMessage message)
+        protected override async Task HandleMessageAsync(ISaveSurveyStatusMessage message)
         {
             if (message == null)
             {
