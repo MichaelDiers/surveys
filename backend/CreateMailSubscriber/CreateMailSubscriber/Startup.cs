@@ -4,14 +4,13 @@ namespace CreateMailSubscriber
     using CreateMailSubscriber.Logic;
     using CreateMailSubscriber.Model;
     using Google.Cloud.Functions.Hosting;
+    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloud.Base.Logic;
+    using Md.GoogleCloudPubSub.Logic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Surveys.Common.Contracts.Databases;
-    using Surveys.Common.Firestore.Contracts;
-    using Surveys.Common.Firestore.Logic;
-    using Surveys.Common.PubSub.Contracts;
-    using Surveys.Common.PubSub.Logic;
+    using Surveys.Common.Contracts.Messages;
 
     /// <summary>
     ///     Initialize the function.
@@ -30,13 +29,12 @@ namespace CreateMailSubscriber
 
             services.AddScoped<IFunctionConfiguration>(_ => configuration);
 
-            services.AddScoped<IPubSubConfiguration>(
-                _ => new PubSubConfiguration(configuration.ProjectId, configuration.SendMailTopicName));
-            services.AddScoped<IPubSub, PubSub>();
+            services.AddScoped<IPubSubClientConfiguration>(
+                _ => new PubSubClientConfiguration(configuration.ProjectId, configuration.SendMailTopicName));
+            services.AddScoped<IPubSubClient, PubSubClient>();
             services.AddScoped<IDatabaseConfiguration>(
                 _ => new DatabaseConfiguration(configuration.ProjectId, configuration.CollectionName));
-            services.AddScoped<ITemplateReader, DatabaseTemplateReader>();
-            services.AddScoped<IFunctionProvider, FunctionProvider>();
+            services.AddScoped<IPubSubProvider<ICreateMailMessage>, FunctionProvider>();
         }
     }
 }
