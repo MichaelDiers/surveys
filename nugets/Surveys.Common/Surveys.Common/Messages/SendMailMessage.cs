@@ -9,7 +9,7 @@
     /// <summary>
     ///     Describes a send mail message.
     /// </summary>
-    public class SendMailMessage : Message
+    public class SendMailMessage : Message, ISendMailMessage
     {
         /// <summary>
         ///     Creates a new instance of <see cref="SendMailMessage" />.
