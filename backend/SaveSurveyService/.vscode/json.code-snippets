@@ -1,7 +1,0 @@
-{
-  "guid": {
-    "scope": "json",
-    "prefix": "guid",
-    "body": "\"$UUID\""
-  }
-}
