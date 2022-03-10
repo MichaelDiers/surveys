@@ -3,63 +3,66 @@
     using System;
     using System.Threading.Tasks;
     using InitializeSurveySubscriber.Contracts;
+    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloud.Base.Logic;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Messages;
     using Surveys.Common.Models;
-    using Surveys.Common.PubSub.Contracts;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
     /// </summary>
-    public class FunctionProvider : IFunctionProvider
+    public class FunctionProvider : PubSubProvider<IInitializeSurveyMessage, Function>
     {
         /// <summary>
-        ///     Access the application settings.
+        ///     Access the pub/sub client for sending create mail messages.
         /// </summary>
-        private readonly IFunctionConfiguration configuration;
-
-        private readonly IPubSub createMailPubSub;
+        private readonly IPubSubClient createMailPubSubClient;
 
         /// <summary>
         ///     Access the pub/sub client for saving surveys.
         /// </summary>
-        private readonly IPubSub saveSurveyPubSub;
+        private readonly IPubSubClient saveSurveyPubSubClient;
 
         /// <summary>
         ///     Access the pub/sub client for saving survey results.
         /// </summary>
-        private readonly IPubSub saveSurveyResultPubSub;
+        private readonly IPubSubClient saveSurveyResultPubSubClient;
 
         /// <summary>
         ///     Access the pub/sub client for saving survey status updates.
         /// </summary>
-        private readonly IPubSub saveSurveyStatusPubSub;
+        private readonly IPubSubClient saveSurveyStatusPubSubClient;
 
         /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
-        /// <param name="configuration">Access to the application settings.</param>
-        /// <param name="saveSurveyPubSub">Access the pub/sub client for saving surveys.</param>
-        /// <param name="saveSurveyResultPubSub">Access the pub/sub client for saving survey results.</param>
-        /// <param name="saveSurveyStatusPubSub">Access the pub/sub client for saving survey status updates.</param>
-        /// <param name="createMailPubSub">Access the pub/sub client for creating emails.</param>
+        /// <param name="logger">An error logger.</param>
+        /// <param name="saveSurveyPubSubClient">Access the pub/sub client for saving surveys.</param>
+        /// <param name="saveSurveyResultPubSubClient">Access the pub/sub client for saving survey results.</param>
+        /// <param name="saveSurveyStatusPubSubClient">Access the pub/sub client for saving survey status updates.</param>
+        /// <param name="createMailPubSubClient">Access the pub/sub client for creating emails.</param>
         public FunctionProvider(
-            IFunctionConfiguration configuration,
-            IPubSub saveSurveyPubSub,
-            IPubSub saveSurveyResultPubSub,
-            IPubSub saveSurveyStatusPubSub,
-            IPubSub createMailPubSub
+            ILogger<Function> logger,
+            ISaveSurveyPubSubClient saveSurveyPubSubClient,
+            ISaveSurveyResultPubSubClient saveSurveyResultPubSubClient,
+            ISaveSurveyStatusPubSubClient saveSurveyStatusPubSubClient,
+            ICreateMailPubSubClient createMailPubSubClient
         )
+            : base(logger)
         {
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this.saveSurveyPubSub = saveSurveyPubSub ?? throw new ArgumentNullException(nameof(saveSurveyPubSub));
-            this.saveSurveyResultPubSub = saveSurveyResultPubSub
-                                          ?? throw new ArgumentNullException(nameof(saveSurveyResultPubSub));
-            this.saveSurveyStatusPubSub = saveSurveyStatusPubSub
-                                          ?? throw new ArgumentNullException(nameof(saveSurveyStatusPubSub));
-            this.createMailPubSub = createMailPubSub ?? throw new ArgumentNullException(nameof(createMailPubSub));
+            this.saveSurveyPubSubClient = saveSurveyPubSubClient ??
+                                          throw new ArgumentNullException(nameof(saveSurveyPubSubClient));
+            this.saveSurveyResultPubSubClient = saveSurveyResultPubSubClient ??
+                                                throw new ArgumentNullException(nameof(saveSurveyResultPubSubClient));
+            this.saveSurveyStatusPubSubClient = saveSurveyStatusPubSubClient ??
+                                                throw new ArgumentNullException(nameof(saveSurveyStatusPubSubClient));
+
+            this.createMailPubSubClient = createMailPubSubClient ??
+                                          throw new ArgumentNullException(nameof(createMailPubSubClient));
         }
 
         /// <summary>
@@ -67,7 +70,7 @@
         /// </summary>
         /// <param name="message">The incoming message from pub/sub.</param>
         /// <returns>A <see cref="Task" /> without a result.</returns>
-        public async Task HandleAsync(IInitializeSurveyMessage message)
+        protected override async Task HandleMessageAsync(IInitializeSurveyMessage message)
         {
             if (message == null)
             {
@@ -76,10 +79,10 @@
 
             var internalSurveyId = Guid.NewGuid().ToString();
 
-            await this.saveSurveyPubSub.PublishAsync(
+            await this.saveSurveyPubSubClient.PublishAsync(
                 new SaveSurveyMessage(message.Survey, internalSurveyId, message.ProcessId));
 
-            await this.saveSurveyStatusPubSub.PublishAsync(
+            await this.saveSurveyStatusPubSubClient.PublishAsync(
                 new SaveSurveyStatusMessage(message.ProcessId, new SurveyStatus(internalSurveyId, Status.Created)));
 
             foreach (var surveyParticipant in message.Survey.Participants)
@@ -91,7 +94,7 @@
                         surveyParticipant.Id,
                         true,
                         surveyParticipant.QuestionReferences));
-                await this.saveSurveyResultPubSub.PublishAsync(saveSurveyResultMessage);
+                await this.saveSurveyResultPubSubClient.PublishAsync(saveSurveyResultMessage);
             }
 
             var json = JsonConvert.SerializeObject(
@@ -99,7 +102,7 @@
                     message.ProcessId,
                     MailType.RequestForParticipation,
                     new RequestForParticipation(internalSurveyId, message.Survey)));
-            await this.createMailPubSub.PublishAsync(
+            await this.createMailPubSubClient.PublishAsync(
                 new CreateMailMessage(
                     message.ProcessId,
                     MailType.RequestForParticipation,

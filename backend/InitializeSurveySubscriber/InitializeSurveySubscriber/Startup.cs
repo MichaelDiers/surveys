@@ -4,10 +4,12 @@ namespace InitializeSurveySubscriber
     using InitializeSurveySubscriber.Contracts;
     using InitializeSurveySubscriber.Logic;
     using InitializeSurveySubscriber.Model;
+    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloud.Base.Logic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Surveys.Common.PubSub.Logic;
+    using Surveys.Common.Contracts;
 
     /// <summary>
     ///     Initialize the function.
@@ -26,15 +28,19 @@ namespace InitializeSurveySubscriber
 
             services.AddScoped<IFunctionConfiguration>(_ => configuration);
 
-            services.AddScoped<IFunctionProvider>(
-                _ => new FunctionProvider(
-                    configuration,
-                    new PubSub(new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyTopicName)),
-                    new PubSub(
-                        new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyResultTopicName)),
-                    new PubSub(
-                        new PubSubConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName)),
-                    new PubSub(new PubSubConfiguration(configuration.ProjectId, configuration.CreateMailTopicName))));
+            services.AddSingleton<ISaveSurveyPubSubClient>(
+                _ => new SaveSurveyPubSubClient(
+                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SaveSurveyTopicName)));
+            services.AddSingleton<ISaveSurveyResultPubSubClient>(
+                _ => new SaveSurveyResultPubSubClient(
+                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SaveSurveyResultTopicName)));
+            services.AddSingleton<ISaveSurveyStatusPubSubClient>(
+                _ => new SaveSurveyStatusPubSubClient(
+                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName)));
+            services.AddSingleton<ICreateMailPubSubClient>(
+                _ => new CreateMailPubSubClient(
+                    new PubSubClientConfiguration(configuration.ProjectId, configuration.CreateMailTopicName)));
+            services.AddScoped<IPubSubProvider<IInitializeSurveyMessage>, FunctionProvider>();
         }
     }
 }

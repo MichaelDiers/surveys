@@ -3,11 +3,13 @@
     using System;
     using System.IO;
     using System.Threading.Tasks;
-    using InitializeSurveySubscriber.Contracts;
+    using Google.Cloud.Functions.Testing;
     using InitializeSurveySubscriber.Logic;
     using InitializeSurveySubscriber.Model;
     using InitializeSurveySubscriber.Tests.Mocks;
+    using Md.GoogleCloud.Base.Contracts.Logic;
     using Newtonsoft.Json;
+    using Surveys.Common.Contracts;
     using Xunit;
 
     /// <summary>
@@ -29,12 +31,12 @@
         ///     Initialize the provider and its dependencies.
         /// </summary>
         /// <returns>A <see cref="Task" /> whose result is an <see cref="IFunctionProvider" />.</returns>
-        private static async Task<IFunctionProvider> InitAsync()
+        private static async Task<IPubSubProvider<IInitializeSurveyMessage>> InitAsync()
         {
             var configuration =
                 JsonConvert.DeserializeObject<FunctionConfiguration>(await File.ReadAllTextAsync("appsettings.json"));
             var provider = new FunctionProvider(
-                configuration,
+                new MemoryLogger<Function>(),
                 new PubSubMock(),
                 new PubSubMock(),
                 new PubSubMock(),
