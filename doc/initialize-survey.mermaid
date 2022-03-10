@@ -6,6 +6,7 @@ sequenceDiagram
     participant F as Google Cloud<br>Firestore
     participant SaveSurveyStatus as SaveSurveyStatusSubscriber<br>.net core
     participant SaveSurveyResult as SaveSurveyResultSubscriber<br>.net core
+    participant CreateMail as CreateMailSubscriber
     C--)+PS: INITALIZE_SURVEY
     PS--)+InitSurvey: INITALIZE_SURVEY
     deactivate PS
@@ -41,6 +42,14 @@ sequenceDiagram
     end
     %% CREATE_MAIL
     InitSurvey--)PS: CREATE_MAIL
-    activate PS
-    deactivate PS
     deactivate InitSurvey
+    activate PS
+    PS--)CreateMail: CREATE_MAIL
+    deactivate PS
+    activate CreateMail
+    CreateMail->>+F: read email templates
+    F-->>CreateMail: response
+    deactivate F
+    CreateMail--)+PS: SEND_MAIL
+    deactivate CreateMail
+    deactivate PS
