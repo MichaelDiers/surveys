@@ -1,8 +1,9 @@
 ﻿namespace SaveSurveySubscriber.Tests.Mocks
 {
+    using System;
     using System.Threading.Tasks;
+    using Md.GoogleCloud.Base.Contracts.Logic;
     using Newtonsoft.Json;
-    using SaveSurveySubscriber.Contracts;
     using SaveSurveySubscriber.Logic;
     using Surveys.Common.Contracts;
     using Xunit;
@@ -10,7 +11,7 @@
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
     /// </summary>
-    public class FunctionProviderMock : IFunctionProvider
+    public class FunctionProviderMock : IPubSubProvider<ISaveSurveyMessage>
     {
         /// <summary>
         ///     The expected incoming message for <see cref="HandleAsync" />.
@@ -35,6 +36,11 @@
         {
             Assert.Equal(JsonConvert.SerializeObject(this.expectedMessage), JsonConvert.SerializeObject(message));
 
+            return Task.CompletedTask;
+        }
+
+        public Task LogErrorAsync(Exception ex, string message)
+        {
             return Task.CompletedTask;
         }
     }

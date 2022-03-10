@@ -7,12 +7,13 @@
     using CloudNative.CloudEvents;
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
+    using Md.GoogleCloud.Base.Logic;
+    using Md.GoogleCloudFirestore.Logic;
     using Newtonsoft.Json;
     using SaveSurveySubscriber.Logic;
     using SaveSurveySubscriber.Model;
     using SaveSurveySubscriber.Tests.Data;
     using Surveys.Common.Contracts;
-    using Surveys.Common.Firestore.Logic;
     using Xunit;
 
     /// <summary>
@@ -30,13 +31,7 @@
         private static async Task HandleAsyncForMessage(ISaveSurveyMessage message)
         {
             var json = JsonConvert.SerializeObject(message);
-            var data = new MessagePublishedData
-            {
-                Message = new PubsubMessage
-                {
-                    TextData = json
-                }
-            };
+            var data = new MessagePublishedData {Message = new PubsubMessage {TextData = json}};
 
             var cloudEvent = new CloudEvent
             {
@@ -53,6 +48,7 @@
 
             var logger = new MemoryLogger<Function>();
             var provider = new FunctionProvider(
+                logger,
                 new Database(new DatabaseConfiguration(configuration.ProjectId, configuration.CollectionName)));
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);

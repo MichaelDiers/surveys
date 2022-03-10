@@ -1,28 +1,38 @@
 ﻿namespace SaveSurveySubscriber.Tests.Mocks
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
-    using Surveys.Common.Contracts;
-    using Surveys.Common.Firestore.Contracts;
+    using Md.GoogleCloud.Base.Contracts.Logic;
 
     /// <summary>
     ///     Mock for databases.
     /// </summary>
     internal class DatabaseMock : IDatabase
     {
-        /// <summary>
-        ///     Insert a new object to the database.
-        /// </summary>
-        /// <param name="documentId">The id of the document.</param>
-        /// <param name="data">The data to be saved.</param>
-        /// <returns>A <see cref="Task" />.</returns>
-        public Task InsertAsync(string documentId, IDictionaryConverter data)
+        public Task InsertAsync(string documentId, IToDictionary data)
         {
             return Task.CompletedTask;
         }
 
-        public Task InsertAsync(IDictionaryConverter data)
+        public Task InsertAsync(IToDictionary data)
         {
             return Task.CompletedTask;
+        }
+
+        public Task<IDictionary<string, object>?> ReadByDocumentIdAsync(string documentId)
+        {
+            return Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object>());
+        }
+
+        public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync(string fieldPath, object value)
+        {
+            return Task.FromResult(Enumerable.Empty<IDictionary<string, object>>());
+        }
+
+        public Task<IDictionary<string, object>?> ReadOneAsync(string fieldPath, object value)
+        {
+            return Task.FromResult<IDictionary<string, object>?>(null);
         }
     }
 }

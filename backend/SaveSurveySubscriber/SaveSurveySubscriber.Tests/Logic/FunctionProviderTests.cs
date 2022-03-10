@@ -2,9 +2,11 @@
 {
     using System;
     using System.Threading.Tasks;
-    using SaveSurveySubscriber.Contracts;
+    using Google.Cloud.Functions.Testing;
+    using Md.GoogleCloud.Base.Contracts.Logic;
     using SaveSurveySubscriber.Logic;
     using SaveSurveySubscriber.Tests.Mocks;
+    using Surveys.Common.Contracts;
     using Xunit;
 
     /// <summary>
@@ -25,11 +27,11 @@
         /// <summary>
         ///     Initialize the provider and its dependencies.
         /// </summary>
-        /// <returns>A <see cref="Task" /> whose result is an <see cref="IFunctionProvider" />.</returns>
-        private static Task<IFunctionProvider> InitAsync()
+        /// <returns>A <see cref="Task" /> whose result is an <see cref="IPubSubProvider{TMessage}" />.</returns>
+        private static Task<IPubSubProvider<ISaveSurveyMessage>> InitAsync()
         {
-            var provider = new FunctionProvider(new DatabaseMock());
-            return Task.FromResult<IFunctionProvider>(provider);
+            var provider = new FunctionProvider(new MemoryLogger<Function>(), new DatabaseMock());
+            return Task.FromResult<IPubSubProvider<ISaveSurveyMessage>>(provider);
         }
     }
 }

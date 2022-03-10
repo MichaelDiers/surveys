@@ -27,13 +27,7 @@
         private static async Task HandleAsyncForMessage(ISaveSurveyMessage message)
         {
             var json = JsonConvert.SerializeObject(message);
-            var data = new MessagePublishedData
-            {
-                Message = new PubsubMessage
-                {
-                    TextData = json
-                }
-            };
+            var data = new MessagePublishedData {Message = new PubsubMessage {TextData = json}};
 
             var cloudEvent = new CloudEvent
             {
