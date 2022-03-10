@@ -1,5 +1,7 @@
 ﻿namespace Surveys.Common.Contracts
 {
+    using Md.GoogleCloud.Base.Contracts.Messages;
+
     /// <summary>
     ///     Save a new status of a survey.
     /// </summary>

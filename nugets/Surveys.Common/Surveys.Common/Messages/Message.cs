@@ -2,8 +2,8 @@
 {
     using System;
     using Md.Common.Extensions;
+    using Md.GoogleCloud.Base.Contracts.Messages;
     using Newtonsoft.Json;
-    using Surveys.Common.Contracts;
 
     /// <summary>
     ///     Base definition of pub/sub messages.

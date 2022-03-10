@@ -1,5 +1,7 @@
 ﻿namespace Surveys.Common.Contracts
 {
+    using Md.GoogleCloud.Base.Contracts.Messages;
+
     /// <summary>
     ///     Message that describes a survey result.
     /// </summary>

@@ -1,5 +1,7 @@
 ﻿namespace Surveys.Common.Contracts.Messages
 {
+    using Md.GoogleCloud.Base.Contracts.Messages;
+
     /// <summary>
     ///     Message for creating emails.
     /// </summary>
