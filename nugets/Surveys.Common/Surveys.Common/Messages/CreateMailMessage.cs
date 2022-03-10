@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel;
+    using Md.GoogleCloud.Base.Messages;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts.Messages;
 

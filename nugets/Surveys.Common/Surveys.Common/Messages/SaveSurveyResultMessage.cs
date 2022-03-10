@@ -1,6 +1,7 @@
 ﻿namespace Surveys.Common.Messages
 {
     using System;
+    using Md.GoogleCloud.Base.Messages;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Models;
