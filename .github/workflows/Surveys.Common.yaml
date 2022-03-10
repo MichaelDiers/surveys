@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - 'nugets/Surveys.Common/Surveys.Common/**'
+      - '.github/workflows/Surveys.Common.yaml'
   workflow_dispatch:
 env:
   CONFIG: Release
