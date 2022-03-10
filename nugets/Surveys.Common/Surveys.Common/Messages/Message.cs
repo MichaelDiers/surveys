@@ -1,6 +1,7 @@
 ﻿namespace Surveys.Common.Messages
 {
     using System;
+    using Md.Common.Extensions;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
 
@@ -16,12 +17,7 @@
         /// <exception cref="ArgumentException">Is thrown if <paramref name="processId" /> is null or whitespace.</exception>
         public Message(string processId)
         {
-            if (string.IsNullOrWhiteSpace(processId))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(processId));
-            }
-
-            this.ProcessId = processId;
+            this.ProcessId = processId.ValidateIsAGuid(nameof(processId));
         }
 
         /// <summary>

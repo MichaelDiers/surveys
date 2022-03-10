@@ -2,15 +2,31 @@
 {
     using System;
     using System.Collections.Generic;
+    using Md.Common.Extensions;
+    using Md.GoogleCloud.Base.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
-    using Surveys.Common.Extensions;
 
     /// <summary>
     ///     Describes the status of a survey.
     /// </summary>
-    public class SurveyStatus : ISurveyStatus
+    public class SurveyStatus : ToDictionaryConverter, ISurveyStatus
     {
+        /// <summary>
+        ///     Json name of property <see cref="InternalSurveyId" />.
+        /// </summary>
+        private const string InternalSurveyIdName = "internalSurveyId";
+
+        /// <summary>
+        ///     Json name of property <see cref="ParticipantId" />.
+        /// </summary>
+        private const string ParticipantIdName = "participantId";
+
+        /// <summary>
+        ///     Json name of property <see cref="Status" />.
+        /// </summary>
+        private const string StatusName = "status";
+
         /// <summary>
         ///     Creates a new instance of <see cref="SurveyStatus" />.
         /// </summary>
@@ -30,10 +46,9 @@
         [JsonConstructor]
         public SurveyStatus(string internalSurveyId, string participantId, Status status)
         {
-            internalSurveyId.ThrowExceptionIfGuidIsInvalid();
             if (!string.IsNullOrWhiteSpace(participantId))
             {
-                participantId.ThrowExceptionIfGuidIsInvalid();
+                participantId.ValidateIsAGuid(nameof(participantId));
             }
 
             if (status == Status.None)
@@ -41,49 +56,41 @@
                 throw new ArgumentException("Invalid value Status.None", nameof(status));
             }
 
-            this.InternalSurveyId = internalSurveyId;
+            this.InternalSurveyId = internalSurveyId.ValidateIsAGuid(nameof(internalSurveyId));
             this.ParticipantId = participantId;
             this.Status = status;
         }
 
-        /// <summary>
-        ///     Add the object to a dictionary.
-        /// </summary>
-        /// <param name="document">The data is added to the given dictionary.</param>
-        public void AddToDictionary(Dictionary<string, object> document)
-        {
-            document.Add(nameof(this.InternalSurveyId).FirstCharacterToLower(), this.InternalSurveyId);
-            document.Add(nameof(this.ParticipantId).FirstCharacterToLower(), this.ParticipantId);
-            document.Add(nameof(this.Status).FirstCharacterToLower(), this.Status.ToString());
-        }
-
-        /// <summary>
-        ///     Convert the object values to a dictionary.
-        /// </summary>
-        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        public Dictionary<string, object> ToDictionary()
-        {
-            var document = new Dictionary<string, object>();
-            this.AddToDictionary(document);
-            return document;
-        }
 
         /// <summary>
         ///     Gets the internal survey id.
         /// </summary>
-        [JsonProperty("internalSurveyId", Required = Required.Always, Order = 1)]
+        [JsonProperty(InternalSurveyIdName, Required = Required.Always, Order = 1)]
         public string InternalSurveyId { get; }
 
         /// <summary>
         ///     Gets the id of the participant.
         /// </summary>
-        [JsonProperty("participantId", Required = Required.AllowNull, Order = 2)]
+        [JsonProperty(ParticipantIdName, Required = Required.AllowNull, Order = 2)]
         public string ParticipantId { get; }
 
         /// <summary>
         ///     Gets the status of the survey.
         /// </summary>
-        [JsonProperty("status", Required = Required.Always, Order = 3)]
+        [JsonProperty(StatusName, Required = Required.Always, Order = 3)]
         public Status Status { get; }
+
+        /// <summary>
+        ///     Add the property values to a dictionary.
+        /// </summary>
+        /// <param name="dictionary">The values are added to the given dictionary.</param>
+        /// <returns>The given <paramref name="dictionary" />.</returns>
+        public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
+        {
+            dictionary.Add(InternalSurveyIdName, this.InternalSurveyId);
+            dictionary.Add(ParticipantIdName, this.ParticipantId);
+            dictionary.Add(StatusName, this.Status.ToString());
+            return dictionary;
+        }
     }
 }

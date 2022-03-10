@@ -1,11 +1,12 @@
 ﻿namespace Surveys.Common.Contracts
 {
     using System.Collections.Generic;
+    using Md.GoogleCloud.Base.Contracts.Logic;
 
     /// <summary>
     ///     Describes a survey result.
     /// </summary>
-    public interface ISurveyResult : IDictionaryConverter
+    public interface ISurveyResult : IToDictionary
     {
         /// <summary>
         ///     Gets the internal survey id.

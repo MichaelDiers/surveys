@@ -69,10 +69,7 @@
                         Guid.NewGuid().ToString(),
                         "foobar@example.example",
                         "name",
-                        new[]
-                        {
-                            new QuestionReference(questions.First().Id, questions.First().Choices.First().Id)
-                        },
+                        new[] {new QuestionReference(questions.First().Id, questions.First().Choices.First().Id)},
                         1)
                 },
                 questions);
@@ -112,10 +109,7 @@
                             Guid.NewGuid().ToString(),
                             "foobar@example.example",
                             "name",
-                            new[]
-                            {
-                                new QuestionReference(questions.First().Id, questions.First().Choices.First().Id)
-                            },
+                            new[] {new QuestionReference(questions.First().Id, questions.First().Choices.First().Id)},
                             1)
                     },
                     questions));
@@ -154,10 +148,7 @@
                             Guid.NewGuid().ToString(),
                             "foobar@example.example",
                             "name",
-                            new[]
-                            {
-                                new QuestionReference(questions.First().Id, questions.First().Choices.First().Id)
-                            },
+                            new[] {new QuestionReference(questions.First().Id, questions.First().Choices.First().Id)},
                             1)
                     },
                     questions));

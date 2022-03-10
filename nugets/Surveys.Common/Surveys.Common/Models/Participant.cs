@@ -5,10 +5,22 @@
     using System.Linq;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
-    using Surveys.Common.Extensions;
 
+    /// <summary>
+    ///     Describes a participant of a survey.
+    /// </summary>
     public class Participant : Person, IParticipant
     {
+        /// <summary>
+        ///     Json name of property <see cref="Order" />.
+        /// </summary>
+        private const string OrderName = "order";
+
+        /// <summary>
+        ///     Json name of property <see cref="QuestionReferences" />.
+        /// </summary>
+        private const string QuestionReferencesName = "questionReferences";
+
         /// <summary>
         ///     Creates a new instance of <see cref="Person" />.
         /// </summary>
@@ -35,29 +47,28 @@
         }
 
         /// <summary>
-        ///     Add the object values to a dictionary.
-        /// </summary>
-        /// <param name="document">The data is added to the given dictionary.</param>
-        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        public override void AddToDictionary(Dictionary<string, object> document)
-        {
-            base.AddToDictionary(document);
-            document.Add(
-                nameof(this.QuestionReferences).FirstCharacterToLower(),
-                this.QuestionReferences.Select(qr => qr.ToDictionary()));
-            document.Add(nameof(this.Order).FirstCharacterToLower(), this.Order);
-        }
-
-        /// <summary>
         ///     Gets the suggested answers of survey questions.
         /// </summary>
-        [JsonProperty("questionReferences", Required = Required.Always, Order = 100)]
+        [JsonProperty(QuestionReferencesName, Required = Required.Always, Order = 100)]
         public IEnumerable<IQuestionReference> QuestionReferences { get; }
 
         /// <summary>
         ///     Gets the sorting order.
         /// </summary>
-        [JsonProperty("order", Required = Required.Always, Order = 101)]
+        [JsonProperty(OrderName, Required = Required.Always, Order = 101)]
         public int Order { get; }
+
+        /// <summary>
+        ///     Add the property values to a dictionary.
+        /// </summary>
+        /// <param name="dictionary">The values are added to the given dictionary.</param>
+        /// <returns>The given <paramref name="dictionary" />.</returns>
+        public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
+        {
+            base.AddToDictionary(dictionary);
+            dictionary.Add(QuestionReferencesName, this.QuestionReferences.Select(qr => qr.ToDictionary()));
+            dictionary.Add(OrderName, this.Order);
+            return dictionary;
+        }
     }
 }

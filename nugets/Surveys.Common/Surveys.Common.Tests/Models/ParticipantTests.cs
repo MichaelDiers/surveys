@@ -33,10 +33,7 @@
                 id,
                 email,
                 name,
-                new[]
-                {
-                    new QuestionReference(questionId, choiceId)
-                },
+                new[] {new QuestionReference(questionId, choiceId)},
                 order);
             Assert.Equal(id, participant.Id);
             Assert.Equal(email, participant.Email);
@@ -82,10 +79,7 @@
                     Guid.NewGuid().ToString(),
                     "foo@bar.example",
                     "foo",
-                    new[]
-                    {
-                        new QuestionReference(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
-                    },
+                    new[] {new QuestionReference(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())},
                     1));
         }
 
@@ -97,10 +91,7 @@
                     Guid.NewGuid().ToString(),
                     "foo@bar.example",
                     "foo",
-                    new[]
-                    {
-                        new QuestionReference(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
-                    },
+                    new[] {new QuestionReference(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())},
                     1));
         }
 
@@ -129,11 +120,7 @@
                 id,
                 email,
                 name,
-                new[]
-                {
-                    new QuestionReference(questionId1, choiceId1),
-                    new QuestionReference(questionId2, choiceId2)
-                },
+                new[] {new QuestionReference(questionId1, choiceId1), new QuestionReference(questionId2, choiceId2)},
                 order);
             var expected =
                 $"{{\"id\":\"{id}\",\"email\":\"{email}\",\"name\":\"{name}\",\"questionReferences\":[{{\"questionId\":\"{questionId1}\",\"choiceId\":\"{choiceId1}\"}},{{\"questionId\":\"{questionId2}\",\"choiceId\":\"{choiceId2}\"}}],\"order\":{order}}}";

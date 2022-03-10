@@ -2,15 +2,25 @@
 {
     using System;
     using System.Collections.Generic;
+    using Md.Common.Extensions;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
-    using Surveys.Common.Extensions;
 
     /// <summary>
     ///     Describes a survey organizer and is base class for participants.
     /// </summary>
     public class Person : Base, IPerson
     {
+        /// <summary>
+        ///     Json name of property <see cref="Email" />.
+        /// </summary>
+        private const string EmailName = "email";
+
+        /// <summary>
+        ///     Json name of property <see cref="Name" />.
+        /// </summary>
+        private const string NameName = "name";
+
         /// <summary>
         ///     Creates a new instance of <see cref="Person" />.
         /// </summary>
@@ -24,42 +34,33 @@
         public Person(string id, string email, string name)
             : base(id)
         {
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(email));
-            }
-
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
-            }
-
-            this.Email = email;
-            this.Name = name;
-        }
-
-        /// <summary>
-        ///     Add the object values to a dictionary.
-        /// </summary>
-        /// <param name="document">The data is added to the given dictionary.</param>
-        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        public override void AddToDictionary(Dictionary<string, object> document)
-        {
-            base.AddToDictionary(document);
-            document.Add(nameof(this.Name).FirstCharacterToLower(), this.Name);
-            document.Add(nameof(this.Email).FirstCharacterToLower(), this.Email);
+            this.Email = email.ValidateIsAnEmail(nameof(email));
+            this.Name = name.ValidateIsNotNullOrWhitespace(nameof(name));
         }
 
         /// <summary>
         ///     Gets the email of the person.
         /// </summary>
-        [JsonProperty("email", Required = Required.Always, Order = 10)]
+        [JsonProperty(EmailName, Required = Required.Always, Order = 10)]
         public string Email { get; }
 
         /// <summary>
         ///     Gets the name of the person.
         /// </summary>
-        [JsonProperty("name", Required = Required.Always, Order = 11)]
+        [JsonProperty(NameName, Required = Required.Always, Order = 11)]
         public string Name { get; }
+
+        /// <summary>
+        ///     Add the property values to a dictionary.
+        /// </summary>
+        /// <param name="dictionary">The values are added to the given dictionary.</param>
+        /// <returns>The given <paramref name="dictionary" />.</returns>
+        public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
+        {
+            base.AddToDictionary(dictionary);
+            dictionary.Add(NameName, this.Name);
+            dictionary.Add(EmailName, this.Email);
+            return dictionary;
+        }
     }
 }

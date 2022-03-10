@@ -1,6 +1,7 @@
 ﻿namespace Surveys.Common.Messages
 {
     using System;
+    using Md.Common.Extensions;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Models;
@@ -35,13 +36,8 @@
         public SaveSurveyMessage(ISurvey survey, string internalSurveyId, string processId)
             : base(processId)
         {
-            if (string.IsNullOrWhiteSpace(internalSurveyId))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(internalSurveyId));
-            }
-
             this.Survey = survey ?? throw new ArgumentNullException(nameof(survey));
-            this.InternalSurveyId = internalSurveyId;
+            this.InternalSurveyId = internalSurveyId.ValidateIsAGuid(nameof(internalSurveyId));
         }
 
         /// <summary>

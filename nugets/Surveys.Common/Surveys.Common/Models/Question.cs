@@ -3,12 +3,27 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Md.Common.Extensions;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
-    using Surveys.Common.Extensions;
 
     public class Question : Base, IQuestion, ISortable
     {
+        /// <summary>
+        ///     Json name of property <see cref="Choices" />.
+        /// </summary>
+        private const string ChoicesName = "choices";
+
+        /// <summary>
+        ///     Json name of property <see cref="Order" />.
+        /// </summary>
+        private const string OrderName = "order";
+
+        /// <summary>
+        ///     Json name of property <see cref="Text" />.
+        /// </summary>
+        private const string QuestionName = "question";
+
         /// <summary>
         ///     Creates a new instance of <see cref="Base" />.
         /// </summary>
@@ -27,45 +42,41 @@
         )
             : base(id)
         {
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(text));
-            }
-
-            this.Text = text;
+            this.Text = text.ValidateIsNotNullOrWhitespace(nameof(text));
             this.Choices = choices ?? throw new ArgumentNullException(nameof(choices));
             this.Order = order;
         }
 
         /// <summary>
-        ///     Add the object values to a dictionary.
-        /// </summary>
-        /// <param name="document">The data is added to the given dictionary.</param>
-        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        public override void AddToDictionary(Dictionary<string, object> document)
-        {
-            base.AddToDictionary(document);
-            document.Add(nameof(this.Order).FirstCharacterToLower(), this.Order);
-            document.Add(nameof(this.Text).FirstCharacterToLower(), this.Text);
-            document.Add(nameof(this.Choices).FirstCharacterToLower(), this.Choices.Select(c => c.ToDictionary()));
-        }
-
-        /// <summary>
         ///     Gets the choices of the question.
         /// </summary>
-        [JsonProperty("choices", Required = Required.Always, Order = 11)]
+        [JsonProperty(ChoicesName, Required = Required.Always, Order = 11)]
         public IEnumerable<IChoice> Choices { get; }
 
         /// <summary>
         ///     Gets the order of the question used for sorting.
         /// </summary>
-        [JsonProperty("order", Required = Required.Always, Order = 12)]
+        [JsonProperty(OrderName, Required = Required.Always, Order = 12)]
         public int Order { get; }
 
         /// <summary>
         ///     Gets the text of the question.
         /// </summary>
-        [JsonProperty("question", Required = Required.Always, Order = 10)]
+        [JsonProperty(QuestionName, Required = Required.Always, Order = 10)]
         public string Text { get; }
+
+        /// <summary>
+        ///     Add the property values to a dictionary.
+        /// </summary>
+        /// <param name="dictionary">The values are added to the given dictionary.</param>
+        /// <returns>The given <paramref name="dictionary" />.</returns>
+        public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
+        {
+            base.AddToDictionary(dictionary);
+            dictionary.Add(OrderName, this.Order);
+            dictionary.Add(QuestionName, this.Text);
+            dictionary.Add(ChoicesName, this.Choices.Select(c => c.ToDictionary()));
+            return dictionary;
+        }
     }
 }

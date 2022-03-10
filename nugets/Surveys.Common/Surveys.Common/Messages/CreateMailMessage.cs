@@ -33,7 +33,7 @@
         {
             if (!Enum.IsDefined(typeof(MailType), mailType) || mailType == MailType.Undefined)
             {
-                throw new InvalidEnumArgumentException(nameof(mailType), (int)mailType, typeof(MailType));
+                throw new InvalidEnumArgumentException(nameof(mailType), (int) mailType, typeof(MailType));
             }
 
             if (mailType == MailType.RequestForParticipation && requestForParticipation == null)

@@ -1,9 +1,11 @@
 ﻿namespace Surveys.Common.Contracts
 {
+    using Md.GoogleCloud.Base.Contracts.Logic;
+
     /// <summary>
     ///     Describes the status of a survey.
     /// </summary>
-    public interface ISurveyStatus : IDictionaryConverter
+    public interface ISurveyStatus : IToDictionary
     {
         /// <summary>
         ///     Gets the internal survey id.

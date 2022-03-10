@@ -8,11 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <Compile Remove="Mails\**" />
+    <EmbeddedResource Remove="Mails\**" />
+    <None Remove="Mails\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mails\" />
+    <PackageReference Include="Md.Common" Version="1.1.8" />
+    <PackageReference Include="Md.GoogleCloud.Base" Version="1.1.19" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

@@ -3,15 +3,45 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Md.Common.Extensions;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
-    using Surveys.Common.Extensions;
 
     /// <summary>
     ///     Describes the data of a survey.
     /// </summary>
     public class Survey : Base, ISurvey
     {
+        /// <summary>
+        ///     Json name of property <see cref="Info" />
+        /// </summary>
+        private const string InfoName = "info";
+
+        /// <summary>
+        ///     Json name of property <see cref="Link" />
+        /// </summary>
+        private const string LinkName = "link";
+
+        /// <summary>
+        ///     Json name of property <see cref="Name" />
+        /// </summary>
+        private const string NameName = "name";
+
+        /// <summary>
+        ///     Json name of property <see cref="Organizer" />
+        /// </summary>
+        private const string OrganizerName = "organizer";
+
+        /// <summary>
+        ///     Json name of property <see cref="Participants" />
+        /// </summary>
+        private const string ParticipantsName = "participants";
+
+        /// <summary>
+        ///     Json name of property <see cref="Questions" />
+        /// </summary>
+        private const string QuestionsName = "questions";
+
         /// <summary>
         ///     Creates a new instance of <see cref="Base" />.
         /// </summary>
@@ -35,36 +65,12 @@
         )
             : base(id)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
-            }
-
-            this.Info = info;
-            this.Link = link;
-            this.Name = name;
+            this.Info = info.ValidateIsNotNullOrWhitespace(nameof(info));
+            this.Link = link.ValidateIsNotNullOrWhitespace(nameof(link));
+            this.Name = name.ValidateIsNotNullOrWhitespace(nameof(name));
             this.Organizer = organizer;
             this.Participants = participants;
             this.Questions = questions;
-        }
-
-        /// <summary>
-        ///     Add the object values to a dictionary.
-        /// </summary>
-        /// <param name="document">The data is added to the given dictionary.</param>
-        /// <returns>A <see cref="Dictionary{TKey,TValue}" />.</returns>
-        public override void AddToDictionary(Dictionary<string, object> document)
-        {
-            base.AddToDictionary(document);
-            document.Add(nameof(this.Info).FirstCharacterToLower(), this.Info);
-            document.Add(nameof(this.Link).FirstCharacterToLower(), this.Link);
-            document.Add(nameof(this.Name).FirstCharacterToLower(), this.Name);
-
-            document.Add(nameof(this.Organizer).FirstCharacterToLower(), this.Organizer.ToDictionary());
-            document.Add(
-                nameof(this.Participants).FirstCharacterToLower(),
-                this.Participants.Select(p => p.ToDictionary()));
-            document.Add(nameof(this.Questions).FirstCharacterToLower(), this.Questions.Select(q => q.ToDictionary()));
         }
 
         /// <summary>
@@ -102,5 +108,23 @@
         /// </summary>
         [JsonProperty("questions", Required = Required.Always, Order = 15)]
         public IEnumerable<IQuestion> Questions { get; }
+
+        /// <summary>
+        ///     Add the property values to a dictionary.
+        /// </summary>
+        /// <param name="dictionary">The values are added to the given dictionary.</param>
+        /// <returns>The given <paramref name="dictionary" />.</returns>
+        public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
+        {
+            base.AddToDictionary(dictionary);
+            dictionary.Add(InfoName, this.Info);
+            dictionary.Add(LinkName, this.Link);
+            dictionary.Add(NameName, this.Name);
+
+            dictionary.Add(OrganizerName, this.Organizer.ToDictionary());
+            dictionary.Add(ParticipantsName, this.Participants.Select(p => p.ToDictionary()));
+            dictionary.Add(QuestionsName, this.Questions.Select(q => q.ToDictionary()));
+            return dictionary;
+        }
     }
 }

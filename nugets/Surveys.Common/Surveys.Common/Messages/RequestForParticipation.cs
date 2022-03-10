@@ -1,6 +1,7 @@
 ﻿namespace Surveys.Common.Messages
 {
     using System;
+    using Md.Common.Extensions;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
@@ -29,12 +30,7 @@
         /// <param name="survey">The survey data.</param>
         public RequestForParticipation(string internalSurveyId, ISurvey survey)
         {
-            if (string.IsNullOrWhiteSpace(internalSurveyId))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(internalSurveyId));
-            }
-
-            this.InternalSurveyId = internalSurveyId;
+            this.InternalSurveyId = internalSurveyId.ValidateIsAGuid(nameof(internalSurveyId));
             this.Survey = survey ?? throw new ArgumentNullException(nameof(survey));
         }
 
