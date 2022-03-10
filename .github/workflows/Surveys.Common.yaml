@@ -16,8 +16,8 @@ env:
   NUGET_AUTH_TOKEN: ${{ secrets.NUGET_AUTH_TOKEN }}
   NUGET_USERNAME: MichaelDiers
   NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
-  CSPROJ_NUGET: 'Surveys.Common/Surveys.Common/nuget.config'
-  CSPROJ_TEST_NUGET: 'Surveys.Common/Surveys.Common.Tests/nuget.config'
+  CSPROJ_NUGET: 'nugets/Surveys.Common/Surveys.Common/nuget.config'
+  CSPROJ_TEST_NUGET: 'nugets/Surveys.Common/Surveys.Common.Tests/nuget.config'
 jobs:
   prod:
     runs-on: ubuntu-latest
