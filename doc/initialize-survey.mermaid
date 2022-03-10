@@ -1,0 +1,22 @@
+sequenceDiagram
+    participant C as Client
+    participant InitSurvey as InitializeSurveySubscriber<br>.net core
+    participant PS as Google Cloud<br>Pub/Sub
+    C--)+PS: INITALIZE_SURVEY
+    PS--)+InitSurvey: INITALIZE_SURVEY
+    deactivate PS
+    InitSurvey--)PS: SAVE_SURVEY
+    activate PS
+    deactivate PS
+    InitSurvey--)PS: SAVE_SURVEY_STATUS
+    activate PS
+    deactivate PS
+    loop for each participant
+        InitSurvey--)PS: SAVE_SURVEY_RESULT
+        activate PS
+        deactivate PS
+    end
+    InitSurvey--)PS: CREATE_MAIL
+    activate PS
+    deactivate PS
+    deactivate InitSurvey
