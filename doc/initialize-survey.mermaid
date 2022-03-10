@@ -5,6 +5,7 @@ sequenceDiagram
     participant SaveSurvey as SaveSurveySubscriber<br>.net core
     participant F as Google Cloud<br>Firestore
     participant SaveSurveyStatus as SaveSurveyStatusSubscriber<br>.net core
+    participant SaveSurveyResult as SaveSurveyResultSubscriber<br>.net core
     C--)+PS: INITALIZE_SURVEY
     PS--)+InitSurvey: INITALIZE_SURVEY
     deactivate PS
@@ -27,11 +28,18 @@ sequenceDiagram
     F-->>SaveSurveyStatus: response
     deactivate F
     deactivate SaveSurveyStatus
+    %% SAVE_SURVEY_RESULT
     loop for each participant
         InitSurvey--)PS: SAVE_SURVEY_RESULT
         activate PS
+        PS--)+SaveSurveyResult: SAVE_SURVEY_RESULT
         deactivate PS
+        SaveSurveyResult->>+F: save survey result
+        F-->>SaveSurveyResult: response
+        deactivate F
+        deactivate SaveSurveyResult
     end
+    %% CREATE_MAIL
     InitSurvey--)PS: CREATE_MAIL
     activate PS
     deactivate PS
