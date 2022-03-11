@@ -22,6 +22,8 @@ env:
   TOPIC_NAME_STATUS_UPDATE: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_STATUS_UPDATE }}
 jobs:
   test:
+    environment:
+      name: MailerService-Test
     runs-on: ubuntu-latest
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
@@ -75,6 +77,8 @@ jobs:
           event_trigger_type: google.pubsub.topic.publish
           event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
   stage:
+    environment:
+      name: MailerService-Stage
     needs: test
     runs-on: ubuntu-latest
     env:
@@ -132,7 +136,7 @@ jobs:
     needs: stage
     runs-on: ubuntu-latest
     environment:
-      name: CreateMailSubscriber-Prod
+      name: MailerService-Prod
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
