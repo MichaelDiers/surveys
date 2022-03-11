@@ -1,0 +1,186 @@
+name: BE/SendMailSubscriber.yaml
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/MailerService/**'
+      - '.github/workflows/SendMailSubscriber.yaml'
+  workflow_dispatch:
+env:
+  APP_SETTINGS_JSON: 'backend/MailerService/MailerService/appsettings.json'
+  CONFIG: Release
+  SOURCE_DIR: 'backend/MailerService/MailerService'
+  ENTRY_POINT: MailerService.MailerFunction
+  FUNCTION_NAME: MailerService
+  SLN_FILE: 'backend/MailerService/MailerService.sln'
+  TOPIC_NAME_SUB: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}  
+  NUGET_USERNAME: MichaelDiers
+  NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
+  CSPROJ_NUGET: 'backend/MailerService/MailerService/nuget.config'
+  CSPROJ_TEST_NUGET: 'backend/MailerService/MailerService.Tests/nuget.config' 
+  TOPIC_NAME_STATUS_UPDATE: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_STATUS_UPDATE }}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      MAILBOX_ADDRESS_FROM_NAME: ${{ secrets.MAILBOX_ADDRESS_FROM_NAME }}
+      MAILBOX_ADDRESS_FROM_EMAIL: ${{ secrets.MAILBOX_ADDRESS_FROM_EMAIL }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+      SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v2
+      - name: configure appsettings.json
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.APP_SETTINGS_JSON }}
+        env:
+          MailboxAddressFrom.Name: ${{ env.MAILBOX_ADDRESS_FROM_NAME }}
+          MailboxAddressFrom.Email: ${{ env.MAILBOX_ADDRESS_FROM_EMAIL }}
+          Smtp.Password: ${{ env.SMTP_PASSWORD }}
+          Smtp.Port: ${{ env.SMTP_PORT }}
+          Smtp.Server: ${{ env.SMTP_SERVER }}
+          Smtp.UserName: ${{ env.SMTP_USERNAME }}
+          ProjectId: ${{ env.PROJECT_ID }}
+          TopicName: ${{ env.TOPIC_NAME_STATUS_UPDATE }}
+      - name: use .net core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
+      - name: nuget config
+        run: |
+          echo $(sed -e "s/\${USERNAME}/${{ env.NUGET_USERNAME }}/" -e "s@\${TOKEN}@${{ secrets.GITHUB_TOKEN }}@" ${{ env.NUGET_CONFIG }}) > ${{ env.CSPROJ_NUGET }}
+          cp ${{ env.CSPROJ_NUGET }} ${{ env.CSPROJ_TEST_NUGET }}
+      - name: build
+        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
+      - name: test
+        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: ${{ env.FUNCTION_NAME }}
+          runtime: dotnet3
+          project_id: ${{ env.PROJECT_ID }}
+          source_dir: ${{ env.SOURCE_DIR }}
+          entry_point: ${{ env.ENTRY_POINT }}
+          event_trigger_type: google.pubsub.topic.publish
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
+  stage:
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
+      MAILBOX_ADDRESS_FROM_NAME: ${{ secrets.MAILBOX_ADDRESS_FROM_NAME }}
+      MAILBOX_ADDRESS_FROM_EMAIL: ${{ secrets.MAILBOX_ADDRESS_FROM_EMAIL }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+      SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v2
+      - name: configure appsettings.json
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.APP_SETTINGS_JSON }}
+        env:
+          MailboxAddressFrom.Name: ${{ env.MAILBOX_ADDRESS_FROM_NAME }}
+          MailboxAddressFrom.Email: ${{ env.MAILBOX_ADDRESS_FROM_EMAIL }}
+          Smtp.Password: ${{ env.SMTP_PASSWORD }}
+          Smtp.Port: ${{ env.SMTP_PORT }}
+          Smtp.Server: ${{ env.SMTP_SERVER }}
+          Smtp.UserName: ${{ env.SMTP_USERNAME }}
+          ProjectId: ${{ env.PROJECT_ID }}
+          TopicName: ${{ env.TOPIC_NAME_STATUS_UPDATE }}
+      - name: use .net core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
+      - name: nuget config
+        run: |
+          echo $(sed -e "s/\${USERNAME}/${{ env.NUGET_USERNAME }}/" -e "s@\${TOKEN}@${{ secrets.GITHUB_TOKEN }}@" ${{ env.NUGET_CONFIG }}) > ${{ env.CSPROJ_NUGET }}
+          cp ${{ env.CSPROJ_NUGET }} ${{ env.CSPROJ_TEST_NUGET }}
+      - name: build
+        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
+      - name: test
+        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: ${{ env.FUNCTION_NAME }}
+          runtime: dotnet3          
+          project_id: ${{ env.PROJECT_ID }}
+          source_dir: ${{ env.SOURCE_DIR }}
+          entry_point: ${{ env.ENTRY_POINT }}
+          event_trigger_type: google.pubsub.topic.publish
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
+  prod:
+    needs: stage
+    runs-on: ubuntu-latest
+    environment:
+      name: CreateMailSubscriber-Prod
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
+      MAILBOX_ADDRESS_FROM_NAME: ${{ secrets.MAILBOX_ADDRESS_FROM_NAME }}
+      MAILBOX_ADDRESS_FROM_EMAIL: ${{ secrets.MAILBOX_ADDRESS_FROM_EMAIL }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+      SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v2
+      - name: configure appsettings.json
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.APP_SETTINGS_JSON }}
+        env:
+          MailboxAddressFrom.Name: ${{ env.MAILBOX_ADDRESS_FROM_NAME }}
+          MailboxAddressFrom.Email: ${{ env.MAILBOX_ADDRESS_FROM_EMAIL }}
+          Smtp.Password: ${{ env.SMTP_PASSWORD }}
+          Smtp.Port: ${{ env.SMTP_PORT }}
+          Smtp.Server: ${{ env.SMTP_SERVER }}
+          Smtp.UserName: ${{ env.SMTP_USERNAME }}
+          ProjectId: ${{ env.PROJECT_ID }}
+          TopicName: ${{ env.TOPIC_NAME_STATUS_UPDATE }}
+      - name: use .net core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.x
+      - name: nuget config
+        run: |
+          echo $(sed -e "s/\${USERNAME}/${{ env.NUGET_USERNAME }}/" -e "s@\${TOKEN}@${{ secrets.GITHUB_TOKEN }}@" ${{ env.NUGET_CONFIG }}) > ${{ env.CSPROJ_NUGET }}
+          cp ${{ env.CSPROJ_NUGET }} ${{ env.CSPROJ_TEST_NUGET }}
+      - name: build
+        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
+      - name: test
+        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: ${{ env.FUNCTION_NAME }}
+          runtime: dotnet3          
+          project_id: ${{ env.PROJECT_ID }}
+          source_dir: ${{ env.SOURCE_DIR }}
+          entry_point: ${{ env.ENTRY_POINT }}
+          event_trigger_type: google.pubsub.topic.publish
+          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}

@@ -23,11 +23,6 @@
         public Smtp Smtp { get; }
 
         /// <summary>
-        ///     Gets the handle for new lines in templates.
-        /// </summary>
-        public string TemplateNewline { get; }
-
-        /// <summary>
         ///     Gets the Pub/Sub topic name for updating the status of a survey.
         /// </summary>
         string TopicName { get; }
