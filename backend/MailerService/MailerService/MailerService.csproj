@@ -3,6 +3,7 @@
   <PropertyGroup>
 	  <OutputType>Exe</OutputType>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,8 +20,13 @@
     <PackageReference Include="Google.Cloud.Functions.Hosting" Version="1.0.0" />
     <PackageReference Include="Google.Cloud.PubSub.V1" Version="2.7" />
     <PackageReference Include="Google.Events.Protobuf" Version="1.0.0" />
-    <PackageReference Include="MailKit" Version="3.0.0" />
+    <PackageReference Include="MailKit" Version="3.1.1" />
+    <PackageReference Include="Md.Common" Version="1.1.8" />
+    <PackageReference Include="Md.GoogleCloud.Base" Version="1.1.19" />
+    <PackageReference Include="Md.GoogleCloudFunctions" Version="1.1.6" />
+    <PackageReference Include="Md.GoogleCloudPubSub" Version="1.1.15" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Surveys.Common" Version="1.0.38" />
   </ItemGroup>
 
 </Project>

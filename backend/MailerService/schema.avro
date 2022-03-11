@@ -1,88 +1,88 @@
 {
-	"type": "record",
-	"name": "email",
-	"fields": [
-                {
-                   "name": "processId",
-                   "type": "string" 
-                },
-		{
-			"name": "recipients",
-			"type": {				
-				"type": "array",
-				"items": {
-					"name": "recipient",
-					"type": "record",
-					"fields": [
-						{
-							"name": "email",
-							"type": "string"
-						},
-						{
-							"name": "name",
-							"type": "string"
-						}
-					]
-				}
-			}
-		},
-		{
-			"name": "replyTo",
-			"type": {
-				"name": "replyToRecord",
-				"type": "record",
-				"fields": [
-					{
-						"name": "email",
-						"type": "string"
-					},
-					{
-						"name": "name",
-						"type": "string"
-					}
-				]
-			}
-		},
-		{
-			"name": "subject",
-			"type": "string"
-		},
-		{
-			"name": "text",
-			"type": {
-				"name": "textRecord",
-				"type": "record",
-				"fields": [
-					{
-						"name": "html",
-						"type": "string"
-					},
-					{
-						"name": "plain",
-						"type": "string"
-					}
-				]
-			}
-		},
-		{
-			"name": "surveyId",
-			"type": "string"
-		},
-		{
-			"name": "participantIds",
-			"type": {
-				"name": "participantId",
-				"type": "array",
-				"items": "string"
-			}
-		},
-		{
-			"name": "statusOk",
-			"type": "string"
-		},
-		{
-			"name": "statusFailed",
-			"type": "string"
-		}
-	]
+  "type": "record",
+  "name": "email",
+  "fields": [
+    {
+      "name": "processId",
+      "type": "string"
+    },
+    {
+      "name": "recipients",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "recipient",
+          "type": "record",
+          "fields": [
+            {
+              "name": "email",
+              "type": "string"
+            },
+            {
+              "name": "name",
+              "type": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "replyTo",
+      "type": {
+        "name": "replyToRecord",
+        "type": "record",
+        "fields": [
+          {
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "subject",
+      "type": "string"
+    },
+    {
+      "name": "text",
+      "type": {
+        "name": "textRecord",
+        "type": "record",
+        "fields": [
+          {
+            "name": "html",
+            "type": "string"
+          },
+          {
+            "name": "plain",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "surveyId",
+      "type": "string"
+    },
+    {
+      "name": "participantIds",
+      "type": {
+        "name": "participantId",
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "statusOk",
+      "type": "string"
+    },
+    {
+      "name": "statusFailed",
+      "type": "string"
+    }
+  ]
 }

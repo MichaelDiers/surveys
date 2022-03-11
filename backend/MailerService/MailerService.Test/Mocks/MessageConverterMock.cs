@@ -1,14 +1,19 @@
 ﻿namespace MailerService.Test.Mocks
 {
-	using System.Collections.Generic;
-	using MailerService.Contracts;
-	using MimeKit;
+    using System.Collections.Generic;
+    using MailerService.Contracts;
+    using MimeKit;
+    using Surveys.Common.Contracts.Messages;
 
-	public class MessageConverterMock : IMessageConverter
-	{
-		public MimeMessage ToMimeMessage(IMessage message, IEnumerable<InternetAddress> from, string templateNewline)
-		{
-			return new MimeMessage();
-		}
-	}
+    public class MessageConverterMock : IMessageConverter
+    {
+        public MimeMessage ToMimeMessage(
+            ISendMailMessage message,
+            IEnumerable<InternetAddress> from,
+            string templateNewline
+        )
+        {
+            return new MimeMessage();
+        }
+    }
 }
