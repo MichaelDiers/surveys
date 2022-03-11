@@ -18,7 +18,7 @@ env:
   NUGET_USERNAME: MichaelDiers
   NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
   CSPROJ_NUGET: 'backend/MailerService/MailerService/nuget.config'
-  CSPROJ_TEST_NUGET: 'backend/MailerService/MailerService.Tests/nuget.config' 
+  CSPROJ_TEST_NUGET: 'backend/MailerService/MailerService.Test/nuget.config' 
   TOPIC_NAME_STATUS_UPDATE: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_STATUS_UPDATE }}
 jobs:
   test:
