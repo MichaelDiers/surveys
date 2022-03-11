@@ -12,7 +12,7 @@
         /// <summary>
         ///     Gets or ses the body of the message.
         /// </summary>
-        IBody Body { get; }
+        Body Body { get; }
 
         /// <summary>
         ///     Gets or sets the id of the recipients or participants.

@@ -39,9 +39,9 @@
             : this(
                 processId,
                 recipients,
-                replyTo,
+                replyTo as IRecipient,
                 subject,
-                body as IBody,
+                body,
                 surveyId,
                 participantIds,
                 statusOk,
@@ -52,21 +52,21 @@
         /// <summary>
         ///     Creates a new instance of <see cref="SendMailMessage" />.
         /// </summary>
-        /// <param name="processId">The global process id.</param>
-        /// <param name="recipients">The recipients of the email.</param>
-        /// <param name="replyTo">The reply to address of the email.</param>
-        /// <param name="subject">The subject of the email.</param>
-        /// <param name="body">The email body for html and plain text.</param>
-        /// <param name="surveyId">The survey id.</param>
-        /// <param name="participantIds">The ids of the participants.</param>
-        /// <param name="statusOk">The status if the email is sent.</param>
-        /// <param name="statusFailed">The status if the process failed.</param>
+        /// <param name="processId"> The global process id.</param>
+        /// <param name="recipients"> The recipients of the email.</param>
+        /// <param name="replyTo"> The reply to address of the email.</param>
+        /// <param name="subject"> The subject of the email.</param>
+        /// <param name="body"> The email body for html and plain text.</param>
+        /// <param name="surveyId"> The survey id.</param>
+        /// <param name="participantIds"> The ids of the participants.</param>
+        /// <param name="statusOk"> The status if the email is sent.</param>
+        /// <param name="statusFailed"> The status if the process failed.</param>
         public SendMailMessage(
             string processId,
             IEnumerable<IRecipient> recipients,
             IRecipient replyTo,
             string subject,
-            IBody body,
+            Body body,
             string surveyId,
             IEnumerable<string> participantIds,
             Status statusOk,
@@ -88,7 +88,7 @@
         ///     Gets or ses the body of the message.
         /// </summary>
         [JsonProperty("text", Required = Required.Always, Order = 14)]
-        public IBody Body { get; }
+        public Body Body { get; }
 
         /// <summary>
         ///     Gets or sets the id of the recipients or participants.

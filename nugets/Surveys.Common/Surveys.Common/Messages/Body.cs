@@ -2,6 +2,7 @@
 {
     using Md.Common.Extensions;
     using Newtonsoft.Json;
+    using Surveys.Common.Contracts.Messages;
 
     /// <summary>
     ///     Specifies the body data of an email.
@@ -13,7 +14,6 @@
         /// </summary>
         /// <param name="html">The html part of the body.</param>
         /// <param name="plain">The plain text part of the body.</param>
-        [JsonConstructor]
         public Body(string html, string plain)
         {
             this.Html = html.ValidateIsNotNullOrWhitespace(nameof(html));

@@ -1,4 +1,4 @@
-﻿namespace Surveys.Common.Messages
+﻿namespace Surveys.Common.Contracts.Messages
 {
     /// <summary>
     ///     Specifies the body data of an email.
