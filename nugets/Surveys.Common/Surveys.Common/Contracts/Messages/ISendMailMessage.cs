@@ -32,12 +32,12 @@
         /// <summary>
         ///     Gets or sets the status that indicates failure.
         /// </summary>
-        string StatusFailed { get; }
+        Status StatusFailed { get; }
 
         /// <summary>
         ///     Gets or sets the status that indicates success.
         /// </summary>
-        string StatusOk { get; }
+        Status StatusOk { get; }
 
         /// <summary>
         ///     Gets or sets the subject of the email.

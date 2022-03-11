@@ -4,6 +4,7 @@
     using Md.Common.Extensions;
     using Md.GoogleCloud.Base.Messages;
     using Newtonsoft.Json;
+    using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
 
     /// <summary>
@@ -32,8 +33,8 @@
             Body body,
             string surveyId,
             IEnumerable<string> participantIds,
-            string statusOk,
-            string statusFailed
+            Status statusOk,
+            Status statusFailed
         )
             : this(
                 processId,
@@ -68,8 +69,8 @@
             IBody body,
             string surveyId,
             IEnumerable<string> participantIds,
-            string statusOk,
-            string statusFailed
+            Status statusOk,
+            Status statusFailed
         )
             : base(processId)
         {
@@ -79,8 +80,8 @@
             this.Body = body;
             this.SurveyId = surveyId.ValidateIsNotNullOrWhitespace(nameof(surveyId));
             this.ParticipantIds = participantIds;
-            this.StatusOk = statusOk.ValidateIsNotNullOrWhitespace(nameof(statusOk));
-            this.StatusFailed = statusFailed.ValidateIsNotNullOrWhitespace(nameof(statusFailed));
+            this.StatusOk = statusOk;
+            this.StatusFailed = statusFailed;
         }
 
         /// <summary>
@@ -111,13 +112,13 @@
         ///     Gets or sets the status that indicates failure.
         /// </summary>
         [JsonProperty("statusFailed", Required = Required.Always, Order = 18)]
-        public string StatusFailed { get; }
+        public Status StatusFailed { get; }
 
         /// <summary>
         ///     Gets or sets the status that indicates success.
         /// </summary>
         [JsonProperty("statusOk", Required = Required.Always, Order = 17)]
-        public string StatusOk { get; }
+        public Status StatusOk { get; }
 
         /// <summary>
         ///     Gets or sets the subject of the email.
