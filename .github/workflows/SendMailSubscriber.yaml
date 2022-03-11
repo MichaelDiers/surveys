@@ -18,8 +18,8 @@ env:
   NUGET_USERNAME: MichaelDiers
   NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
   CSPROJ_NUGET: 'backend/MailerService/MailerService/nuget.config'
-  CSPROJ_TEST_NUGET: 'backend/MailerService/MailerService.Test/nuget.config' 
-  TOPIC_NAME_STATUS_UPDATE: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_STATUS_UPDATE }}
+  CSPROJ_TEST_NUGET: 'backend/MailerService/MailerService.Test/nuget.config'
+  SAVE_SURVEY_STATUS_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}
 jobs:
   test:
     environment:
@@ -49,7 +49,7 @@ jobs:
           Smtp.Server: ${{ env.SMTP_SERVER }}
           Smtp.UserName: ${{ env.SMTP_USERNAME }}
           ProjectId: ${{ env.PROJECT_ID }}
-          TopicName: ${{ env.TOPIC_NAME_STATUS_UPDATE }}
+          TopicName: ${{ env.SAVE_SURVEY_STATUS_TOPIC_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -105,7 +105,7 @@ jobs:
           Smtp.Server: ${{ env.SMTP_SERVER }}
           Smtp.UserName: ${{ env.SMTP_USERNAME }}
           ProjectId: ${{ env.PROJECT_ID }}
-          TopicName: ${{ env.TOPIC_NAME_STATUS_UPDATE }}
+          TopicName: ${{ env.SAVE_SURVEY_STATUS_TOPIC_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -161,7 +161,7 @@ jobs:
           Smtp.Server: ${{ env.SMTP_SERVER }}
           Smtp.UserName: ${{ env.SMTP_USERNAME }}
           ProjectId: ${{ env.PROJECT_ID }}
-          TopicName: ${{ env.TOPIC_NAME_STATUS_UPDATE }}
+          TopicName: ${{ env.SAVE_SURVEY_STATUS_TOPIC_NAME }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
