@@ -43,8 +43,7 @@
                     new[] {Guid.NewGuid().ToString()},
                     Status.InvitationMailSentOk,
                     Status.InvitationMailSentFailed),
-                new[] {new MailboxAddress(fromName, fromEmail)},
-                "HANDLE");
+                new[] {new MailboxAddress(fromName, fromEmail)});
 
             Assert.Single(message.To.Mailboxes);
             Assert.Contains(message.To.Mailboxes, mb => mb.Address == recipientEmail && mb.Name == recipientName);

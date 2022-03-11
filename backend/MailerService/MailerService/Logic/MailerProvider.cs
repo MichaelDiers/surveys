@@ -73,10 +73,7 @@
                     this.configuration.MailboxAddressFrom.Email)
             };
 
-            var email = this.messageConverter.ToMimeMessage(
-                message,
-                mimeMessageFrom,
-                this.configuration.TemplateNewline);
+            var email = this.messageConverter.ToMimeMessage(message, mimeMessageFrom);
 
             var success = false;
             try

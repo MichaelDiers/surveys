@@ -7,11 +7,7 @@
 
     public class MessageConverterMock : IMessageConverter
     {
-        public MimeMessage ToMimeMessage(
-            ISendMailMessage message,
-            IEnumerable<InternetAddress> from,
-            string templateNewline
-        )
+        public MimeMessage ToMimeMessage(ISendMailMessage message, IEnumerable<InternetAddress> from)
         {
             return new MimeMessage();
         }
