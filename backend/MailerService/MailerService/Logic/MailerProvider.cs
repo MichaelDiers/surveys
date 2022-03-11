@@ -81,6 +81,11 @@
                 await this.mailerSmtpClient.SendAsync(email, this.configuration.Smtp);
                 success = true;
             }
+            catch (Exception ex)
+            {
+                await this.LogErrorAsync(ex, "Cannot send mail.");
+                throw;
+            }
             finally
             {
                 var status = success ? message.StatusOk : message.StatusFailed;
