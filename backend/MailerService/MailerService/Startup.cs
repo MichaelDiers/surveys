@@ -6,6 +6,7 @@
     using MailerService.Model;
     using Md.GoogleCloud.Base.Contracts.Logic;
     using Md.GoogleCloud.Base.Logic;
+    using Md.GoogleCloudPubSub.Logic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +32,7 @@
                 _ => new PubSubClientConfiguration(
                     mailerServiceConfiguration.ProjectId,
                     mailerServiceConfiguration.TopicName));
-            services.AddScoped<IPubSubClient, IPubSubClient>();
+            services.AddScoped<IPubSubClient, PubSubClient>();
 
             services.AddScoped<IMailerSmtpClient, MailerSmtpClient>();
             services.AddScoped<IMessageConverter, MessageConverter>();
