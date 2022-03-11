@@ -2,6 +2,10 @@
 	"type": "record",
 	"name": "email",
 	"fields": [
+                {
+                   "name": "processId",
+                   "type": "string" 
+                },
 		{
 			"name": "recipients",
 			"type": {				
