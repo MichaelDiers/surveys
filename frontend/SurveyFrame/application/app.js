@@ -17,6 +17,7 @@ const initialize = (config = {}) => {
     router = express.Router(),
     viewEngine = 'pug',
     viewLocalFolder = './application/views',
+    baseAddress = '/',
   } = config;
 
   middlewares.base({ router });
@@ -31,7 +32,7 @@ const initialize = (config = {}) => {
   app.set('views', viewLocalFolder);
   app.set('view engine', viewEngine);
 
-  app.use('/frame', router);
+  app.use(baseAddress, router);
 
   return app;
 };
