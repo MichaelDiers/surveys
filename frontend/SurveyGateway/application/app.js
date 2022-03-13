@@ -16,6 +16,7 @@ const initialize = (config = {}) => {
   const app = express();
 
   app.use(framePath, createProxyMiddleware({
+    changeOrigin: true,
     target: frameTarget,
     pathRewrite: {
       '^/gateway': '',
