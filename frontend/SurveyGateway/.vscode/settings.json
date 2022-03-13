@@ -1,0 +1,23 @@
+{
+    "editor.detectIndentation": false,  
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.useTabStops": false,
+    "emmet.includeLanguages": {
+      "javascript": "javascriptreact"
+    },
+    "files.eol": "\n",
+    "liveSassCompile.settings.formats": [
+      {
+          "format": "expanded",
+          "extensionName": ".css",
+          "savePath": "/application/public"
+      },
+      {
+          "format": "compressed",
+          "extensionName": ".min.css",
+          "savePath": "/application/public"
+      }
+    ],
+    "typescript.preferences.quoteStyle": "single"
+  }
