@@ -1,0 +1,18 @@
+block variables
+
+doctype html
+html(lang=pubLocals.lang)
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width', initial-scale=1.0)
+    meta(name='google', content='notranslate')
+    title= title
+    each css in pubLocals.files.css
+      link(rel='stylesheet', href=css)
+  body(id=auit)
+    include ../includes/header
+    main
+      block content
+    include ../includes/footer
+    each js in pubLocals.files.js
+      script(src=js)
