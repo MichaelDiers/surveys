@@ -10,10 +10,12 @@ const data = require('../data/pug-view');
 const initialize = (config = {}) => {
   const {
     router = Router(),
+    gatewayAddress,
   } = config;
 
   router.use((req, res, next) => {
     res.locals.pubLocals = data;
+    res.locals.pubLocals.gatewayAddress = gatewayAddress;
     next();
   });
 

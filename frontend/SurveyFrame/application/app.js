@@ -18,11 +18,12 @@ const initialize = (config = {}) => {
     viewEngine = 'pug',
     viewLocalFolder = './application/views',
     baseAddress = '/',
+    gatewayAddress = './gateway',
   } = config;
 
   middlewares.base({ router });
   routers.public({ router });
-  middlewares.pug({ router });
+  middlewares.pug({ router, gatewayAddress });
   middlewares.csurf({ router });
   routers.index({
     router: middlewares.index({ router }),
