@@ -18,7 +18,7 @@ const initialize = (config = {}) => {
     viewEngine = 'pug',
     viewLocalFolder = './application/views',
     baseAddress = '/',
-    gatewayAddress = './gateway',
+    gatewayAddress = '/gateway',
   } = config;
 
   middlewares.base({ router });
