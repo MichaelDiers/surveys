@@ -2,7 +2,7 @@
   "name": "surveygateway",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "function.js",
   "scripts": {
     "eslint": "eslint -c ./configs/.eslintrc.js . --fix",
     "git": "git add . && git status",
