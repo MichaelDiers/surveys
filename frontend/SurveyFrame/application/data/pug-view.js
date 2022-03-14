@@ -8,6 +8,7 @@ const data = {
       '/frame/public/frame.min.js',
     ],
   },
+  faviconAddress: '/frame/public/favicon.ico',
 };
 
 module.exports = data;

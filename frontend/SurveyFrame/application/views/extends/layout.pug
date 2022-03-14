@@ -6,6 +6,8 @@ html(lang=pubLocals.lang)
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width', initial-scale=1.0)
     meta(name='google', content='notranslate')
+    - var address = pubLocals.gatewayAddress + pubLocals.faviconAddress
+    link(rel='icon', type='image/x-icon', href=address)
     title= title
     each css in pubLocals.files.css
       - var address = pubLocals.gatewayAddress + css
