@@ -19,6 +19,7 @@ jobs:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
       ENV_GATEWAY_FRAME_TARGET: ${{ secrets.ENV_GATEWAY_FRAME_TARGET }}
+      ENV_GATEWAY_VOTE_TARGET: ${{ secrets.ENV_GATEWAY_VOTE_TARGET }}
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -33,4 +34,4 @@ jobs:
           runtime: nodejs14
           project_id: ${{ env.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_GATEWAY_FRAME_TARGET=${{ env.ENV_GATEWAY_FRAME_TARGET }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
+          env_vars: ENV_GATEWAY_FRAME_TARGET=${{ env.ENV_GATEWAY_FRAME_TARGET }},ENV_GATEWAY_VOTE_TARGET=${{ env.ENV_GATEWAY_VOTE_TARGET }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
