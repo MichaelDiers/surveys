@@ -17,7 +17,9 @@ const initialize = (config = {}) => {
       console.log(req.originalUrl.split('/frame')); // eslint-disable-line
       console.log(gatewayAddress); // eslint-disable-line
 
-      const destination = req.originalUrl.split('/frame')[1];
+      const urlSplit = req.originalUrl.split('/frame');
+      const destination = urlSplit.length === 1 ? req.originalUrl : urlSplit[1];
+
       const placeholder = `${gatewayAddress}${destination}`;
       res.render('index/index', { placeholder });
     },
