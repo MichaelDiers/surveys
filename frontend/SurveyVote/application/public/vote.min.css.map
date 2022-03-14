@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,IAAI,AAAC,CACH,gBAAgB,CAAE,IAAI,CACvB",
+    "sources": [
+        "../../client/scss/vote.scss"
+    ],
+    "names": [],
+    "file": "vote.min.css"
+}

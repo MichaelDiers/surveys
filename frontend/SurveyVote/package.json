@@ -1,0 +1,48 @@
+{
+  "name": "surveyvote",
+  "version": "1.0.0",
+  "description": "",
+  "main": "function.js",
+  "scripts": {
+    "eslint": "eslint -c ./configs/.eslintrc.js . --fix",
+    "git": "git add . && git status",
+    "gitadd": "npm run lint && npm run ugly && npm run git",
+    "lint": "npm run eslint && npm run puglint && npm run stylelint",
+    "puglint": "pug-lint -c ./configs/.pug-lintrc.json -r inline ./application/views/",
+    "serveGateway": "nodemon localGateway.js",
+    "serveWithoutGateway": "nodemon localWithoutGateway.js",
+    "stylelint": "npx stylelint --config ./configs/.stylelintrc.json ./client/scss/**/*",
+    "test": "npm run testUnit",
+    "testUnit": "mocha ./tests/unit/**/*-tests.js --config configs/.mocharc.json",
+    "testIntegration": "mocha ./tests/integration/**/*-tests.js --config configs/.mocharc.json",
+    "testSelenium": "mocha ./tests/selenium/**/*-tests.js --config configs/.mocharc.json",
+    "uglyfy": "uglifyjs ./client/js/*.js -o application/public/vote.min.js",
+    "ugly": "npm run uglyfy -- --compress --mangle",
+    "uglybeauty": "npm run uglyfy -- --beautify"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "mocha": "^9.2.0",
+    "nodemon": "^2.0.15",
+    "pug-lint": "^2.6.0",
+    "selenium-webdriver": "^4.1.1",
+    "stylelint": "^14.3.0",
+    "stylelint-config-sass-guidelines": "^9.0.1",
+    "supertest": "^6.2.2",
+    "uglify-js": "^3.15.0"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "csurf": "^1.11.0",
+    "express": "^4.17.2",
+    "helmet": "^5.0.2",
+    "pug": "^3.0.2",
+    "uuid": "^8.3.2"
+  }
+}
