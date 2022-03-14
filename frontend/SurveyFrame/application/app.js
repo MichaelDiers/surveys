@@ -15,25 +15,28 @@ const initialize = (config = {}) => {
   const {
     app = express(),
     router = express.Router(),
-    viewEngine = 'pug',
-    viewLocalFolder = './application/views',
-    baseAddress = '/',
-    gatewayAddress = '/gateway',
+    viewEngine,
+    viewLocalFolder,
+    baseRoute,
+    requestLogging,
+    // pug
+    lang,
+    files,
   } = config;
 
-  middlewares.base({ router });
-  routers.public({ router });
-  middlewares.pug({ router, gatewayAddress });
-  middlewares.csurf({ router });
-  routers.index({
-    router: middlewares.index({ router }),
-    controller: controllers.index(),
+  middlewares.baseMiddleware({ router, requestLogging });
+  routers.publicRoute({ router });
+  middlewares.pugMiddleware({ router, lang, files });
+  middlewares.csurfMiddleware({ router });
+  routers.indexRoute({
+    router: middlewares.indexMiddleware({ router }),
+    controller: controllers.indexController(),
   });
 
   app.set('views', viewLocalFolder);
   app.set('view engine', viewEngine);
 
-  app.use(baseAddress, router);
+  app.use(baseRoute, router);
 
   return app;
 };

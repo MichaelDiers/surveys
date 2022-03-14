@@ -1,7 +1,7 @@
-const index = require('./index-route');
-const public = require('./public-route');
+const indexRoute = require('./index-route');
+const publicRoute = require('./public-route');
 
 module.exports = {
-  index,
-  public,
+  indexRoute,
+  publicRoute,
 };

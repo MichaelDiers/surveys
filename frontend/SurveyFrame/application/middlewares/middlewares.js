@@ -1,11 +1,11 @@
-const base = require('./base-middleware');
-const csurf = require('./csurf-middleware');
-const index = require('./index-middleware');
-const pug = require('./pug-middleware');
+const baseMiddleware = require('./base-middleware');
+const csurfMiddleware = require('./csurf-middleware');
+const indexMiddleware = require('./index-middleware');
+const pugMiddleware = require('./pug-middleware');
 
 module.exports = {
-  base,
-  csurf,
-  index,
-  pug,
+  baseMiddleware,
+  csurfMiddleware,
+  indexMiddleware,
+  pugMiddleware,
 };

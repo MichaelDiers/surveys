@@ -1,5 +1,5 @@
-const index = require('./index-controller');
+const indexController = require('./index-controller');
 
 module.exports = {
-  index,
+  indexController,
 };
