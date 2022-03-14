@@ -1,7 +1,7 @@
 const app = require('./application/app');
 const config = require('./config');
 
-exports.frame = app(
+exports.vote = app(
   config({
     baseName: 'vote',
   }),
