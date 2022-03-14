@@ -15,22 +15,29 @@ const initialize = (config = {}) => {
   const {
     app = express(),
     router = express.Router(),
+    gatewayAddress,
     viewEngine,
     viewLocalFolder,
     appRoute,
     requestLogging,
+    publicLocalFolder,
+    publicRoute,
     // pug
     lang,
     files,
   } = config;
 
   middlewares.baseMiddleware({ router, requestLogging });
-  routers.publicRoute({ router });
+  routers.publicRoute({
+    router,
+    publicLocalFolder,
+    publicRoute,
+  });
   middlewares.pugMiddleware({ router, lang, files });
   middlewares.csurfMiddleware({ router });
   routers.indexRoute({
     router: middlewares.indexMiddleware({ router }),
-    controller: controllers.indexController(),
+    controller: controllers.indexController({ gatewayAddress }),
   });
 
   app.set('views', viewLocalFolder);

@@ -6,11 +6,12 @@ const express = require('express');
  * @param {string} config.publicLocalFolder The local folder for public files.
  * @param {string} config.publicRoute The url for public files.
  * @param {express.Router} config.router The router for handling the route.
- */
+ * @returns The given router if set in config, a new express router otherwise.
+*/
 const initialize = (config = {}) => {
   const {
-    publicLocalFolder = './application/public',
-    publicRoute = '/public',
+    publicLocalFolder,
+    publicRoute,
     router = express.Router(),
   } = config;
 
