@@ -1,0 +1,33 @@
+name: FE/SurveyVote.yaml
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/SurveyVote/**'
+      - '.github/workflows/SurveyVote.yaml'
+  workflow_dispatch:
+env:
+  FUNCTION_NAME: vote
+  SOURCE_DIR: 'frontend/SurveyVote'  
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ env.GCP_CREDENTIALS }}'
+      - name: deploy
+        uses: google-github-actions/deploy-cloud-functions@v0
+        with:
+          name: ${{ env.FUNCTION_NAME }}
+          runtime: nodejs14
+          project_id: ${{ env.PROJECT_ID }}
+          source_dir: ${{ env.SOURCE_DIR }}
+          env_vars: GCLOUD_PROJECT=${{ env.PROJECT_ID }}
