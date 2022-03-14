@@ -11,6 +11,8 @@ const initialize = (config = {}) => {
   const {
     framePath = '/frame',
     frameTarget,
+    votePath = '/vote',
+    voteTarget,
   } = config;
 
   const app = express();
@@ -18,6 +20,14 @@ const initialize = (config = {}) => {
   app.use(framePath, createProxyMiddleware({
     changeOrigin: true,
     target: frameTarget,
+    pathRewrite: {
+      '^/gateway': '',
+    },
+  }));
+
+  app.use(votePath, createProxyMiddleware({
+    changeOrigin: true,
+    target: voteTarget,
     pathRewrite: {
       '^/gateway': '',
     },
