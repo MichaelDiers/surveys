@@ -17,7 +17,7 @@ const initialize = (config = {}) => {
     router = express.Router(),
     viewEngine,
     viewLocalFolder,
-    baseRoute,
+    appRoute,
     requestLogging,
     // pug
     lang,
@@ -36,7 +36,7 @@ const initialize = (config = {}) => {
   app.set('views', viewLocalFolder);
   app.set('view engine', viewEngine);
 
-  app.use(baseRoute, router);
+  app.use(appRoute, router);
 
   return app;
 };

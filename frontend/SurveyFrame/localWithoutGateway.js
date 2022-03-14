@@ -3,6 +3,7 @@ const config = require('./config');
 
 const application = app(
   config({
+    appRoute: '/frame',
     baseName: 'frame',
     gatewayAddress: '',
     requestLogging: true,

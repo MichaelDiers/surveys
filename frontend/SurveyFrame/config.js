@@ -1,5 +1,6 @@
 const initialize = (options = {}) => {
   const {
+    appRoute = '/',
     baseName,
     gatewayAddress = '/gateway',
     requestLogging = false,
@@ -17,7 +18,7 @@ const initialize = (options = {}) => {
   const favicon = `${gatewayAddress}/${baseName}${publicRoute}/favicon.ico`;
 
   const config = {
-    baseRoute: `/${baseName}`,
+    appRoute,
     gatewayAddress,
     publicLocalFolder,
     publicRoute,
