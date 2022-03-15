@@ -34,7 +34,7 @@ const initialize = (config = {}) => {
     publicRoute,
   });
   middlewares.pugMiddleware({ router, lang, files });
-  middlewares.csurfMiddleware({ router });
+  // middlewares.csurfMiddleware({ router });
   routers.indexRoute({
     router: middlewares.indexMiddleware({ router }),
     controller: controllers.indexController({ gatewayAddress }),

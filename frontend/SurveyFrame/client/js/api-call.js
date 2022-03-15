@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-function apiCall(url, method) {
+function apiCall(url, method, options = {}) {
   return new Promise((resolve, reject) => {
     // eslint-disable-next-line no-undef
     const xhttp = new XMLHttpRequest();
@@ -21,11 +21,16 @@ function apiCall(url, method) {
         }
       }
     };
-    // const token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
     xhttp.open(method, url, true);
     xhttp.withCredentials = true;
     // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    // xhttp.setRequestHeader("CSRF-Token", token);
-    xhttp.send();
+    const { formData } = options;
+    if (formData) {
+      xhttp.setRequestHeader('CSRF-Token', formData.get('_csrf'));
+      xhttp.send(formData);
+    } else {
+      xhttp.send();
+    }
   });
 }
