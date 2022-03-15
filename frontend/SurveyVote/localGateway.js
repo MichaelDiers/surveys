@@ -7,6 +7,7 @@ const application = app(
     baseName: 'vote',
     gatewayAddress: 'http://localhost:3000/gateway',
     requestLogging: true,
+    surveysCollectionName: 'surveys',
   }),
 );
 

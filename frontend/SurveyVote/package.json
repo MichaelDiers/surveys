@@ -37,6 +37,7 @@
     "uglify-js": "^3.15.0"
   },
   "dependencies": {
+    "@google-cloud/firestore": "^5.0.2",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "csurf": "^1.11.0",

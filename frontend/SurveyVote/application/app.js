@@ -3,6 +3,7 @@ const express = require('express');
 const controllers = require('./controllers/controllers');
 const middlewares = require('./middlewares/middlewares');
 const routers = require('./routers/routers');
+const databaseInit = require('./services/database');
 
 /**
  * Initializes the app.
@@ -22,12 +23,15 @@ const initialize = (config = {}) => {
     // pug
     lang,
     files,
+    surveysCollectionName,
+    database = databaseInit({ collectionName: surveysCollectionName }),
+    csurfCookieName,
   } = config;
 
   middlewares.baseMiddleware({ router, requestLogging });
   routers.publicRoute({ router });
   middlewares.pugMiddleware({ router, lang, files });
-  middlewares.csurfMiddleware({ router });
+  middlewares.csurfMiddleware({ router, csurfCookieName });
   routers.indexRoute({
     router: middlewares.indexMiddleware({ router }),
     controller: controllers.indexController(),
@@ -35,7 +39,7 @@ const initialize = (config = {}) => {
 
   routers.voteRoute({
     router: middlewares.voteMiddleware({ router }),
-    controller: controllers.voteController(),
+    controller: controllers.voteController({ database }),
   });
 
   app.set('views', viewLocalFolder);

@@ -1,1 +1,18 @@
-h1 The survey
+h1 Hallo #{participantName}!
+h2 Willkommen zur Umfrage #{surveyName}
+p= surveyInfo
+form(id=formId, method='POST', action='../../../../vote/submit')
+  input(type='hidden', name='_csrf', value=csurfToken)
+  input(type='hidden', name='surveyId', value=surveyId)
+  input(type='hidden', name='participantId', value=participantId)
+  each question, i in surveyQuestions
+    label(for=question.id)= question.question
+    br
+    select(id=question.id, name=question.id, required='true')
+      each choice in question.choices
+        if choice.selectable
+          option(value=choice.id)= choice.answer
+        else
+          option(value='')= choice.answer
+    br
+  button(type='submit') go

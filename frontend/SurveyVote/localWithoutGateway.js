@@ -7,6 +7,7 @@ const application = app(
     baseName: 'vote',
     gatewayAddress: '',
     requestLogging: true,
+    surveysCollectionName: 'surveys',
   }),
 );
 

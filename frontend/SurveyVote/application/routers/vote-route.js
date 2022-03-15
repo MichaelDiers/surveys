@@ -13,7 +13,8 @@ const initialize = (config = {}) => {
   } = config;
 
   router.get('/for/:surveyId/:participantId', controller.index);
-
+  router.post('/submit', controller.submit);
+  router.get('/thankyou', controller.thankyou);
   return router;
 };
 

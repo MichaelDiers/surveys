@@ -11,11 +11,13 @@ const initialize = (options = {}) => {
     css = [],
     js = [],
     lang = 'de',
+    surveysCollectionName,
   } = options;
 
   const cssFiles = [`${gatewayAddress}/${baseName}${publicRoute}/${baseName}.min.css`, ...css];
   const jsFiles = [`${gatewayAddress}/${baseName}${publicRoute}/${baseName}.min.js`, ...js];
   const favicon = `${gatewayAddress}/${baseName}${publicRoute}/favicon.ico`;
+  const csurfCookieName = `_csrf_${baseName}`;
 
   const config = {
     appRoute,
@@ -31,6 +33,8 @@ const initialize = (options = {}) => {
       favicon,
     },
     lang,
+    surveysCollectionName,
+    csurfCookieName,
   };
 
   return config;
