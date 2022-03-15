@@ -15,16 +15,8 @@ const initialize = (config = {}) => {
     voteTarget,
   } = config;
 
-  console.log(framePath); // eslint-disable-line
-  console.log(frameTarget); // eslint-disable-line
-  console.log(votePath); // eslint-disable-line
-  console.log(voteTarget); // eslint-disable-line
-
   const app = express();
-  app.use((req, res, next) => {
-    console.log(`${req.method} ${req.originalUrl} ${req.url} ${req.hostname}`); // eslint-disable-line
-    next();
-  });
+  // csurfMiddleware({ router: app });
 
   app.use(framePath, createProxyMiddleware({
     changeOrigin: true,
@@ -32,6 +24,7 @@ const initialize = (config = {}) => {
     pathRewrite: {
       '^/gateway': '',
     },
+    logLevel: 'debug',
   }));
 
   app.use(votePath, createProxyMiddleware({
@@ -40,8 +33,10 @@ const initialize = (config = {}) => {
     pathRewrite: {
       '^/gateway': '',
     },
+    logLevel: 'debug',
   }));
 
+  // app.use('/', router);
   return app;
 };
 
