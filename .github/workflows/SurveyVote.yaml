@@ -9,7 +9,8 @@ on:
   workflow_dispatch:
 env:
   FUNCTION_NAME: vote
-  SOURCE_DIR: 'frontend/SurveyVote'  
+  SOURCE_DIR: 'frontend/SurveyVote'
+  SURVEYS_COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -30,4 +31,4 @@ jobs:
           runtime: nodejs14
           project_id: ${{ env.PROJECT_ID }}
           source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: GCLOUD_PROJECT=${{ env.PROJECT_ID }}
+          env_vars: GCLOUD_PROJECT=${{ env.PROJECT_ID }},ENV_SURVEYS_COLLECTION_NAME=${{ env.SURVEYS_COLLECTION_NAME }}
