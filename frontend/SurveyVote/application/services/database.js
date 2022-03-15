@@ -5,12 +5,12 @@ const firestore = new Firestore();
 /**
  * Intialize a database object.
  * @param {config} config A configuration object.
- * @param {string} config.collectionName The name of the collection to be accessed.
+ * @param {string} config.surveysCollectionName The name of the collection to be accessed.
  * @returns The intialized database.
  */
 const initialize = (config) => {
   const {
-    collectionName,
+    surveysCollectionName,
   } = config;
 
   const database = {
@@ -23,9 +23,9 @@ const initialize = (config) => {
      */
     read: async (options) => {
       const { surveyId, participantId } = options;
-      const documentSnapshot = await firestore.collection(collectionName).doc(surveyId).get();
-      if (documentSnapshot.exists) {
-        const document = documentSnapshot.data();
+      const snapshot = await firestore.collection(surveysCollectionName).doc(surveyId).get();
+      if (snapshot.exists) {
+        const document = snapshot.data();
         if (document.participants.some(({ id }) => id === participantId)) {
           return document;
         }
