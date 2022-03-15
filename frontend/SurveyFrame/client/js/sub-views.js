@@ -14,6 +14,13 @@ const subViewForms = (sourceElement) => {
               subView.querySelectorAll('form').forEach((subViewForm) => {
                 if (subViewForm.id && subViewForm.id === form.id) {
                   subView.innerHTML = response; // eslint-disable-line no-param-reassign
+                  const pushStateElement = subView.querySelector('[name=pushStateUrl]');
+                  if (pushStateElement) {
+                    const pushStateUrl = pushStateElement.getAttribute('value');
+                    if (pushStateUrl) {
+                      window.history.pushState({}, '', pushStateUrl); // eslint-disable-line no-undef
+                    }
+                  }
                 }
               });
             });
