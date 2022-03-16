@@ -24,11 +24,14 @@ function apiCall(url, method, options = {}) {
 
     xhttp.open(method, url, true);
     xhttp.withCredentials = true;
-    // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     const { formData } = options;
     if (formData) {
+      const data = {};
+      formData.forEach((value, key) => { data[key] = value; });
+      const json = JSON.stringify(data);
+      xhttp.setRequestHeader('Content-type', 'application/json');
       xhttp.setRequestHeader('CSRF-Token', formData.get('_csrf'));
-      xhttp.send(formData);
+      xhttp.send(json);
     } else {
       xhttp.send();
     }
