@@ -14,6 +14,7 @@ const initialize = (options = {}) => {
     surveysCollectionName,
     surveyStatusCollectionName,
     surveyResultsCollectionName,
+    saveSurveyResultTopic,
   } = options;
 
   const cssFiles = [`${gatewayAddress}/${baseName}${publicRoute}/${baseName}.min.css`, ...css];
@@ -39,6 +40,7 @@ const initialize = (options = {}) => {
     surveyStatusCollectionName,
     surveyResultsCollectionName,
     csurfCookieName,
+    saveSurveyResultTopic,
   };
 
   return config;

@@ -10,6 +10,7 @@ const application = app(
     surveysCollectionName: 'surveys',
     surveyStatusCollectionName: 'surveys-status',
     surveyResultsCollectionName: 'survey-results',
+    saveSurveyResultTopic: 'SAVE_SURVEY_RESULT',
   }),
 );
 

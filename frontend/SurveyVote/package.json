@@ -5,7 +5,7 @@
   "main": "function.js",
   "scripts": {
     "eslint": "eslint -c ./configs/.eslintrc.js . --fix",
-    "git": "git add . && git status",
+    "git": "git add . && git add ../../.github/workflows/SurveyVote.yaml && git status",
     "gitadd": "npm run lint && npm run ugly && npm run git",
     "lint": "npm run eslint && npm run puglint && npm run stylelint",
     "puglint": "pug-lint -c ./configs/.pug-lintrc.json -r inline ./application/views/",
@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@google-cloud/firestore": "^5.0.2",
+    "@google-cloud/pubsub": "^2.19.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "csurf": "^1.11.0",

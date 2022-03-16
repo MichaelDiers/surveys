@@ -25,7 +25,7 @@ const initialize = (config = {}) => {
   if (requestLogging) {
     router.use((req, res, next) => {
       // eslint-disable-next-line
-      console.log(`${req.method} ${req.baseUrl}`);
+      console.log(`${req.method} ${req.originalUrl}`);
       next();
     });
   }
