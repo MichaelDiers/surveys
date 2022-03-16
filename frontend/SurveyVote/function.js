@@ -15,5 +15,6 @@ exports.vote = app(
     surveyStatusCollectionName,
     surveyResultsCollectionName,
     saveSurveyResultTopic,
+    requestLogging: true,
   }),
 );
