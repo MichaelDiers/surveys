@@ -9,6 +9,7 @@ const application = app(
     requestLogging: true,
     surveysCollectionName: 'surveys',
     surveyStatusCollectionName: 'surveys-status',
+    surveyResultsCollectionName: 'survey-results',
   }),
 );
 

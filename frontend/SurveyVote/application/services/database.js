@@ -12,6 +12,7 @@ const initialize = (config) => {
   const {
     surveysCollectionName,
     surveyStatusCollectionName,
+    surveyResultsCollectionName,
   } = config;
 
   const database = {
@@ -50,6 +51,19 @@ const initialize = (config) => {
         .limit(1)
         .get();
       return snapshot.size === 1;
+    },
+
+    readSurveyResults: async (options) => {
+      const { surveyId, participantId } = options;
+      const querySnapshot = await firestore
+        .collection(surveyResultsCollectionName)
+        .where('internalSurveyId', '==', surveyId)
+        .where('participantId', '==', participantId)
+        .get();
+
+      const results = [];
+      querySnapshot.forEach((snapshot) => results.push(snapshot.data()));
+      return results;
     },
   };
 

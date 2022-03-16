@@ -17,6 +17,7 @@ const buildViewDataForSurvey = (config) => {
       participants,
     },
     participantId,
+    surveyResults,
   } = config;
 
   const participantName = participants.find(({ id }) => id === participantId).name;
@@ -24,6 +25,20 @@ const buildViewDataForSurvey = (config) => {
   surveyQuestions.forEach(({ choices }) => {
     choices.sort((a, b) => a.order - b.order);
   });
+
+  if (surveyResults && surveyResults.length > 0) {
+    surveyResults.sort((a, b) => b.created - a.created);
+    surveyQuestions.forEach((question, index) => {
+      const result = surveyResults[0].results.find(({ questionId }) => questionId === question.id);
+      if (result) {
+        const surveyChoice = question.choices.find((choice) => choice.id === result.choiceId);
+        surveyChoice.isSelected = true;
+        if (surveyChoice.selectable) {
+          surveyQuestions[index].choices = question.choices.filter((choice) => choice.selectable);
+        }
+      }
+    });
+  }
 
   const options = {
     participantName,
@@ -66,17 +81,33 @@ const initialize = (config = {}) => {
      */
     index: async (req, res) => {
       const { surveyId, participantId } = req.params;
-      const isClosed = await database.isSurveyClosed({ surveyId });
-      if (isClosed) {
-        res.redirect('../../closed');
-      } else {
-        const survey = await database.read({ surveyId, participantId });
-        if (survey) {
-          res.render('vote/index', buildViewDataForSurvey({ survey, participantId, internalSurveyId: surveyId }));
-        } else {
-          res.render('vote/unknown');
-        }
+
+      // database operations
+      const surveyPromise = database.read({ surveyId, participantId });
+      const surveyResultsPromise = database.readSurveyResults({ surveyId, participantId });
+      const surveyIsClosedPromise = database.isSurveyClosed({ surveyId });
+
+      // check if survey exists
+      const survey = await surveyPromise;
+      if (!survey) {
+        res.render('vote/unknown');
+        return;
       }
+
+      // survey is closed
+      if (await surveyIsClosedPromise) {
+        res.redirect('../../closed');
+        return;
+      }
+
+      // render the survey
+      const surveyResults = await surveyResultsPromise;
+      res.render('vote/index', buildViewDataForSurvey({
+        survey,
+        participantId,
+        internalSurveyId: surveyId,
+        surveyResults,
+      }));
     },
 
     /**

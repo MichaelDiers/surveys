@@ -10,9 +10,13 @@ form(id=formId, method='POST', action='../../../../vote/submit')
     br
     select(id=question.id, name=question.id, required='true')
       each choice in question.choices
+        - var attributes = {}
         if choice.selectable
-          option(value=choice.id)= choice.answer
+          - attributes.value = choice.id;
         else
-          option(value='')= choice.answer
+          - attributes.value = '';
+        if choice.isSelected
+          - attributes.selected = true;
+        option&attributes(attributes)= choice.answer
     br
   button(type='submit') go

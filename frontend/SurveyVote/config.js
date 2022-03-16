@@ -13,6 +13,7 @@ const initialize = (options = {}) => {
     lang = 'de',
     surveysCollectionName,
     surveyStatusCollectionName,
+    surveyResultsCollectionName,
   } = options;
 
   const cssFiles = [`${gatewayAddress}/${baseName}${publicRoute}/${baseName}.min.css`, ...css];
@@ -36,6 +37,7 @@ const initialize = (options = {}) => {
     lang,
     surveysCollectionName,
     surveyStatusCollectionName,
+    surveyResultsCollectionName,
     csurfCookieName,
   };
 
