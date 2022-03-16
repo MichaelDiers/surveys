@@ -8,6 +8,7 @@ const application = app(
     gatewayAddress: '',
     requestLogging: true,
     surveysCollectionName: 'surveys',
+    surveyStatusCollectionName: 'surveys-status',
   }),
 );
 

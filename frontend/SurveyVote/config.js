@@ -12,6 +12,7 @@ const initialize = (options = {}) => {
     js = [],
     lang = 'de',
     surveysCollectionName,
+    surveyStatusCollectionName,
   } = options;
 
   const cssFiles = [`${gatewayAddress}/${baseName}${publicRoute}/${baseName}.min.css`, ...css];
@@ -34,6 +35,7 @@ const initialize = (options = {}) => {
     },
     lang,
     surveysCollectionName,
+    surveyStatusCollectionName,
     csurfCookieName,
   };
 

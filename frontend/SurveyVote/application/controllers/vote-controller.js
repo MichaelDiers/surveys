@@ -51,19 +51,34 @@ const initialize = (config = {}) => {
 
   const controller = {
     /**
+     * Renders the survey is closed view.
+     * @param {express.Request} req The express request object.
+     * @param {express.Response} res The express response object.
+     */
+    closed: async (req, res) => {
+      res.render('vote/closed');
+    },
+
+    /**
      * Loads the requested survey for a participant and renders the view.
      * @param {express.Request} req The express request object.
      * @param {express.Response} res The express response object.
      */
     index: async (req, res) => {
       const { surveyId, participantId } = req.params;
-      const survey = await database.read({ surveyId, participantId });
-      if (survey) {
-        res.render('vote/index', buildViewDataForSurvey({ survey, participantId, internalSurveyId: surveyId }));
+      const isClosed = await database.isSurveyClosed({ surveyId });
+      if (isClosed) {
+        res.redirect('../../closed');
       } else {
-        res.render('vote/unknown');
+        const survey = await database.read({ surveyId, participantId });
+        if (survey) {
+          res.render('vote/index', buildViewDataForSurvey({ survey, participantId, internalSurveyId: surveyId }));
+        } else {
+          res.render('vote/unknown');
+        }
       }
     },
+
     /**
      * Submit a survey result.
      * @param {express.Request} req The express request object.
@@ -72,6 +87,12 @@ const initialize = (config = {}) => {
     submit: (req, res) => {
       res.redirect(303, './thankyou');
     },
+
+    /**
+     * Render the thank you for participating view.
+     * @param {express.Request} req The express request object.
+     * @param {express.Response} res The express response object.
+     */
     thankyou: (req, res) => {
       res.render('vote/thankyou');
     },

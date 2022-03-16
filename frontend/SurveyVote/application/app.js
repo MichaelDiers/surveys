@@ -24,7 +24,8 @@ const initialize = (config = {}) => {
     lang,
     files,
     surveysCollectionName,
-    database = databaseInit({ surveysCollectionName }),
+    surveyStatusCollectionName,
+    database = databaseInit({ surveyStatusCollectionName, surveysCollectionName }),
     csurfCookieName,
   } = config;
 

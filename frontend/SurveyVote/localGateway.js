@@ -8,6 +8,7 @@ const application = app(
     gatewayAddress: 'http://localhost:3000/gateway',
     requestLogging: true,
     surveysCollectionName: 'surveys',
+    surveyStatusCollectionName: 'surveys-status',
   }),
 );
 

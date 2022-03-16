@@ -11,6 +11,7 @@ const firestore = new Firestore();
 const initialize = (config) => {
   const {
     surveysCollectionName,
+    surveyStatusCollectionName,
   } = config;
 
   const database = {
@@ -32,6 +33,23 @@ const initialize = (config) => {
       }
 
       return null;
+    },
+
+    /**
+     * Check if the survey has a status closed document.
+     * @param {object} options An options object.
+     * @param {string} options.surveyId The id of the survey document.
+     * @returns True if the survey is closed and false otherwise.
+     */
+    isSurveyClosed: async (options) => {
+      const { surveyId } = options;
+      const snapshot = await firestore
+        .collection(surveyStatusCollectionName)
+        .where('internalSurveyId', '==', surveyId)
+        .where('status', '==', 'Closed')
+        .limit(1)
+        .get();
+      return snapshot.size === 1;
     },
   };
 
