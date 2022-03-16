@@ -127,6 +127,8 @@ const initialize = (config = {}) => {
         participantId,
       } = req.body;
 
+      console.log(req.body);
+
       const survey = await database.read({ surveyId, participantId });
       if (!survey) {
         console.error(`voteController.submit: Cannot read survey with id ${surveyId} for participant ${participantId}`);
