@@ -1,5 +1,5 @@
 const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
 
 /**
  * Initializes an express application.
@@ -18,6 +18,13 @@ const initialize = (config = {}) => {
   const app = express();
   // csurfMiddleware({ router: app });
 
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json());
+  app.use((req, res, next) => {
+    // eslint-disable-next-line
+    console.log(`${req.method} ${req.originalUrl} ${JSON.stringify(req.body)}`);
+    next();
+  });
   app.use(framePath, createProxyMiddleware({
     changeOrigin: true,
     target: frameTarget,
@@ -25,6 +32,7 @@ const initialize = (config = {}) => {
       '^/gateway': '',
     },
     logLevel: 'debug',
+    onProxyReq: fixRequestBody,
   }));
 
   app.use(votePath, createProxyMiddleware({
@@ -34,6 +42,7 @@ const initialize = (config = {}) => {
       '^/gateway': '',
     },
     logLevel: 'debug',
+    onProxyReq: fixRequestBody,
   }));
 
   // app.use('/', router);
