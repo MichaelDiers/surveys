@@ -8,6 +8,7 @@ const application = app({
   frameTarget: 'http://localhost:3001',
   votePath: '/gateway/vote',
   voteTarget: 'http://localhost:3002',
+  requestLogging: true,
 });
 
 const port = 3000;

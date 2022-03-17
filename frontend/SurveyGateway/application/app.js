@@ -13,25 +13,28 @@ const initialize = (config = {}) => {
     frameTarget,
     votePath = '/vote',
     voteTarget,
+    requestLogging,
   } = config;
 
   const app = express();
-  // csurfMiddleware({ router: app });
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
-  app.use((req, res, next) => {
-    // eslint-disable-next-line
-    console.log(`${req.method} ${req.originalUrl} ${JSON.stringify(req.body)}`);
-    next();
-  });
+
+  if (requestLogging) {
+    app.use((req, res, next) => {
+      // eslint-disable-next-line
+      console.log(`${req.method} ${req.originalUrl} ${JSON.stringify(req.body)}`);
+      next();
+    });
+  }
+
   app.use(framePath, createProxyMiddleware({
     changeOrigin: true,
     target: frameTarget,
     pathRewrite: {
       '^/gateway': '',
     },
-    logLevel: 'debug',
     onProxyReq: fixRequestBody,
   }));
 
@@ -41,11 +44,9 @@ const initialize = (config = {}) => {
     pathRewrite: {
       '^/gateway': '',
     },
-    logLevel: 'debug',
     onProxyReq: fixRequestBody,
   }));
 
-  // app.use('/', router);
   return app;
 };
 
