@@ -1,6 +1,7 @@
 ﻿namespace Surveys.Common.Messages
 {
     using Md.GoogleCloud.Base.Messages;
+    using Newtonsoft.Json;
 
     /// <summary>
     ///     Describes the valuate survey message.
@@ -21,6 +22,7 @@
         /// <summary>
         ///     Gets the internal id of the survey.
         /// </summary>
+        [JsonProperty("internalSurveyId", Required = Required.Always, Order = 11)]
         public string InternalSurveyId { get; }
     }
 }
