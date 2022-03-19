@@ -15,7 +15,7 @@
         /// <summary>
         ///     Json name of property <see cref="InternalSurveyId" />.
         /// </summary>
-        private const string InternalSurveyIdName = "internalSurveyId";
+        public const string InternalSurveyIdName = "internalSurveyId";
 
         /// <summary>
         ///     Json name of property <see cref="ParticipantId" />.
