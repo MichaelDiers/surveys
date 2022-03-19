@@ -6,6 +6,7 @@
     using Md.GoogleCloud.Base.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Messages;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
@@ -18,14 +19,21 @@
         private readonly IDatabase database;
 
         /// <summary>
+        ///     Access google cloud pub/sub.
+        /// </summary>
+        private readonly IPubSubClient pubSubClient;
+
+        /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
         /// <param name="logger">An error logger.</param>
         /// <param name="database">Access to the survey database.</param>
-        public FunctionProvider(ILogger<Function> logger, IDatabase database)
+        /// <param name="pubSubClient">Access google cloud pub/sub.</param>
+        public FunctionProvider(ILogger<Function> logger, IDatabase database, IPubSubClient pubSubClient)
             : base(logger)
         {
             this.database = database ?? throw new ArgumentNullException(nameof(database));
+            this.pubSubClient = pubSubClient;
         }
 
         /// <summary>
@@ -41,6 +49,8 @@
             }
 
             await this.database.InsertAsync(message.SurveyResult);
+            await this.pubSubClient.PublishAsync(
+                new EvaluateSurveyMessage(message.ProcessId, message.SurveyResult.InternalSurveyId));
         }
     }
 }

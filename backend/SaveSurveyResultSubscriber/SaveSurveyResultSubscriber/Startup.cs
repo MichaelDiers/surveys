@@ -28,9 +28,16 @@ namespace SaveSurveyResultSubscriber
             context.Configuration.Bind(configuration);
 
             services.AddScoped<IFunctionConfiguration>(_ => configuration);
+
+
             services.AddScoped<IDatabaseConfiguration>(
                 _ => new DatabaseConfiguration(configuration.ProjectId, configuration.CollectionName));
             services.AddScoped<IDatabase, Database>();
+
+            services.AddScoped<IPubSubClientConfiguration>(
+                _ => new PubSubClientConfiguration(configuration.ProjectId, configuration.PubSubTopicName));
+            services.AddScoped<IPubSubClient, IPubSubClient>();
+
             services.AddScoped<IPubSubProvider<ISaveSurveyResultMessage>, FunctionProvider>();
         }
     }

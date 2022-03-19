@@ -16,5 +16,10 @@
         ///     Gets the id of the google cloud project.
         /// </summary>
         public string ProjectId { get; set; }
+
+        /// <summary>
+        ///     Gets the pub/sub topic name.
+        /// </summary>
+        public string PubSubTopicName { get; set; }
     }
 }
