@@ -31,6 +31,12 @@
         ///     Sending a survey invitation mail failed.
         /// </summary>
         [EnumMember(Value = "INVITATION_MAIL_FAILED")]
-        InvitationMailSentFailed
+        InvitationMailSentFailed,
+
+        /// <summary>
+        ///     Sending a survey invitation mail failed.
+        /// </summary>
+        [EnumMember(Value = "CLOSED")]
+        Closed
     }
 }
