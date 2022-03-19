@@ -24,11 +24,24 @@ const initialize = (config) => {
      * @returns A survey object.
      */
     read: async (options) => {
-      const { surveyId, participantId } = options;
+      const {
+        surveyId,
+        participantId,
+        sortData = true,
+      } = options;
+
       const snapshot = await firestore.collection(surveysCollectionName).doc(surveyId).get();
       if (snapshot.exists) {
         const document = snapshot.data();
         if (document.participants.some(({ id }) => id === participantId)) {
+          if (sortData) {
+            document.participants.sort((a, b) => a.order - b.order);
+            document.questions.sort((a, b) => a.order - b.order);
+            document.questions.forEach((question) => {
+              question.choices.sort((a, b) => a.order - b.order);
+            });
+          }
+
           return document;
         }
       }
@@ -54,7 +67,12 @@ const initialize = (config) => {
     },
 
     readSurveyResults: async (options) => {
-      const { surveyId, participantId } = options;
+      const {
+        surveyId,
+        participantId,
+        sortData = true,
+      } = options;
+
       const querySnapshot = await firestore
         .collection(surveyResultsCollectionName)
         .where('internalSurveyId', '==', surveyId)
@@ -63,6 +81,11 @@ const initialize = (config) => {
 
       const results = [];
       querySnapshot.forEach((snapshot) => results.push(snapshot.data()));
+
+      if (sortData) {
+        results.sort((a, b) => b.created - a.created);
+      }
+
       return results;
     },
   };

@@ -57,6 +57,40 @@ const buildViewDataForSurvey = (config) => {
   return options;
 };
 
+const buildDataForThankYouView = (options) => {
+  const {
+    participantId,
+    results,
+    survey: {
+      name: surveyName,
+      info: surveyInfo,
+      participants,
+      questions,
+    },
+    internalSurveyId,
+    addPushState = true,
+  } = options;
+
+  const participantName = participants.find(({ id }) => id === participantId).name;
+
+  const surveyResults = results.map(({ questionId, choiceId }) => {
+    const question = questions.find(({ id }) => id === questionId);
+    return {
+      question: question.question,
+      answer: question.choices.find(({ id }) => id === choiceId).answer,
+    };
+  });
+
+  return {
+    participantName,
+    surveyName,
+    surveyInfo,
+    results: surveyResults,
+    addPushState,
+    pushStateUrl: `../../../../frame/vote/thankyou/${internalSurveyId}/${participantId}`,
+  };
+};
+
 /**
  * Initializes the vote controller.
  * @param {object} config A configuration object.
@@ -123,21 +157,19 @@ const initialize = (config = {}) => {
      */
     submit: async (req, res) => {
       const {
-        surveyId,
+        surveyId: internalSurveyId,
         participantId,
       } = req.body;
 
-      console.log(req.body);
-
-      const survey = await database.read({ surveyId, participantId });
+      const survey = await database.read({ surveyId: internalSurveyId, participantId });
       if (!survey) {
-        console.error(`voteController.submit: Cannot read survey with id ${surveyId} for participant ${participantId}`);
+        console.error(`voteController.submit: Cannot read survey with id ${internalSurveyId} for participant ${participantId}`); // eslint-disable-line
         res.render('vote/unknown');
         return;
       }
 
       const message = {
-        internalSurveyId: surveyId,
+        internalSurveyId,
         participantId,
         results: [],
       };
@@ -145,7 +177,7 @@ const initialize = (config = {}) => {
       survey.questions.forEach(({ id, choices }) => {
         const submitChoiceId = req.body[id];
         if (!submitChoiceId || choices.every((choice) => choice.id !== submitChoiceId)) {
-          console.error(`voteController.submit: Missing question ${id} for survey ${surveyId} for participant ${participantId}`);
+          console.error(`voteController.submit: Missing question ${id} for survey ${internalSurveyId} for participant ${participantId}`); // eslint-disable-line
           res.render('vote/unknown');
         } else {
           message.results.push({ questionId: id, choiceId: submitChoiceId });
@@ -154,7 +186,15 @@ const initialize = (config = {}) => {
 
       await pubSubClient.publish(message);
 
-      res.redirect(303, './thankyou');
+      res.render(
+        'vote/thankyou',
+        buildDataForThankYouView({
+          survey,
+          participantId,
+          results: message.results,
+          internalSurveyId,
+        }),
+      );
     },
 
     /**
@@ -162,8 +202,41 @@ const initialize = (config = {}) => {
      * @param {express.Request} req The express request object.
      * @param {express.Response} res The express response object.
      */
-    thankyou: (req, res) => {
-      res.render('vote/thankyou');
+    thankyou: async (req, res) => {
+      const {
+        surveyId: internalSurveyId,
+        participantId,
+      } = req.params;
+
+      const surveyPromise = await database.read({ surveyId: internalSurveyId, participantId });
+      const surveyResultsPromise = database.readSurveyResults({
+        surveyId: internalSurveyId,
+        participantId,
+      });
+
+      const survey = await surveyPromise;
+      if (!survey) {
+        console.error(`voteController.thankyou: Cannot read survey with id ${internalSurveyId} for participant ${participantId}`); // eslint-disable-line
+        res.render('vote/unknown');
+        return;
+      }
+
+      const surveyResults = await surveyResultsPromise;
+      if (!surveyResults) {
+        res.render('vote/unknown');
+        return;
+      }
+
+      res.render(
+        'vote/thankyou',
+        buildDataForThankYouView({
+          survey,
+          participantId,
+          results: surveyResults[0].results,
+          internalSurveyId,
+          addPushState: false,
+        }),
+      );
     },
   };
 

@@ -1,3 +1,12 @@
-input(type='hidden', name='pushStateUrl', value='../../../../frame/vote/thankyou')
-h1 Thank you!
+input(type='hidden', name='pushStateUrl', value=pushStateUrl)
+h1 Vielen Dank, #{participantName}!
 p Deine Stimme wurde gezählt!
+
+h2= surveyName
+h2= surveyInfo
+
+h2 Deine Antworten
+div
+  each result in results
+    div= result.question
+    div= result.answer

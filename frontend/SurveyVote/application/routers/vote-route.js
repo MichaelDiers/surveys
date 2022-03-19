@@ -14,7 +14,7 @@ const initialize = (config = {}) => {
 
   router.get('/for/:surveyId/:participantId', controller.index);
   router.post('/submit', controller.submit);
-  router.get('/thankyou', controller.thankyou);
+  router.get('/thankyou/:surveyId/:participantId', controller.thankyou);
   router.get('/closed', controller.closed);
   return router;
 };
