@@ -22,16 +22,9 @@ const buildViewDataForSurvey = (config) => {
 
   const participantName = participants.find(({ id }) => id === participantId).name;
 
-  // sort data
-  surveyQuestions.sort((a, b) => a.order - b.order);
-  surveyQuestions.forEach(({ choices }) => {
-    choices.sort((a, b) => a.order - b.order);
-  });
-
-  // process and set previos choices
+  // process and set previous choices
   if (surveyResults && surveyResults.length > 0) {
     // sort in order to find the last result
-    surveyResults.sort((a, b) => b.created - a.created);
     surveyQuestions.forEach((question, index) => {
       const result = surveyResults[0].results.find(({ questionId }) => questionId === question.id);
       if (result) {
