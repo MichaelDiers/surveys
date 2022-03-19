@@ -4,14 +4,15 @@ on:
     branches:
       - main
     paths:
-      - 'schemas/EvaluateSurveySchema.avro'
-      - '.github/Schema.EvaluateSurvey.yaml'
+      - 'schemas/EvaluateSurveySchema.proto'
+      - '.github/workflows/Schema.EvaluateSurvey.yaml'
   workflow_dispatch:
 env:
   TOPIC_NAME_SUB: ${{ secrets.GLOBAL_PUBSUB_TOPIC_EVALUATE_SURVEY }}
   SCHEMA_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_EVALUATE_SURVEY }}_SCHEMA  
-  SCHEMA_FILE: 'schemas/EvaluateSurveySchema.avro'
+  SCHEMA_FILE: 'schemas/EvaluateSurveySchema.proto'
   MESSAGE_ENCODING: json
+  SCHEMA_TYPE: PROTOCOL_BUFFER
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -43,7 +44,7 @@ jobs:
           PROJECT_ID: ${{ env.PROJECT_ID }}
           APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
         with:
-          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=AVRO --definition-file=${{ env.SCHEMA_FILE }}
+          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=${{ env.SCHEMA_TYPE }} --definition-file=${{ env.SCHEMA_FILE }}
       - name: deploy topic
         uses: actions-hub/gcloud@master
         env:
@@ -82,7 +83,7 @@ jobs:
           PROJECT_ID: ${{ env.PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
         with:
-          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=AVRO --definition-file=${{ env.SCHEMA_FILE }}
+          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=${{ env.SCHEMA_TYPE }} --definition-file=${{ env.SCHEMA_FILE }}
       - name: deploy topic
         uses: actions-hub/gcloud@master
         env:
@@ -123,7 +124,7 @@ jobs:
           PROJECT_ID: ${{ env.PROJECT_ID}}
           APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
         with:
-          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=AVRO --definition-file=${{ env.SCHEMA_FILE }}
+          args: pubsub schemas create ${{ env.SCHEMA_NAME }} --type=${{ env.SCHEMA_TYPE }} --definition-file=${{ env.SCHEMA_FILE }}
       - name: deploy topic
         uses: actions-hub/gcloud@master
         env:
