@@ -2,11 +2,12 @@
 {
     using Md.GoogleCloud.Base.Messages;
     using Newtonsoft.Json;
+    using Surveys.Common.Contracts.Messages;
 
     /// <summary>
     ///     Describes the valuate survey message.
     /// </summary>
-    public class EvaluateSurveyMessage : Message
+    public class EvaluateSurveyMessage : Message, IEvaluateSurveyMessage
     {
         /// <summary>
         ///     Creates a new instance of <see cref="EvaluateSurveyMessage" />
