@@ -4,7 +4,8 @@ on:
     branches:
       - main
     paths:
-      - 'backend/SaveSurveySubscriber/SaveSurveySubscriber/**'
+      - 'backend/SaveSurveySubscriber/**'
+      - '.github/workflows/SaveSurveySubscriber.yaml'
   workflow_dispatch:
 env:
   APP_SETTINGS_JSON: 'backend/SaveSurveySubscriber/SaveSurveySubscriber/appsettings.json'
