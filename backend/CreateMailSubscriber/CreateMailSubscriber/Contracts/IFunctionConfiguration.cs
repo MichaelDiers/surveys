@@ -11,6 +11,11 @@
         string CollectionName { get; }
 
         /// <summary>
+        ///     Gets the url format for the survey front end.
+        /// </summary>
+        string FrondEndUrlFormat { get; }
+
+        /// <summary>
         ///     Gets the id of the google cloud project.
         /// </summary>
         string ProjectId { get; }

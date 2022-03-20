@@ -110,7 +110,8 @@
                 logger,
                 pubSubClientFactory(
                     new PubSubClientConfiguration(configuration.ProjectId, configuration.SendMailTopicName)),
-                databaseFactory(new DatabaseConfiguration(configuration.ProjectId, configuration.CollectionName)));
+                databaseFactory(new DatabaseConfiguration(configuration.ProjectId, configuration.CollectionName)),
+                configuration);
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 

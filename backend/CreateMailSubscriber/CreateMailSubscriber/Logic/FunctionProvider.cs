@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using CreateMailSubscriber.Contracts;
     using CreateMailSubscriber.Model;
     using Md.GoogleCloud.Base.Contracts.Logic;
     using Md.GoogleCloud.Base.Logic;
@@ -15,6 +16,11 @@
     /// </summary>
     public class FunctionProvider : PubSubProvider<ICreateMailMessage, Function>
     {
+        /// <summary>
+        ///     The application configuration.
+        /// </summary>
+        private readonly IFunctionConfiguration configuration;
+
         /// <summary>
         ///     Read email templates from the database.
         /// </summary>
@@ -32,16 +38,19 @@
         /// <param name="logger">An error logger.</param>
         /// <param name="sendMailPubSubClient">Access the pub/sub client for sending emails.</param>
         /// <param name="database">Access the templates database.</param>
+        /// <param name="configuration">The application configuration.</param>
         public FunctionProvider(
             ILogger<Function> logger,
             IPubSubClient sendMailPubSubClient,
-            IReadOnlyDatabase database
+            IReadOnlyDatabase database,
+            IFunctionConfiguration configuration
         )
             : base(logger)
         {
             this.sendMailPubSubClient =
                 sendMailPubSubClient ?? throw new ArgumentNullException(nameof(sendMailPubSubClient));
             this.database = database ?? throw new ArgumentNullException(nameof(database));
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -100,12 +109,18 @@
                         template.BodyHtml(
                             participant.Name,
                             survey.Name,
-                            survey.Link + participant.Id,
+                            string.Format(
+                                this.configuration.FrondEndUrlFormat,
+                                message.RequestForParticipation.InternalSurveyId,
+                                participant.Id),
                             survey.Organizer.Name),
                         template.BodyPlain(
                             participant.Name,
                             survey.Name,
-                            survey.Link + participant.Id,
+                            string.Format(
+                                this.configuration.FrondEndUrlFormat,
+                                message.RequestForParticipation.InternalSurveyId,
+                                participant.Id),
                             survey.Organizer.Name)),
                     message.RequestForParticipation.InternalSurveyId,
                     new[] {participant.Id},
