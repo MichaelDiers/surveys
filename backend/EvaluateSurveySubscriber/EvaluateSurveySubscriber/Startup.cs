@@ -40,10 +40,10 @@ namespace EvaluateSurveySubscriber
 
             services.AddScoped<ISaveSurveyStatusPubSubClient>(
                 _ => new SaveSurveyStatusPubSubClient(
-                    new PubSubClientConfiguration(configuration.ProjectId, string.Empty)));
+                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName)));
             services.AddScoped<ISurveyClosedPubSubClient>(
                 _ => new SurveyClosedPubSubClient(
-                    new PubSubClientConfiguration(configuration.ProjectId, string.Empty)));
+                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SurveyClosedTopicName)));
 
             services.AddScoped<IPubSubProvider<IEvaluateSurveyMessage>, FunctionProvider>();
         }
