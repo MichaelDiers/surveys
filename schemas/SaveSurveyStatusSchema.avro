@@ -31,8 +31,9 @@
 							"symbols": [
 								"CREATED",
                                                                 "INVITATION_MAIL_OK",
-                                                                "INVITATION_MAIL_FAILED"                
-							]
+                                                                "INVITATION_MAIL_FAILED",
+                                                                "CLOSED"
+                							]
 						}
 					}					
 				]
