@@ -18,7 +18,7 @@ env:
   NUGET_USERNAME: MichaelDiers
   NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
   CSPROJ_NUGET: 'backend/EvaluateSurveySubscriber/EvaluateSurveySubscriber/nuget.config'
-  CSPROJ_TEST_NUGET: 'backend/EvaluateSurveySubscriber/EvaluateSurveySubscriber.Test/nuget.config'
+  CSPROJ_TEST_NUGET: 'backend/EvaluateSurveySubscriber/EvaluateSurveySubscriber.Tests/nuget.config'
   SAVE_SURVEY_STATUS_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}
   SURVEY_CLOSED_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_CLOSED }}
   SURVEYS_COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
