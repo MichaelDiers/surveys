@@ -43,6 +43,18 @@
         }
 
         [Fact]
+        public void FromDictionary()
+        {
+            var value = new Person(Guid.NewGuid().ToString(), "email@example.example", nameof(Person.Name));
+
+            var dictionary = value.ToDictionary();
+            var actual = Person.FromDictionary(dictionary);
+            Assert.Equal(value.Id, actual.Id);
+            Assert.Equal(value.Email, actual.Email);
+            Assert.Equal(value.Name, actual.Name);
+        }
+
+        [Fact]
         public void PersonImplementsIBase()
         {
             Assert.IsAssignableFrom<IBase>(new Person(Guid.NewGuid().ToString(), "foo@bar.example", "foo"));

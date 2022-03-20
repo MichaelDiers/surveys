@@ -62,5 +62,19 @@
             dictionary.Add(EmailName, this.Email);
             return dictionary;
         }
+
+        /// <summary>
+        ///     Create a new <see cref="Person" /> from dictionary data.
+        /// </summary>
+        /// <param name="dictionary">The initial values of the object.</param>
+        /// <returns>A <see cref="Person" />.</returns>
+        public new static Person FromDictionary(IDictionary<string, object> dictionary)
+        {
+            var baseObject = Base.FromDictionary(dictionary);
+            var email = dictionary.GetString(EmailName);
+            var name = dictionary.GetString(NameName);
+
+            return new Person(baseObject.Id, email, name);
+        }
     }
 }

@@ -78,5 +78,26 @@
             dictionary.Add(ChoicesName, this.Choices.Select(c => c.ToDictionary()));
             return dictionary;
         }
+
+        /// <summary>
+        ///     Create a new <see cref="Question" /> from dictionary data.
+        /// </summary>
+        /// <param name="dictionary">The initial values of the object.</param>
+        /// <returns>A <see cref="Question" />.</returns>
+        public new static Question FromDictionary(IDictionary<string, object> dictionary)
+        {
+            var baseObject = Base.FromDictionary(dictionary);
+            var text = dictionary.GetString(QuestionName);
+            var choicesDictionaries = dictionary.GetDictionaries(ChoicesName);
+            var order = dictionary.GetInt(OrderName);
+
+            var choices = choicesDictionaries.Select(Choice.FromDictionary).ToArray();
+
+            return new Question(
+                baseObject.Id,
+                text,
+                choices,
+                order);
+        }
     }
 }

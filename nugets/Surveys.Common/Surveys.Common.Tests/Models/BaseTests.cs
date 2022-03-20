@@ -58,6 +58,15 @@
             Assert.Throws<ArgumentException>(() => JsonConvert.DeserializeObject<Base>(json));
         }
 
+        [Fact]
+        public void FromDictionary()
+        {
+            var value = new Base(Guid.NewGuid().ToString());
+            var dictionary = value.ToDictionary();
+            var actual = Base.FromDictionary(dictionary);
+            Assert.Equal(value.Id, actual.Id);
+        }
+
         [Theory]
         [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244b")]
         public void Serialize(string id)

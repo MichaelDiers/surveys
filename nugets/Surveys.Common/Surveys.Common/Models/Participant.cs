@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Md.Common.Extensions;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
 
@@ -69,6 +70,26 @@
             dictionary.Add(QuestionReferencesName, this.QuestionReferences.Select(qr => qr.ToDictionary()));
             dictionary.Add(OrderName, this.Order);
             return dictionary;
+        }
+
+        /// <summary>
+        ///     Create a new <see cref="Participant" /> from dictionary data.
+        /// </summary>
+        /// <param name="dictionary">The initial values of the object.</param>
+        /// <returns>A <see cref="Participant" />.</returns>
+        public new static Participant FromDictionary(IDictionary<string, object> dictionary)
+        {
+            var person = Person.FromDictionary(dictionary);
+            var questionReferencesDictionaries = dictionary.GetDictionaries(QuestionReferencesName);
+            var order = dictionary.GetInt(OrderName);
+
+            var questionReferences = questionReferencesDictionaries.Select(QuestionReference.FromDictionary).ToArray();
+            return new Participant(
+                person.Id,
+                person.Email,
+                person.Name,
+                questionReferences,
+                order);
         }
     }
 }

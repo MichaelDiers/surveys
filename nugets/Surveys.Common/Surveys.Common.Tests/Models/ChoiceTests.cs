@@ -145,6 +145,22 @@
             Assert.Throws<JsonSerializationException>(() => JsonConvert.DeserializeObject<Choice>(json));
         }
 
+        [Fact]
+        public void FromDictionary()
+        {
+            var value = new Choice(
+                Guid.NewGuid().ToString(),
+                nameof(Choice.Answer),
+                true,
+                10);
+            var dictionary = value.ToDictionary();
+            var actual = Choice.FromDictionary(dictionary);
+            Assert.Equal(value.Id, actual.Id);
+            Assert.Equal(value.Order, actual.Order);
+            Assert.Equal(value.Answer, actual.Answer);
+            Assert.Equal(value.Selectable, actual.Selectable);
+        }
+
         [Theory]
         [InlineData(
             "bcb28b2d-e9a8-450c-a25e-7412e66d244b",

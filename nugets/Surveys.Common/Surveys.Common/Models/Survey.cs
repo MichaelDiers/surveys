@@ -126,5 +126,31 @@
             dictionary.Add(QuestionsName, this.Questions.Select(q => q.ToDictionary()));
             return dictionary;
         }
+
+        /// <summary>
+        ///     Create a new <see cref="Survey" /> from dictionary data.
+        /// </summary>
+        /// <param name="dictionary">The initial values of the object.</param>
+        /// <returns>A <see cref="Survey" />.</returns>
+        public new static ISurvey FromDictionary(IDictionary<string, object> dictionary)
+        {
+            var baseObject = Base.FromDictionary(dictionary);
+            var name = dictionary.GetString(NameName);
+            var info = dictionary.GetString(InfoName);
+            var link = dictionary.GetString(LinkName);
+            var organizer = Person.FromDictionary(dictionary.GetDictionary(OrganizerName));
+            var participants = dictionary.GetDictionaries(ParticipantsName)
+                .Select(Participant.FromDictionary)
+                .ToArray();
+            var questions = dictionary.GetDictionaries(QuestionsName).Select(Question.FromDictionary).ToArray();
+            return new Survey(
+                baseObject.Id,
+                name,
+                info,
+                link,
+                organizer,
+                participants,
+                questions);
+        }
     }
 }

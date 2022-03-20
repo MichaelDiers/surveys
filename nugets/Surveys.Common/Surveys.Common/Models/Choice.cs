@@ -79,5 +79,23 @@
             dictionary.Add(OrderName, this.Order);
             return dictionary;
         }
+
+        /// <summary>
+        ///     Create a new <see cref="Choice" /> from dictionary data.
+        /// </summary>
+        /// <param name="dictionary">The initial values of the object.</param>
+        /// <returns>A <see cref="Choice" />.</returns>
+        public new static Choice FromDictionary(IDictionary<string, object> dictionary)
+        {
+            var baseObject = Base.FromDictionary(dictionary);
+            var answer = dictionary.GetString(AnswerName);
+            var selectable = dictionary.GetBool(SelectableName);
+            var order = dictionary.GetInt(OrderName);
+            return new Choice(
+                baseObject.Id,
+                answer,
+                selectable,
+                order);
+        }
     }
 }

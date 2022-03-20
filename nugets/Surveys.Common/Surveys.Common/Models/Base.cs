@@ -15,7 +15,7 @@
         /// <summary>
         ///     Json name of the id property.
         /// </summary>
-        private const string IdName = "id";
+        public const string IdName = "id";
 
         /// <summary>
         ///     Creates a new instance of <see cref="Base" />.
@@ -43,6 +43,18 @@
         {
             dictionary.Add(IdName, this.Id);
             return dictionary;
+        }
+
+        /// <summary>
+        ///     Create a new <see cref="Base" /> from dictionary data.
+        /// </summary>
+        /// <param name="dictionary">The initial values of the object.</param>
+        /// <returns>A <see cref="Base" />.</returns>
+        public static IBase FromDictionary(IDictionary<string, object> dictionary)
+        {
+            var id = dictionary.GetString(IdName);
+
+            return new Base(id);
         }
     }
 }

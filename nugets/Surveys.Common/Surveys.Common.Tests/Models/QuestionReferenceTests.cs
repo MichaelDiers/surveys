@@ -35,6 +35,17 @@
         }
 
         [Fact]
+        public void FromDictionary()
+        {
+            var value = new QuestionReference(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+
+            var dictionary = value.ToDictionary();
+            var actual = QuestionReference.FromDictionary(dictionary);
+            Assert.Equal(value.QuestionId, actual.QuestionId);
+            Assert.Equal(value.ChoiceId, actual.ChoiceId);
+        }
+
+        [Fact]
         public void QuestionReferenceImplementsIQuestionReference()
         {
             Assert.IsAssignableFrom<IQuestionReference>(

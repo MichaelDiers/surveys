@@ -60,5 +60,18 @@
             dictionary.Add(ChoiceIdName, this.ChoiceId);
             return dictionary;
         }
+
+        /// <summary>
+        ///     Create a new <see cref="QuestionReference" /> from dictionary data.
+        /// </summary>
+        /// <param name="dictionary">The initial values of the object.</param>
+        /// <returns>A <see cref="QuestionReference" />.</returns>
+        public static QuestionReference FromDictionary(IDictionary<string, object> dictionary)
+        {
+            var questionId = dictionary.GetString(QuestionIdName);
+            var choiceId = dictionary.GetString(ChoiceIdName);
+
+            return new QuestionReference(questionId, choiceId);
+        }
     }
 }

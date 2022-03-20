@@ -21,6 +21,46 @@
         }
 
         [Fact]
+        public void FromDictionary()
+        {
+            var json = new FileInfo("Models/SurveyTests.Serialize.json").OpenText().ReadToEnd();
+            var value = JsonConvert.DeserializeObject<Survey>(json);
+            Assert.NotNull(value);
+
+            var dictionary = value.ToDictionary();
+            var actual = Survey.FromDictionary(dictionary);
+            Assert.Equal(value.Id, actual.Id);
+            Assert.Equal(value.Name, actual.Name);
+            Assert.Equal(value.Info, actual.Info);
+            Assert.Equal(value.Link, actual.Link);
+            Assert.Equal(value.Questions.Count(), actual.Questions.Count());
+            Assert.True(
+                value.Questions.All(
+                    q => actual.Questions.Any(
+                        aq => q.Id == aq.Id &&
+                              q.Order == aq.Order &&
+                              q.Text == aq.Text &&
+                              q.Choices.All(
+                                  c => aq.Choices.Any(
+                                      ac => c.Selectable == ac.Selectable &&
+                                            c.Answer == ac.Answer &&
+                                            c.Id == ac.Id &&
+                                            c.Order == ac.Order)))));
+            Assert.Equal(value.Participants.Count(), actual.Participants.Count());
+            Assert.True(
+                value.Participants.All(
+                    p => actual.Participants.Any(
+                        ap => p.Email == ap.Email &&
+                              p.Id == ap.Id &&
+                              p.Name == ap.Name &&
+                              p.Order == ap.Order &&
+                              p.QuestionReferences.All(
+                                  qr => ap.QuestionReferences.Any(
+                                      aqr => qr.ChoiceId == aqr.ChoiceId && qr.QuestionId == aqr.QuestionId)))));
+        }
+
+
+        [Fact]
         public void QuestionImplementsIQuestion()
         {
             Assert.IsAssignableFrom<IQuestion>(

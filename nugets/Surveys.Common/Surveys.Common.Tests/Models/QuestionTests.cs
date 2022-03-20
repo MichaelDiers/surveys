@@ -60,6 +60,42 @@
         }
 
         [Fact]
+        public void FromDictionary()
+        {
+            var value = new Question(
+                Guid.NewGuid().ToString(),
+                nameof(Question.Text),
+                new[]
+                {
+                    new Choice(
+                        Guid.NewGuid().ToString(),
+                        nameof(Choice.Answer),
+                        true,
+                        1),
+                    new Choice(
+                        Guid.NewGuid().ToString(),
+                        nameof(Choice.Answer),
+                        false,
+                        11)
+                },
+                10);
+
+            var dictionary = value.ToDictionary();
+            var actual = Question.FromDictionary(dictionary);
+            Assert.Equal(value.Id, actual.Id);
+            Assert.Equal(value.Order, actual.Order);
+            Assert.Equal(value.Text, actual.Text);
+            Assert.Equal(value.Choices.Count(), actual.Choices.Count());
+            Assert.True(
+                value.Choices.All(
+                    c => actual.Choices.Any(
+                        actualC => c.Id == actualC.Id &&
+                                   c.Answer == actualC.Answer &&
+                                   c.Selectable == actualC.Selectable &&
+                                   c.Order == actualC.Order)));
+        }
+
+        [Fact]
         public void QuestionImplementsIBase()
         {
             Assert.IsAssignableFrom<IBase>(

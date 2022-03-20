@@ -72,6 +72,33 @@
         }
 
         [Fact]
+        public void FromDictionary()
+        {
+            var value = new Participant(
+                Guid.NewGuid().ToString(),
+                "email@example.example",
+                nameof(Person.Name),
+                new[]
+                {
+                    new QuestionReference(Guid.NewGuid().ToString(), Guid.NewGuid().ToString()),
+                    new QuestionReference(Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
+                },
+                10);
+
+            var dictionary = value.ToDictionary();
+            var actual = Participant.FromDictionary(dictionary);
+            Assert.Equal(value.Id, actual.Id);
+            Assert.Equal(value.Order, actual.Order);
+            Assert.Equal(value.Email, actual.Email);
+            Assert.Equal(value.Name, actual.Name);
+            Assert.Equal(value.QuestionReferences.Count(), actual.QuestionReferences.Count());
+            Assert.True(
+                value.QuestionReferences.All(
+                    qr => actual.QuestionReferences.Any(
+                        actualQr => qr.QuestionId == actualQr.QuestionId && qr.ChoiceId == actualQr.ChoiceId)));
+        }
+
+        [Fact]
         public void ParticipantImplementsIBase()
         {
             Assert.IsAssignableFrom<IBase>(
