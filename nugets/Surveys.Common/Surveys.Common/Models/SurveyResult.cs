@@ -113,5 +113,24 @@
             dictionary.Add(ResultsName, this.Results.Select(r => r.ToDictionary()));
             return dictionary;
         }
+
+        /// <summary>
+        ///     Create a new <see cref="SurveyResult" /> from dictionary data.
+        /// </summary>
+        /// <param name="dictionary">The initial values of the object.</param>
+        /// <returns>A <see cref="SurveyResult" />.</returns>
+        public static SurveyResult FromDictionary(IDictionary<string, object> dictionary)
+        {
+            var internalSurveyId = dictionary.GetString(InternalSurveyIdName);
+            var participantId = dictionary.GetString(ParticipantIdName);
+            var isSuggested = dictionary.GetBool(IsSuggestedName);
+            var results = dictionary.GetDictionaries(ResultsName).Select(QuestionReference.FromDictionary).ToArray();
+
+            return new SurveyResult(
+                internalSurveyId,
+                participantId,
+                isSuggested,
+                results);
+        }
     }
 }
