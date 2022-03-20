@@ -8,11 +8,11 @@
 		<PackageReference Include="Google.Cloud.Functions.Hosting" Version="1.0.0" />
 		<PackageReference Include="Google.Cloud.PubSub.V1" Version="2.7.0" />
 		<PackageReference Include="Google.Events.Protobuf" Version="1.0.0" />
-		<PackageReference Include="Md.GoogleCloud.Base" Version="1.1.19" />
-		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.1.6" />
-		<PackageReference Include="Md.GoogleCloudPubSub" Version="1.1.17" />
+		<PackageReference Include="Md.GoogleCloud.Base" Version="1.1.21" />
+		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.1.7" />
+		<PackageReference Include="Md.GoogleCloudPubSub" Version="1.1.18" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Surveys.Common" Version="1.0.38" />
+		<PackageReference Include="Surveys.Common" Version="1.0.51" />
 	</ItemGroup>
 
 </Project>
