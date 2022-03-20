@@ -30,6 +30,15 @@
             return Task.FromResult(Enumerable.Empty<IDictionary<string, object>>());
         }
 
+        public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync(
+            string fieldPath,
+            object value,
+            OrderType orderType
+        )
+        {
+            return Task.FromResult(Enumerable.Empty<IDictionary<string, object>>());
+        }
+
         public Task<IDictionary<string, object>?> ReadOneAsync(string fieldPath, object value)
         {
             return Task.FromResult<IDictionary<string, object>?>(null);
