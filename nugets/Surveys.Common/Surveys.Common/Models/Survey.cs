@@ -132,7 +132,7 @@
         /// </summary>
         /// <param name="dictionary">The initial values of the object.</param>
         /// <returns>A <see cref="Survey" />.</returns>
-        public new static ISurvey FromDictionary(IDictionary<string, object> dictionary)
+        public new static Survey FromDictionary(IDictionary<string, object> dictionary)
         {
             var baseObject = Base.FromDictionary(dictionary);
             var name = dictionary.GetString(NameName);
