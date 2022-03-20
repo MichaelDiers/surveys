@@ -92,5 +92,19 @@
             dictionary.Add(StatusName, this.Status.ToString());
             return dictionary;
         }
+
+
+        /// <summary>
+        ///     Create a new <see cref="SurveyStatus" /> from dictionary data.
+        /// </summary>
+        /// <param name="dictionary">The initial values of the object.</param>
+        /// <returns>A <see cref="SurveyStatus" />.</returns>
+        public static SurveyStatus FromDictionary(IDictionary<string, object> dictionary)
+        {
+            var internalSurveyId = dictionary.GetString(InternalSurveyIdName);
+            var status = dictionary.GetEnumValue<Status>(StatusName);
+
+            return new SurveyStatus(internalSurveyId, status);
+        }
     }
 }
