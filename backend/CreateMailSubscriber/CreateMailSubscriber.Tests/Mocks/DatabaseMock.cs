@@ -35,6 +35,15 @@
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync(
+            string fieldPath,
+            object value,
+            OrderType orderType
+        )
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IDictionary<string, object>?> ReadOneAsync(string fieldPath, object value)
         {
             throw new NotImplementedException();
