@@ -4,7 +4,8 @@ on:
     branches:
       - main
     paths:
-      - 'backend/CreateMailSubscriber/CreateMailSubscriber/**'
+      - 'backend/CreateMailSubscriber/**'
+      - '.github/workflows/CreateMailSubscriber.yaml'
   workflow_dispatch:
 env:
   APP_SETTINGS_JSON: 'backend/CreateMailSubscriber/CreateMailSubscriber/appsettings.json'
