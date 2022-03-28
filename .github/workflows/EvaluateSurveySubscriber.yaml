@@ -21,15 +21,13 @@ env:
   CSPROJ_TEST_NUGET: 'backend/EvaluateSurveySubscriber/EvaluateSurveySubscriber.Tests/nuget.config'
   SAVE_SURVEY_STATUS_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}
   SURVEY_CLOSED_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_CLOSED }}
-  SURVEYS_COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}
-  SURVEY_STATUS_COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_STATUS_COLLECTION_NAME }}
-  SURVEY_RESULTS_COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEY_RESULTS_COLLECTION_NAME }}
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      ENVIRONMENT: 'Test'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -39,9 +37,7 @@ jobs:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
           ProjectId: ${{ env.PROJECT_ID }}
-          SurveyResultsCollectionName: ${{ env.SURVEY_RESULTS_COLLECTION_NAME }}
-          SurveysCollectionName: ${{ env.SURVEYS_COLLECTION_NAME }}
-          SurveyStatusCollectionName: ${{ env.SURVEY_STATUS_COLLECTION_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
           SaveSurveyStatusTopicName: ${{ env.SAVE_SURVEY_STATUS_TOPIC_NAME }}
           SurveyClosedTopicName: ${{ env.SURVEY_CLOSED_TOPIC_NAME }}
       - name: use .net core
@@ -76,6 +72,7 @@ jobs:
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
+      ENVIRONMENT: 'Stage'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -85,9 +82,7 @@ jobs:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
           ProjectId: ${{ env.PROJECT_ID }}
-          SurveyResultsCollectionName: ${{ env.SURVEY_RESULTS_COLLECTION_NAME }}
-          SurveysCollectionName: ${{ env.SURVEYS_COLLECTION_NAME }}
-          SurveyStatusCollectionName: ${{ env.SURVEY_STATUS_COLLECTION_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
           SaveSurveyStatusTopicName: ${{ env.SAVE_SURVEY_STATUS_TOPIC_NAME }}
           SurveyClosedTopicName: ${{ env.SURVEY_CLOSED_TOPIC_NAME }}
       - name: use .net core
@@ -124,6 +119,7 @@ jobs:
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
+      ENVIRONMENT: 'Prod'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -133,9 +129,7 @@ jobs:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
           ProjectId: ${{ env.PROJECT_ID }}
-          SurveyResultsCollectionName: ${{ env.SURVEY_RESULTS_COLLECTION_NAME }}
-          SurveysCollectionName: ${{ env.SURVEYS_COLLECTION_NAME }}
-          SurveyStatusCollectionName: ${{ env.SURVEY_STATUS_COLLECTION_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
           SaveSurveyStatusTopicName: ${{ env.SAVE_SURVEY_STATUS_TOPIC_NAME }}
           SurveyClosedTopicName: ${{ env.SURVEY_CLOSED_TOPIC_NAME }}
       - name: use .net core

@@ -2,13 +2,13 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
-    using EvaluateSurveySubscriber.Contracts;
     using EvaluateSurveySubscriber.Tests.Data;
     using Md.GoogleCloud.Base.Contracts.Logic;
+    using Surveys.Common.Contracts;
+    using Surveys.Common.Firestore.Contracts;
 
-    internal class SurveyResultsDatabaseMock : ISurveyResultsDatabase
+    internal class SurveyResultsDatabaseMock : ISurveyResultReadOnlyDatabase
     {
         private readonly bool allVoted;
 
@@ -17,27 +17,22 @@
             this.allVoted = allVoted;
         }
 
-        public Task<IDictionary<string, object>?> ReadByDocumentIdAsync(string documentId)
-        {
-            var survey = TestData.CreateSurvey();
-            return Task.FromResult(survey.ToDictionary());
-        }
-
-        public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync(string fieldPath, object value)
+        public Task<ISurveyResult?> ReadByDocumentIdAsync(string documentId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync(
-            string fieldPath,
-            object value,
-            OrderType orderType
-        )
+        public Task<IEnumerable<ISurveyResult>> ReadManyAsync(string fieldPath, object value)
         {
-            return Task.FromResult(TestData.CreateResults((string) value, this.allVoted).Select(x => x.ToDictionary()));
+            throw new NotImplementedException();
         }
 
-        public Task<IDictionary<string, object>?> ReadOneAsync(string fieldPath, object value)
+        public Task<IEnumerable<ISurveyResult>> ReadManyAsync(string fieldPath, object value, OrderType orderType)
+        {
+            return Task.FromResult(TestData.CreateResults((string) value, this.allVoted));
+        }
+
+        public Task<ISurveyResult?> ReadOneAsync(string fieldPath, object value)
         {
             throw new NotImplementedException();
         }

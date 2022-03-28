@@ -14,6 +14,7 @@
     using Md.GoogleCloud.Base.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts.Messages;
+    using Surveys.Common.Firestore.Models;
     using Surveys.Common.Messages;
     using Xunit;
 
@@ -26,22 +27,22 @@
         public async void HandleAsync()
         {
             var message = TestData.CreateMessage();
-            await HandleAsyncForMessage(message);
+            await FunctionTests.HandleAsyncForMessage(message);
         }
 
         [Fact]
         public async void HandleAsyncWithProvider()
         {
             var message = TestData.CreateMessage();
-            await HandleAsyncForMessageWithProvider(message);
+            await FunctionTests.HandleAsyncForMessageWithProvider(message);
         }
 
         [Fact(Skip = "Integration")]
         public async void HandleAsyncWithProviderAndDatabase()
         {
-            var message = new EvaluateSurveyMessage(Guid.NewGuid().ToString(), "9a8f40a6-75b1-4351-90cc-7289db972760");
+            var message = new EvaluateSurveyMessage(Guid.NewGuid().ToString(), "29dad343-11ba-4ae3-b6fc-3c21d91f97ba");
 
-            await HandleAsyncIntegration(message);
+            await FunctionTests.HandleAsyncIntegration(message);
         }
 
 
@@ -118,12 +119,9 @@
             var logger = new MemoryLogger<Function>();
             var provider = new FunctionProvider(
                 logger,
-                new SurveyDatabase(
-                    new DatabaseConfiguration(configuration.ProjectId, configuration.SurveysCollectionName)),
-                new SurveyResultsDatabase(
-                    new DatabaseConfiguration(configuration.ProjectId, configuration.SurveyResultsCollectionName)),
-                new SurveyStatusDatabase(
-                    new DatabaseConfiguration(configuration.ProjectId, configuration.SurveyStatusCollectionName)),
+                new SurveyReadOnlyDatabase(configuration),
+                new SurveyResultReadOnlyDatabase(configuration),
+                new SurveyStatusReadOnlyDatabase(configuration),
                 new SaveSurveyStatusPubSubClient(
                     new PubSubClientConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName)),
                 new SurveyClosedPubSubClient(

@@ -18,7 +18,7 @@
 
         public static IEnumerable<ISurveyResult> CreateResults(string internalSurveyId, bool allVoted)
         {
-            var survey = CreateSurvey();
+            var survey = TestData.CreateSurvey();
             var results = survey.Participants.Select(
                     p => new SurveyResult(
                         internalSurveyId,
@@ -27,7 +27,7 @@
                         survey.Questions.Select(q => new QuestionReference(q.Id, q.Choices.First().Id)).ToArray()))
                 .ToList();
 
-            var participants = CreateSurvey().Participants;
+            var participants = TestData.CreateSurvey().Participants;
             if (!allVoted)
             {
                 participants = participants.Skip(1);
@@ -46,7 +46,7 @@
 
         public static IEnumerable<ISurveyStatus> CreateStatus(string internalSurveyId, bool isClosed)
         {
-            var survey = CreateSurvey();
+            var survey = TestData.CreateSurvey();
             var status = Enumerable.Range(0, 10)
                 .Select(_ => new SurveyStatus(internalSurveyId, Status.Created))
                 .ToList();

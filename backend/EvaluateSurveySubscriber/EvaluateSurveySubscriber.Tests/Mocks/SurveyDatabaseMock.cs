@@ -3,33 +3,29 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using EvaluateSurveySubscriber.Contracts;
     using EvaluateSurveySubscriber.Tests.Data;
     using Md.GoogleCloud.Base.Contracts.Logic;
+    using Surveys.Common.Contracts;
+    using Surveys.Common.Firestore.Contracts;
 
-    internal class SurveyDatabaseMock : ISurveyDatabase
+    internal class SurveyDatabaseMock : ISurveyReadOnlyDatabase
     {
-        public Task<IDictionary<string, object>?> ReadByDocumentIdAsync(string documentId)
+        public Task<ISurvey> ReadByDocumentIdAsync(string documentId)
         {
-            var survey = TestData.CreateSurvey();
-            return Task.FromResult(survey.ToDictionary());
+            return Task.FromResult(TestData.CreateSurvey());
         }
 
-        public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync(string fieldPath, object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync(
-            string fieldPath,
-            object value,
-            OrderType orderType
-        )
+        public Task<IEnumerable<ISurvey>> ReadManyAsync(string fieldPath, object value)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IDictionary<string, object>?> ReadOneAsync(string fieldPath, object value)
+        public Task<IEnumerable<ISurvey>> ReadManyAsync(string fieldPath, object value, OrderType orderType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ISurvey?> ReadOneAsync(string fieldPath, object value)
         {
             throw new NotImplementedException();
         }

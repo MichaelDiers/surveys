@@ -15,7 +15,8 @@
 		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.1.9" />
 		<PackageReference Include="Md.GoogleCloudPubSub" Version="1.1.20" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Surveys.Common" Version="1.0.53" />
+		<PackageReference Include="Surveys.Common" Version="1.0.54" />
+		<PackageReference Include="Surveys.Common.Firestore" Version="1.0.8" />
 	</ItemGroup>
 
 </Project>

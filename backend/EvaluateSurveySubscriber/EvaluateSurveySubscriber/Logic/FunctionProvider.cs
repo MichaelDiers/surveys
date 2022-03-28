@@ -10,6 +10,7 @@
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
+    using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Messages;
     using Surveys.Common.Models;
 
@@ -31,17 +32,17 @@
         /// <summary>
         ///     Access to the survey database collection.
         /// </summary>
-        private readonly ISurveyDatabase surveyDatabase;
+        private readonly ISurveyReadOnlyDatabase surveyDatabase;
 
         /// <summary>
         ///     Access to the survey results database collection.
         /// </summary>
-        private readonly ISurveyResultsDatabase surveyResultsDatabase;
+        private readonly ISurveyResultReadOnlyDatabase surveyResultsDatabase;
 
         /// <summary>
         ///     Access to the survey status database collection.
         /// </summary>
-        private readonly ISurveyStatusDatabase surveyStatusDatabase;
+        private readonly ISurveyStatusReadOnlyDatabase surveyStatusDatabase;
 
         /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
@@ -54,9 +55,9 @@
         /// <param name="surveyClosedPubSubClient">Access to google cloud pub/sub for sending survey closed messages.</param>
         public FunctionProvider(
             ILogger<Function> logger,
-            ISurveyDatabase surveyDatabase,
-            ISurveyResultsDatabase surveyResultsDatabase,
-            ISurveyStatusDatabase surveyStatusDatabase,
+            ISurveyReadOnlyDatabase surveyDatabase,
+            ISurveyResultReadOnlyDatabase surveyResultsDatabase,
+            ISurveyStatusReadOnlyDatabase surveyStatusDatabase,
             ISaveSurveyStatusPubSubClient saveSurveyStatusPubSubClient,
             ISurveyClosedPubSubClient surveyClosedPubSubClient
         )
@@ -109,7 +110,7 @@
             }
         }
 
-        private async Task<(Survey? survey, IEnumerable<SurveyResult> results, IEnumerable<ISurveyStatus> status)>
+        private async Task<(ISurvey? survey, IEnumerable<ISurveyResult> results, IEnumerable<ISurveyStatus> status)>
             ReadData(IEvaluateSurveyMessage message)
         {
             var surveyTask = this.surveyDatabase.ReadByDocumentIdAsync(message.InternalSurveyId);
@@ -122,14 +123,13 @@
                 message.InternalSurveyId);
 
 
-            var survey = Survey.FromDictionary(
-                await surveyTask ??
-                throw new ArgumentException(
-                    $"Survey {message.InternalSurveyId} not found.",
-                    nameof(message.InternalSurveyId)));
+            var survey = await surveyTask ??
+                         throw new ArgumentException(
+                             $"Survey {message.InternalSurveyId} not found.",
+                             nameof(message.InternalSurveyId));
 
-            var surveyResults = (await surveyResultsTask).Select(SurveyResult.FromDictionary).ToArray();
-            var surveyStatus = (await surveyStatusTask).Select(SurveyStatus.FromDictionary).ToArray();
+            var surveyResults = (await surveyResultsTask).ToArray();
+            var surveyStatus = (await surveyStatusTask).ToArray();
 
             return (survey, surveyResults, surveyStatus);
         }

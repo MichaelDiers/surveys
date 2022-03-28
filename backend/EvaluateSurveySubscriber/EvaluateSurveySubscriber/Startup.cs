@@ -4,12 +4,15 @@ namespace EvaluateSurveySubscriber
     using EvaluateSurveySubscriber.Logic;
     using EvaluateSurveySubscriber.Model;
     using Google.Cloud.Functions.Hosting;
+    using Md.Common.Contracts;
     using Md.GoogleCloud.Base.Contracts.Logic;
     using Md.GoogleCloud.Base.Logic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Surveys.Common.Contracts.Messages;
+    using Surveys.Common.Firestore.Contracts;
+    using Surveys.Common.Firestore.Models;
 
     /// <summary>
     ///     Initialize the function.
@@ -28,15 +31,10 @@ namespace EvaluateSurveySubscriber
 
             services.AddScoped<IFunctionConfiguration>(_ => configuration);
 
-            services.AddScoped<ISurveyDatabase>(
-                _ => new SurveyDatabase(
-                    new DatabaseConfiguration(configuration.ProjectId, configuration.SurveysCollectionName)));
-            services.AddScoped<ISurveyResultsDatabase>(
-                _ => new SurveyResultsDatabase(
-                    new DatabaseConfiguration(configuration.ProjectId, configuration.SurveyResultsCollectionName)));
-            services.AddScoped<ISurveyStatusDatabase>(
-                _ => new SurveyStatusDatabase(
-                    new DatabaseConfiguration(configuration.ProjectId, configuration.SurveyStatusCollectionName)));
+            services.AddScoped<IRuntimeEnvironment>(_ => configuration);
+            services.AddScoped<ISurveyReadOnlyDatabase, SurveyReadOnlyDatabase>();
+            services.AddScoped<ISurveyResultReadOnlyDatabase, SurveyResultReadOnlyDatabase>();
+            services.AddScoped<ISurveyStatusReadOnlyDatabase, SurveyStatusReadOnlyDatabase>();
 
             services.AddScoped<ISaveSurveyStatusPubSubClient>(
                 _ => new SaveSurveyStatusPubSubClient(
