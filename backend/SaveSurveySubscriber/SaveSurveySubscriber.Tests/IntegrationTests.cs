@@ -7,14 +7,15 @@
     using CloudNative.CloudEvents;
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
-    using Md.GoogleCloud.Base.Logic;
-    using Md.GoogleCloudFirestore.Logic;
+    using Md.Common.Model;
     using Newtonsoft.Json;
     using SaveSurveySubscriber.Logic;
     using SaveSurveySubscriber.Model;
     using SaveSurveySubscriber.Tests.Data;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Firestore.Models;
     using Xunit;
+    using Environment = Md.Common.Contracts.Environment;
 
     /// <summary>
     ///     Integration tests for <see cref="Function" />.
@@ -25,7 +26,7 @@
         public async void HandleAsync()
         {
             var message = TestData.InitializeMessage(Guid.NewGuid().ToString());
-            await HandleAsyncForMessage(message);
+            await IntegrationTests.HandleAsyncForMessage(message);
         }
 
         private static async Task HandleAsyncForMessage(ISaveSurveyMessage message)
@@ -49,7 +50,8 @@
             var logger = new MemoryLogger<Function>();
             var provider = new FunctionProvider(
                 logger,
-                new Database(new DatabaseConfiguration(configuration.ProjectId, configuration.CollectionName)));
+                new SurveyDatabase(
+                    new RuntimeEnvironment {ProjectId = configuration.ProjectId, Environment = Environment.Test}));
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 

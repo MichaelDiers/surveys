@@ -21,7 +21,7 @@
         public async void HandleAsync()
         {
             var message = TestData.InitializeMessage();
-            await HandleAsyncForMessage(message);
+            await FunctionTests.HandleAsyncForMessage(message);
         }
 
         private static async Task HandleAsyncForMessage(ISaveSurveyMessage message)

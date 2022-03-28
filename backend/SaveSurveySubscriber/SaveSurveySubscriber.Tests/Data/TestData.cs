@@ -16,7 +16,7 @@
 
         public static ISaveSurveyMessage InitializeMessage(string internalSurveyId)
         {
-            var message = InitializeMessage();
+            var message = TestData.InitializeMessage();
             return new SaveSurveyMessage(message.Survey, internalSurveyId, Guid.NewGuid().ToString());
         }
     }

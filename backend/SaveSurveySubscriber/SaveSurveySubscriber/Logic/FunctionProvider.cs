@@ -2,10 +2,10 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Md.GoogleCloud.Base.Contracts.Logic;
     using Md.GoogleCloud.Base.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Firestore.Contracts;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
@@ -15,14 +15,14 @@
         /// <summary>
         ///     Access to the survey database.
         /// </summary>
-        private readonly IDatabase database;
+        private readonly ISurveyDatabase database;
 
         /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
         /// <param name="logger">An error logger.</param>
         /// <param name="database">Access to the survey database.</param>
-        public FunctionProvider(ILogger<Function> logger, IDatabase database)
+        public FunctionProvider(ILogger<Function> logger, ISurveyDatabase database)
             : base(logger)
         {
             this.database = database ?? throw new ArgumentNullException(nameof(database));

@@ -1,47 +1,54 @@
 ﻿namespace SaveSurveySubscriber.Tests.Mocks
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using Md.GoogleCloud.Base.Contracts.Logic;
+    using Surveys.Common.Contracts;
+    using Surveys.Common.Firestore.Contracts;
 
     /// <summary>
     ///     Mock for databases.
     /// </summary>
-    internal class DatabaseMock : IDatabase
+    internal class DatabaseMock : ISurveyDatabase
     {
-        public Task InsertAsync(string documentId, IToDictionary data)
+        public Task<string> InsertAsync(string documentId, IToDictionary data)
         {
-            return Task.CompletedTask;
+            return null;
         }
 
-        public Task InsertAsync(IToDictionary data)
+        public Task<string> InsertAsync(IToDictionary data)
         {
-            return Task.CompletedTask;
+            return null;
         }
 
-        public Task<IDictionary<string, object>?> ReadByDocumentIdAsync(string documentId)
+        public Task UpdateByDocumentIdAsync(string documentId, IDictionary<string, object> updates)
         {
-            return Task.FromResult<IDictionary<string, object>>(new Dictionary<string, object>());
+            return null;
         }
 
-        public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync(string fieldPath, object value)
+        public Task UpdateOneAsync(string fieldPath, object value, IDictionary<string, object> updates)
         {
-            return Task.FromResult(Enumerable.Empty<IDictionary<string, object>>());
+            return null;
         }
 
-        public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync(
-            string fieldPath,
-            object value,
-            OrderType orderType
-        )
+        public Task<ISurvey?> ReadByDocumentIdAsync(string documentId)
         {
-            return Task.FromResult(Enumerable.Empty<IDictionary<string, object>>());
+            return null;
         }
 
-        public Task<IDictionary<string, object>?> ReadOneAsync(string fieldPath, object value)
+        public Task<IEnumerable<ISurvey>> ReadManyAsync(string fieldPath, object value)
         {
-            return Task.FromResult<IDictionary<string, object>?>(null);
+            return null;
+        }
+
+        public Task<IEnumerable<ISurvey>> ReadManyAsync(string fieldPath, object value, OrderType orderType)
+        {
+            return null;
+        }
+
+        public Task<ISurvey?> ReadOneAsync(string fieldPath, object value)
+        {
+            return null;
         }
     }
 }

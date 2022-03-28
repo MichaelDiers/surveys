@@ -5,16 +5,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Cloud.Firestore" Version="2.5.0" />
 		<PackageReference Include="Google.Cloud.Functions.Hosting" Version="1.0.0" />
-		<PackageReference Include="Google.Cloud.PubSub.V1" Version="2.7.0" />
-		<PackageReference Include="Google.Events.Protobuf" Version="1.0.0" />
 		<PackageReference Include="Md.Common" Version="1.1.23" />
 		<PackageReference Include="Md.GoogleCloud.Base" Version="1.1.28" />
-		<PackageReference Include="Md.GoogleCloudFirestore" Version="1.1.20" />
 		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.1.9" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Surveys.Common" Version="1.0.53" />
+		<PackageReference Include="Surveys.Common.Firestore" Version="1.0.6" />
 	</ItemGroup>
 
 </Project>

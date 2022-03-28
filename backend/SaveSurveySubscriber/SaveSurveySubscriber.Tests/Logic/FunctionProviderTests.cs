@@ -20,7 +20,7 @@
         [Fact]
         public async void HandleAsync_Null_ArgumentNullException()
         {
-            var provider = await InitAsync();
+            var provider = await FunctionProviderTests.InitAsync();
             await Assert.ThrowsAsync<ArgumentNullException>(() => provider.HandleAsync(null));
         }
 
