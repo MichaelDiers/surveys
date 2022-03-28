@@ -1,6 +1,7 @@
 ﻿namespace Surveys.Common.Messages
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Md.GoogleCloud.Base.Messages;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
@@ -20,12 +21,22 @@
         /// <param name="results">The survey results.</param>
         [JsonConstructor]
         public SurveyClosedMessage(string processId, Survey survey, IEnumerable<SurveyResult> results)
+            : this(processId, survey, results.Select(x => x as ISurveyResult).ToArray())
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new <see cref="SurveyClosedMessage" />.
+        /// </summary>
+        /// <param name="processId">The global process id.</param>
+        /// <param name="survey">The survey data.</param>
+        /// <param name="results">The survey results.</param>
+        public SurveyClosedMessage(string processId, ISurvey survey, IEnumerable<ISurveyResult> results)
             : base(processId)
         {
             this.Survey = survey;
             this.Results = results;
         }
-
 
         /// <summary>
         ///     Gets the survey results.
