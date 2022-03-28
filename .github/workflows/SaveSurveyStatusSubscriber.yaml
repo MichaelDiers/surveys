@@ -4,7 +4,8 @@ on:
     branches:
       - main
     paths:
-      - 'backend/SaveSurveyStatusSubscriber/SaveSurveyStatusSubscriber/**'
+      - 'backend/SaveSurveyStatusSubscriber/**'
+      - '.github/workflows/SaveSurveyStatusSubscriber.yaml'
   workflow_dispatch:
 env:
   APP_SETTINGS_JSON: 'backend/SaveSurveyStatusSubscriber/SaveSurveyStatusSubscriber/appsettings.json'
@@ -18,13 +19,13 @@ env:
   NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
   CSPROJ_NUGET: 'backend/SaveSurveyStatusSubscriber/SaveSurveyStatusSubscriber/nuget.config'
   CSPROJ_TEST_NUGET: 'backend/SaveSurveyStatusSubscriber/SaveSurveyStatusSubscriber.Tests/nuget.config'
-  COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEYS_STATUS_COLLECTION_NAME }}
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      ENVIRONMENT: 'Test'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -33,7 +34,7 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          CollectionName: ${{ env.COLLECTION_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
           ProjectId: ${{ env.PROJECT_ID }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
@@ -67,6 +68,7 @@ jobs:
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
+      ENVIRONMENT: 'Stage'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -75,7 +77,7 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          CollectionName: ${{ env.COLLECTION_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
           ProjectId: ${{ env.PROJECT_ID }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
@@ -111,6 +113,7 @@ jobs:
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
+      ENVIRONMENT: 'Prod'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -119,7 +122,7 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          CollectionName: ${{ env.COLLECTION_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
           ProjectId: ${{ env.PROJECT_ID }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
