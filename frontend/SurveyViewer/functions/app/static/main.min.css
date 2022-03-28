@@ -1,2 +1,0 @@
-@-webkit-keyframes fade-in{0%{opacity:0}100%{opacity:1}}@keyframes fade-in{0%{opacity:0}100%{opacity:1}}dl{display:-ms-grid;display:grid;-ms-grid-columns:30% 10%;grid-template-columns:30% 10%;grid-template-areas:'left right';gap:10px}dt{grid-area:'left'}dd{grid-area:'right';margin:0}.fade-in{opacity:0;-webkit-animation:1s ease-in-out 3s 1 fade-in forwards;animation:1s ease-in-out 3s 1 fade-in forwards}
-/*# sourceMappingURL=main.min.css.map */

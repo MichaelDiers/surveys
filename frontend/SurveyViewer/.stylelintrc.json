@@ -1,7 +1,0 @@
-{
-  "extends": "stylelint-config-sass-guidelines",
-  "ignoreFiles": "app/public/**/*",
-  "rules": {
-    "selector-max-id": 1
-  }
-}
