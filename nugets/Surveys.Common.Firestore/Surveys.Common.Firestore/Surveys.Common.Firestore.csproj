@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>MichaelDiers</Authors>
+    <RepositoryUrl>https://github.com/MichaelDiers/surveys.git</RepositoryUrl>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mails\**" />
+    <EmbeddedResource Remove="Mails\**" />
+    <None Remove="Mails\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Md.GoogleCloud.Base" Version="1.1.28" />
+    <PackageReference Include="Md.GoogleCloudFirestore" Version="1.1.20" />
+    <PackageReference Include="Surveys.Common" Version="1.0.53" />
+  </ItemGroup>
+
+</Project>
