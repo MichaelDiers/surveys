@@ -4,7 +4,8 @@ on:
     branches:
       - main
     paths:
-      - 'backend/SaveSurveyResultSubscriber/SaveSurveyResultSubscriber/**'
+      - 'backend/SaveSurveyResultSubscriber/**'
+      - '.github/workflows/SaveSurveyResultSubscriber.yaml'
   workflow_dispatch:
 env:
   APP_SETTINGS_JSON: 'backend/SaveSurveyResultSubscriber/SaveSurveyResultSubscriber/appsettings.json'
@@ -18,7 +19,6 @@ env:
   NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
   CSPROJ_NUGET: 'backend/SaveSurveyResultSubscriber/SaveSurveyResultSubscriber/nuget.config'
   CSPROJ_TEST_NUGET: 'backend/SaveSurveyResultSubscriber/SaveSurveyResultSubscriber.Tests/nuget.config'
-  COLLECTION_NAME: ${{ secrets.GLOBAL_SURVEY_RESULTS_COLLECTION_NAME }}
   PUB_SUB_TOPIC_NAME: ${{ secrets.GLOBAL_PUBSUB_TOPIC_EVALUATE_SURVEY }}
 jobs:
   test:
@@ -26,6 +26,7 @@ jobs:
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      ENVIRONMENT: 'Test'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -34,7 +35,7 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          CollectionName: ${{ env.COLLECTION_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
           ProjectId: ${{ env.PROJECT_ID }}
           PubSubTopicName: ${{ env.PUB_SUB_TOPIC_NAME }}
       - name: use .net core
@@ -69,6 +70,7 @@ jobs:
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
+      ENVIRONMENT: 'Stage'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -77,7 +79,7 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          CollectionName: ${{ env.COLLECTION_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
           ProjectId: ${{ env.PROJECT_ID }}
           PubSubTopicName: ${{ env.PUB_SUB_TOPIC_NAME }}
       - name: use .net core
@@ -114,6 +116,7 @@ jobs:
     env:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
+      ENVIRONMENT: 'Prod'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -122,9 +125,9 @@ jobs:
         with:
           files: ${{ env.APP_SETTINGS_JSON }}
         env:
-          CollectionName: ${{ env.COLLECTION_NAME }}
           ProjectId: ${{ env.PROJECT_ID }}
           PubSubTopicName: ${{ env.PUB_SUB_TOPIC_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:

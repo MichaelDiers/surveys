@@ -1,22 +1,13 @@
 ﻿namespace SaveSurveyResultSubscriber.Model
 {
+    using Md.Common.Model;
     using SaveSurveyResultSubscriber.Contracts;
 
     /// <summary>
     ///     Access the application settings.
     /// </summary>
-    public class FunctionConfiguration : IFunctionConfiguration
+    public class FunctionConfiguration : RuntimeEnvironment, IFunctionConfiguration
     {
-        /// <summary>
-        ///     Gets the name of the survey collection.
-        /// </summary>
-        public string CollectionName { get; set; }
-
-        /// <summary>
-        ///     Gets the id of the google cloud project.
-        /// </summary>
-        public string ProjectId { get; set; }
-
         /// <summary>
         ///     Gets the pub/sub topic name.
         /// </summary>

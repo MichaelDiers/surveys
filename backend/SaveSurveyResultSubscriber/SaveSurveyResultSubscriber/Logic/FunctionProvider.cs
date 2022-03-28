@@ -6,6 +6,7 @@
     using Md.GoogleCloud.Base.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Messages;
 
     /// <summary>
@@ -14,9 +15,9 @@
     public class FunctionProvider : PubSubProvider<ISaveSurveyResultMessage, Function>
     {
         /// <summary>
-        ///     Access to the survey database.
+        ///     Access to the survey result database.
         /// </summary>
-        private readonly IDatabase database;
+        private readonly ISurveyResultDatabase database;
 
         /// <summary>
         ///     Access google cloud pub/sub.
@@ -27,9 +28,9 @@
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
         /// <param name="logger">An error logger.</param>
-        /// <param name="database">Access to the survey database.</param>
+        /// <param name="database">Access to the survey result database.</param>
         /// <param name="pubSubClient">Access google cloud pub/sub.</param>
-        public FunctionProvider(ILogger<Function> logger, IDatabase database, IPubSubClient pubSubClient)
+        public FunctionProvider(ILogger<Function> logger, ISurveyResultDatabase database, IPubSubClient pubSubClient)
             : base(logger)
         {
             this.database = database ?? throw new ArgumentNullException(nameof(database));
