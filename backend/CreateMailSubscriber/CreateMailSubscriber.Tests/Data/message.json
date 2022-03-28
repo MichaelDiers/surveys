@@ -8,7 +8,7 @@
       "name": "the name of the survey",
       "info": "the info of the survey",
       "link": "a survey link",
-      "organizer": { 
+      "organizer": {
         "id": "fe9d2d68-9bf8-48a6-8624-5959bc054aec",
         "email": "foo@bar.example",
         "name": "foo"
@@ -100,5 +100,5 @@
         }
       ]
     }
-  } 
+  }
 }

@@ -49,7 +49,7 @@
         /// <returns>The entry for the key.</returns>
         protected string GetEntry(string key)
         {
-            return GetEntry<string>(this.template, key);
+            return BaseTemplate.GetEntry<string>(this.template, key);
         }
 
         /// <summary>
@@ -60,8 +60,8 @@
         /// <returns>The entry for the key.</returns>
         protected string GetEntry(string objectKey, string key)
         {
-            var dictionary = GetEntry<IDictionary<string, object>>(this.template, objectKey);
-            return GetEntry<string>(dictionary, key);
+            var dictionary = BaseTemplate.GetEntry<IDictionary<string, object>>(this.template, objectKey);
+            return BaseTemplate.GetEntry<string>(dictionary, key);
         }
 
         /// <summary>

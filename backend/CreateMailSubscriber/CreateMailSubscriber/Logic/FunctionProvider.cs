@@ -9,6 +9,7 @@
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
+    using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Messages;
 
     /// <summary>
@@ -24,7 +25,7 @@
         /// <summary>
         ///     Read email templates from the database.
         /// </summary>
-        private readonly IReadOnlyDatabase database;
+        private readonly IEmailTemplateReadOnlyDatabase database;
 
         /// <summary>
         ///     Access the pub/sub client for sending emails.
@@ -42,7 +43,7 @@
         public FunctionProvider(
             ILogger<Function> logger,
             IPubSubClient sendMailPubSubClient,
-            IReadOnlyDatabase database,
+            IEmailTemplateReadOnlyDatabase database,
             IFunctionConfiguration configuration
         )
             : base(logger)

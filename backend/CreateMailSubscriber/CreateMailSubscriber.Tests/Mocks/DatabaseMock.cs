@@ -4,8 +4,9 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Md.GoogleCloud.Base.Contracts.Logic;
+    using Surveys.Common.Firestore.Contracts;
 
-    internal class DatabaseMock : IReadOnlyDatabase
+    internal class DatabaseMock : IEmailTemplateReadOnlyDatabase
     {
         public Task<IDictionary<string, object>?> ReadByDocumentIdAsync(string documentId)
         {

@@ -20,7 +20,6 @@ env:
   CSPROJ_NUGET: 'backend/CreateMailSubscriber/CreateMailSubscriber/nuget.config'
   CSPROJ_TEST_NUGET: 'backend/CreateMailSubscriber/CreateMailSubscriber.Tests/nuget.config' 
   TOPIC_NAME_SEND_MAIL: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}
-  COLLECTION_NAME: ${{ secrets.GLOBAL_COLLECTION_EMAIL_TEMPLATES }}
 jobs:
   test:
     environment:
@@ -30,6 +29,7 @@ jobs:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
       FRONT_END_URL_FORMAT: ${{ secrets.FRONT_END_URL_FORMAT }}
+      ENVIRONMENT: 'Test'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -40,7 +40,7 @@ jobs:
         env:
           ProjectId: ${{ env.PROJECT_ID }}
           SendMailTopicName: ${{ env.TOPIC_NAME_SEND_MAIL }}
-          CollectionName: ${{ env.COLLECTION_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
           FrondEndUrlFormat: ${{ env.FRONT_END_URL_FORMAT }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
@@ -77,6 +77,7 @@ jobs:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
       FRONT_END_URL_FORMAT: ${{ secrets.FRONT_END_URL_FORMAT }}
+      ENVIRONMENT: 'Stage'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -87,8 +88,8 @@ jobs:
         env:
           ProjectId: ${{ env.PROJECT_ID }}
           SendMailTopicName: ${{ env.TOPIC_NAME_SEND_MAIL }}
-          CollectionName: ${{ env.COLLECTION_NAME }}
           FrondEndUrlFormat: ${{ env.FRONT_END_URL_FORMAT }}
+          Environment: ${{ env.ENVIRONMENT }}
       - name: use .net core
         uses: actions/setup-dotnet@v1
         with:
@@ -124,6 +125,7 @@ jobs:
       GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
       PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
       FRONT_END_URL_FORMAT: ${{ secrets.FRONT_END_URL_FORMAT }}
+      ENVIRONMENT: 'Prod'
     steps:
       - name: checkout source
         uses: actions/checkout@v2
@@ -134,7 +136,7 @@ jobs:
         env:
           ProjectId: ${{ env.PROJECT_ID }}
           SendMailTopicName: ${{ env.TOPIC_NAME_SEND_MAIL }}
-          CollectionName: ${{ env.COLLECTION_NAME }}
+          Environment: ${{ env.ENVIRONMENT }}
           FrondEndUrlFormat: ${{ env.FRONT_END_URL_FORMAT }}
       - name: use .net core
         uses: actions/setup-dotnet@v1

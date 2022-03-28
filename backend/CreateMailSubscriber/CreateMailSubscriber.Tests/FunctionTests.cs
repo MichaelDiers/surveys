@@ -11,12 +11,14 @@
     using CreateMailSubscriber.Tests.Mocks;
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
+    using Md.Common.Contracts;
     using Md.GoogleCloud.Base.Contracts.Logic;
     using Md.GoogleCloud.Base.Logic;
-    using Md.GoogleCloudFirestore.Logic;
     using Md.GoogleCloudPubSub.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts.Messages;
+    using Surveys.Common.Firestore.Contracts;
+    using Surveys.Common.Firestore.Models;
     using Xunit;
 
     /// <summary>
@@ -28,14 +30,14 @@
         public async void HandleAsync()
         {
             var message = TestData.CreateMailMessage();
-            await HandleAsyncForMessage(message);
+            await FunctionTests.HandleAsyncForMessage(message);
         }
 
         [Fact(Skip = "Integration")]
         public async void HandleAsyncWithProvider()
         {
             var message = TestData.CreateMailMessage();
-            await HandleAsyncForMessageWithProvider(
+            await FunctionTests.HandleAsyncForMessageWithProvider(
                 message,
                 config => new PubSubClientMock(),
                 config => new DatabaseMock());
@@ -45,20 +47,20 @@
         public async void HandleAsyncWithProviderAndDatabase()
         {
             var message = TestData.CreateMailMessage();
-            await HandleAsyncForMessageWithProvider(
+            await FunctionTests.HandleAsyncForMessageWithProvider(
                 message,
                 config => new PubSubClientMock(),
-                config => new ReadonlyDatabase(config));
+                config => new EmailTemplateReadOnlyDatabase(config));
         }
 
         [Fact(Skip = "Integration")]
         public async void HandleAsyncWithProviderAndDatabaseAndPubSubClient()
         {
             var message = TestData.CreateMailMessage();
-            await HandleAsyncForMessageWithProvider(
+            await FunctionTests.HandleAsyncForMessageWithProvider(
                 message,
                 config => new PubSubClient(config),
-                config => new ReadonlyDatabase(config));
+                config => new EmailTemplateReadOnlyDatabase(config));
         }
 
         private static async Task HandleAsyncForMessage(ICreateMailMessage message)
@@ -86,9 +88,8 @@
         private static async Task HandleAsyncForMessageWithProvider(
             ICreateMailMessage message,
             Func<IPubSubClientConfiguration, IPubSubClient> pubSubClientFactory,
-            Func<DatabaseConfiguration, IReadOnlyDatabase> databaseFactory
+            Func<IRuntimeEnvironment, IEmailTemplateReadOnlyDatabase> databaseFactory
         )
-
         {
             var configuration =
                 JsonConvert.DeserializeObject<FunctionConfiguration>(await File.ReadAllTextAsync("appsettings.json"));
@@ -110,7 +111,7 @@
                 logger,
                 pubSubClientFactory(
                     new PubSubClientConfiguration(configuration.ProjectId, configuration.SendMailTopicName)),
-                databaseFactory(new DatabaseConfiguration(configuration.ProjectId, configuration.CollectionName)),
+                databaseFactory(configuration),
                 configuration);
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
