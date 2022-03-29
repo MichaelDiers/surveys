@@ -20,12 +20,12 @@
         /// <summary>
         ///     Json name of property <see cref="ParticipantId" />.
         /// </summary>
-        private const string ParticipantIdName = "participantId";
+        public const string ParticipantIdName = "participantId";
 
         /// <summary>
         ///     Json name of property <see cref="Status" />.
         /// </summary>
-        private const string StatusName = "status";
+        public const string StatusName = "status";
 
         /// <summary>
         ///     Creates a new instance of <see cref="SurveyStatus" />.
@@ -65,19 +65,19 @@
         /// <summary>
         ///     Gets the internal survey id.
         /// </summary>
-        [JsonProperty(InternalSurveyIdName, Required = Required.Always, Order = 1)]
+        [JsonProperty(SurveyStatus.InternalSurveyIdName, Required = Required.Always, Order = 1)]
         public string InternalSurveyId { get; }
 
         /// <summary>
         ///     Gets the id of the participant.
         /// </summary>
-        [JsonProperty(ParticipantIdName, Required = Required.AllowNull, Order = 2)]
+        [JsonProperty(SurveyStatus.ParticipantIdName, Required = Required.AllowNull, Order = 2)]
         public string ParticipantId { get; }
 
         /// <summary>
         ///     Gets the status of the survey.
         /// </summary>
-        [JsonProperty(StatusName, Required = Required.Always, Order = 3)]
+        [JsonProperty(SurveyStatus.StatusName, Required = Required.Always, Order = 3)]
         public Status Status { get; }
 
         /// <summary>
@@ -87,9 +87,9 @@
         /// <returns>The given <paramref name="dictionary" />.</returns>
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
-            dictionary.Add(InternalSurveyIdName, this.InternalSurveyId);
-            dictionary.Add(ParticipantIdName, this.ParticipantId);
-            dictionary.Add(StatusName, this.Status.ToString());
+            dictionary.Add(SurveyStatus.InternalSurveyIdName, this.InternalSurveyId);
+            dictionary.Add(SurveyStatus.ParticipantIdName, this.ParticipantId);
+            dictionary.Add(SurveyStatus.StatusName, this.Status.ToString());
             return dictionary;
         }
 
@@ -101,8 +101,8 @@
         /// <returns>A <see cref="SurveyStatus" />.</returns>
         public static SurveyStatus FromDictionary(IDictionary<string, object> dictionary)
         {
-            var internalSurveyId = dictionary.GetString(InternalSurveyIdName);
-            var status = dictionary.GetEnumValue<Status>(StatusName);
+            var internalSurveyId = dictionary.GetString(SurveyStatus.InternalSurveyIdName);
+            var status = dictionary.GetEnumValue<Status>(SurveyStatus.StatusName);
 
             return new SurveyStatus(internalSurveyId, status);
         }
