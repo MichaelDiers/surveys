@@ -5,7 +5,7 @@ on:
       - main
     paths:
       - 'schemas/SaveSurveyStatusSchema.avro'
-      - '.github/workflows/Schema.SaveSurveyStatud.yaml'
+      - '.github/workflows/Schema.SaveSurveyStatus.yaml'
   workflow_dispatch:
 jobs:
   createSchemaAndTopic:
