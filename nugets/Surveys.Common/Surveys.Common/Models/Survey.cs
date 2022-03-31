@@ -1,6 +1,5 @@
 ﻿namespace Surveys.Common.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Md.Common.Extensions;
@@ -43,7 +42,7 @@
         private const string QuestionsName = "questions";
 
         /// <summary>
-        ///     Creates a new instance of <see cref="Base" />.
+        ///     Creates a new instance of <see cref="Survey" />.
         /// </summary>
         /// <param name="id">The id of the object.</param>
         /// <param name="name">The name of the survey.</param>
@@ -52,8 +51,7 @@
         /// <param name="organizer">The organizer of the survey.</param>
         /// <param name="participants">The participants of the survey.</param>
         /// <param name="questions">The survey questions.</param>
-        /// <exception cref="ArgumentException">Is thrown if <paramref name="id" /> is null or whitespace.</exception>
-        /// <exception cref="ArgumentException">Is thrown if <paramref name="id" /> is not a guid.</exception>
+        [JsonConstructor]
         public Survey(
             string id,
             string name,
@@ -62,6 +60,36 @@
             Person organizer,
             IEnumerable<Participant> participants,
             IEnumerable<Question> questions
+        )
+            : this(
+                id,
+                name,
+                info,
+                link,
+                organizer,
+                participants.Select(p => p as IParticipant).ToArray(),
+                questions.Select(q => q as IQuestion).ToArray())
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new instance of <see cref="Survey" />.
+        /// </summary>
+        /// <param name="id">The id of the object.</param>
+        /// <param name="name">The name of the survey.</param>
+        /// <param name="info">Additional info text describing the survey.</param>
+        /// <param name="link">A link to a survey info page.</param>
+        /// <param name="organizer">The organizer of the survey.</param>
+        /// <param name="participants">The participants of the survey.</param>
+        /// <param name="questions">The survey questions.</param>
+        public Survey(
+            string id,
+            string name,
+            string info,
+            string link,
+            IPerson organizer,
+            IEnumerable<IParticipant> participants,
+            IEnumerable<IQuestion> questions
         )
             : base(id)
         {
@@ -117,13 +145,13 @@
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
             base.AddToDictionary(dictionary);
-            dictionary.Add(InfoName, this.Info);
-            dictionary.Add(LinkName, this.Link);
-            dictionary.Add(NameName, this.Name);
+            dictionary.Add(Survey.InfoName, this.Info);
+            dictionary.Add(Survey.LinkName, this.Link);
+            dictionary.Add(Survey.NameName, this.Name);
 
-            dictionary.Add(OrganizerName, this.Organizer.ToDictionary());
-            dictionary.Add(ParticipantsName, this.Participants.Select(p => p.ToDictionary()));
-            dictionary.Add(QuestionsName, this.Questions.Select(q => q.ToDictionary()));
+            dictionary.Add(Survey.OrganizerName, this.Organizer.ToDictionary());
+            dictionary.Add(Survey.ParticipantsName, this.Participants.Select(p => p.ToDictionary()));
+            dictionary.Add(Survey.QuestionsName, this.Questions.Select(q => q.ToDictionary()));
             return dictionary;
         }
 
@@ -135,14 +163,14 @@
         public new static Survey FromDictionary(IDictionary<string, object> dictionary)
         {
             var baseObject = Base.FromDictionary(dictionary);
-            var name = dictionary.GetString(NameName);
-            var info = dictionary.GetString(InfoName);
-            var link = dictionary.GetString(LinkName);
-            var organizer = Person.FromDictionary(dictionary.GetDictionary(OrganizerName));
-            var participants = dictionary.GetDictionaries(ParticipantsName)
+            var name = dictionary.GetString(Survey.NameName);
+            var info = dictionary.GetString(Survey.InfoName);
+            var link = dictionary.GetString(Survey.LinkName);
+            var organizer = Person.FromDictionary(dictionary.GetDictionary(Survey.OrganizerName));
+            var participants = dictionary.GetDictionaries(Survey.ParticipantsName)
                 .Select(Participant.FromDictionary)
                 .ToArray();
-            var questions = dictionary.GetDictionaries(QuestionsName).Select(Question.FromDictionary).ToArray();
+            var questions = dictionary.GetDictionaries(Survey.QuestionsName).Select(Question.FromDictionary).ToArray();
             return new Survey(
                 baseObject.Id,
                 name,
