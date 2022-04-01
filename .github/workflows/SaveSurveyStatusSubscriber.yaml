@@ -1,152 +1,30 @@
-name: BE/SaveSurveyStatusSubscriber.yaml
+name: SaveSurveyStatusSubscriber
 on:
   push:
     branches:
       - main
     paths:
-      - 'backend/SaveSurveyStatusSubscriber/**'
-      - '.github/workflows/SaveSurveyStatusSubscriber.yaml'
+      'backend/SaveSurveyStatusSubscriber/**'
   workflow_dispatch:
-env:
-  APP_SETTINGS_JSON: 'backend/SaveSurveyStatusSubscriber/SaveSurveyStatusSubscriber/appsettings.json'
-  CONFIG: Release
-  SOURCE_DIR: 'backend/SaveSurveyStatusSubscriber/SaveSurveyStatusSubscriber'
-  ENTRY_POINT: SaveSurveyStatusSubscriber.Function
-  FUNCTION_NAME: SaveSurveyStatusSubscriber
-  SLN_FILE: 'backend/SaveSurveyStatusSubscriber/SaveSurveyStatusSubscriber.sln'
-  TOPIC_NAME_SUB: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}
-  NUGET_USERNAME: MichaelDiers
-  NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
-  CSPROJ_NUGET: 'backend/SaveSurveyStatusSubscriber/SaveSurveyStatusSubscriber/nuget.config'
-  CSPROJ_TEST_NUGET: 'backend/SaveSurveyStatusSubscriber/SaveSurveyStatusSubscriber.Tests/nuget.config'
+  workflow_run:
+    workflows: [SaveSurveyStatusSchema]
+    types: [completed]
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    env:
-      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
-      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
-      ENVIRONMENT: 'Test'
-    steps:
-      - name: checkout source
-        uses: actions/checkout@v2
-      - name: configure appsettings.json
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.APP_SETTINGS_JSON }}
-        env:
-          Environment: ${{ env.ENVIRONMENT }}
-          ProjectId: ${{ env.PROJECT_ID }}
-      - name: use .net core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.x
-      - name: nuget config
-        run: |
-          echo $(sed -e "s/\${USERNAME}/${{ env.NUGET_USERNAME }}/" -e "s@\${TOKEN}@${{ secrets.GITHUB_TOKEN }}@" ${{ env.NUGET_CONFIG }}) > ${{ env.CSPROJ_NUGET }}
-          cp ${{ env.CSPROJ_NUGET }} ${{ env.CSPROJ_TEST_NUGET }}
-      - name: build
-        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
-      - name: test
-        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
-      - name: auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: '${{ env.GCP_CREDENTIALS }}'
-      - name: deploy
-        uses: google-github-actions/deploy-cloud-functions@v0
-        with:
-          name: ${{ env.FUNCTION_NAME }}
-          runtime: dotnet3
-          project_id: ${{ env.PROJECT_ID }}
-          source_dir: ${{ env.SOURCE_DIR }}
-          entry_point: ${{ env.ENTRY_POINT }}
-          event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
-  stage:
-    needs: test
-    runs-on: ubuntu-latest
-    env:
-      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
-      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
-      ENVIRONMENT: 'Stage'
-    steps:
-      - name: checkout source
-        uses: actions/checkout@v2
-      - name: configure appsettings.json
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.APP_SETTINGS_JSON }}
-        env:
-          Environment: ${{ env.ENVIRONMENT }}
-          ProjectId: ${{ env.PROJECT_ID }}
-      - name: use .net core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.x
-      - name: nuget config
-        run: |
-          echo $(sed -e "s/\${USERNAME}/${{ env.NUGET_USERNAME }}/" -e "s@\${TOKEN}@${{ secrets.GITHUB_TOKEN }}@" ${{ env.NUGET_CONFIG }}) > ${{ env.CSPROJ_NUGET }}
-          cp ${{ env.CSPROJ_NUGET }} ${{ env.CSPROJ_TEST_NUGET }}
-      - name: build
-        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
-      - name: test
-        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
-      - name: auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: '${{ env.GCP_CREDENTIALS }}'
-      - name: deploy
-        uses: google-github-actions/deploy-cloud-functions@v0
-        with:
-          name: ${{ env.FUNCTION_NAME }}
-          runtime: dotnet3          
-          project_id: ${{ env.PROJECT_ID }}
-          source_dir: ${{ env.SOURCE_DIR }}
-          entry_point: ${{ env.ENTRY_POINT }}
-          event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
-  prod:
-    needs: stage
-    runs-on: ubuntu-latest
-    environment:
-      name: SaveSurveyStatusSubscriber-Prod
-    env:
-      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
-      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
-      ENVIRONMENT: 'Prod'
-    steps:
-      - name: checkout source
-        uses: actions/checkout@v2
-      - name: configure appsettings.json
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.APP_SETTINGS_JSON }}
-        env:
-          Environment: ${{ env.ENVIRONMENT }}
-          ProjectId: ${{ env.PROJECT_ID }}
-      - name: use .net core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.x
-      - name: nuget config
-        run: |
-          echo $(sed -e "s/\${USERNAME}/${{ env.NUGET_USERNAME }}/" -e "s@\${TOKEN}@${{ secrets.GITHUB_TOKEN }}@" ${{ env.NUGET_CONFIG }}) > ${{ env.CSPROJ_NUGET }}
-          cp ${{ env.CSPROJ_NUGET }} ${{ env.CSPROJ_TEST_NUGET }}
-      - name: build
-        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
-      - name: test
-        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
-      - name: auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: '${{ env.GCP_CREDENTIALS }}'
-      - name: deploy
-        uses: google-github-actions/deploy-cloud-functions@v0
-        with:
-          name: ${{ env.FUNCTION_NAME }}
-          runtime: dotnet3          
-          project_id: ${{ env.PROJECT_ID }}
-          source_dir: ${{ env.SOURCE_DIR }}
-          entry_point: ${{ env.ENTRY_POINT }}
-          event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
+  BuildAndDeploy:
+    uses: MichaelDiers/shared-workflows/.github/workflows/dotnet-deploy-google-cloud-function.yaml@main
+    with:
+      functionName: SaveSurveyStatusSubscriber 
+      projectName: SaveSurveyStatusSubscriber
+      solutionFolder: backend/SaveSurveyStatusSubscriber
+      trigger: pubsub
+    secrets:
+      gcpCredentialsTest: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      gcpCredentialsStage: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
+      gcpCredentialsProd: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
+      projectIdTest: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      projectIdStage: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
+      projectIdProd: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
+      appSettingsJsonTest: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_TEST }}\",\"Environment\": \"Test\"\}'
+      appSettingsJsonStage: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_STAGE }}\",\"Environment\": \"Stage\"\}'
+      appSettingsJsonProd: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_PROD }}\",\"Environment\": \"Prod\"\}'
+      subTopicName: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}
