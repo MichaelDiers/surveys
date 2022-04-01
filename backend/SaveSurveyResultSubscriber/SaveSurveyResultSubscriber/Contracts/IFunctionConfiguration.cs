@@ -1,15 +1,12 @@
 ﻿namespace SaveSurveyResultSubscriber.Contracts
 {
     using Md.Common.Contracts;
+    using Md.GoogleCloudPubSub.Logic;
 
     /// <summary>
     ///     Access the application settings.
     /// </summary>
-    public interface IFunctionConfiguration : IRuntimeEnvironment
+    public interface IFunctionConfiguration : IRuntimeEnvironment, IPubSubClientEnvironment
     {
-        /// <summary>
-        ///     Gets the pub/sub topic name.
-        /// </summary>
-        string PubSubTopicName { get; }
     }
 }
