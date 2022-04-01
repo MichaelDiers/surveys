@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>MichaelDiers</Authors>
+    <RepositoryUrl>https://github.com/MichaelDiers/surveys.git</RepositoryUrl>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.23" />
+    <PackageReference Include="Surveys.Common" Version="1.2.61" />
+  </ItemGroup>
+
+</Project>
