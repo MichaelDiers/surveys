@@ -1,55 +1,30 @@
 sequenceDiagram
+    autonumber
     participant C as Client
-    participant InitSurvey as InitializeSurveySubscriber<br>.net core
     participant PS as Google Cloud<br>Pub/Sub
-    participant SaveSurvey as SaveSurveySubscriber<br>.net core
-    participant F as Google Cloud<br>Firestore
-    participant SaveSurveyStatus as SaveSurveyStatusSubscriber<br>.net core
-    participant SaveSurveyResult as SaveSurveyResultSubscriber<br>.net core
-    participant CreateMail as CreateMailSubscriber
-    C--)+PS: INITALIZE_SURVEY
-    PS--)+InitSurvey: INITALIZE_SURVEY
+    participant ISS as InitializeSurveySubscriber<br>.net core
+    participant FS as Google Cloud<br>Firestore
+    C->>+PS: INITIALIZE_SURVEY
+    PS-->>C: response
+    PS--)ISS: INITIALIZE_SURVEY
     deactivate PS
+    activate ISS
     %% SAVE_SURVEY
-    InitSurvey--)PS: SAVE_SURVEY
-    activate PS
-    PS--)SaveSurvey: SAVE_SURVEY
+    ISS->>+PS: SAVE_SURVEY
+    PS-->>ISS: response
     deactivate PS
-    activate SaveSurvey
-    SaveSurvey->>+F: save survey
-    F-->>SaveSurvey: response
-    deactivate F
-    deactivate SaveSurvey
     %% SAVE_SURVEY_STATUS
-    InitSurvey--)PS: SAVE_SURVEY_STATUS
-    activate PS
-    PS--)+SaveSurveyStatus: SAVE_SURVEY_STATUS
+    ISS->>+PS: SAVE_SURVEY_STATUS
+    PS-->>ISS: response
     deactivate PS
-    SaveSurveyStatus->>+F: save survey status
-    F-->>SaveSurveyStatus: response
-    deactivate F
-    deactivate SaveSurveyStatus
     %% SAVE_SURVEY_RESULT
     loop for each participant
-        InitSurvey--)PS: SAVE_SURVEY_RESULT
-        activate PS
-        PS--)+SaveSurveyResult: SAVE_SURVEY_RESULT
+        ISS->>+PS: SAVE_SURVEY_RESULT
+        PS-->>ISS: response
         deactivate PS
-        SaveSurveyResult->>+F: save survey result
-        F-->>SaveSurveyResult: response
-        deactivate F
-        deactivate SaveSurveyResult
     end
     %% CREATE_MAIL
-    InitSurvey--)PS: CREATE_MAIL
-    deactivate InitSurvey
-    activate PS
-    PS--)CreateMail: CREATE_MAIL
+    ISS->>+PS: CREATE_MAIL
+    PS-->>ISS: response
     deactivate PS
-    activate CreateMail
-    CreateMail->>+F: read email templates
-    F-->>CreateMail: response
-    deactivate F
-    CreateMail--)+PS: SEND_MAIL
-    deactivate CreateMail
-    deactivate PS
+    deactivate ISS
