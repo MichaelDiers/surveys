@@ -1,8 +1,9 @@
 sequenceDiagram
     autonumber
     participant C as Client
-    participant PS as Google Cloud<br>Pub/Sub
     participant ISS as InitializeSurveySubscriber<br>.net core
+    participant PS as Google Cloud<br>Pub/Sub
+    participant SSS as SaveSurveySubscriber<br>.net core
     participant FS as Google Cloud<br>Firestore
     C->>+PS: INITIALIZE_SURVEY
     PS-->>C: response
@@ -12,7 +13,12 @@ sequenceDiagram
     %% SAVE_SURVEY
     ISS->>+PS: SAVE_SURVEY
     PS-->>ISS: response
+    PS--)+SSS: SAVE_SURVEY
     deactivate PS
+    SSS->>+FS: save survey
+    FS-->>SSS: response
+    deactivate FS
+    deactivate SSS
     %% SAVE_SURVEY_STATUS
     ISS->>+PS: SAVE_SURVEY_STATUS
     PS-->>ISS: response
