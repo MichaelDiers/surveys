@@ -10,11 +10,13 @@
     using InitializeSurveySubscriber.Logic;
     using InitializeSurveySubscriber.Model;
     using InitializeSurveySubscriber.Tests.Data;
-    using Md.GoogleCloud.Base.Logic;
+    using Md.GoogleCloudPubSub.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Messages;
+    using Surveys.Common.PubSub.Logic;
     using Xunit;
+    using Environment = Md.Common.Contracts.Environment;
 
     /// <summary>
     ///     Tests for <see cref="Function" />.
@@ -26,7 +28,7 @@
         {
             var survey = TestData.InitializeSurvey();
             var message = new InitializeSurveyMessage(survey, Guid.NewGuid().ToString());
-            await HandleAsyncForMessage(message);
+            await IntegrationFunctionTests.HandleAsyncForMessage(message);
         }
 
         private static async Task HandleAsyncForMessage(IInitializeSurveyMessage message)
@@ -51,13 +53,25 @@
             var provider = new FunctionProvider(
                 logger,
                 new SaveSurveyPubSubClient(
-                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SaveSurveyTopicName)),
+                    new PubSubClientEnvironment(
+                        Environment.Test,
+                        configuration.ProjectId,
+                        configuration.SaveSurveyTopicName)),
                 new SaveSurveyResultPubSubClient(
-                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SaveSurveyResultTopicName)),
+                    new PubSubClientEnvironment(
+                        Environment.Test,
+                        configuration.ProjectId,
+                        configuration.SaveSurveyResultTopicName)),
                 new SaveSurveyStatusPubSubClient(
-                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName)),
+                    new PubSubClientEnvironment(
+                        Environment.Test,
+                        configuration.ProjectId,
+                        configuration.SaveSurveyStatusTopicName)),
                 new CreateMailPubSubClient(
-                    new PubSubClientConfiguration(configuration.ProjectId, configuration.CreateMailTopicName)));
+                    new PubSubClientEnvironment(
+                        Environment.Test,
+                        configuration.ProjectId,
+                        configuration.CreateMailTopicName)));
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 

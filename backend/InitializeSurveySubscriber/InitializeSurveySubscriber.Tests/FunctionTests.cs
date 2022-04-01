@@ -23,7 +23,7 @@
         {
             var survey = TestData.InitializeSurvey();
             var message = new InitializeSurveyMessage(survey, Guid.NewGuid().ToString());
-            await HandleAsyncForMessage(message);
+            await FunctionTests.HandleAsyncForMessage(message);
         }
 
         private static async Task HandleAsyncForMessage(IInitializeSurveyMessage message)

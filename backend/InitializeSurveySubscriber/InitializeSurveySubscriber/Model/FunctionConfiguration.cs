@@ -1,6 +1,7 @@
 ﻿namespace InitializeSurveySubscriber.Model
 {
     using InitializeSurveySubscriber.Contracts;
+    using Md.Common.Contracts;
 
     /// <summary>
     ///     Access the application settings.
@@ -11,6 +12,11 @@
         ///     Gets the name of the pub/sub topic for creating emails.
         /// </summary>
         public string CreateMailTopicName { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the runtime environment.
+        /// </summary>
+        public Environment Environment { get; set; }
 
         /// <summary>
         ///     Gets the id of the google cloud project.

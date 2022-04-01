@@ -2,15 +2,13 @@
 {
     using System;
     using System.Threading.Tasks;
-    using InitializeSurveySubscriber.Contracts;
-    using Md.GoogleCloud.Base.Contracts.Logic;
     using Md.GoogleCloud.Base.Logic;
     using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Messages;
     using Surveys.Common.Models;
+    using Surveys.Common.PubSub.Contracts.Logic;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
@@ -20,22 +18,22 @@
         /// <summary>
         ///     Access the pub/sub client for sending create mail messages.
         /// </summary>
-        private readonly IPubSubClient createMailPubSubClient;
+        private readonly ICreateMailPubSubClient createMailPubSubClient;
 
         /// <summary>
         ///     Access the pub/sub client for saving surveys.
         /// </summary>
-        private readonly IPubSubClient saveSurveyPubSubClient;
+        private readonly ISaveSurveyPubSubClient saveSurveyPubSubClient;
 
         /// <summary>
         ///     Access the pub/sub client for saving survey results.
         /// </summary>
-        private readonly IPubSubClient saveSurveyResultPubSubClient;
+        private readonly ISaveSurveyResultPubSubClient saveSurveyResultPubSubClient;
 
         /// <summary>
         ///     Access the pub/sub client for saving survey status updates.
         /// </summary>
-        private readonly IPubSubClient saveSurveyStatusPubSubClient;
+        private readonly ISaveSurveyStatusPubSubClient saveSurveyStatusPubSubClient;
 
         /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
@@ -97,11 +95,6 @@
                 await this.saveSurveyResultPubSubClient.PublishAsync(saveSurveyResultMessage);
             }
 
-            var json = JsonConvert.SerializeObject(
-                new CreateMailMessage(
-                    message.ProcessId,
-                    MailType.RequestForParticipation,
-                    new RequestForParticipation(internalSurveyId, message.Survey)));
             await this.createMailPubSubClient.PublishAsync(
                 new CreateMailMessage(
                     message.ProcessId,
