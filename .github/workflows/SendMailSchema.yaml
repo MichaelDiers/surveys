@@ -1,19 +1,21 @@
-name: schemas/Schema.EvaluateSurvey.yaml
+name: SendMailSchema
 on:
   push:
     branches:
       - main
     paths:
-      - 'schemas/EvaluateSurveySchema.proto'
-      - '.github/workflows/Schema.EvaluateSurvey.yaml'
+      - 'schemas/SendMailSchema.avro'
   workflow_dispatch:
+  workflow_run:
+    workflows: [GoLive]
+    types: [completed]
 jobs:
   createSchemaAndTopic:
     uses: MichaelDiers/shared-workflows/.github/workflows/deploy-google-cloud-pubsub-schema-topic.yaml@main
     with:
       messageEnconding: json
-      schemaFile: schemas/EvaluateSurveySchema.proto
-      schemaType: PROTOCOL_BUFFER
+      schemaFile: schemas/SendMailSchema.avro
+      schemaType: AVRO
     secrets:
       gcpCredentialsTest: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
       gcpCredentialsStage: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
@@ -21,4 +23,4 @@ jobs:
       projectIdTest: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
       projectIdStage: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
       projectIdProd: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
-      topicName: ${{ secrets.GLOBAL_PUBSUB_TOPIC_EVALUATE_SURVEY }}
+      topicName: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}

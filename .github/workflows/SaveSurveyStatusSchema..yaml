@@ -1,12 +1,14 @@
-name: schemas/Schema.SaveSurveyStatus.yaml
+name: SaveSurveyStatusSchema
 on:
   push:
     branches:
       - main
     paths:
       - 'schemas/SaveSurveyStatusSchema.avro'
-      - '.github/workflows/Schema.SaveSurveyStatus.yaml'
   workflow_dispatch:
+  workflow_run:
+    workflows: [GoLive]
+    types: [completed]
 jobs:
   createSchemaAndTopic:
     uses: MichaelDiers/shared-workflows/.github/workflows/deploy-google-cloud-pubsub-schema-topic.yaml@main

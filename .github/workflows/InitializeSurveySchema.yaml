@@ -1,12 +1,14 @@
-name: schemas/Scehma.InitializeSurvey.yaml
+name: InitializeSurveySchema
 on:
   push:
     branches:
       - main
     paths:
       - 'schemas/InitializeSurveySchema.avro'
-      - '.github/workflows/Schema.InitializeSurvey.yaml'
   workflow_dispatch:
+  workflow_run:
+    workflows: [GoLive]
+    types: [completed]
 jobs:
   createSchemaAndTopic:
     uses: MichaelDiers/shared-workflows/.github/workflows/deploy-google-cloud-pubsub-schema-topic.yaml@main
