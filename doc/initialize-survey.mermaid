@@ -5,6 +5,7 @@ sequenceDiagram
     participant PS as Google Cloud<br>Pub/Sub
     participant SSS as SaveSurveySubscriber<br>.net core
     participant SSSS as SaveSurveyStatusSubscriber<br>.net core
+    participant SSRS as SaveSurveyResultSubscriber<br>.net core
     participant FS as Google Cloud<br>Firestore
     C->>+PS: INITIALIZE_SURVEY
     PS-->>C: response
@@ -33,7 +34,12 @@ sequenceDiagram
     loop for each participant
         ISS->>+PS: SAVE_SURVEY_RESULT
         PS-->>ISS: response
+        PS--)+SSRS: SAVE_SURVEY_RESULT
         deactivate PS
+        SSRS->>+FS: save survey result
+        FS-->>SSRS: response
+        deactivate FS
+        deactivate SSRS
     end
     %% CREATE_MAIL
     ISS->>+PS: CREATE_MAIL
