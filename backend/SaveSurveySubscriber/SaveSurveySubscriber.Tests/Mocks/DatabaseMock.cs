@@ -36,6 +36,11 @@
             return null;
         }
 
+        public Task<IEnumerable<ISurvey>> ReadManyAsync()
+        {
+            return null;
+        }
+
         public Task<IEnumerable<ISurvey>> ReadManyAsync(string fieldPath, object value)
         {
             return null;

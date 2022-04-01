@@ -8,12 +8,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="Google.Cloud.Functions.Testing" Version="1.0.0" />
-		<PackageReference Include="Google.Cloud.PubSub.V1" Version="2.7.0" />
-		<PackageReference Include="Md.Common" Version="1.1.23" />
-		<PackageReference Include="Md.GoogleCloud.Base" Version="1.1.28" />
+		<PackageReference Include="Md.Common" Version="1.2.24" />
+		<PackageReference Include="Md.GoogleCloud.Base" Version="1.2.32" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Surveys.Common" Version="1.0.53" />
+		<PackageReference Include="Surveys.Common" Version="1.2.61" />
 		<PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
