@@ -54,8 +54,12 @@
             }
 
             await this.database.InsertAsync(message.SurveyResult);
-            await this.pubSubClient.PublishAsync(
-                new EvaluateSurveyMessage(message.ProcessId, message.SurveyResult.InternalSurveyId));
+
+            if (!message.SurveyResult.IsSuggested)
+            {
+                await this.pubSubClient.PublishAsync(
+                    new EvaluateSurveyMessage(message.ProcessId, message.SurveyResult.InternalSurveyId));
+            }
         }
     }
 }
