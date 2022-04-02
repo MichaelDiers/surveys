@@ -1,166 +1,30 @@
-name: BE/CreateMailSubscriber.yaml
+name: CreateMailSubscriber
 on:
   push:
     branches:
       - main
     paths:
-      - 'backend/CreateMailSubscriber/**'
-      - '.github/workflows/CreateMailSubscriber.yaml'
+      'backend/CreateMailSubscriber/**'
   workflow_dispatch:
-env:
-  APP_SETTINGS_JSON: 'backend/CreateMailSubscriber/CreateMailSubscriber/appsettings.json'
-  CONFIG: Release
-  SOURCE_DIR: 'backend/CreateMailSubscriber/CreateMailSubscriber'
-  ENTRY_POINT: CreateMailSubscriber.Function
-  FUNCTION_NAME: CreateMailSubscriber
-  SLN_FILE: 'backend/CreateMailSubscriber/CreateMailSubscriber.sln'
-  TOPIC_NAME_SUB: ${{ secrets.GLOBAL_PUBSUB_TOPIC_CREATE_MAIL }}  
-  NUGET_USERNAME: MichaelDiers
-  NUGET_CONFIG: '.github/workflows/Generic-Nuget.config'
-  CSPROJ_NUGET: 'backend/CreateMailSubscriber/CreateMailSubscriber/nuget.config'
-  CSPROJ_TEST_NUGET: 'backend/CreateMailSubscriber/CreateMailSubscriber.Tests/nuget.config' 
-  TOPIC_NAME_SEND_MAIL: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}
+  workflow_run:
+    workflows: [CreateMailSchema]
+    types: [completed]
 jobs:
-  test:
-    environment:
-      name: CreateMailSubscriber-Test
-    runs-on: ubuntu-latest
-    env:
-      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
-      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
-      FRONT_END_URL_FORMAT: ${{ secrets.FRONT_END_URL_FORMAT }}
-      ENVIRONMENT: 'Test'
-    steps:
-      - name: checkout source
-        uses: actions/checkout@v2
-      - name: configure appsettings.json
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.APP_SETTINGS_JSON }}
-        env:
-          ProjectId: ${{ env.PROJECT_ID }}
-          SendMailTopicName: ${{ env.TOPIC_NAME_SEND_MAIL }}
-          Environment: ${{ env.ENVIRONMENT }}
-          FrondEndUrlFormat: ${{ env.FRONT_END_URL_FORMAT }}
-      - name: use .net core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.x
-      - name: nuget config
-        run: |
-          echo $(sed -e "s/\${USERNAME}/${{ env.NUGET_USERNAME }}/" -e "s@\${TOKEN}@${{ secrets.GITHUB_TOKEN }}@" ${{ env.NUGET_CONFIG }}) > ${{ env.CSPROJ_NUGET }}
-          cp ${{ env.CSPROJ_NUGET }} ${{ env.CSPROJ_TEST_NUGET }}
-      - name: build
-        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
-      - name: test
-        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
-      - name: auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: '${{ env.GCP_CREDENTIALS }}'
-      - name: deploy
-        uses: google-github-actions/deploy-cloud-functions@v0
-        with:
-          name: ${{ env.FUNCTION_NAME }}
-          runtime: dotnet3
-          project_id: ${{ env.PROJECT_ID }}
-          source_dir: ${{ env.SOURCE_DIR }}
-          entry_point: ${{ env.ENTRY_POINT }}
-          event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
-  stage:
-    environment:
-      name: CreateMailSubscriber-Stage
-    needs: test
-    runs-on: ubuntu-latest
-    env:
-      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
-      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
-      FRONT_END_URL_FORMAT: ${{ secrets.FRONT_END_URL_FORMAT }}
-      ENVIRONMENT: 'Stage'
-    steps:
-      - name: checkout source
-        uses: actions/checkout@v2
-      - name: configure appsettings.json
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.APP_SETTINGS_JSON }}
-        env:
-          ProjectId: ${{ env.PROJECT_ID }}
-          SendMailTopicName: ${{ env.TOPIC_NAME_SEND_MAIL }}
-          FrondEndUrlFormat: ${{ env.FRONT_END_URL_FORMAT }}
-          Environment: ${{ env.ENVIRONMENT }}
-      - name: use .net core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.x
-      - name: nuget config
-        run: |
-          echo $(sed -e "s/\${USERNAME}/${{ env.NUGET_USERNAME }}/" -e "s@\${TOKEN}@${{ secrets.GITHUB_TOKEN }}@" ${{ env.NUGET_CONFIG }}) > ${{ env.CSPROJ_NUGET }}
-          cp ${{ env.CSPROJ_NUGET }} ${{ env.CSPROJ_TEST_NUGET }}
-      - name: build
-        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
-      - name: test
-        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
-      - name: auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: '${{ env.GCP_CREDENTIALS }}'
-      - name: deploy
-        uses: google-github-actions/deploy-cloud-functions@v0
-        with:
-          name: ${{ env.FUNCTION_NAME }}
-          runtime: dotnet3          
-          project_id: ${{ env.PROJECT_ID }}
-          source_dir: ${{ env.SOURCE_DIR }}
-          entry_point: ${{ env.ENTRY_POINT }}
-          event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
-  prod:
-    needs: stage
-    runs-on: ubuntu-latest
-    environment:
-      name: CreateMailSubscriber-Prod
-    env:
-      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
-      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
-      FRONT_END_URL_FORMAT: ${{ secrets.FRONT_END_URL_FORMAT }}
-      ENVIRONMENT: 'Prod'
-    steps:
-      - name: checkout source
-        uses: actions/checkout@v2
-      - name: configure appsettings.json
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.APP_SETTINGS_JSON }}
-        env:
-          ProjectId: ${{ env.PROJECT_ID }}
-          SendMailTopicName: ${{ env.TOPIC_NAME_SEND_MAIL }}
-          Environment: ${{ env.ENVIRONMENT }}
-          FrondEndUrlFormat: ${{ env.FRONT_END_URL_FORMAT }}
-      - name: use .net core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: 3.1.x
-      - name: nuget config
-        run: |
-          echo $(sed -e "s/\${USERNAME}/${{ env.NUGET_USERNAME }}/" -e "s@\${TOKEN}@${{ secrets.GITHUB_TOKEN }}@" ${{ env.NUGET_CONFIG }}) > ${{ env.CSPROJ_NUGET }}
-          cp ${{ env.CSPROJ_NUGET }} ${{ env.CSPROJ_TEST_NUGET }}
-      - name: build
-        run: dotnet build ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}"
-      - name: test
-        run: dotnet test ${{ env.SLN_FILE }} --configuration "${{ env.CONFIG }}" --no-build
-      - name: auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: '${{ env.GCP_CREDENTIALS }}'
-      - name: deploy
-        uses: google-github-actions/deploy-cloud-functions@v0
-        with:
-          name: ${{ env.FUNCTION_NAME }}
-          runtime: dotnet3          
-          project_id: ${{ env.PROJECT_ID }}
-          source_dir: ${{ env.SOURCE_DIR }}
-          entry_point: ${{ env.ENTRY_POINT }}
-          event_trigger_type: google.pubsub.topic.publish
-          event_trigger_resource: projects/${{ env.PROJECT_ID }}/topics/${{ env.TOPIC_NAME_SUB }}
+  BuildAndDeploy:
+    uses: MichaelDiers/shared-workflows/.github/workflows/dotnet-deploy-google-cloud-function.yaml@main
+    with:
+      functionName: CreateMailSubscriber 
+      projectName: CreateMailSubscriber
+      solutionFolder: backend/CreateMailSubscriber
+      trigger: pubsub
+    secrets:
+      gcpCredentialsTest: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      gcpCredentialsStage: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
+      gcpCredentialsProd: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
+      projectIdTest: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      projectIdStage: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
+      projectIdProd: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
+      appSettingsJsonTest: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_TEST }}\",\"Environment\": \"Test\",\"TopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}\",\"FrondEndUrlFormat\": \"${{ secrets.FRONT_END_URL_FORMAT_TEST }}\"\}'
+      appSettingsJsonStage: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_STAGE }}\",\"Environment\": \"Stage\",\"TopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}\",\"FrondEndUrlFormat\": \"${{ secrets.FRONT_END_URL_FORMAT_STAGE }}\"\}'
+      appSettingsJsonProd: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_PROD }}\",\"Environment\": \"Prod\",\"TopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SEND_MAIL }}\",\"FrondEndUrlFormat\": \"${{ secrets.FRONT_END_URL_FORMAT_PROD }}\"\}'
+      subTopicName: ${{ secrets.GLOBAL_PUBSUB_TOPIC_CREATE_MAIL }}

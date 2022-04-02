@@ -6,7 +6,6 @@ namespace CreateMailSubscriber
     using Google.Cloud.Functions.Hosting;
     using Md.Common.Contracts;
     using Md.GoogleCloud.Base.Contracts.Logic;
-    using Md.GoogleCloud.Base.Logic;
     using Md.GoogleCloudPubSub.Logic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -14,6 +13,8 @@ namespace CreateMailSubscriber
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Firestore.Models;
+    using Surveys.Common.PubSub.Contracts.Logic;
+    using Surveys.Common.PubSub.Logic;
 
     /// <summary>
     ///     Initialize the function.
@@ -32,9 +33,8 @@ namespace CreateMailSubscriber
 
             services.AddScoped<IFunctionConfiguration>(_ => configuration);
 
-            services.AddScoped<IPubSubClientConfiguration>(
-                _ => new PubSubClientConfiguration(configuration.ProjectId, configuration.SendMailTopicName));
-            services.AddScoped<IPubSubClient, PubSubClient>();
+            services.AddScoped<IPubSubClientEnvironment>(_ => configuration);
+            services.AddScoped<ISendMailPubSubClient, SendMailPubSubClient>();
 
             services.AddScoped<IRuntimeEnvironment>(_ => configuration);
             services.AddScoped<IEmailTemplateReadOnlyDatabase, EmailTemplateReadOnlyDatabase>();

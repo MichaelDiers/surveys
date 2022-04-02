@@ -16,6 +16,6 @@
         /// <summary>
         ///     Gets the name of the pub/sub topic for sending emails.
         /// </summary>
-        public string SendMailTopicName { get; set; }
+        public string TopicName { get; set; }
     }
 }

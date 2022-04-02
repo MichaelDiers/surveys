@@ -1,20 +1,16 @@
 ﻿namespace CreateMailSubscriber.Contracts
 {
     using Md.Common.Contracts;
+    using Md.GoogleCloudPubSub.Logic;
 
     /// <summary>
     ///     Access the application settings.
     /// </summary>
-    public interface IFunctionConfiguration : IRuntimeEnvironment
+    public interface IFunctionConfiguration : IRuntimeEnvironment, IPubSubClientEnvironment
     {
         /// <summary>
         ///     Gets the url format for the survey front end.
         /// </summary>
         string FrondEndUrlFormat { get; }
-
-        /// <summary>
-        ///     Gets the name of the pub/sub topic for sending emails.
-        /// </summary>
-        string SendMailTopicName { get; }
     }
 }

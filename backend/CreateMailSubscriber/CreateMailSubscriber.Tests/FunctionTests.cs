@@ -12,14 +12,15 @@
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
     using Md.Common.Contracts;
-    using Md.GoogleCloud.Base.Contracts.Logic;
-    using Md.GoogleCloud.Base.Logic;
     using Md.GoogleCloudPubSub.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Firestore.Models;
+    using Surveys.Common.PubSub.Contracts.Logic;
+    using Surveys.Common.PubSub.Logic;
     using Xunit;
+    using Environment = Md.Common.Contracts.Environment;
 
     /// <summary>
     ///     Tests for <see cref="Function" />.
@@ -59,7 +60,7 @@
             var message = TestData.CreateMailMessage();
             await FunctionTests.HandleAsyncForMessageWithProvider(
                 message,
-                config => new PubSubClient(config),
+                config => new SendMailPubSubClient(config),
                 config => new EmailTemplateReadOnlyDatabase(config));
         }
 
@@ -87,7 +88,7 @@
 
         private static async Task HandleAsyncForMessageWithProvider(
             ICreateMailMessage message,
-            Func<IPubSubClientConfiguration, IPubSubClient> pubSubClientFactory,
+            Func<IPubSubClientEnvironment, ISendMailPubSubClient> pubSubClientFactory,
             Func<IRuntimeEnvironment, IEmailTemplateReadOnlyDatabase> databaseFactory
         )
         {
@@ -110,7 +111,7 @@
             var provider = new FunctionProvider(
                 logger,
                 pubSubClientFactory(
-                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SendMailTopicName)),
+                    new PubSubClientEnvironment(Environment.Test, configuration.ProjectId, configuration.TopicName)),
                 databaseFactory(configuration),
                 configuration);
             var function = new Function(logger, provider);

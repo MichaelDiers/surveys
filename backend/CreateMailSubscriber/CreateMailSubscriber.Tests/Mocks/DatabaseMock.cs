@@ -31,6 +31,11 @@
                 });
         }
 
+        public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync()
+        {
+            return null;
+        }
+
         public Task<IEnumerable<IDictionary<string, object>>> ReadManyAsync(string fieldPath, object value)
         {
             throw new NotImplementedException();

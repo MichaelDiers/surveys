@@ -1,16 +1,13 @@
 ﻿namespace CreateMailSubscriber.Tests.Mocks
 {
     using System.Threading.Tasks;
-    using Md.GoogleCloud.Base.Contracts.Logic;
-    using Newtonsoft.Json;
-    using Xunit;
+    using Surveys.Common.Contracts.Messages;
+    using Surveys.Common.PubSub.Contracts.Logic;
 
-    internal class PubSubClientMock : IPubSubClient
+    internal class PubSubClientMock : ISendMailPubSubClient
     {
-        public Task PublishAsync<T>(T message)
+        public Task PublishAsync(ISendMailMessage message)
         {
-            var json = JsonConvert.SerializeObject(message);
-            Assert.NotNull(json);
             return Task.CompletedTask;
         }
     }

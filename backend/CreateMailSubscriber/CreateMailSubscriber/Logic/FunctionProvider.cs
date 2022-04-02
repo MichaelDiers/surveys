@@ -4,13 +4,13 @@
     using System.Threading.Tasks;
     using CreateMailSubscriber.Contracts;
     using CreateMailSubscriber.Model;
-    using Md.GoogleCloud.Base.Contracts.Logic;
     using Md.GoogleCloud.Base.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Messages;
+    using Surveys.Common.PubSub.Contracts.Logic;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
@@ -30,7 +30,7 @@
         /// <summary>
         ///     Access the pub/sub client for sending emails.
         /// </summary>
-        private readonly IPubSubClient sendMailPubSubClient;
+        private readonly ISendMailPubSubClient sendMailPubSubClient;
 
 
         /// <summary>
@@ -42,7 +42,7 @@
         /// <param name="configuration">The application configuration.</param>
         public FunctionProvider(
             ILogger<Function> logger,
-            IPubSubClient sendMailPubSubClient,
+            ISendMailPubSubClient sendMailPubSubClient,
             IEmailTemplateReadOnlyDatabase database,
             IFunctionConfiguration configuration
         )
