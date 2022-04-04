@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailerService", "MailerService\MailerService.csproj", "{37A90780-6B84-4EB7-93B7-3524D55B5B74}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailerService.Test", "MailerService.Test\MailerService.Test.csproj", "{A51B9BE7-276D-4E7A-9637-DC8DA8B73CEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailerService.Tests", "MailerService.Tests\MailerService.Tests.csproj", "{A51B9BE7-276D-4E7A-9637-DC8DA8B73CEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
