@@ -15,7 +15,7 @@
     /// <summary>
     ///     Provider for sending email messages for surveys.
     /// </summary>
-    public class MailerProvider : PubSubProvider<ISendMailMessage, MailerFunction>
+    public class MailerProvider : PubSubProvider<ISendMailMessage, Function>
     {
         /// <summary>
         ///     The application configuration.
@@ -52,7 +52,7 @@
         /// <param name="pubSubClient">Access the Pub/Sub client.</param>
         /// <param name="secretManager">Access to google cloud secrets.</param>
         public MailerProvider(
-            ILogger<MailerFunction> logger,
+            ILogger<Function> logger,
             IMessageConverter messageConverter,
             IMailerSmtpClient mailerSmtpClient,
             IMailerServiceConfiguration configuration,

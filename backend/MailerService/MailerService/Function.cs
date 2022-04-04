@@ -11,14 +11,14 @@
     ///     Google cloud function for sending emails using pub/sub.
     /// </summary>
     [FunctionsStartup(typeof(Startup))]
-    public class MailerFunction : PubSubFunction<SendMailMessage, ISendMailMessage, MailerFunction>
+    public class Function : PubSubFunction<SendMailMessage, ISendMailMessage, Function>
     {
         /// <summary>
-        ///     Creates a new instance of <see cref="MailerFunction" />.
+        ///     Creates a new instance of <see cref="Function" />.
         /// </summary>
         /// <param name="logger">Logger for error messages.</param>
         /// <param name="provider">Provider for sending emails.</param>
-        public MailerFunction(ILogger<MailerFunction> logger, IPubSubProvider<ISendMailMessage> provider)
+        public Function(ILogger<Function> logger, IPubSubProvider<ISendMailMessage> provider)
             : base(logger, provider)
         {
         }
