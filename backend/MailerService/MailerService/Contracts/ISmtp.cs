@@ -6,9 +6,14 @@
     public interface ISmtp
     {
         /// <summary>
+        ///     Gets the display name for <see cref="UserNameKey" />.
+        /// </summary>
+        string DisplayName { get; }
+
+        /// <summary>
         ///     Gets the smtp password.
         /// </summary>
-        string Password { get; }
+        string PasswordKey { get; }
 
         /// <summary>
         ///     Gets the smtp port.
@@ -23,6 +28,6 @@
         /// <summary>
         ///     Gets the name of the user.
         /// </summary>
-        string UserName { get; }
+        string UserNameKey { get; }
     }
 }

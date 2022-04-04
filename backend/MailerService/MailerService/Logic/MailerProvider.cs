@@ -10,6 +10,7 @@
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Messages;
     using Surveys.Common.Models;
+    using Surveys.Common.PubSub.Contracts.Logic;
 
     /// <summary>
     ///     Provider for sending email messages for surveys.
@@ -34,7 +35,12 @@
         /// <summary>
         ///     Access the Pub/Sub client.
         /// </summary>
-        private readonly IPubSubClient pubSubClient;
+        private readonly ISaveSurveyStatusPubSubClient pubSubClient;
+
+        /// <summary>
+        ///     Access google cloud secrets.
+        /// </summary>
+        private readonly ISecretManager secretManager;
 
         /// <summary>
         ///     Creates a new instance of <see cref="MailerProvider" />.
@@ -44,12 +50,14 @@
         /// <param name="mailerSmtpClient">Sends mails via smtp.</param>
         /// <param name="configuration">The application configuration.</param>
         /// <param name="pubSubClient">Access the Pub/Sub client.</param>
+        /// <param name="secretManager">Access to google cloud secrets.</param>
         public MailerProvider(
             ILogger<MailerFunction> logger,
             IMessageConverter messageConverter,
             IMailerSmtpClient mailerSmtpClient,
             IMailerServiceConfiguration configuration,
-            IPubSubClient pubSubClient
+            ISaveSurveyStatusPubSubClient pubSubClient,
+            ISecretManager secretManager
         )
             : base(logger)
         {
@@ -57,6 +65,7 @@
             this.mailerSmtpClient = mailerSmtpClient ?? throw new ArgumentNullException(nameof(mailerSmtpClient));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.pubSubClient = pubSubClient ?? throw new ArgumentNullException(nameof(pubSubClient));
+            this.secretManager = secretManager ?? throw new ArgumentNullException(nameof(secretManager));
         }
 
         /// <summary>
@@ -66,11 +75,11 @@
         /// <returns>A <see cref="Task" /> without a result.</returns>
         protected override async Task HandleMessageAsync(ISendMailMessage message)
         {
+            var smtpCredentials = await this.AccessSecrets();
+
             var mimeMessageFrom = new[]
             {
-                new MailboxAddress(
-                    this.configuration.MailboxAddressFrom.Name,
-                    this.configuration.MailboxAddressFrom.Email)
+                new MailboxAddress(this.configuration.Smtp.DisplayName, smtpCredentials.email)
             };
 
             var email = this.messageConverter.ToMimeMessage(message, mimeMessageFrom);
@@ -78,7 +87,11 @@
             var success = false;
             try
             {
-                await this.mailerSmtpClient.SendAsync(email, this.configuration.Smtp);
+                await this.mailerSmtpClient.SendAsync(
+                    email,
+                    this.configuration.Smtp,
+                    smtpCredentials.email,
+                    smtpCredentials.password);
                 success = true;
             }
             catch (Exception ex)
@@ -97,6 +110,17 @@
                     await this.pubSubClient.PublishAsync(saveSurveyStatusMessage);
                 }
             }
+        }
+
+        /// <summary>
+        ///     Read smtp password and email.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<(string email, string password)> AccessSecrets()
+        {
+            var email = this.secretManager.GetStringAsync(this.configuration.Smtp.UserNameKey);
+            var password = this.secretManager.GetStringAsync(this.configuration.Smtp.PasswordKey);
+            return (await email, await password);
         }
     }
 }

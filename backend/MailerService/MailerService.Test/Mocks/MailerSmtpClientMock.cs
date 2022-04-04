@@ -6,7 +6,12 @@
 
     public class MailerSmtpClientMock : IMailerSmtpClient
     {
-        public Task SendAsync(MimeMessage message, ISmtp smtp)
+        public Task SendAsync(
+            MimeMessage message,
+            ISmtp smtp,
+            string userName,
+            string password
+        )
         {
             return Task.CompletedTask;
         }

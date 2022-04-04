@@ -8,9 +8,14 @@
     public class Smtp : ISmtp
     {
         /// <summary>
+        ///     Gets the display name for <see cref="UserNameKey" />.
+        /// </summary>
+        public string DisplayName { get; set; } = string.Empty;
+
+        /// <summary>
         ///     Gets or sets the smtp password.
         /// </summary>
-        public string Password { get; set; } = string.Empty;
+        public string PasswordKey { get; set; } = string.Empty;
 
         /// <summary>
         ///     Gets or sets the smtp port.
@@ -25,6 +30,6 @@
         /// <summary>
         ///     Gets the name of the user.
         /// </summary>
-        public string UserName { get; set; } = string.Empty;
+        public string UserNameKey { get; set; } = string.Empty;
     }
 }

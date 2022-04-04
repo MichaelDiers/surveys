@@ -1,11 +1,12 @@
 ﻿namespace MailerService.Test.Mocks
 {
     using System.Threading.Tasks;
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Surveys.Common.Contracts;
+    using Surveys.Common.PubSub.Contracts.Logic;
 
-    public class PubSubMock : IPubSubClient
+    public class PubSubMock : ISaveSurveyStatusPubSubClient
     {
-        public Task PublishAsync<T>(T message)
+        public Task PublishAsync(ISaveSurveyStatusMessage message)
         {
             return Task.CompletedTask;
         }

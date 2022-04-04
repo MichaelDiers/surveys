@@ -20,11 +20,9 @@
                 logger,
                 new MessageConverterMock(),
                 new MailerSmtpClientMock(),
-                new MailerServiceConfiguration
-                {
-                    MailboxAddressFrom = new MailboxAddressFromConfiguration {Email = "foo@bar", Name = "foo"}
-                },
-                new PubSubMock()).HandleAsync(JsonConvert.DeserializeObject<SendMailMessage>(json));
+                new MailerServiceConfiguration(),
+                new PubSubMock(),
+                new SecretManagerMock()).HandleAsync(JsonConvert.DeserializeObject<SendMailMessage>(json));
             Assert.Empty(logger.ListLogEntries());
         }
     }
