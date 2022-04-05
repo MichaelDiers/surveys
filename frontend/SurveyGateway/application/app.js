@@ -29,6 +29,8 @@ const initialize = (config = {}) => {
     });
   }
 
+  const logLevel = requestLogging ? 'info' : 'error';
+
   app.use(framePath, createProxyMiddleware({
     changeOrigin: true,
     target: frameTarget,
@@ -36,6 +38,7 @@ const initialize = (config = {}) => {
       '^/gateway': '',
     },
     onProxyReq: fixRequestBody,
+    logLevel,
   }));
 
   app.use(votePath, createProxyMiddleware({
@@ -45,6 +48,7 @@ const initialize = (config = {}) => {
       '^/gateway': '',
     },
     onProxyReq: fixRequestBody,
+    logLevel,
   }));
 
   return app;
