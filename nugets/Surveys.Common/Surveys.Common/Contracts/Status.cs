@@ -37,6 +37,18 @@
         ///     Sending a survey invitation mail failed.
         /// </summary>
         [EnumMember(Value = "CLOSED")]
-        Closed
+        Closed,
+
+        /// <summary>
+        ///     A thank you mail is sent.
+        /// </summary>
+        [EnumMember(Value = "THANK_YOU_MAIL_OK")]
+        ThankYouMailSentOk,
+
+        /// <summary>
+        ///     Sending a thank you mail failed.
+        /// </summary>
+        [EnumMember(Value = "THANK_YOU_MAIL_FAILED")]
+        ThankYouMailSentFailed
     }
 }
