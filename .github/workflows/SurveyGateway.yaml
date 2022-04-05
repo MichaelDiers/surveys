@@ -10,7 +10,7 @@ on:
     workflows: [GoLive]
     types: [completed]
 jobs:
-  createSchemaAndTopic:
+  deployGoogleCloudFunction:
     uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function.yaml@main
     with:
       functionName: gateway
