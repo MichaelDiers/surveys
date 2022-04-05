@@ -13,6 +13,11 @@
         /// <summary>
         ///     Request for participating in a survey.
         /// </summary>
-        RequestForParticipation = 1
+        RequestForParticipation = 1,
+
+        /// <summary>
+        ///     Send a thank you mail for voting.
+        /// </summary>
+        ThankYou = 2
     }
 }
