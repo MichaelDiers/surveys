@@ -231,8 +231,8 @@
                         resultPlain)),
                 surveyResult.InternalSurveyId,
                 new[] {participant.Id},
-                Status.InvitationMailSentOk,
-                Status.InvitationMailSentFailed);
+                Status.ThankYouMailSentOk,
+                Status.ThankYouMailSentFailed);
             await this.sendMailPubSubClient.PublishAsync(sendMailMessage);
         }
     }
