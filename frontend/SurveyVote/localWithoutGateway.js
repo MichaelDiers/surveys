@@ -7,10 +7,10 @@ const application = app(
     baseName: 'vote',
     gatewayAddress: '',
     requestLogging: true,
-    surveysCollectionName: 'surveys',
-    surveyStatusCollectionName: 'surveys-status',
-    surveyResultsCollectionName: 'survey-results',
-    saveSurveyResultTopic: 'SAVE_SURVEY_RESULT',
+    surveysCollectionName: 'surveys-test',
+    surveyStatusCollectionName: 'survey-status-test',
+    surveyResultsCollectionName: 'survey-results-test',
+    saveSurveyResultTopic: 'SAVE_SURVEY_RESULT_TEST',
   }),
 );
 

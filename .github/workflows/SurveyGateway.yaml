@@ -1,37 +1,27 @@
-name: FE/SurveyGateway.yaml
+name: SurveyGateway
 on:
   push:
     branches:
       - main
     paths:
       - 'frontend/SurveyGateway/**'
-      - '.github/workflows/SurveyGateway.yaml'
   workflow_dispatch:
-env:
-  FUNCTION_NAME: gateway
-  SOURCE_DIR: 'frontend/SurveyGateway'  
+  workflow_run:
+    workflows: [GoLive]
+    types: [completed]
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    environment:
-      name: SurveyGateway-Test
-    env:
-      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
-      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
-      ENV_GATEWAY_FRAME_TARGET: ${{ secrets.ENV_GATEWAY_FRAME_TARGET }}
-      ENV_GATEWAY_VOTE_TARGET: ${{ secrets.ENV_GATEWAY_VOTE_TARGET }}
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: '${{ env.GCP_CREDENTIALS }}'
-      - name: deploy
-        uses: google-github-actions/deploy-cloud-functions@v0
-        with:
-          name: ${{ env.FUNCTION_NAME }}
-          runtime: nodejs14
-          project_id: ${{ env.PROJECT_ID }}
-          source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: ENV_GATEWAY_FRAME_TARGET=${{ env.ENV_GATEWAY_FRAME_TARGET }},ENV_GATEWAY_VOTE_TARGET=${{ env.ENV_GATEWAY_VOTE_TARGET }},GCLOUD_PROJECT=${{ env.PROJECT_ID }}
+  createSchemaAndTopic:
+    uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function.yaml@main
+    with:
+      functionName: gateway
+      sourceDirectory: frontend/SurveyGateway
+    secrets:
+      gcpCredentialsTest: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      gcpCredentialsStage: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
+      gcpCredentialsProd: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
+      projectIdTest: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      projectIdStage: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
+      projectIdProd: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
+      envVarsTest: ENV_GATEWAY_FRAME_TARGET=${{ secrets.ENV_GATEWAY_FRAME_TARGET_TEST }},ENV_GATEWAY_VOTE_TARGET=${{ secrets.ENV_GATEWAY_VOTE_TARGET_TEST }}
+      envVarsStage: ENV_GATEWAY_FRAME_TARGET=${{ secrets.ENV_GATEWAY_FRAME_TARGET_STAGE }},ENV_GATEWAY_VOTE_TARGET=${{ secrets.ENV_GATEWAY_VOTE_TARGET_STAGE }}
+      envVarsProd: ENV_GATEWAY_FRAME_TARGET=${{ secrets.ENV_GATEWAY_FRAME_TARGET_PROD }},ENV_GATEWAY_VOTE_TARGET=${{ secrets.ENV_GATEWAY_VOTE_TARGET_PROD }}
