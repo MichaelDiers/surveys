@@ -77,6 +77,9 @@
                 case MailType.RequestForParticipation:
                     await this.SendRequestForParticipationAsync(message, new RequestForParticipationTemplate(template));
                     break;
+                case MailType.ThankYou:
+                    await this.SendThankYouMail(message);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(
                         nameof(message.MailType),
@@ -129,6 +132,16 @@
                     Status.InvitationMailSentFailed);
                 await this.sendMailPubSubClient.PublishAsync(sendMailMessage);
             }
+        }
+
+        /// <summary>
+        ///     Create thank you mail.
+        /// </summary>
+        /// <param name="message">The incoming message.</param>
+        /// <returns>A <see cref="Task" />.</returns>
+        private async Task SendThankYouMail(ICreateMailMessage message)
+        {
+            await Task.CompletedTask;
         }
     }
 }
