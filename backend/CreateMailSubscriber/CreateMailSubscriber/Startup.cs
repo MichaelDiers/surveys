@@ -38,6 +38,8 @@ namespace CreateMailSubscriber
 
             services.AddScoped<IRuntimeEnvironment>(_ => configuration);
             services.AddScoped<IEmailTemplateReadOnlyDatabase, EmailTemplateReadOnlyDatabase>();
+            services.AddScoped<ISurveyResultReadOnlyDatabase, SurveyResultReadOnlyDatabase>();
+            services.AddScoped<ISurveyReadOnlyDatabase, SurveyReadOnlyDatabase>();
 
             services.AddScoped<IPubSubProvider<ICreateMailMessage>, FunctionProvider>();
         }
