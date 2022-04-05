@@ -51,11 +51,13 @@ message CreateMailMessage {
     enum MailType {
         Undefined = 0;
         RequestForParticipation = 1;
+        ThankYou = 2;	
     }
 
     string processId = 1;
     MailType mailType = 2;
     oneof data {
         RequestForParticipationMessage requestForParticipation = 3;
+        string documentId = 4;
     }
 }
