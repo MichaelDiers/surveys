@@ -36,8 +36,18 @@ namespace SaveSurveyResultSubscriber
             services.AddScoped<IRuntimeEnvironment>(_ => configuration);
             services.AddScoped<ISurveyResultDatabase, SurveyResultDatabase>();
 
-            services.AddScoped<IPubSubClientEnvironment>(_ => configuration);
-            services.AddScoped<IEvaluateSurveyPubSubClient, EvaluateSurveyPubSubClient>();
+            services.AddScoped<IEvaluateSurveyPubSubClient>(
+                _ => new EvaluateSurveyPubSubClient(
+                    new PubSubClientEnvironment(
+                        configuration.Environment,
+                        configuration.ProjectId,
+                        configuration.EvaluateSurveyTopicName)));
+            services.AddScoped<ICreateMailPubSubClient>(
+                _ => new CreateMailPubSubClient(
+                    new PubSubClientEnvironment(
+                        configuration.Environment,
+                        configuration.ProjectId,
+                        configuration.CreateMailTopicName)));
 
             services.AddScoped<IPubSubProvider<ISaveSurveyResultMessage>, FunctionProvider>();
         }

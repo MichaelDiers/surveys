@@ -5,6 +5,7 @@
     using Md.GoogleCloud.Base.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Messages;
     using Surveys.Common.PubSub.Contracts.Logic;
@@ -15,6 +16,11 @@
     public class FunctionProvider : PubSubProvider<ISaveSurveyResultMessage, Function>
     {
         /// <summary>
+        ///     Access google cloud pub/sub.
+        /// </summary>
+        private readonly ICreateMailPubSubClient createMailPubSubClient;
+
+        /// <summary>
         ///     Access to the survey result database.
         /// </summary>
         private readonly ISurveyResultDatabase database;
@@ -22,23 +28,26 @@
         /// <summary>
         ///     Access google cloud pub/sub.
         /// </summary>
-        private readonly IEvaluateSurveyPubSubClient pubSubClient;
+        private readonly IEvaluateSurveyPubSubClient evaluateSurveyPubSubClient;
 
         /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
         /// <param name="logger">An error logger.</param>
         /// <param name="database">Access to the survey result database.</param>
-        /// <param name="pubSubClient">Access google cloud pub/sub.</param>
+        /// <param name="evaluateSurveyPubSubClient">Access google cloud pub/sub.</param>
+        /// <param name="createMailPubSubClient">Access google cloud pub/sub.</param>
         public FunctionProvider(
             ILogger<Function> logger,
             ISurveyResultDatabase database,
-            IEvaluateSurveyPubSubClient pubSubClient
+            IEvaluateSurveyPubSubClient evaluateSurveyPubSubClient,
+            ICreateMailPubSubClient createMailPubSubClient
         )
             : base(logger)
         {
             this.database = database ?? throw new ArgumentNullException(nameof(database));
-            this.pubSubClient = pubSubClient;
+            this.evaluateSurveyPubSubClient = evaluateSurveyPubSubClient;
+            this.createMailPubSubClient = createMailPubSubClient;
         }
 
         /// <summary>
@@ -53,12 +62,18 @@
                 throw new ArgumentNullException(nameof(message));
             }
 
-            await this.database.InsertAsync(message.SurveyResult);
+            var documentId = await this.database.InsertAsync(message.SurveyResult);
 
             if (!message.SurveyResult.IsSuggested)
             {
-                await this.pubSubClient.PublishAsync(
+                await this.evaluateSurveyPubSubClient.PublishAsync(
                     new EvaluateSurveyMessage(message.ProcessId, message.SurveyResult.InternalSurveyId));
+                await this.createMailPubSubClient.PublishAsync(
+                    new CreateMailMessage(
+                        message.ProcessId,
+                        MailType.ThankYou,
+                        null,
+                        documentId));
             }
         }
     }

@@ -9,8 +9,13 @@
     public class FunctionConfiguration : RuntimeEnvironment, IFunctionConfiguration
     {
         /// <summary>
-        ///     Gets the pub/sub topic name.
+        ///     Gets the pub/sub topic name for creating thank you emails.
         /// </summary>
-        public string TopicName { get; set; }
+        public string CreateMailTopicName { get; set; }
+
+        /// <summary>
+        ///     Gets the pub/sub topic name for evaluating surveys.
+        /// </summary>
+        public string EvaluateSurveyTopicName { get; set; }
     }
 }
