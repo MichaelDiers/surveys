@@ -32,7 +32,9 @@
 								"CREATED",
                                                                 "INVITATION_MAIL_OK",
                                                                 "INVITATION_MAIL_FAILED",
-                                                                "CLOSED"
+                                                                "CLOSED",
+                                                                "THANK_YOU_MAIL_OK",
+                                                                "THANK_YOU_MAIL_FAILED"
                 							]
 						}
 					}					
