@@ -1,37 +1,27 @@
-name: FE/SurveyVote.yaml
+name: SurveyVote
 on:
   push:
     branches:
       - main
     paths:
       - 'frontend/SurveyVote/**'
-      - '.github/workflows/SurveyVote.yaml'
   workflow_dispatch:
-env:
-  FUNCTION_NAME: vote
-  SOURCE_DIR: 'frontend/SurveyVote'
-  SAVE_SURVEY_RESULT_TOPIC: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_RESULT }}
+  workflow_run:
+    workflows: [GoLive]
+    types: [completed]
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    env:
-      GCP_CREDENTIALS: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
-      PROJECT_ID: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
-      SURVEYS_COLLECTION_NAME: 'surveys-test'
-      SURVEY_STATUS_COLLECTION_NAME: 'survey-status-test'
-      SURVEY_RESULTS_COLLECTION_NAME: 'survey-results-test'
-    steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: '${{ env.GCP_CREDENTIALS }}'
-      - name: deploy
-        uses: google-github-actions/deploy-cloud-functions@v0
-        with:
-          name: ${{ env.FUNCTION_NAME }}
-          runtime: nodejs14
-          project_id: ${{ env.PROJECT_ID }}
-          source_dir: ${{ env.SOURCE_DIR }}
-          env_vars: GCLOUD_PROJECT=${{ env.PROJECT_ID }},ENV_SURVEYS_COLLECTION_NAME=${{ env.SURVEYS_COLLECTION_NAME }},ENV_SURVEY_STATUS_COLLECTION_NAME=${{ env.SURVEY_STATUS_COLLECTION_NAME }},ENV_SURVEY_RESULTS_COLLECTION_NAME=${{ env.SURVEY_RESULTS_COLLECTION_NAME }},ENV_SAVE_SURVEY_RESULT_TOPIC=${{ env.SAVE_SURVEY_RESULT_TOPIC }}
+  deployGoogleCloudFunction:
+    uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function.yaml@main
+    with:
+      functionName: vote
+      sourceDirectory: frontend/SurveyVote
+    secrets:
+      gcpCredentialsTest: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
+      gcpCredentialsStage: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
+      gcpCredentialsProd: ${{ secrets.GLOBAL_GCP_CREDENTIALS_PROD }}
+      projectIdTest: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
+      projectIdStage: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
+      projectIdProd: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
+      envVarsTest: ENV_SURVEYS_COLLECTION_NAME=${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}-test,ENV_SURVEY_STATUS_COLLECTION_NAME=${{ secrets.GLOBAL_SURVEYS_STATUS_COLLECTION_NAME }}-test,ENV_SURVEY_RESULTS_COLLECTION_NAME=${{ secrets.GLOBAL_SURVEY_RESULTS_COLLECTION_NAME }}-test,ENV_SAVE_SURVEY_RESULT_TOPIC=${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_RESULT }}_TEST
+      envVarsStage: ENV_SURVEYS_COLLECTION_NAME=${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}-stage,ENV_SURVEY_STATUS_COLLECTION_NAME=${{ secrets.GLOBAL_SURVEYS_STATUS_COLLECTION_NAME }}-stage,ENV_SURVEY_RESULTS_COLLECTION_NAME=${{ secrets.GLOBAL_SURVEY_RESULTS_COLLECTION_NAME }}-stage,ENV_SAVE_SURVEY_RESULT_TOPIC=${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_RESULT }}_STAGE
+      envVarsProd: ENV_SURVEYS_COLLECTION_NAME=${{ secrets.GLOBAL_SURVEYS_COLLECTION_NAME }}-prod,ENV_SURVEY_STATUS_COLLECTION_NAME=${{ secrets.GLOBAL_SURVEYS_STATUS_COLLECTION_NAME }}-prod,ENV_SURVEY_RESULTS_COLLECTION_NAME=${{ secrets.GLOBAL_SURVEY_RESULTS_COLLECTION_NAME }}-prod,ENV_SAVE_SURVEY_RESULT_TOPIC=${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_RESULT }}_PROD
