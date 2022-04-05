@@ -192,6 +192,19 @@
             }
 
             var subject = template.Subject(survey.Name);
+            var results = survey.Questions.OrderBy(q => q.Order)
+                .Select(
+                    q =>
+                    {
+                        var surveyResultChoice = surveyResult.Results.First(src => src.QuestionId == q.Id);
+                        return (q.Text, q.Choices.First(c => c.Id == surveyResultChoice.ChoiceId).Answer);
+                    })
+                .ToArray();
+            var resultPlain =
+                template.ResultListPlain(results.Select(tuple => template.ResultPlain(tuple.Text, tuple.Answer)));
+            var resultHtml =
+                template.ResultListHtml(results.Select(tuple => template.ResultHtml(tuple.Text, tuple.Answer)));
+
             var sendMailMessage = new SendMailMessage(
                 message.ProcessId,
                 new[] {new Recipient(participant.Email, participant.Name)},
@@ -205,7 +218,8 @@
                             this.configuration.FrondEndUrlFormat,
                             surveyResult.InternalSurveyId,
                             participant.Id),
-                        survey.Organizer.Name),
+                        survey.Organizer.Name,
+                        resultHtml),
                     template.BodyPlain(
                         participant.Name,
                         survey.Name,
@@ -213,7 +227,8 @@
                             this.configuration.FrondEndUrlFormat,
                             surveyResult.InternalSurveyId,
                             participant.Id),
-                        survey.Organizer.Name)),
+                        survey.Organizer.Name,
+                        resultPlain)),
                 surveyResult.InternalSurveyId,
                 new[] {participant.Id},
                 Status.InvitationMailSentOk,
