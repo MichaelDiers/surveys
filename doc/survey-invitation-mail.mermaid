@@ -1,0 +1,36 @@
+sequenceDiagram
+    autonumber
+    participant PS as Google Cloud<br>Pub/Sub
+    participant CMS as CreateMailSubscriber<br>.net core
+    participant MS as MailerService<br>.net core
+    participant FS as Google Cloud<br>Firestore
+    participant SM as Google Cloud<br>Secret Manager
+    participant SMTP as Smtp Client
+    participant SSSS as SaveSurveyStatusSubscriber<br>.net core
+    %% CREATE_MAIL
+    PS--)+CMS: CREATE_MAIL
+    CMS->>+FS: read mail template
+    FS-->>CMS: response
+    deactivate FS
+    CMS->>+PS: SEND_MAIL
+    PS-->>CMS: response
+    deactivate CMS
+    PS--)MS: SEND_MAIL
+    deactivate PS
+    activate MS
+    MS->>+SM: read secrets
+    SM-->>MS: response
+    deactivate SM
+    MS--)+SMTP: send invitaton mail
+    SMTP-->MS: response
+    deactivate SMTP
+    MS->>+PS: SAVE_SURVEY_STATUS
+    PS-->>MS: response
+    deactivate MS
+    PS--)SSSS: SAVE_SURVEY_STATUS
+    deactivate PS
+    activate SSSS
+    SSSS->>+FS: save status
+    FS-->>SSSS: response
+    deactivate FS
+    deactivate SSSS

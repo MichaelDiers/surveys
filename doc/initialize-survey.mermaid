@@ -6,8 +6,6 @@ sequenceDiagram
     participant SSS as SaveSurveySubscriber<br>.net core
     participant SSSS as SaveSurveyStatusSubscriber<br>.net core
     participant SSRS as SaveSurveyResultSubscriber<br>.net core
-    participant CMS as CreateMailSubscriber<br>.net core
-    participant MS as MailerService<br>.net core
     participant FS as Google Cloud<br>Firestore
     C->>+PS: INITIALIZE_SURVEY
     PS-->>C: response
@@ -44,16 +42,7 @@ sequenceDiagram
         deactivate SSRS
     end
     %% CREATE_MAIL
-    ISS->>+PS: CREATE_MAIL
-    PS-->>ISS: response
+    ISS->>PS: CREATE_MAIL
     deactivate ISS
-    PS--)+CMS: CREATE_MAIL
-    deactivate PS
-    CMS->>+FS: read mail template
-    FS-->>CMS: response
-    deactivate FS
-    CMS->>+PS: SEND_MAIL
-    PS-->>CMS: response
-    deactivate PS
-    deactivate CMS
+    Note right of PS: see "Send survey invitation mail"
     
