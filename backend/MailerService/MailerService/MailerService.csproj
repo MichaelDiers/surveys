@@ -23,7 +23,7 @@
     <PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.11" />
     <PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.25" />
     <PackageReference Include="Md.GoogleCloudSecrets" Version="1.2.2" />
-    <PackageReference Include="Surveys.Common" Version="1.2.61" />
+    <PackageReference Include="Surveys.Common" Version="1.2.64" />
     <PackageReference Include="Surveys.Common.PubSub" Version="1.2.6" />
   </ItemGroup>
 
