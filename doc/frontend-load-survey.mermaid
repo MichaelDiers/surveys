@@ -1,0 +1,31 @@
+sequenceDiagram
+    autonumber
+    participant C as Client
+    participant SG as SurveyGateway<br>Node.js/express
+    participant SF as SurveyFrame<br>Node.js/express
+    participant SV as SurveyVote<br>Node.js/express
+    participant F as Google Cloud<br>Firestore
+    C->>+SG: GET /survey
+    Note right of C: load survey frame
+    SG->>+SF: redirect
+    SF-->>SG: reponse
+    deactivate SF
+    SG-->>C: response
+    deactivate SG
+    C--)+SG: GET /survey (ajax)
+    Note right of C: load survey data
+    SG->>+SV: redirect
+    SV->>+F: read survey
+    F-->>SV: response
+    deactivate F
+    SV->>+F: read survey status
+    F-->>SV: response
+    deactivate F
+    SV->>+F: read survey results
+    F-->>SV: response
+    deactivate F
+    SV-->>SG: response
+    deactivate SV
+    SG--)C: response
+    deactivate SG
+    

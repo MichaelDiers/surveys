@@ -1,0 +1,22 @@
+sequenceDiagram
+    autonumber
+    participant C as Client
+    participant SG as SurveyGateway<br>Node.js/express
+    participant SF as SurveyFrame<br>Node.js/express
+    participant SV as SurveyVote<br>Node.js/express
+    participant F as Google Cloud<br>Firestore
+    participant PS as Google Cloud<br>Pub/Sub
+    C--)+SG: POST /survey
+    SG->>+SV: redirect
+    SV->>+F: read survey
+    F-->>SV: response
+    deactivate F
+    SV->>+PS: SAVE_SURVEY_RESULT
+    Note right of PS: handled in backend
+    PS-->>SV: response
+    deactivate PS
+    SV-->>SG: response
+    deactivate SV
+    SG--)C: response
+    deactivate SG
+    Note right of C: display<br>thank you page
