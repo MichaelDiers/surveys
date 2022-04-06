@@ -7,11 +7,11 @@
 	<ItemGroup>
 		<PackageReference Include="Google.Cloud.Functions.Hosting" Version="1.0.0" />
 		<PackageReference Include="Md.GoogleCloud.Base" Version="1.2.37" />
-		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.11" />
-		<PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.25" />
-		<PackageReference Include="Surveys.Common" Version="1.2.63" />
-		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.11" />
-		<PackageReference Include="Surveys.Common.PubSub" Version="1.2.6" />
+		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.12" />
+		<PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.26" />
+		<PackageReference Include="Surveys.Common" Version="1.2.65" />
+		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.12" />
+		<PackageReference Include="Surveys.Common.PubSub" Version="1.2.7" />
 	</ItemGroup>
 
 </Project>
