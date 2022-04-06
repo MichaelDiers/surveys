@@ -99,7 +99,8 @@
                 new CreateMailMessage(
                     message.ProcessId,
                     MailType.RequestForParticipation,
-                    new RequestForParticipation(internalSurveyId, message.Survey)));
+                    new RequestForParticipation(internalSurveyId, message.Survey),
+                    null));
         }
     }
 }
