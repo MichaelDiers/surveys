@@ -16,6 +16,7 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Surveys.Common" Version="1.2.65" />
 		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.12" />
+		<PackageReference Include="Surveys.Common.PubSub" Version="1.2.8" />
 	</ItemGroup>
 
 </Project>

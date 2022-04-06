@@ -6,13 +6,15 @@ namespace EvaluateSurveySubscriber
     using Google.Cloud.Functions.Hosting;
     using Md.Common.Contracts;
     using Md.GoogleCloud.Base.Contracts.Logic;
-    using Md.GoogleCloud.Base.Logic;
+    using Md.GoogleCloudPubSub.Logic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Firestore.Models;
+    using Surveys.Common.PubSub.Contracts.Logic;
+    using Surveys.Common.PubSub.Logic;
 
     /// <summary>
     ///     Initialize the function.
@@ -38,10 +40,16 @@ namespace EvaluateSurveySubscriber
 
             services.AddScoped<ISaveSurveyStatusPubSubClient>(
                 _ => new SaveSurveyStatusPubSubClient(
-                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName)));
+                    new PubSubClientEnvironment(
+                        configuration.Environment,
+                        configuration.ProjectId,
+                        configuration.SaveSurveyStatusTopicName)));
             services.AddScoped<ISurveyClosedPubSubClient>(
                 _ => new SurveyClosedPubSubClient(
-                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SurveyClosedTopicName)));
+                    new PubSubClientEnvironment(
+                        configuration.Environment,
+                        configuration.ProjectId,
+                        configuration.SurveyClosedTopicName)));
 
             services.AddScoped<IPubSubProvider<IEvaluateSurveyMessage>, FunctionProvider>();
         }

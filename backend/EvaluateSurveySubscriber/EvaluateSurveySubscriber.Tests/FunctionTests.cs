@@ -11,12 +11,14 @@
     using EvaluateSurveySubscriber.Tests.Mocks;
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
-    using Md.GoogleCloud.Base.Logic;
+    using Md.GoogleCloudPubSub.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Models;
     using Surveys.Common.Messages;
+    using Surveys.Common.PubSub.Logic;
     using Xunit;
+    using Environment = Md.Common.Contracts.Environment;
 
     /// <summary>
     ///     Tests for <see cref="Function" />.
@@ -123,9 +125,15 @@
                 new SurveyResultReadOnlyDatabase(configuration),
                 new SurveyStatusReadOnlyDatabase(configuration),
                 new SaveSurveyStatusPubSubClient(
-                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SaveSurveyStatusTopicName)),
+                    new PubSubClientEnvironment(
+                        Environment.Test,
+                        configuration.ProjectId,
+                        configuration.SaveSurveyStatusTopicName)),
                 new SurveyClosedPubSubClient(
-                    new PubSubClientConfiguration(configuration.ProjectId, configuration.SurveyClosedTopicName)));
+                    new PubSubClientEnvironment(
+                        Environment.Test,
+                        configuration.ProjectId,
+                        configuration.SurveyClosedTopicName)));
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 
