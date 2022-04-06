@@ -20,7 +20,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="Google.Cloud.Functions.Testing" Version="1.0.0" />
-		<PackageReference Include="Google.Cloud.PubSub.V1" Version="2.7.0" />
 		<PackageReference Include="Md.GoogleCloud.Base" Version="1.2.37" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

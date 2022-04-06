@@ -22,6 +22,11 @@
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<ISurveyStatus>> ReadManyAsync()
+        {
+            return null;
+        }
+
         public async Task<IEnumerable<ISurveyStatus>> ReadManyAsync(string fieldPath, object value)
         {
             return await this.ReadManyAsync(fieldPath, value, OrderType.Unsorted);

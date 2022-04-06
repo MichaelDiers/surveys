@@ -15,6 +15,11 @@
             return Task.FromResult(TestData.CreateSurvey());
         }
 
+        public Task<IEnumerable<ISurvey>> ReadManyAsync()
+        {
+            return null;
+        }
+
         public Task<IEnumerable<ISurvey>> ReadManyAsync(string fieldPath, object value)
         {
             throw new NotImplementedException();

@@ -22,6 +22,11 @@
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<ISurveyResult>> ReadManyAsync()
+        {
+            return null;
+        }
+
         public Task<IEnumerable<ISurveyResult>> ReadManyAsync(string fieldPath, object value)
         {
             throw new NotImplementedException();
