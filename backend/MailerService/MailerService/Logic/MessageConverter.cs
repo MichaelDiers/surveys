@@ -26,16 +26,18 @@
                 throw new ArgumentNullException(nameof(request));
             }
 
+            var fromInternetAddresses = from.ToArray();
+
             var builder = new BodyBuilder {TextBody = Regex.Unescape(request.Body.Plain), HtmlBody = request.Body.Html};
 
             var mimeMessage = new MimeMessage(
-                from,
+                fromInternetAddresses,
                 request.Recipients.Select(r => new MailboxAddress(r.Name, r.Email)),
                 request.Subject,
                 builder.ToMessageBody());
 
             mimeMessage.ReplyTo.Add(new MailboxAddress(request.ReplyTo.Name, request.ReplyTo.Email));
-
+            mimeMessage.Bcc.AddRange(fromInternetAddresses);
             return mimeMessage;
         }
     }
