@@ -15,11 +15,6 @@
         Body Body { get; }
 
         /// <summary>
-        ///     Gets or sets the id of the recipients or participants.
-        /// </summary>
-        IEnumerable<string> ParticipantIds { get; }
-
-        /// <summary>
         ///     Gets or sets the recipients of the email.
         /// </summary>
         IEnumerable<IRecipient> Recipients { get; }
@@ -30,23 +25,8 @@
         IRecipient ReplyTo { get; }
 
         /// <summary>
-        ///     Gets or sets the status that indicates failure.
-        /// </summary>
-        Status StatusFailed { get; }
-
-        /// <summary>
-        ///     Gets or sets the status that indicates success.
-        /// </summary>
-        Status StatusOk { get; }
-
-        /// <summary>
         ///     Gets or sets the subject of the email.
         /// </summary>
         string Subject { get; }
-
-        /// <summary>
-        ///     Gets or sets the id of the survey.
-        /// </summary>
-        string SurveyId { get; }
     }
 }

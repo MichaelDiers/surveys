@@ -4,7 +4,6 @@
     using Md.Common.Extensions;
     using Md.GoogleCloud.Base.Messages;
     using Newtonsoft.Json;
-    using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
 
     /// <summary>
@@ -20,32 +19,20 @@
         /// <param name="replyTo">The reply to address of the email.</param>
         /// <param name="subject">The subject of the email.</param>
         /// <param name="body">The email body for html and plain text.</param>
-        /// <param name="surveyId">The survey id.</param>
-        /// <param name="participantIds">The ids of the participants.</param>
-        /// <param name="statusOk">The status if the email is sent.</param>
-        /// <param name="statusFailed">The status if the process failed.</param>
         [JsonConstructor]
         public SendMailMessage(
             string processId,
             IEnumerable<Recipient> recipients,
             Recipient replyTo,
             string subject,
-            Body body,
-            string surveyId,
-            IEnumerable<string> participantIds,
-            Status statusOk,
-            Status statusFailed
+            Body body
         )
             : this(
                 processId,
                 recipients,
                 replyTo as IRecipient,
                 subject,
-                body,
-                surveyId,
-                participantIds,
-                statusOk,
-                statusFailed)
+                body)
         {
         }
 
@@ -57,20 +44,12 @@
         /// <param name="replyTo"> The reply to address of the email.</param>
         /// <param name="subject"> The subject of the email.</param>
         /// <param name="body"> The email body for html and plain text.</param>
-        /// <param name="surveyId"> The survey id.</param>
-        /// <param name="participantIds"> The ids of the participants.</param>
-        /// <param name="statusOk"> The status if the email is sent.</param>
-        /// <param name="statusFailed"> The status if the process failed.</param>
         public SendMailMessage(
             string processId,
             IEnumerable<IRecipient> recipients,
             IRecipient replyTo,
             string subject,
-            Body body,
-            string surveyId,
-            IEnumerable<string> participantIds,
-            Status statusOk,
-            Status statusFailed
+            Body body
         )
             : base(processId)
         {
@@ -78,10 +57,6 @@
             this.ReplyTo = replyTo;
             this.Subject = subject.ValidateIsNotNullOrWhitespace(nameof(subject));
             this.Body = body;
-            this.SurveyId = surveyId.ValidateIsNotNullOrWhitespace(nameof(surveyId));
-            this.ParticipantIds = participantIds;
-            this.StatusOk = statusOk;
-            this.StatusFailed = statusFailed;
         }
 
         /// <summary>
@@ -90,11 +65,6 @@
         [JsonProperty("text", Required = Required.Always, Order = 14)]
         public Body Body { get; }
 
-        /// <summary>
-        ///     Gets or sets the id of the recipients or participants.
-        /// </summary>
-        [JsonProperty("participantIds", Required = Required.Always, Order = 16)]
-        public IEnumerable<string> ParticipantIds { get; }
 
         /// <summary>
         ///     Gets or sets the recipients of the email.
@@ -109,27 +79,9 @@
         public IRecipient ReplyTo { get; }
 
         /// <summary>
-        ///     Gets or sets the status that indicates failure.
-        /// </summary>
-        [JsonProperty("statusFailed", Required = Required.Always, Order = 18)]
-        public Status StatusFailed { get; }
-
-        /// <summary>
-        ///     Gets or sets the status that indicates success.
-        /// </summary>
-        [JsonProperty("statusOk", Required = Required.Always, Order = 17)]
-        public Status StatusOk { get; }
-
-        /// <summary>
         ///     Gets or sets the subject of the email.
         /// </summary>
         [JsonProperty("subject", Required = Required.Always, Order = 13)]
         public string Subject { get; }
-
-        /// <summary>
-        ///     Gets or sets the id of the survey.
-        /// </summary>
-        [JsonProperty("surveyId", Required = Required.Always, Order = 15)]
-        public string SurveyId { get; }
     }
 }

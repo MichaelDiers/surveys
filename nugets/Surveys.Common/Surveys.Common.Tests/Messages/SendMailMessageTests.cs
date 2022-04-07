@@ -2,7 +2,6 @@
 {
     using System;
     using Newtonsoft.Json;
-    using Surveys.Common.Contracts;
     using Surveys.Common.Messages;
     using Xunit;
 
@@ -25,11 +24,7 @@
                 new[] {new Recipient("foo@bar.example", "foo")},
                 new Recipient("bar@foo.example", "bar"),
                 "subject",
-                new Body("html", "plain"),
-                Guid.NewGuid().ToString(),
-                new[] {Guid.NewGuid().ToString()},
-                Status.Created,
-                Status.InvitationMailSentFailed);
+                new Body("html", "plain"));
             var json = JsonConvert.SerializeObject(message);
             Assert.NotNull(json);
         }
