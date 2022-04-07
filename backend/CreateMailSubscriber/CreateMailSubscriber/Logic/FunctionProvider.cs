@@ -7,7 +7,6 @@
     using CreateMailSubscriber.Model;
     using Md.GoogleCloud.Base.Logic;
     using Microsoft.Extensions.Logging;
-    using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Messages;
@@ -142,11 +141,7 @@
                                 this.configuration.FrondEndUrlFormat,
                                 message.RequestForParticipation.InternalSurveyId,
                                 participant.Id),
-                            survey.Organizer.Name)),
-                    message.RequestForParticipation.InternalSurveyId,
-                    new[] {participant.Id},
-                    Status.InvitationMailSentOk,
-                    Status.InvitationMailSentFailed);
+                            survey.Organizer.Name)));
                 await this.sendMailPubSubClient.PublishAsync(sendMailMessage);
             }
         }
@@ -228,11 +223,7 @@
                             surveyResult.InternalSurveyId,
                             participant.Id),
                         survey.Organizer.Name,
-                        resultPlain)),
-                surveyResult.InternalSurveyId,
-                new[] {participant.Id},
-                Status.ThankYouMailSentOk,
-                Status.ThankYouMailSentFailed);
+                        resultPlain)));
             await this.sendMailPubSubClient.PublishAsync(sendMailMessage);
         }
     }
