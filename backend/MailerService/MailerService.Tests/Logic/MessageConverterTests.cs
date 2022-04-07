@@ -3,7 +3,6 @@
     using System;
     using MailerService.Logic;
     using MimeKit;
-    using Surveys.Common.Contracts;
     using Surveys.Common.Messages;
     using Xunit;
 
@@ -38,11 +37,7 @@
                     new[] {new Recipient(recipientEmail, recipientName)},
                     new Recipient(replyToEmail, replyToName),
                     subject,
-                    new Body(textHtml, textPlain),
-                    Guid.NewGuid().ToString(),
-                    new[] {Guid.NewGuid().ToString()},
-                    Status.InvitationMailSentOk,
-                    Status.InvitationMailSentFailed),
+                    new Body(textHtml, textPlain)),
                 new[] {new MailboxAddress(fromName, fromEmail)});
 
             Assert.Single(message.To.Mailboxes);

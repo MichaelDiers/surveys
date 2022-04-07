@@ -63,26 +63,6 @@
           }
         ]
       }
-    },
-    {
-      "name": "surveyId",
-      "type": "string"
-    },
-    {
-      "name": "participantIds",
-      "type": {
-        "name": "participantId",
-        "type": "array",
-        "items": "string"
-      }
-    },
-    {
-      "name": "statusOk",
-      "type": "string"
-    },
-    {
-      "name": "statusFailed",
-      "type": "string"
     }
   ]
 }

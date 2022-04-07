@@ -5,14 +5,11 @@
     using MailerService.Logic;
     using MailerService.Model;
     using Md.GoogleCloud.Base.Contracts.Logic;
-    using Md.GoogleCloudPubSub.Logic;
     using Md.GoogleCloudSecrets.Logic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Surveys.Common.Contracts.Messages;
-    using Surveys.Common.PubSub.Contracts.Logic;
-    using Surveys.Common.PubSub.Logic;
 
     /// <summary>
     ///     Entry point of the google cloud function at startup.
@@ -29,9 +26,6 @@
             var mailerServiceConfiguration = new MailerServiceConfiguration();
             context.Configuration.Bind(mailerServiceConfiguration);
             services.AddScoped<IMailerServiceConfiguration>(_ => mailerServiceConfiguration);
-
-            services.AddScoped<IPubSubClientEnvironment>(_ => mailerServiceConfiguration);
-            services.AddScoped<ISaveSurveyStatusPubSubClient, SaveSurveyStatusPubSubClient>();
 
             services.AddScoped<ISecretManagerEnvironment>(_ => mailerServiceConfiguration);
             services.AddScoped<ISecretManager, SecretManager>();

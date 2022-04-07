@@ -8,9 +8,6 @@
     using Microsoft.Extensions.Logging;
     using MimeKit;
     using Surveys.Common.Contracts.Messages;
-    using Surveys.Common.Messages;
-    using Surveys.Common.Models;
-    using Surveys.Common.PubSub.Contracts.Logic;
 
     /// <summary>
     ///     Provider for sending email messages for surveys.
@@ -33,11 +30,6 @@
         private readonly IMessageConverter messageConverter;
 
         /// <summary>
-        ///     Access the Pub/Sub client.
-        /// </summary>
-        private readonly ISaveSurveyStatusPubSubClient pubSubClient;
-
-        /// <summary>
         ///     Access google cloud secrets.
         /// </summary>
         private readonly ISecretManager secretManager;
@@ -56,7 +48,6 @@
             IMessageConverter messageConverter,
             IMailerSmtpClient mailerSmtpClient,
             IMailerServiceConfiguration configuration,
-            ISaveSurveyStatusPubSubClient pubSubClient,
             ISecretManager secretManager
         )
             : base(logger)
@@ -64,7 +55,6 @@
             this.messageConverter = messageConverter ?? throw new ArgumentNullException(nameof(messageConverter));
             this.mailerSmtpClient = mailerSmtpClient ?? throw new ArgumentNullException(nameof(mailerSmtpClient));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this.pubSubClient = pubSubClient ?? throw new ArgumentNullException(nameof(pubSubClient));
             this.secretManager = secretManager ?? throw new ArgumentNullException(nameof(secretManager));
         }
 
@@ -84,7 +74,6 @@
 
             var email = this.messageConverter.ToMimeMessage(message, mimeMessageFrom);
 
-            var success = false;
             try
             {
                 await this.mailerSmtpClient.SendAsync(
@@ -92,23 +81,11 @@
                     this.configuration.Smtp,
                     smtpCredentials.email,
                     smtpCredentials.password);
-                success = true;
             }
             catch (Exception ex)
             {
                 await this.LogErrorAsync(ex, "Cannot send mail.");
                 throw;
-            }
-            finally
-            {
-                var status = success ? message.StatusOk : message.StatusFailed;
-                foreach (var participantId in message.ParticipantIds)
-                {
-                    var saveSurveyStatusMessage = new SaveSurveyStatusMessage(
-                        message.ProcessId,
-                        new SurveyStatus(message.SurveyId, participantId, status));
-                    await this.pubSubClient.PublishAsync(saveSurveyStatusMessage);
-                }
             }
         }
 

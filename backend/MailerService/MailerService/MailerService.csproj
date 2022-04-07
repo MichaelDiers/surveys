@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 	  <OutputType>Exe</OutputType>
@@ -21,10 +21,8 @@
     <PackageReference Include="MailKit" Version="3.2.0" />
     <PackageReference Include="Md.GoogleCloud.Base" Version="1.2.37" />
     <PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.12" />
-    <PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.26" />
     <PackageReference Include="Md.GoogleCloudSecrets" Version="1.2.2" />
-    <PackageReference Include="Surveys.Common" Version="1.2.65" />
-    <PackageReference Include="Surveys.Common.PubSub" Version="1.2.7" />
+    <PackageReference Include="Surveys.Common" Version="1.2.66" />
   </ItemGroup>
 
 </Project>

@@ -21,7 +21,6 @@
                 new MessageConverterMock(),
                 new MailerSmtpClientMock(),
                 new MailerServiceConfiguration(),
-                new PubSubMock(),
                 new SecretManagerMock()).HandleAsync(JsonConvert.DeserializeObject<SendMailMessage>(json));
             Assert.Empty(logger.ListLogEntries());
         }
