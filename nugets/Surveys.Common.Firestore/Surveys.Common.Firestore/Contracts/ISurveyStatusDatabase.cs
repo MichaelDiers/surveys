@@ -6,7 +6,7 @@
     /// <summary>
     ///     Database access for <see cref="ISurveyStatus" />.
     /// </summary>
-    public interface ISurveyStatusDatabase : IDatabase<ISurveyStatus>
+    public interface ISurveyStatusDatabase : IDatabase<ISurveyStatus>, ISurveyStatusReadOnlyDatabase
     {
     }
 }

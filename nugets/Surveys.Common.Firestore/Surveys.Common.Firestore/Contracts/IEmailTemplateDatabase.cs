@@ -6,7 +6,7 @@
     /// <summary>
     ///     Database access for email templates.
     /// </summary>
-    public interface IEmailTemplateDatabase : IDatabase<IDictionary<string, object>>
+    public interface IEmailTemplateDatabase : IDatabase<IDictionary<string, object>>, IEmailTemplateReadOnlyDatabase
     {
     }
 }
