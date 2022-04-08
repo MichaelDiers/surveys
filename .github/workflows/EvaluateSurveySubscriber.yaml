@@ -24,7 +24,7 @@ jobs:
       projectIdTest: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
       projectIdStage: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
       projectIdProd: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
-      appSettingsJsonTest: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_TEST }}\",\"Environment\": \"Test\",\"SaveSurveyStatusTopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}\",\"SurveyClosedTopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_CLOSED }}\"\}'
+      appSettingsJsonTest: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Information\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_TEST }}\",\"Environment\": \"Test\",\"SaveSurveyStatusTopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}\",\"SurveyClosedTopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_CLOSED }}\"\}'
       appSettingsJsonStage: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_STAGE }}\",\"Environment\": \"Stage\",\"SaveSurveyStatusTopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}\",\"SurveyClosedTopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_CLOSED }}\"\}'
       appSettingsJsonProd: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_PROD }}\",\"Environment\": \"Prod\",\"SaveSurveyStatusTopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}\",\"SurveyClosedTopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_CLOSED }}\"\}'
       subTopicName: ${{ secrets.GLOBAL_PUBSUB_TOPIC_EVALUATE_SURVEY }}

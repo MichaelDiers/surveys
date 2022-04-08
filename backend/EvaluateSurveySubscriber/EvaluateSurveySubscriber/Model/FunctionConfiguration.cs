@@ -1,7 +1,6 @@
 ﻿namespace EvaluateSurveySubscriber.Model
 {
     using EvaluateSurveySubscriber.Contracts;
-    using Md.Common.Contracts;
     using Md.Common.Model;
 
     /// <summary>
@@ -10,14 +9,9 @@
     public class FunctionConfiguration : RuntimeEnvironment, IFunctionConfiguration
     {
         /// <summary>
-        ///     Gets the environment.
-        /// </summary>
-        private Environment Environment { get; } = Environment.None;
-
-        /// <summary>
         ///     Gets the pub/sub topic name.
         /// </summary>
-        public string SaveSurveyStatusTopicName { get; set; } = "";
+        public string SaveSurveyStatusTopicName { get; set; } = string.Empty;
 
         /// <summary>
         ///     Gets the pub/sub topic name.

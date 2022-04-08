@@ -7,6 +7,7 @@
     using Md.GoogleCloud.Base.Contracts.Logic;
     using Md.GoogleCloud.Base.Logic;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
@@ -19,6 +20,8 @@
     /// </summary>
     public class FunctionProvider : PubSubProvider<IEvaluateSurveyMessage, Function>
     {
+        private readonly ILogger<Function> logger;
+
         /// <summary>
         ///     Access to google cloud pub/sub for saving the status of a survey.
         /// </summary>
@@ -63,6 +66,7 @@
         )
             : base(logger)
         {
+            this.logger = logger;
             this.surveyDatabase = surveyDatabase;
             this.surveyResultsDatabase = surveyResultsDatabase;
             this.surveyStatusDatabase = surveyStatusDatabase;
@@ -105,8 +109,9 @@
                     new SaveSurveyStatusMessage(
                         message.ProcessId,
                         new SurveyStatus(message.InternalSurveyId, Status.Closed)));
-                await this.surveyClosedPubSubClient.PublishAsync(
-                    new SurveyClosedMessage(message.ProcessId, survey, results));
+                var surveyClosedMessage = new SurveyClosedMessage(message.ProcessId, survey, results);
+                this.logger.LogInformation(JsonConvert.SerializeObject(message));
+                await this.surveyClosedPubSubClient.PublishAsync(surveyClosedMessage);
             }
         }
 

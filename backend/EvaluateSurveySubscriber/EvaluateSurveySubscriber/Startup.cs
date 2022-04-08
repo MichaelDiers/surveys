@@ -28,10 +28,11 @@ namespace EvaluateSurveySubscriber
         /// <param name="services">Add services to this collection used in dependency injection context.</param>
         public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
         {
-            var configuration = new FunctionConfiguration();
-            context.Configuration.Bind(configuration);
+            var config = new FunctionConfiguration();
+            context.Configuration.Bind(config);
+            var configuration = config as IFunctionConfiguration;
 
-            services.AddScoped<IFunctionConfiguration>(_ => configuration);
+            services.AddScoped(_ => configuration);
 
             services.AddScoped<IRuntimeEnvironment>(_ => configuration);
             services.AddScoped<ISurveyReadOnlyDatabase, SurveyReadOnlyDatabase>();
