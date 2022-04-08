@@ -110,7 +110,7 @@
                         message.ProcessId,
                         new SurveyStatus(message.InternalSurveyId, Status.Closed)));
                 var surveyClosedMessage = new SurveyClosedMessage(message.ProcessId, survey, results);
-                this.logger.LogInformation(JsonConvert.SerializeObject(message));
+                this.logger.LogInformation(JsonConvert.SerializeObject(surveyClosedMessage));
                 await this.surveyClosedPubSubClient.PublishAsync(surveyClosedMessage);
             }
         }
