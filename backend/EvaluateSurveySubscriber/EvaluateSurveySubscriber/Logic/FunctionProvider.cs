@@ -122,7 +122,7 @@
             var surveyResultsTask = this.surveyResultsDatabase.ReadManyAsync(
                 SurveyResult.InternalSurveyIdName,
                 message.InternalSurveyId,
-                OrderType.Asc);
+                OrderType.Desc);
             var surveyStatusTask = this.surveyStatusDatabase.ReadManyAsync(
                 SurveyStatus.InternalSurveyIdName,
                 message.InternalSurveyId);
@@ -133,10 +133,18 @@
                              $"Survey {message.InternalSurveyId} not found.",
                              nameof(message.InternalSurveyId));
 
-            var surveyResults = (await surveyResultsTask).ToArray();
             var surveyStatus = (await surveyStatusTask).ToArray();
 
-            return (survey, surveyResults, surveyStatus);
+            var dictionary = new Dictionary<string, ISurveyResult>();
+            foreach (var result in (await surveyResultsTask).Where(r => !r.IsSuggested))
+            {
+                if (!dictionary.ContainsKey(result.ParticipantId))
+                {
+                    dictionary.Add(result.ParticipantId, result);
+                }
+            }
+
+            return (survey, dictionary.Values, surveyStatus);
         }
     }
 }
