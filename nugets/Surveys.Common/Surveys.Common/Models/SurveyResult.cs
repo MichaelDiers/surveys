@@ -22,7 +22,7 @@
         /// <summary>
         ///     Json name of property <see cref="IsSuggested" />.
         /// </summary>
-        private const string IsSuggestedName = "isSuggested";
+        public const string IsSuggestedName = "isSuggested";
 
         /// <summary>
         ///     Json name of property <see cref="ParticipantId" />.
@@ -107,10 +107,10 @@
         /// <returns>The given <paramref name="dictionary" />.</returns>
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
-            dictionary.Add(InternalSurveyIdName, this.InternalSurveyId);
-            dictionary.Add(ParticipantIdName, this.ParticipantId);
-            dictionary.Add(IsSuggestedName, this.IsSuggested);
-            dictionary.Add(ResultsName, this.Results.Select(r => r.ToDictionary()));
+            dictionary.Add(SurveyResult.InternalSurveyIdName, this.InternalSurveyId);
+            dictionary.Add(SurveyResult.ParticipantIdName, this.ParticipantId);
+            dictionary.Add(SurveyResult.IsSuggestedName, this.IsSuggested);
+            dictionary.Add(SurveyResult.ResultsName, this.Results.Select(r => r.ToDictionary()));
             return dictionary;
         }
 
@@ -121,10 +121,12 @@
         /// <returns>A <see cref="SurveyResult" />.</returns>
         public static SurveyResult FromDictionary(IDictionary<string, object> dictionary)
         {
-            var internalSurveyId = dictionary.GetString(InternalSurveyIdName);
-            var participantId = dictionary.GetString(ParticipantIdName);
-            var isSuggested = dictionary.GetBool(IsSuggestedName);
-            var results = dictionary.GetDictionaries(ResultsName).Select(QuestionReference.FromDictionary).ToArray();
+            var internalSurveyId = dictionary.GetString(SurveyResult.InternalSurveyIdName);
+            var participantId = dictionary.GetString(SurveyResult.ParticipantIdName);
+            var isSuggested = dictionary.GetBool(SurveyResult.IsSuggestedName);
+            var results = dictionary.GetDictionaries(SurveyResult.ResultsName)
+                .Select(QuestionReference.FromDictionary)
+                .ToArray();
 
             return new SurveyResult(
                 internalSurveyId,
