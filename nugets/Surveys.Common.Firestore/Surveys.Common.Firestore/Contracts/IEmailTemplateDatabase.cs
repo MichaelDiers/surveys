@@ -1,7 +1,7 @@
 ﻿namespace Surveys.Common.Firestore.Contracts
 {
     using System.Collections.Generic;
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloudFirestore.Contracts.Logic;
 
     /// <summary>
     ///     Database access for email templates.

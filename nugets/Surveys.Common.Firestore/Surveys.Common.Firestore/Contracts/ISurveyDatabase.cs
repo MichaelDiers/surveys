@@ -1,6 +1,6 @@
 ﻿namespace Surveys.Common.Firestore.Contracts
 {
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloudFirestore.Contracts.Logic;
     using Surveys.Common.Contracts;
 
     /// <summary>
