@@ -1,5 +1,6 @@
 ﻿namespace Surveys.Common.PubSub.Logic
 {
+    using Md.GoogleCloudPubSub.Contracts.Model;
     using Md.GoogleCloudPubSub.Logic;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.PubSub.Contracts.Logic;
