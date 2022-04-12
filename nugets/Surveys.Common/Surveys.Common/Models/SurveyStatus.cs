@@ -2,21 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using Md.Common.Database;
     using Md.Common.Extensions;
-    using Md.GoogleCloud.Base.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
 
     /// <summary>
     ///     Describes the status of a survey.
     /// </summary>
-    public class SurveyStatus : ToDictionaryConverter, ISurveyStatus
+    public class SurveyStatus : DatabaseObject, ISurveyStatus
     {
-        /// <summary>
-        ///     Json name of property <see cref="InternalSurveyId" />.
-        /// </summary>
-        public const string InternalSurveyIdName = "internalSurveyId";
-
         /// <summary>
         ///     Json name of property <see cref="ParticipantId" />.
         /// </summary>
@@ -30,21 +25,42 @@
         /// <summary>
         ///     Creates a new instance of <see cref="SurveyStatus" />.
         /// </summary>
-        /// <param name="internalSurveyId">The internal survey id.</param>
+        /// <param name="documentId">The id of the document.</param>
+        /// <param name="created">The creation time of the object.</param>
+        /// <param name="parentDocumentId">The id of the parent document.</param>
         /// <param name="status">The new status.</param>
-        public SurveyStatus(string internalSurveyId, Status status)
-            : this(internalSurveyId, string.Empty, status)
+        public SurveyStatus(
+            string? documentId,
+            DateTime? created,
+            string? parentDocumentId,
+            Status status
+        )
+            : this(
+                documentId,
+                created,
+                parentDocumentId,
+                string.Empty,
+                status)
         {
         }
 
         /// <summary>
         ///     Creates a new instance of <see cref="SurveyStatus" />.
         /// </summary>
-        /// <param name="internalSurveyId">The internal survey id.</param>
+        /// <param name="documentId">The id of the document.</param>
+        /// <param name="created">The creation time of the object.</param>
+        /// <param name="parentDocumentId">The id of the parent document.</param>
         /// <param name="participantId">The id of the participant.</param>
         /// <param name="status">The new status.</param>
         [JsonConstructor]
-        public SurveyStatus(string internalSurveyId, string participantId, Status status)
+        public SurveyStatus(
+            string? documentId,
+            DateTime? created,
+            string? parentDocumentId,
+            string participantId,
+            Status status
+        )
+            : base(documentId, created, parentDocumentId)
         {
             if (!string.IsNullOrWhiteSpace(participantId))
             {
@@ -56,17 +72,9 @@
                 throw new ArgumentException("Invalid value Status.None", nameof(status));
             }
 
-            this.InternalSurveyId = internalSurveyId.ValidateIsAGuid(nameof(internalSurveyId));
             this.ParticipantId = participantId;
             this.Status = status;
         }
-
-
-        /// <summary>
-        ///     Gets the internal survey id.
-        /// </summary>
-        [JsonProperty(SurveyStatus.InternalSurveyIdName, Required = Required.Always, Order = 1)]
-        public string InternalSurveyId { get; }
 
         /// <summary>
         ///     Gets the id of the participant.
@@ -87,24 +95,29 @@
         /// <returns>The given <paramref name="dictionary" />.</returns>
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
-            dictionary.Add(SurveyStatus.InternalSurveyIdName, this.InternalSurveyId);
+            base.AddToDictionary(dictionary);
             dictionary.Add(SurveyStatus.ParticipantIdName, this.ParticipantId);
             dictionary.Add(SurveyStatus.StatusName, this.Status.ToString());
             return dictionary;
         }
-
 
         /// <summary>
         ///     Create a new <see cref="SurveyStatus" /> from dictionary data.
         /// </summary>
         /// <param name="dictionary">The initial values of the object.</param>
         /// <returns>A <see cref="SurveyStatus" />.</returns>
-        public static SurveyStatus FromDictionary(IDictionary<string, object> dictionary)
+        public new static SurveyStatus FromDictionary(IDictionary<string, object> dictionary)
         {
-            var internalSurveyId = dictionary.GetString(SurveyStatus.InternalSurveyIdName);
+            var value = DatabaseObject.FromDictionary(dictionary);
+            var participantId = dictionary.GetString(SurveyStatus.ParticipantIdName, string.Empty);
             var status = dictionary.GetEnumValue<Status>(SurveyStatus.StatusName);
 
-            return new SurveyStatus(internalSurveyId, status);
+            return new SurveyStatus(
+                value.DocumentId,
+                value.Created,
+                value.ParentDocumentId,
+                participantId,
+                status);
         }
     }
 }

@@ -50,19 +50,19 @@
         /// <summary>
         ///     Gets the choices of the question.
         /// </summary>
-        [JsonProperty(ChoicesName, Required = Required.Always, Order = 11)]
+        [JsonProperty(Question.ChoicesName, Required = Required.Always, Order = 11)]
         public IEnumerable<IChoice> Choices { get; }
 
         /// <summary>
         ///     Gets the order of the question used for sorting.
         /// </summary>
-        [JsonProperty(OrderName, Required = Required.Always, Order = 12)]
+        [JsonProperty(Question.OrderName, Required = Required.Always, Order = 12)]
         public int Order { get; }
 
         /// <summary>
         ///     Gets the text of the question.
         /// </summary>
-        [JsonProperty(QuestionName, Required = Required.Always, Order = 10)]
+        [JsonProperty(Question.QuestionName, Required = Required.Always, Order = 10)]
         public string Text { get; }
 
         /// <summary>
@@ -73,9 +73,9 @@
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
             base.AddToDictionary(dictionary);
-            dictionary.Add(OrderName, this.Order);
-            dictionary.Add(QuestionName, this.Text);
-            dictionary.Add(ChoicesName, this.Choices.Select(c => c.ToDictionary()));
+            dictionary.Add(Question.OrderName, this.Order);
+            dictionary.Add(Question.QuestionName, this.Text);
+            dictionary.Add(Question.ChoicesName, this.Choices.Select(c => c.ToDictionary()));
             return dictionary;
         }
 
@@ -87,9 +87,9 @@
         public new static Question FromDictionary(IDictionary<string, object> dictionary)
         {
             var baseObject = Base.FromDictionary(dictionary);
-            var text = dictionary.GetString(QuestionName);
-            var choicesDictionaries = dictionary.GetDictionaries(ChoicesName);
-            var order = dictionary.GetInt(OrderName);
+            var text = dictionary.GetString(Question.QuestionName);
+            var choicesDictionaries = dictionary.GetDictionaries(Question.ChoicesName);
+            var order = dictionary.GetInt(Question.OrderName);
 
             var choices = choicesDictionaries.Select(Choice.FromDictionary).ToArray();
 

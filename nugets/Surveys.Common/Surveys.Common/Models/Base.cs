@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Md.Common.Extensions;
-    using Md.GoogleCloud.Base.Logic;
+    using Md.Common.Model;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
 
@@ -31,7 +31,7 @@
         /// <summary>
         ///     Gets or sets the id.
         /// </summary>
-        [JsonProperty(IdName, Required = Required.Always, Order = 1)]
+        [JsonProperty(Base.IdName, Required = Required.Always, Order = 1)]
         public string Id { get; }
 
         /// <summary>
@@ -41,7 +41,7 @@
         /// <returns>The given <paramref name="dictionary" />.</returns>
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
-            dictionary.Add(IdName, this.Id);
+            dictionary.Add(Base.IdName, this.Id);
             return dictionary;
         }
 
@@ -52,7 +52,7 @@
         /// <returns>A <see cref="Base" />.</returns>
         public static IBase FromDictionary(IDictionary<string, object> dictionary)
         {
-            var id = dictionary.GetString(IdName);
+            var id = dictionary.GetString(Base.IdName);
 
             return new Base(id);
         }

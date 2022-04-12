@@ -1,6 +1,6 @@
 ﻿namespace Surveys.Common.Contracts
 {
-    using Md.GoogleCloud.Base.Contracts.Messages;
+    using Md.Common.Contracts.Messages;
 
     /// <summary>
     ///     Describes a pub/sub message for saving a survey.

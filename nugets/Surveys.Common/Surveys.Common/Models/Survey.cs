@@ -1,7 +1,9 @@
 ﻿namespace Surveys.Common.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Md.Common.Database;
     using Md.Common.Extensions;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
@@ -9,7 +11,7 @@
     /// <summary>
     ///     Describes the data of a survey.
     /// </summary>
-    public class Survey : Base, ISurvey
+    public class Survey : DatabaseObject, ISurvey
     {
         /// <summary>
         ///     Json name of property <see cref="Info" />
@@ -44,7 +46,9 @@
         /// <summary>
         ///     Creates a new instance of <see cref="Survey" />.
         /// </summary>
-        /// <param name="id">The id of the object.</param>
+        /// <param name="documentId">The id of the document.</param>
+        /// <param name="created">The creation time of the object.</param>
+        /// <param name="parentDocumentId">The id of the parent document.</param>
         /// <param name="name">The name of the survey.</param>
         /// <param name="info">Additional info text describing the survey.</param>
         /// <param name="link">A link to a survey info page.</param>
@@ -53,7 +57,9 @@
         /// <param name="questions">The survey questions.</param>
         [JsonConstructor]
         public Survey(
-            string id,
+            string? documentId,
+            DateTime? created,
+            string? parentDocumentId,
             string name,
             string info,
             string link,
@@ -62,7 +68,9 @@
             IEnumerable<Question> questions
         )
             : this(
-                id,
+                documentId,
+                created,
+                parentDocumentId,
                 name,
                 info,
                 link,
@@ -75,7 +83,9 @@
         /// <summary>
         ///     Creates a new instance of <see cref="Survey" />.
         /// </summary>
-        /// <param name="id">The id of the object.</param>
+        /// <param name="documentId">The id of the document.</param>
+        /// <param name="created">The creation time of the object.</param>
+        /// <param name="parentDocumentId">The id of the parent document.</param>
         /// <param name="name">The name of the survey.</param>
         /// <param name="info">Additional info text describing the survey.</param>
         /// <param name="link">A link to a survey info page.</param>
@@ -83,7 +93,9 @@
         /// <param name="participants">The participants of the survey.</param>
         /// <param name="questions">The survey questions.</param>
         public Survey(
-            string id,
+            string? documentId,
+            DateTime? created,
+            string? parentDocumentId,
             string name,
             string info,
             string link,
@@ -91,7 +103,7 @@
             IEnumerable<IParticipant> participants,
             IEnumerable<IQuestion> questions
         )
-            : base(id)
+            : base(documentId, created, parentDocumentId)
         {
             this.Info = info.ValidateIsNotNullOrWhitespace(nameof(info));
             this.Link = link.ValidateIsNotNullOrWhitespace(nameof(link));
@@ -162,7 +174,7 @@
         /// <returns>A <see cref="Survey" />.</returns>
         public new static Survey FromDictionary(IDictionary<string, object> dictionary)
         {
-            var baseObject = Base.FromDictionary(dictionary);
+            var baseObject = DatabaseObject.FromDictionary(dictionary);
             var name = dictionary.GetString(Survey.NameName);
             var info = dictionary.GetString(Survey.InfoName);
             var link = dictionary.GetString(Survey.LinkName);
@@ -172,7 +184,9 @@
                 .ToArray();
             var questions = dictionary.GetDictionaries(Survey.QuestionsName).Select(Question.FromDictionary).ToArray();
             return new Survey(
-                baseObject.Id,
+                baseObject.DocumentId,
+                baseObject.Created,
+                baseObject.ParentDocumentId,
                 name,
                 info,
                 link,

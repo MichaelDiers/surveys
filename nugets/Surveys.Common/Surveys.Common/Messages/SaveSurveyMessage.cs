@@ -2,7 +2,7 @@
 {
     using System;
     using Md.Common.Extensions;
-    using Md.GoogleCloud.Base.Messages;
+    using Md.Common.Messages;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Models;

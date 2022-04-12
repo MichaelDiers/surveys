@@ -50,13 +50,13 @@
         /// <summary>
         ///     Gets the suggested answers of survey questions.
         /// </summary>
-        [JsonProperty(QuestionReferencesName, Required = Required.Always, Order = 100)]
+        [JsonProperty(Participant.QuestionReferencesName, Required = Required.Always, Order = 100)]
         public IEnumerable<IQuestionReference> QuestionReferences { get; }
 
         /// <summary>
         ///     Gets the sorting order.
         /// </summary>
-        [JsonProperty(OrderName, Required = Required.Always, Order = 101)]
+        [JsonProperty(Participant.OrderName, Required = Required.Always, Order = 101)]
         public int Order { get; }
 
         /// <summary>
@@ -67,8 +67,8 @@
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
             base.AddToDictionary(dictionary);
-            dictionary.Add(QuestionReferencesName, this.QuestionReferences.Select(qr => qr.ToDictionary()));
-            dictionary.Add(OrderName, this.Order);
+            dictionary.Add(Participant.QuestionReferencesName, this.QuestionReferences.Select(qr => qr.ToDictionary()));
+            dictionary.Add(Participant.OrderName, this.Order);
             return dictionary;
         }
 
@@ -80,8 +80,8 @@
         public new static Participant FromDictionary(IDictionary<string, object> dictionary)
         {
             var person = Person.FromDictionary(dictionary);
-            var questionReferencesDictionaries = dictionary.GetDictionaries(QuestionReferencesName);
-            var order = dictionary.GetInt(OrderName);
+            var questionReferencesDictionaries = dictionary.GetDictionaries(Participant.QuestionReferencesName);
+            var order = dictionary.GetInt(Participant.OrderName);
 
             var questionReferences = questionReferencesDictionaries.Select(QuestionReference.FromDictionary).ToArray();
             return new Participant(

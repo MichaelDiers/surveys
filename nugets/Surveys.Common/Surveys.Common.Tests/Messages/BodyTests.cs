@@ -9,8 +9,9 @@
         [Fact]
         public void Deserialize()
         {
-            var json = "{\"html\":\"html\",\"plain\":\"plain\"}";
+            const string json = "{\"html\":\"html\",\"plain\":\"plain\"}";
             var body = JsonConvert.DeserializeObject<Body>(json);
+            Assert.NotNull(body);
             Assert.Equal("html", body.Html);
             Assert.Equal("plain", body.Plain);
         }

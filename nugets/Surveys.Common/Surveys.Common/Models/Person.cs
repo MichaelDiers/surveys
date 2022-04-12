@@ -41,13 +41,13 @@
         /// <summary>
         ///     Gets the email of the person.
         /// </summary>
-        [JsonProperty(EmailName, Required = Required.Always, Order = 10)]
+        [JsonProperty(Person.EmailName, Required = Required.Always, Order = 10)]
         public string Email { get; }
 
         /// <summary>
         ///     Gets the name of the person.
         /// </summary>
-        [JsonProperty(NameName, Required = Required.Always, Order = 11)]
+        [JsonProperty(Person.NameName, Required = Required.Always, Order = 11)]
         public string Name { get; }
 
         /// <summary>
@@ -58,8 +58,8 @@
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
             base.AddToDictionary(dictionary);
-            dictionary.Add(NameName, this.Name);
-            dictionary.Add(EmailName, this.Email);
+            dictionary.Add(Person.NameName, this.Name);
+            dictionary.Add(Person.EmailName, this.Email);
             return dictionary;
         }
 
@@ -71,8 +71,8 @@
         public new static Person FromDictionary(IDictionary<string, object> dictionary)
         {
             var baseObject = Base.FromDictionary(dictionary);
-            var email = dictionary.GetString(EmailName);
-            var name = dictionary.GetString(NameName);
+            var email = dictionary.GetString(Person.EmailName);
+            var name = dictionary.GetString(Person.NameName);
 
             return new Person(baseObject.Id, email, name);
         }

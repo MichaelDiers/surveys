@@ -15,12 +15,14 @@
         [Theory]
         [InlineData(
             "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244d",
             true,
             "bcb28b2d-e9a8-450c-a25e-7412e66d245d",
             "bcb28b2d-e9a8-450c-a25e-7412e66d246d")]
         public void Ctor(
-            string internalSurveyId,
+            string documentId,
+            string parentDocumentId,
             string participantId,
             bool isSuggested,
             string questionId,
@@ -28,11 +30,14 @@
         )
         {
             var result = new SurveyResult(
-                internalSurveyId,
+                documentId,
+                DateTime.Now,
+                parentDocumentId,
                 participantId,
                 isSuggested,
                 new[] {new QuestionReference(questionId, choiceId)});
-            Assert.Equal(internalSurveyId, result.InternalSurveyId);
+            Assert.Equal(documentId, result.DocumentId);
+            Assert.Equal(parentDocumentId, result.ParentDocumentId);
             Assert.Equal(participantId, result.ParticipantId);
             Assert.Equal(isSuggested, result.IsSuggested);
             Assert.Equal(questionId, result.Results.Single().QuestionId);
@@ -42,15 +47,17 @@
 
         [Theory]
         [InlineData(
-            "{internalSurveyId:'bcb28b2d-e9a8-450c-a25e-7412e66d244c',participantId:'bcb28b2d-e9a8-450c-a25e-7412e66d244d','isSuggested':true,'results':[{'questionId':'ccb28b2d-e9a8-450c-a25e-7412e66d244d','choiceId':'dcb28b2d-e9a8-450c-a25e-7412e66d244d'}]}",
-            "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
+            "{documentId:'bcb28b2d-e9a8-450c-a25e-7412e66d244d',created:null,parentDocumentId:'bcb28b2d-e9a8-450c-a25e-7412e66d244e',participantId:'bcb28b2d-e9a8-450c-a25e-7412e66d244c','isSuggested':true,'results':[{'questionId':'ccb28b2d-e9a8-450c-a25e-7412e66d244d','choiceId':'dcb28b2d-e9a8-450c-a25e-7412e66d244d'}]}",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244d",
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244e",
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
             true,
             "ccb28b2d-e9a8-450c-a25e-7412e66d244d",
             "dcb28b2d-e9a8-450c-a25e-7412e66d244d")]
         public void Deserialize(
             string json,
-            string internalSurveyId,
+            string documentId,
+            string parentDocumentId,
             string participantId,
             bool isSuggested,
             string questionId,
@@ -59,7 +66,9 @@
         {
             var result = JsonConvert.DeserializeObject<SurveyResult>(json);
             Assert.NotNull(result);
-            Assert.Equal(internalSurveyId, result.InternalSurveyId);
+            Assert.Equal(documentId, result.DocumentId);
+            Assert.Equal(parentDocumentId, result.ParentDocumentId);
+            Assert.Equal(DateTime.MinValue, result.Created);
             Assert.Equal(participantId, result.ParticipantId);
             Assert.Equal(isSuggested, result.IsSuggested);
             Assert.Equal(questionId, result.Results.Single().QuestionId);
@@ -71,6 +80,8 @@
         {
             var value = new SurveyResult(
                 Guid.NewGuid().ToString(),
+                DateTime.Now,
+                Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 true,
                 new[]
@@ -81,7 +92,9 @@
 
             var dictionary = value.ToDictionary();
             var actual = SurveyResult.FromDictionary(dictionary);
-            Assert.Equal(value.InternalSurveyId, actual.InternalSurveyId);
+            Assert.Equal(value.DocumentId, actual.DocumentId);
+            Assert.Equal(value.Created, actual.Created);
+            Assert.Equal(value.ParentDocumentId, actual.ParentDocumentId);
             Assert.Equal(value.IsSuggested, actual.IsSuggested);
             Assert.Equal(value.ParticipantId, actual.ParticipantId);
             Assert.Equal(value.Results.Count(), actual.Results.Count());
@@ -105,6 +118,8 @@
         {
             Assert.IsAssignableFrom<ISurveyResult>(
                 new SurveyResult(
+                    Guid.NewGuid().ToString(),
+                    DateTime.Now,
                     Guid.NewGuid().ToString(),
                     Guid.NewGuid().ToString(),
                     true,

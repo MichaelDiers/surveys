@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Md.Common.Database;
     using Md.Common.Extensions;
-    using Md.GoogleCloud.Base.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Messages;
@@ -12,13 +12,8 @@
     /// <summary>
     ///     Describes a survey result.
     /// </summary>
-    public class SurveyResult : ToDictionaryConverter, ISurveyResult
+    public class SurveyResult : DatabaseObject, ISurveyResult
     {
-        /// <summary>
-        ///     Json name of property <see cref="InternalSurveyId" />.
-        /// </summary>
-        public const string InternalSurveyIdName = "internalSurveyId";
-
         /// <summary>
         ///     Json name of property <see cref="IsSuggested" />.
         /// </summary>
@@ -37,19 +32,25 @@
         /// <summary>
         ///     Creates a new instance of <see cref="SaveSurveyResultMessage" />.
         /// </summary>
-        /// <param name="internalSurveyId">The internal id of the survey.</param>
+        /// <param name="documentId">The id of the document.</param>
+        /// <param name="created">The creation time of the object.</param>
+        /// <param name="parentDocumentId">The id of the parent document.</param>
         /// <param name="participantId">The id of the participant.</param>
         /// <param name="isSuggested">A value that indicates if the result is a suggested result or a real survey result.</param>
         /// <param name="results">The survey results.</param>
         [JsonConstructor]
         public SurveyResult(
-            string internalSurveyId,
+            string? documentId,
+            DateTime? created,
+            string? parentDocumentId,
             string participantId,
             bool isSuggested,
             IEnumerable<QuestionReference> results
         )
             : this(
-                internalSurveyId,
+                documentId,
+                created,
+                parentDocumentId,
                 participantId,
                 isSuggested,
                 results as IEnumerable<IQuestionReference>)
@@ -59,28 +60,26 @@
         /// <summary>
         ///     Creates a new instance of <see cref="SaveSurveyResultMessage" />.
         /// </summary>
-        /// <param name="internalSurveyId">The internal id of the survey.</param>
+        /// <param name="documentId">The id of the document.</param>
+        /// <param name="created">The creation time of the object.</param>
+        /// <param name="parentDocumentId">The id of the parent document.</param>
         /// <param name="participantId">The id of the participant.</param>
         /// <param name="isSuggested">A value that indicates if the result is a suggested result or a real survey result.</param>
         /// <param name="results">The survey results.</param>
         public SurveyResult(
-            string internalSurveyId,
+            string? documentId,
+            DateTime? created,
+            string? parentDocumentId,
             string participantId,
             bool isSuggested,
             IEnumerable<IQuestionReference> results
         )
+            : base(documentId, created, parentDocumentId)
         {
-            this.InternalSurveyId = internalSurveyId.ValidateIsAGuid(nameof(internalSurveyId));
             this.ParticipantId = participantId.ValidateIsAGuid(nameof(participantId));
             this.IsSuggested = isSuggested;
             this.Results = results ?? throw new ArgumentNullException(nameof(results));
         }
-
-        /// <summary>
-        ///     Gets the internal survey id.
-        /// </summary>
-        [JsonProperty("internalSurveyId", Required = Required.Always, Order = 11)]
-        public string InternalSurveyId { get; }
 
         /// <summary>
         ///     Gets a value that indicates if the result is a suggested result or a real survey result.
@@ -107,7 +106,7 @@
         /// <returns>The given <paramref name="dictionary" />.</returns>
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
-            dictionary.Add(SurveyResult.InternalSurveyIdName, this.InternalSurveyId);
+            base.AddToDictionary(dictionary);
             dictionary.Add(SurveyResult.ParticipantIdName, this.ParticipantId);
             dictionary.Add(SurveyResult.IsSuggestedName, this.IsSuggested);
             dictionary.Add(SurveyResult.ResultsName, this.Results.Select(r => r.ToDictionary()));
@@ -119,9 +118,9 @@
         /// </summary>
         /// <param name="dictionary">The initial values of the object.</param>
         /// <returns>A <see cref="SurveyResult" />.</returns>
-        public static SurveyResult FromDictionary(IDictionary<string, object> dictionary)
+        public new static SurveyResult FromDictionary(IDictionary<string, object> dictionary)
         {
-            var internalSurveyId = dictionary.GetString(SurveyResult.InternalSurveyIdName);
+            var baseObject = DatabaseObject.FromDictionary(dictionary);
             var participantId = dictionary.GetString(SurveyResult.ParticipantIdName);
             var isSuggested = dictionary.GetBool(SurveyResult.IsSuggestedName);
             var results = dictionary.GetDictionaries(SurveyResult.ResultsName)
@@ -129,7 +128,9 @@
                 .ToArray();
 
             return new SurveyResult(
-                internalSurveyId,
+                baseObject.DocumentId,
+                baseObject.Created,
+                baseObject.ParentDocumentId,
                 participantId,
                 isSuggested,
                 results);

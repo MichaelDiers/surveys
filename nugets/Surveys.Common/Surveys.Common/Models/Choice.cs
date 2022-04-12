@@ -51,19 +51,19 @@
         /// <summary>
         ///     Gets the answer of a question.
         /// </summary>
-        [JsonProperty(AnswerName, Required = Required.Always, Order = 10)]
+        [JsonProperty(Choice.AnswerName, Required = Required.Always, Order = 10)]
         public string Answer { get; }
 
         /// <summary>
         ///     Indicates if the answer is a valid answer or an info text.
         /// </summary>
-        [JsonProperty(SelectableName, Required = Required.Always, Order = 11)]
+        [JsonProperty(Choice.SelectableName, Required = Required.Always, Order = 11)]
         public bool Selectable { get; }
 
         /// <summary>
         ///     Gets the sorting order.
         /// </summary>
-        [JsonProperty(OrderName, Required = Required.Always, Order = 12)]
+        [JsonProperty(Choice.OrderName, Required = Required.Always, Order = 12)]
         public int Order { get; }
 
         /// <summary>
@@ -74,9 +74,9 @@
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
             base.AddToDictionary(dictionary);
-            dictionary.Add(AnswerName, this.Answer);
-            dictionary.Add(SelectableName, this.Selectable);
-            dictionary.Add(OrderName, this.Order);
+            dictionary.Add(Choice.AnswerName, this.Answer);
+            dictionary.Add(Choice.SelectableName, this.Selectable);
+            dictionary.Add(Choice.OrderName, this.Order);
             return dictionary;
         }
 
@@ -88,9 +88,9 @@
         public new static Choice FromDictionary(IDictionary<string, object> dictionary)
         {
             var baseObject = Base.FromDictionary(dictionary);
-            var answer = dictionary.GetString(AnswerName);
-            var selectable = dictionary.GetBool(SelectableName);
-            var order = dictionary.GetInt(OrderName);
+            var answer = dictionary.GetString(Choice.AnswerName);
+            var selectable = dictionary.GetBool(Choice.SelectableName);
+            var order = dictionary.GetInt(Choice.OrderName);
             return new Choice(
                 baseObject.Id,
                 answer,

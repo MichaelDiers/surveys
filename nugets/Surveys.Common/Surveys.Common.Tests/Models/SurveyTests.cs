@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Linq;
+    using Md.Common.Contracts.Database;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Models;
@@ -29,7 +30,9 @@
 
             var dictionary = value.ToDictionary();
             var actual = Survey.FromDictionary(dictionary);
-            Assert.Equal(value.Id, actual.Id);
+            Assert.Equal(value.DocumentId, actual.DocumentId);
+            Assert.Equal(value.Created, actual.Created);
+            Assert.Equal(value.ParentDocumentId, actual.ParentDocumentId);
             Assert.Equal(value.Name, actual.Name);
             Assert.Equal(value.Info, actual.Info);
             Assert.Equal(value.Link, actual.Link);
@@ -99,6 +102,8 @@
 
             var survey = new Survey(
                 Guid.NewGuid().ToString(),
+                DateTime.Now,
+                Guid.NewGuid().ToString(),
                 "The survey",
                 "The info",
                 "http://www.google.de",
@@ -116,9 +121,8 @@
             var _ = JsonConvert.SerializeObject(survey);
         }
 
-
         [Fact]
-        public void SurveyImplementsIBase()
+        public void SurveyImplementsIDatabaseObject()
         {
             var questions = new[]
             {
@@ -136,8 +140,10 @@
                     10)
             };
 
-            Assert.IsAssignableFrom<IBase>(
+            Assert.IsAssignableFrom<IDatabaseObject>(
                 new Survey(
+                    Guid.NewGuid().ToString(),
+                    DateTime.Now,
                     Guid.NewGuid().ToString(),
                     "The survey",
                     "The info",
@@ -154,7 +160,6 @@
                     },
                     questions));
         }
-
 
         [Fact]
         public void SurveyImplementsISurvey()
@@ -177,6 +182,8 @@
 
             Assert.IsAssignableFrom<ISurvey>(
                 new Survey(
+                    Guid.NewGuid().ToString(),
+                    DateTime.Now,
                     Guid.NewGuid().ToString(),
                     "The survey",
                     "The info",

@@ -1,7 +1,7 @@
 ﻿namespace Surveys.Common.Tests.Models
 {
     using System;
-    using Newtonsoft.Json;
+    using Md.Common.Logic;
     using Surveys.Common.Contracts;
     using Surveys.Common.Models;
     using Xunit;
@@ -12,77 +12,96 @@
     public class SurveyStatusTests
     {
         [Theory]
-        [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244c", Status.Created)]
-        public void Ctor(string internalSurveyId, Status status)
+        [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244d", "bcb28b2d-e9a8-450c-a25e-7412e66d244c", Status.Created)]
+        public void Ctor(string documentId, string parentDocumentId, Status status)
         {
-            var result = new SurveyStatus(internalSurveyId, status);
-            Assert.Equal(internalSurveyId, result.InternalSurveyId);
+            var created = DateTime.Now;
+            var result = new SurveyStatus(
+                documentId,
+                created,
+                parentDocumentId,
+                status);
+            Assert.Equal(documentId, result.DocumentId);
+            Assert.Equal(created, result.Created);
+            Assert.Equal(parentDocumentId, result.ParentDocumentId);
+            Assert.Equal(string.Empty, result.ParticipantId);
             Assert.Equal(status, result.Status);
             Assert.True(string.IsNullOrWhiteSpace(result.ParticipantId));
         }
 
         [Theory]
-        [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244c", "bcb28b2d-e9a8-450c-a25e-7412e66d244d", Status.Created)]
-        public void CtorWithParticipantId(string internalSurveyId, string participantId, Status status)
-        {
-            var result = new SurveyStatus(internalSurveyId, participantId, status);
-            Assert.Equal(internalSurveyId, result.InternalSurveyId);
-            Assert.Equal(status, result.Status);
-            Assert.Equal(participantId, result.ParticipantId);
-        }
-
-        [Theory]
         [InlineData(
-            "{internalSurveyId:'bcb28b2d-e9a8-450c-a25e-7412e66d244c','participantId':null,'status':'Created'}",
-            "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
-            null,
-            Status.Created)]
-        [InlineData(
-            "{internalSurveyId:'bcb28b2d-e9a8-450c-a25e-7412e66d244c','participantId':'bcb28b2d-e9a8-450c-a25e-7412e66d244d','status':'Created'}",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
             "bcb28b2d-e9a8-450c-a25e-7412e66d244d",
+            "bcb28b2d-e9a8-450c-a25e-7412e66d244c",
             Status.Created)]
-        public void Deserialize(
-            string json,
-            string internalSurveyId,
+        public void CtorWithParticipantId(
+            string documentId,
+            string parentDocumentId,
             string participantId,
             Status status
         )
         {
-            var result = JsonConvert.DeserializeObject<SurveyStatus>(json);
-            Assert.NotNull(result);
-            Assert.Equal(internalSurveyId, result.InternalSurveyId);
-            Assert.Equal(status, result.Status);
+            var created = DateTime.Now;
+            var result = new SurveyStatus(
+                documentId,
+                created,
+                parentDocumentId,
+                participantId,
+                status);
+            Assert.Equal(documentId, result.DocumentId);
+            Assert.Equal(created, result.Created);
+            Assert.Equal(parentDocumentId, result.ParentDocumentId);
             Assert.Equal(participantId, result.ParticipantId);
+            Assert.Equal(status, result.Status);
         }
 
         [Fact]
         public void FromDictionary()
         {
-            var value = new SurveyStatus(Guid.NewGuid().ToString(), Status.Created);
+            var value = new SurveyStatus(
+                Guid.NewGuid().ToString(),
+                DateTime.Now,
+                Guid.NewGuid().ToString(),
+                Status.Created);
 
             var dictionary = value.ToDictionary();
             var actual = SurveyStatus.FromDictionary(dictionary);
-            Assert.Equal(value.InternalSurveyId, actual.InternalSurveyId);
+            Assert.Equal(value.DocumentId, actual.DocumentId);
+            Assert.Equal(value.Created, actual.Created);
+            Assert.Equal(value.ParentDocumentId, actual.ParentDocumentId);
+
+            Assert.Equal(value.ParticipantId, actual.ParticipantId);
             Assert.Equal(value.Status, actual.Status);
         }
 
-        [Theory]
-        [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244c", "", Status.Created)]
-        [InlineData("bcb28b2d-e9a8-450c-a25e-7412e66d244d", "bcb28b2d-e9a8-450c-a25e-7412e66d244e", Status.Closed)]
-        public void Serialize(string internalSurveyId, string participantId, Status status)
+        [Fact]
+        public void Serialize()
         {
-            var surveyStatus = new SurveyStatus(internalSurveyId, participantId, status);
-            var expected =
-                $"{{\"internalSurveyId\":\"{internalSurveyId}\",\"participantId\":\"{participantId}\",\"status\":\"{status.ToString().ToUpperInvariant()}\"}}";
-            var actual = JsonConvert.SerializeObject(surveyStatus);
-            Assert.Equal(expected, actual);
+            var expected = new SurveyStatus(
+                Guid.NewGuid().ToString(),
+                DateTime.Now,
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                Status.Created);
+            var actual = Serializer.DeserializeObject<SurveyStatus>(Serializer.SerializeObject(expected));
+            Assert.Equal(expected.DocumentId, actual.DocumentId);
+            Assert.Equal(expected.Created, actual.Created);
+            Assert.Equal(expected.ParentDocumentId, actual.ParentDocumentId);
+
+            Assert.Equal(expected.ParticipantId, actual.ParticipantId);
+            Assert.Equal(expected.Status, actual.Status);
         }
 
         [Fact]
         public void SurveyStatusImplementsISurveyStatus()
         {
-            Assert.IsAssignableFrom<ISurveyStatus>(new SurveyStatus(Guid.NewGuid().ToString(), Status.Created));
+            Assert.IsAssignableFrom<ISurveyStatus>(
+                new SurveyStatus(
+                    Guid.NewGuid().ToString(),
+                    DateTime.Now,
+                    Guid.NewGuid().ToString(),
+                    Status.Created));
         }
     }
 }

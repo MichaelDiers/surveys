@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using Md.Common.Extensions;
-    using Md.GoogleCloud.Base.Logic;
+    using Md.Common.Model;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
 
@@ -40,13 +40,13 @@
         /// <summary>
         ///     Gets the id of the choice.
         /// </summary>
-        [JsonProperty(ChoiceIdName, Required = Required.Always, Order = 12)]
+        [JsonProperty(QuestionReference.ChoiceIdName, Required = Required.Always, Order = 12)]
         public string ChoiceId { get; }
 
         /// <summary>
         ///     Gets the id of the question.
         /// </summary>
-        [JsonProperty(QuestionIdName, Required = Required.Always, Order = 11)]
+        [JsonProperty(QuestionReference.QuestionIdName, Required = Required.Always, Order = 11)]
         public string QuestionId { get; }
 
         /// <summary>
@@ -56,8 +56,8 @@
         /// <returns>The given <paramref name="dictionary" />.</returns>
         public override IDictionary<string, object> AddToDictionary(IDictionary<string, object> dictionary)
         {
-            dictionary.Add(QuestionIdName, this.QuestionId);
-            dictionary.Add(ChoiceIdName, this.ChoiceId);
+            dictionary.Add(QuestionReference.QuestionIdName, this.QuestionId);
+            dictionary.Add(QuestionReference.ChoiceIdName, this.ChoiceId);
             return dictionary;
         }
 
@@ -68,8 +68,8 @@
         /// <returns>A <see cref="QuestionReference" />.</returns>
         public static QuestionReference FromDictionary(IDictionary<string, object> dictionary)
         {
-            var questionId = dictionary.GetString(QuestionIdName);
-            var choiceId = dictionary.GetString(ChoiceIdName);
+            var questionId = dictionary.GetString(QuestionReference.QuestionIdName);
+            var choiceId = dictionary.GetString(QuestionReference.ChoiceIdName);
 
             return new QuestionReference(questionId, choiceId);
         }

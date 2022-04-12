@@ -1,17 +1,12 @@
 ﻿namespace Surveys.Common.Contracts
 {
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.Common.Contracts.Database;
 
     /// <summary>
     ///     Describes the status of a survey.
     /// </summary>
-    public interface ISurveyStatus : IToDictionary
+    public interface ISurveyStatus : IDatabaseObject
     {
-        /// <summary>
-        ///     Gets the internal survey id.
-        /// </summary>
-        string InternalSurveyId { get; }
-
         /// <summary>
         ///     Gets the id of the participant.
         /// </summary>

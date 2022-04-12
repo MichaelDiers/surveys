@@ -1,7 +1,7 @@
 ﻿namespace Surveys.Common.Contracts.Messages
 {
     using System.Collections.Generic;
-    using Md.GoogleCloud.Base.Contracts.Messages;
+    using Md.Common.Contracts.Messages;
     using Surveys.Common.Messages;
 
     /// <summary>

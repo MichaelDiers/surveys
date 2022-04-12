@@ -1,6 +1,6 @@
 ﻿namespace Surveys.Common.Contracts.Messages
 {
-    using Md.GoogleCloud.Base.Contracts.Messages;
+    using Md.Common.Contracts.Messages;
 
     /// <summary>
     ///     Describes the valuate survey message.

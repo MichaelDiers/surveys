@@ -1,6 +1,6 @@
 ﻿namespace Surveys.Common.Contracts
 {
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.Common.Contracts.Model;
 
     /// <summary>
     ///     Describes a suggested answer of a survey question.

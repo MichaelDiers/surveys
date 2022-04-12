@@ -1,11 +1,12 @@
 ﻿namespace Surveys.Common.Contracts
 {
     using System.Collections.Generic;
+    using Md.Common.Contracts.Database;
 
     /// <summary>
     ///     Describes the data of a survey.
     /// </summary>
-    public interface ISurvey : IBase
+    public interface ISurvey : IDatabaseObject
     {
         /// <summary>
         ///     Gets an info text for the survey.
