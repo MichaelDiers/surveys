@@ -35,7 +35,11 @@
         public async void HandleAsyncThankYou()
         {
             var container = new TestDataContainer();
-            var message = new CreateMailMessage(Guid.NewGuid().ToString(), MailType.ThankYou, container.Survey);
+            var message = new CreateMailMessage(
+                Guid.NewGuid().ToString(),
+                MailType.ThankYou,
+                container.Survey,
+                container.SurveyResult);
             await FunctionTests.HandleAsyncForMessage(message);
         }
 

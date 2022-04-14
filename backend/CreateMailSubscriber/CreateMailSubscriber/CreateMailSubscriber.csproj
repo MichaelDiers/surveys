@@ -10,7 +10,7 @@
 		<PackageReference Include="Md.Common" Version="1.2.32" />
 		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.16" />
 		<PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.30" />
-		<PackageReference Include="Surveys.Common" Version="1.2.71" />
+		<PackageReference Include="Surveys.Common" Version="1.2.72" />
 		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.16" />
 		<PackageReference Include="Surveys.Common.PubSub" Version="1.2.11" />
 	</ItemGroup>
@@ -21,12 +21,21 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>RequestForParticipation.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Logic\ThankYou.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ThankYou.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <EmbeddedResource Update="Logic\RequestForParticipation.resx">
 	    <Generator>PublicResXFileCodeGenerator</Generator>
 	    <LastGenOutput>RequestForParticipation.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Logic\ThankYou.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ThankYou.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
 

@@ -1,8 +1,11 @@
 ﻿namespace CreateMailSubscriber.Logic
 {
     using System;
+    using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using CreateMailSubscriber.Contracts;
+    using Md.Common.Logic;
     using Md.GoogleCloudFunctions.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
@@ -127,7 +130,78 @@
         /// <returns>A <see cref="Task" /> that indicates termination.</returns>
         private async Task HandleThankYouAsync(ICreateMailMessage message)
         {
-            await Task.CompletedTask;
+            if (message.SurveyResult == null)
+            {
+                await this.LogErrorAsync(
+                    new ArgumentNullException(nameof(message.SurveyResult)),
+                    "Survey result is not set.");
+                return;
+            }
+
+            var participant = message.Survey.Participants.FirstOrDefault(
+                participant => participant.Id == message.SurveyResult.ParticipantId);
+            if (participant == null)
+            {
+                await this.LogErrorAsync(
+                    new Exception("Survey and survey result do not match. Participant not found."),
+                    Serializer.SerializeObject(message));
+                return;
+            }
+
+            var sendMailMessage = new SendMailMessage(
+                message.ProcessId,
+                new[] {new Recipient(participant.Email, participant.Email)},
+                new Recipient(message.Survey.Organizer.Email, message.Survey.Organizer.Name),
+                string.Format(ThankYou.Subject, message.Survey.Name),
+                this.HandleThankYouBody(message.Survey, participant, message.SurveyResult));
+            await this.sendMailPubSubClient.PublishAsync(sendMailMessage);
+        }
+
+        private Body HandleThankYouBody(ISurvey survey, IParticipant participant, ISurveyResult surveyResult)
+        {
+            var htmlBuilder = new StringBuilder();
+            var textBuilder = new StringBuilder();
+            foreach (var question in survey.Questions.OrderBy(question => question.Order))
+            {
+                var questionReference = surveyResult.Results.FirstOrDefault(qr => qr.QuestionId == question.Id);
+                if (questionReference == null)
+                {
+                    throw new Exception(
+                        $"Survey result does not contain question id {question.Id}: {Serializer.SerializeObject(survey)} - {Serializer.SerializeObject(surveyResult)}");
+                }
+
+                var answer = question.Choices.FirstOrDefault(choice => choice.Id == questionReference.ChoiceId);
+                if (answer == null)
+                {
+                    throw new Exception(
+                        $"Question {question.Id} does not include choice {questionReference.ChoiceId} - {Serializer.SerializeObject(survey)} - {Serializer.SerializeObject(surveyResult)}");
+                }
+
+                htmlBuilder.AppendFormat(ThankYou.BodyHtmlResult, question.Text, answer);
+                textBuilder.AppendFormat(ThankYou.BodyTextResult, question.Text, answer);
+            }
+
+            var htmlResultList = string.Format(ThankYou.BodyHtmlResultList, htmlBuilder);
+            var textResultList = string.Format(ThankYou.BodyTextResultList, textBuilder);
+
+            var surveyLink = string.Format(this.configuration.FrondEndUrlFormat, survey.DocumentId, participant.Id);
+            var html = string.Format(
+                ThankYou.BodyHtml,
+                participant.Name,
+                survey.Name,
+                surveyLink,
+                survey.Organizer.Name,
+                htmlResultList);
+
+            var text = string.Format(
+                ThankYou.BodyText,
+                participant.Name,
+                survey.Name,
+                surveyLink,
+                survey.Organizer.Name,
+                textResultList);
+
+            return new Body(html, text);
         }
     }
 }

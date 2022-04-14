@@ -10,6 +10,7 @@
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Messages;
+    using Surveys.Common.Models;
     using Surveys.Common.PubSub.Contracts.Logic;
 
     /// <summary>
@@ -86,14 +87,25 @@
                 return;
             }
 
-            await this.database.InsertAsync(message.SurveyResult);
+            var surveyResult = new SurveyResult(
+                Guid.NewGuid().ToString(),
+                DateTime.Now,
+                survey.DocumentId,
+                message.SurveyResult.ParticipantId,
+                message.SurveyResult.IsSuggested,
+                message.SurveyResult.Results);
+            await this.database.InsertAsync(surveyResult.DocumentId, surveyResult);
 
             if (!message.SurveyResult.IsSuggested)
             {
                 // await this.evaluateSurveyPubSubClient.PublishAsync(
                 //    new EvaluateSurveyMessage(message.ProcessId, message.SurveyResult.InternalSurveyId));
                 await this.createMailPubSubClient.PublishAsync(
-                    new CreateMailMessage(message.ProcessId, MailType.ThankYou, survey));
+                    new CreateMailMessage(
+                        message.ProcessId,
+                        MailType.ThankYou,
+                        survey,
+                        surveyResult));
             }
         }
     }
