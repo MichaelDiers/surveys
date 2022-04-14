@@ -177,8 +177,8 @@
                         $"Question {question.Id} does not include choice {questionReference.ChoiceId} - {Serializer.SerializeObject(survey)} - {Serializer.SerializeObject(surveyResult)}");
                 }
 
-                htmlBuilder.AppendFormat(ThankYou.BodyHtmlResult, question.Text, answer);
-                textBuilder.AppendFormat(ThankYou.BodyTextResult, question.Text, answer);
+                htmlBuilder.AppendFormat(ThankYou.BodyHtmlResult, question.Text, answer.Answer);
+                textBuilder.AppendFormat(ThankYou.BodyTextResult, question.Text, answer.Answer);
             }
 
             var htmlResultList = string.Format(ThankYou.BodyHtmlResultList, htmlBuilder);
