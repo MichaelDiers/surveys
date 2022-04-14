@@ -1,7 +1,7 @@
 namespace CreateMailSubscriber
 {
     using Google.Cloud.Functions.Hosting;
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloudFunctions.Contracts.Logic;
     using Md.GoogleCloudFunctions.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts.Messages;

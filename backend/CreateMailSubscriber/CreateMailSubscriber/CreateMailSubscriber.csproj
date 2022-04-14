@@ -7,13 +7,27 @@
 
 	<ItemGroup>
 		<PackageReference Include="Google.Cloud.Functions.Hosting" Version="1.0.0" />
-		<PackageReference Include="Md.Common" Version="1.2.25" />
-		<PackageReference Include="Md.GoogleCloud.Base" Version="1.2.37" />
-		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.12" />
-		<PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.26" />
-		<PackageReference Include="Surveys.Common" Version="1.2.66" />
-		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.12" />
-		<PackageReference Include="Surveys.Common.PubSub" Version="1.2.9" />
+		<PackageReference Include="Md.Common" Version="1.2.32" />
+		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.16" />
+		<PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.30" />
+		<PackageReference Include="Surveys.Common" Version="1.2.71" />
+		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.16" />
+		<PackageReference Include="Surveys.Common.PubSub" Version="1.2.11" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Logic\RequestForParticipation.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>RequestForParticipation.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Logic\RequestForParticipation.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>RequestForParticipation.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

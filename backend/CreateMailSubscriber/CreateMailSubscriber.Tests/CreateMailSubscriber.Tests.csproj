@@ -7,24 +7,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="appsettings.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Include="appsettings.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Google.Cloud.Functions.Testing" Version="1.0.0" />
-		<PackageReference Include="Md.GoogleCloud.Base" Version="1.2.37" />
+		<PackageReference Include="Md.Tga.Common.TestData" Version="1.2.38" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Surveys.Common" Version="1.2.66" />
-		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.12" />
+		<PackageReference Include="Surveys.Common" Version="1.2.71" />
+		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.16" />
 		<PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -38,12 +25,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CreateMailSubscriber\CreateMailSubscriber.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="Data\message.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
 	</ItemGroup>
 
 </Project>

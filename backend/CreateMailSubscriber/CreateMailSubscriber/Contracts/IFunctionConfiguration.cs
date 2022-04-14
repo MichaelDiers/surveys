@@ -1,7 +1,7 @@
 ﻿namespace CreateMailSubscriber.Contracts
 {
-    using Md.Common.Contracts;
-    using Md.GoogleCloudPubSub.Logic;
+    using Md.Common.Contracts.Model;
+    using Md.GoogleCloudPubSub.Contracts.Model;
 
     /// <summary>
     ///     Access the application settings.
