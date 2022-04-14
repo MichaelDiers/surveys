@@ -1,8 +1,10 @@
 ﻿namespace SaveSurveyResultSubscriber.Logic
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
-    using Md.GoogleCloud.Base.Logic;
+    using Md.Common.Logic;
+    using Md.GoogleCloudFunctions.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
@@ -30,22 +32,28 @@
         /// </summary>
         private readonly IEvaluateSurveyPubSubClient evaluateSurveyPubSubClient;
 
+        private readonly ISurveyReadOnlyDatabase surveyReadOnlyDatabase;
+
         /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
         /// <param name="logger">An error logger.</param>
         /// <param name="database">Access to the survey result database.</param>
+        /// <param name="surveyReadOnlyDatabase">Access the database collection surveys.</param>
         /// <param name="evaluateSurveyPubSubClient">Access google cloud pub/sub.</param>
         /// <param name="createMailPubSubClient">Access google cloud pub/sub.</param>
         public FunctionProvider(
             ILogger<Function> logger,
             ISurveyResultDatabase database,
+            ISurveyReadOnlyDatabase surveyReadOnlyDatabase,
             IEvaluateSurveyPubSubClient evaluateSurveyPubSubClient,
             ICreateMailPubSubClient createMailPubSubClient
         )
             : base(logger)
         {
             this.database = database ?? throw new ArgumentNullException(nameof(database));
+            this.surveyReadOnlyDatabase = surveyReadOnlyDatabase ??
+                                          throw new ArgumentNullException(nameof(surveyReadOnlyDatabase));
             this.evaluateSurveyPubSubClient = evaluateSurveyPubSubClient;
             this.createMailPubSubClient = createMailPubSubClient;
         }
@@ -57,23 +65,35 @@
         /// <returns>A <see cref="Task" /> without a result.</returns>
         protected override async Task HandleMessageAsync(ISaveSurveyResultMessage message)
         {
-            if (message == null)
+            var survey = await this.surveyReadOnlyDatabase.ReadByDocumentIdAsync(message.SurveyResult.ParentDocumentId);
+            if (survey == null)
             {
-                throw new ArgumentNullException(nameof(message));
+                await this.LogErrorAsync(
+                    new ArgumentException(
+                        $"Cannot find survey for survey result: {Serializer.SerializeObject(message)}",
+                        nameof(message.SurveyResult)),
+                    "Cannot find survey.");
+                return;
             }
 
-            var documentId = await this.database.InsertAsync(message.SurveyResult);
+            if (survey.Participants.All(participant => participant.Id != message.SurveyResult.ParticipantId))
+            {
+                await this.LogErrorAsync(
+                    new ArgumentException(
+                        $"Participant is not part of the survey: {Serializer.SerializeObject(message)}",
+                        nameof(message.SurveyResult.ParticipantId)),
+                    "Cannot find participant");
+                return;
+            }
+
+            await this.database.InsertAsync(message.SurveyResult);
 
             if (!message.SurveyResult.IsSuggested)
             {
-                await this.evaluateSurveyPubSubClient.PublishAsync(
-                    new EvaluateSurveyMessage(message.ProcessId, message.SurveyResult.InternalSurveyId));
+                // await this.evaluateSurveyPubSubClient.PublishAsync(
+                //    new EvaluateSurveyMessage(message.ProcessId, message.SurveyResult.InternalSurveyId));
                 await this.createMailPubSubClient.PublishAsync(
-                    new CreateMailMessage(
-                        message.ProcessId,
-                        MailType.ThankYou,
-                        null,
-                        documentId));
+                    new CreateMailMessage(message.ProcessId, MailType.ThankYou, survey));
             }
         }
     }

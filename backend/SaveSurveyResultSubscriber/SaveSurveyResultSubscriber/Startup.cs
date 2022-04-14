@@ -1,9 +1,9 @@
 namespace SaveSurveyResultSubscriber
 {
     using Google.Cloud.Functions.Hosting;
-    using Md.Common.Contracts;
-    using Md.GoogleCloud.Base.Contracts.Logic;
-    using Md.GoogleCloudPubSub.Logic;
+    using Md.Common.Contracts.Model;
+    using Md.GoogleCloudFunctions.Contracts.Logic;
+    using Md.GoogleCloudPubSub.Model;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +35,7 @@ namespace SaveSurveyResultSubscriber
 
             services.AddScoped<IRuntimeEnvironment>(_ => configuration);
             services.AddScoped<ISurveyResultDatabase, SurveyResultDatabase>();
+            services.AddScoped<ISurveyReadOnlyDatabase, SurveyReadOnlyDatabase>();
 
             services.AddScoped<IEvaluateSurveyPubSubClient>(
                 _ => new EvaluateSurveyPubSubClient(
