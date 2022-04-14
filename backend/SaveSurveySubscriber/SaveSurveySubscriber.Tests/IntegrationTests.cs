@@ -7,15 +7,15 @@
     using CloudNative.CloudEvents;
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
+    using Md.Common.Logic;
     using Md.Common.Model;
+    using Md.Tga.Common.TestData.Generators;
     using Newtonsoft.Json;
-    using SaveSurveySubscriber.Logic;
-    using SaveSurveySubscriber.Model;
-    using SaveSurveySubscriber.Tests.Data;
     using Surveys.Common.Contracts;
     using Surveys.Common.Firestore.Models;
+    using Surveys.Common.Messages;
     using Xunit;
-    using Environment = Md.Common.Contracts.Environment;
+    using Environment = Md.Common.Contracts.Model.Environment;
 
     /// <summary>
     ///     Integration tests for <see cref="Function" />.
@@ -25,13 +25,15 @@
         [Fact(Skip = "Integration only")]
         public async void HandleAsync()
         {
-            var message = TestData.InitializeMessage(Guid.NewGuid().ToString());
+            var container = new TestDataContainer();
+            var survey = container.Survey;
+            var message = new SaveSurveyMessage(Guid.NewGuid().ToString(), survey);
             await IntegrationTests.HandleAsyncForMessage(message);
         }
 
         private static async Task HandleAsyncForMessage(ISaveSurveyMessage message)
         {
-            var json = JsonConvert.SerializeObject(message);
+            var json = Serializer.SerializeObject(message);
             var data = new MessagePublishedData {Message = new PubsubMessage {TextData = json}};
 
             var cloudEvent = new CloudEvent
@@ -44,6 +46,7 @@
             };
 
             var configuration =
+                // ReSharper disable once StringLiteralTypo
                 JsonConvert.DeserializeObject<FunctionConfiguration>(await File.ReadAllTextAsync("appsettings.json"));
             Assert.NotNull(configuration);
 
@@ -51,7 +54,11 @@
             var provider = new FunctionProvider(
                 logger,
                 new SurveyDatabase(
-                    new RuntimeEnvironment {ProjectId = configuration.ProjectId, Environment = Environment.Test}));
+                    new RuntimeEnvironment
+                    {
+                        ProjectId = configuration?.ProjectId ?? throw new NotImplementedException(),
+                        Environment = Environment.Test
+                    }));
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 

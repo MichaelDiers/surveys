@@ -1,7 +1,6 @@
-﻿namespace SaveSurveySubscriber.Model
+﻿namespace SaveSurveySubscriber
 {
     using Md.Common.Model;
-    using SaveSurveySubscriber.Contracts;
 
     /// <summary>
     ///     Access the application settings.

@@ -1,11 +1,12 @@
-﻿namespace SaveSurveySubscriber.Logic
+﻿namespace SaveSurveySubscriber
 {
     using System;
     using System.Threading.Tasks;
-    using Md.GoogleCloud.Base.Logic;
+    using Md.GoogleCloudFunctions.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
     using Surveys.Common.Firestore.Contracts;
+    using Surveys.Common.Models;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
@@ -40,7 +41,17 @@
                 throw new ArgumentNullException(nameof(message));
             }
 
-            await this.database.InsertAsync(message.InternalSurveyId, message.Survey);
+            var survey = new Survey(
+                Guid.NewGuid().ToString(),
+                DateTime.Now,
+                message.Survey.ParentDocumentId,
+                message.Survey.Name,
+                message.Survey.Info,
+                message.Survey.Link,
+                message.Survey.Organizer,
+                message.Survey.Participants,
+                message.Survey.Questions);
+            await this.database.InsertAsync(survey.DocumentId, survey);
         }
     }
 }

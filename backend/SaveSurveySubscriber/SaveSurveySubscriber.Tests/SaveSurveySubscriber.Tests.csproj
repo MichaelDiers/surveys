@@ -4,15 +4,17 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 
 		<IsPackable>false</IsPackable>
+
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Google.Cloud.Functions.Testing" Version="1.0.0" />
-		<PackageReference Include="Md.Common" Version="1.2.24" />
-		<PackageReference Include="Md.GoogleCloud.Base" Version="1.2.37" />
+		<PackageReference Include="Md.Common" Version="1.2.32" />
+		<PackageReference Include="Md.Tga.Common.TestData" Version="1.2.34" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Surveys.Common" Version="1.2.65" />
+		<PackageReference Include="Surveys.Common" Version="1.2.70" />
 		<PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,9 +32,6 @@
 
 	<ItemGroup>
 	  <None Update="appsettings.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
-	  <None Update="Data\Message.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

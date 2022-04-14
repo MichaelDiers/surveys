@@ -1,13 +1,11 @@
 namespace SaveSurveySubscriber
 {
     using Google.Cloud.Functions.Hosting;
-    using Md.Common.Contracts;
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.Common.Contracts.Model;
+    using Md.GoogleCloudFunctions.Contracts.Logic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using SaveSurveySubscriber.Logic;
-    using SaveSurveySubscriber.Model;
     using Surveys.Common.Contracts;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Firestore.Models;

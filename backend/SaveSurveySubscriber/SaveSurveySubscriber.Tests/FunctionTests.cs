@@ -6,10 +6,10 @@
     using CloudNative.CloudEvents;
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
+    using Md.Tga.Common.TestData.Generators;
     using Newtonsoft.Json;
-    using SaveSurveySubscriber.Tests.Data;
-    using SaveSurveySubscriber.Tests.Mocks;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Messages;
     using Xunit;
 
     /// <summary>
@@ -20,7 +20,8 @@
         [Fact]
         public async void HandleAsync()
         {
-            var message = TestData.InitializeMessage();
+            var container = new TestDataContainer();
+            var message = new SaveSurveyMessage(Guid.NewGuid().ToString(), container.Survey);
             await FunctionTests.HandleAsyncForMessage(message);
         }
 
@@ -39,7 +40,8 @@
             };
 
             var logger = new MemoryLogger<Function>();
-            var provider = new FunctionProviderMock(message);
+            var container = new TestDataContainer();
+            var provider = new FunctionProvider(logger, container.SurveysDatabaseMock);
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 
