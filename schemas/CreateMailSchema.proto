@@ -1,63 +1,53 @@
 syntax = "proto3";
 message CreateMailMessage {
-    message RequestForParticipationMessage {
-        message Survey {
-            message Organizer {
-                string id = 1;
-                string email = 2;
-                string name = 3;
-            }
-
-            message QuestionReference {
-                string questionId = 1;
-                string choiceId = 2;
-            }
-
-            message Participant {
-                string id = 1;
-                string email = 2;
-                string name = 3;
-                repeated QuestionReference questionReferences = 4;
-                int32 order = 5; 
-            }
-
-            message Choice {
-                string id = 1;
-                string answer = 2;
-                bool selectable = 3;
-                int32 order = 4; 
-            }
-
-            message Question {
-                string id = 1;
-                string question = 2;
-                repeated Choice choices = 3;
-                int32 order = 4;
-            }
-
+    message Survey {
+        message Organizer {
             string id = 1;
-            string name = 2;
-            string info = 3;
-            string link = 4;
-            Organizer organizer = 5;
-            repeated Participant participants = 6;
-            repeated Question questions = 7;
+            string email = 2;
+            string name = 3;
         }
-
-        string internalSurveyId = 1;
-        Survey survey = 2;
+        message QuestionReference {
+            string questionId = 1;
+            string choiceId = 2;
+        }
+        message Participant {
+            string id = 1;
+            string email = 2;
+            string name = 3;
+            repeated QuestionReference questionReferences = 4;
+            int32 order = 5; 
+        }
+        message Choice {
+            string id = 1;
+            string answer = 2;
+            bool selectable = 3;
+            int32 order = 4; 
+        }
+        message Question {
+            string id = 1;
+            string question = 2;
+            repeated Choice choices = 3;
+            int32 order = 4;
+        }
+        string documentId = 1;
+        string created = 2;
+        string parentDocumentId = 3;
+        string name = 2;
+        string info = 3;
+        string link = 4;
+        Organizer organizer = 5;
+        repeated Participant participants = 6;
+        repeated Question questions = 7;
     }
 
     enum MailType {
-        Undefined = 0;
-        RequestForParticipation = 1;
-        ThankYou = 2;	
+        RequestForParticipation = 0;
+        ThankYou = 1;	
     }
 
     string processId = 1;
     MailType mailType = 2;
     oneof data {
-        RequestForParticipationMessage requestForParticipation = 3;
-        string documentId = 4;
+        Survey survey = 3;
     }
 }
