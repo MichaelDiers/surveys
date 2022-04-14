@@ -25,7 +25,32 @@
         private const string QuestionName = "question";
 
         /// <summary>
-        ///     Creates a new instance of <see cref="Base" />.
+        ///     Creates a new instance of <see cref="Survey" />.
+        /// </summary>
+        /// <param name="id">The id of the object.</param>
+        /// <param name="text">The text of the question.</param>
+        /// <param name="choices">The possible answers of the question.</param>
+        /// <param name="order">Used for sorting questions.</param>
+        /// <exception cref="ArgumentException">Is thrown if <paramref name="id" /> is null or whitespace.</exception>
+        /// <exception cref="ArgumentException">Is thrown if <paramref name="id" /> is not a guid.</exception>
+        /// <exception cref="ArgumentException">Is thrown if <paramref name="text" /> is null or whitespace.</exception>
+        [JsonConstructor]
+        public Question(
+            string id,
+            string text,
+            IEnumerable<Choice> choices,
+            int order
+        )
+            : this(
+                id,
+                text,
+                choices.Select(choice => choice as IChoice),
+                order)
+        {
+        }
+
+        /// <summary>
+        ///     Creates a new instance of <see cref="Survey" />.
         /// </summary>
         /// <param name="id">The id of the object.</param>
         /// <param name="text">The text of the question.</param>
@@ -37,13 +62,13 @@
         public Question(
             string id,
             string text,
-            IEnumerable<Choice> choices,
+            IEnumerable<IChoice> choices,
             int order
         )
             : base(id)
         {
             this.Text = text.ValidateIsNotNullOrWhitespace(nameof(text));
-            this.Choices = choices ?? throw new ArgumentNullException(nameof(choices));
+            this.Choices = choices.ToArray();
             this.Order = order;
         }
 
