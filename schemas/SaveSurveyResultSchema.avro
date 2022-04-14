@@ -14,9 +14,18 @@
 				"type": "record",
 				"fields": [
 					{
-						"name": "internalSurveyId",
+						"name": "documentId",
 						"type": "string",
-      					"logicalType": "uuid"
+						"logicalType": "uuid"
+					},
+					{
+						"name": "created",
+						"type": "string"
+					},
+					{
+						"name": "parentDocumentId",
+						"type": "string",
+						"logicalType": "uuid"
 					},
 					{
 						"name": "participantId",
