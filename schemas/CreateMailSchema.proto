@@ -1,34 +1,39 @@
 syntax = "proto3";
 message CreateMailMessage {
+    message QuestionReference {
+        string questionId = 1;
+        string choiceId = 2;
+    };
+
     message Survey {
         message Organizer {
             string id = 1;
             string email = 2;
             string name = 3;
-        }
-        message QuestionReference {
-            string questionId = 1;
-            string choiceId = 2;
-        }
+        };
+        
         message Participant {
             string id = 1;
             string email = 2;
             string name = 3;
             repeated QuestionReference questionReferences = 4;
             int32 order = 5; 
-        }
+        };
+
         message Choice {
             string id = 1;
             string answer = 2;
             bool selectable = 3;
             int32 order = 4; 
-        }
+        };
+
         message Question {
             string id = 1;
             string question = 2;
             repeated Choice choices = 3;
             int32 order = 4;
-        }
+        };
+
         string documentId = 1;
         string created = 2;
         string parentDocumentId = 3;
@@ -38,7 +43,7 @@ message CreateMailMessage {
         Organizer organizer = 7;
         repeated Participant participants = 8;
         repeated Question questions = 9;
-    }
+    };
 
     message SurveyResult {
         string documentId = 1;
@@ -47,12 +52,12 @@ message CreateMailMessage {
         string participantId = 4;
         bool isSuggested = 5;
         repeated QuestionReference questionReferences = 6;
-    }
+    };
 
     enum MailType {
         RequestForParticipation = 0;
         ThankYou = 1;	
-    }
+    };
 
     string processId = 1;
     MailType mailType = 2;
