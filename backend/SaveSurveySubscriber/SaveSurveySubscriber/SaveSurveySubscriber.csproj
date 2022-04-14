@@ -9,8 +9,8 @@
 		<PackageReference Include="Md.Common" Version="1.2.32" />
 		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.16" />
 		<PackageReference Include="Surveys.Common" Version="1.2.72" />
-		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.16" />
-		<PackageReference Include="Surveys.Common.PubSub" Version="1.2.11" />
+		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.17" />
+		<PackageReference Include="Surveys.Common.PubSub" Version="1.2.12" />
 	</ItemGroup>
 
 </Project>
