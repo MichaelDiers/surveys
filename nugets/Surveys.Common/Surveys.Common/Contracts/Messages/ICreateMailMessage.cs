@@ -15,6 +15,11 @@
         /// <summary>
         ///     Gets the survey data.
         /// </summary>
-        ISurvey? Survey { get; }
+        ISurvey Survey { get; }
+
+        /// <summary>
+        ///     Gets the optional survey result data.
+        /// </summary>
+        ISurveyResult? SurveyResult { get; }
     }
 }

@@ -19,9 +19,19 @@
         /// <param name="processId">The global process id.</param>
         /// <param name="mailType">The type of the email.</param>
         /// <param name="survey">The survey data.</param>
+        /// <param name="surveyResult">The optional survey result for thank you mails.</param>
         [JsonConstructor]
-        public CreateMailMessage(string processId, MailType mailType, Survey? survey)
-            : this(processId, mailType, survey as ISurvey)
+        public CreateMailMessage(
+            string processId,
+            MailType mailType,
+            Survey survey,
+            SurveyResult? surveyResult
+        )
+            : this(
+                processId,
+                mailType,
+                survey,
+                surveyResult as ISurveyResult)
         {
         }
 
@@ -31,7 +41,27 @@
         /// <param name="processId">The global process id.</param>
         /// <param name="mailType">The type of the email.</param>
         /// <param name="survey">The survey data.</param>
-        public CreateMailMessage(string processId, MailType mailType, ISurvey? survey)
+        public CreateMailMessage(string processId, MailType mailType, ISurvey survey)
+            : this(
+                processId,
+                mailType,
+                survey,
+                null)
+        {
+        }
+
+        /// <summary>
+        ///     Creates an instance of <see cref="CreateMailMessage" />.
+        /// </summary>
+        /// <param name="processId">The global process id.</param>
+        /// <param name="mailType">The type of the email.</param>
+        /// <param name="survey">The survey data.</param>
+        public CreateMailMessage(
+            string processId,
+            MailType mailType,
+            ISurvey survey,
+            ISurveyResult? surveyResult
+        )
             : base(processId)
         {
             if (!Enum.IsDefined(typeof(MailType), mailType) || mailType == MailType.Undefined)
@@ -41,8 +71,8 @@
 
             this.MailType = mailType;
             this.Survey = survey;
+            this.SurveyResult = surveyResult;
         }
-
 
         /// <summary>
         ///     Gets a value that specifies the type of the email.
@@ -54,6 +84,12 @@
         ///     Gets the survey data.
         /// </summary>
         [JsonProperty("survey", Required = Required.Always, Order = 11)]
-        public ISurvey? Survey { get; }
+        public ISurvey Survey { get; }
+
+        /// <summary>
+        ///     Gets the optional survey result.
+        /// </summary>
+        [JsonProperty("surveyResult", Required = Required.AllowNull, Order = 12)]
+        public ISurveyResult? SurveyResult { get; }
     }
 }
