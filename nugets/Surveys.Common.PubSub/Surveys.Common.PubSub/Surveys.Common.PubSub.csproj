@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.29" />
-    <PackageReference Include="Surveys.Common" Version="1.2.68" />
+    <PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.30" />
+    <PackageReference Include="Surveys.Common" Version="1.2.70" />
   </ItemGroup>
 
 </Project>
