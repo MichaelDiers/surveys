@@ -40,6 +40,15 @@ message CreateMailMessage {
         repeated Question questions = 9;
     }
 
+    message SurveyResult {
+        string documentId = 1;
+        string created = 2;
+        string parentDocumentId = 3;
+        string participantId = 4;
+        bool isSuggested = 5;
+        repeated QuestionReference questionReferences = 6;
+    }
+
     enum MailType {
         RequestForParticipation = 0;
         ThankYou = 1;	
@@ -47,7 +56,6 @@ message CreateMailMessage {
 
     string processId = 1;
     MailType mailType = 2;
-    oneof data {
-        Survey survey = 3;
-    }
+    Survey survey = 3;
+    SurveyResult surveyResults = 4;
 }
