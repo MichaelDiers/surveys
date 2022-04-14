@@ -3,12 +3,15 @@ namespace SaveSurveySubscriber
     using Google.Cloud.Functions.Hosting;
     using Md.Common.Contracts.Model;
     using Md.GoogleCloudFunctions.Contracts.Logic;
+    using Md.GoogleCloudPubSub.Contracts.Model;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Surveys.Common.Contracts;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Firestore.Models;
+    using Surveys.Common.PubSub.Contracts.Logic;
+    using Surveys.Common.PubSub.Logic;
 
     /// <summary>
     ///     Initialize the function.
@@ -27,6 +30,9 @@ namespace SaveSurveySubscriber
 
             services.AddScoped<IRuntimeEnvironment>(_ => configuration);
             services.AddScoped<ISurveyDatabase, SurveyDatabase>();
+
+            services.AddScoped<IPubSubClientEnvironment>(_ => configuration);
+            services.AddScoped<ICreateMailPubSubClient, CreateMailPubSubClient>();
 
             services.AddScoped<IPubSubProvider<ISaveSurveyMessage>, FunctionProvider>();
         }
