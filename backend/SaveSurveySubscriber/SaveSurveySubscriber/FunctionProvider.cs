@@ -5,14 +5,22 @@
     using Md.GoogleCloudFunctions.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
+    using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
+    using Surveys.Common.Messages;
     using Surveys.Common.Models;
+    using Surveys.Common.PubSub.Contracts.Logic;
 
     /// <summary>
     ///     Provider that handles the business logic of the cloud function.
     /// </summary>
     public class FunctionProvider : PubSubProvider<ISaveSurveyMessage, Function>
     {
+        /// <summary>
+        ///     Publisher client for creating emails.
+        /// </summary>
+        private readonly ICreateMailPubSubClient createMailPubSubClient;
+
         /// <summary>
         ///     Access to the survey database.
         /// </summary>
@@ -23,10 +31,17 @@
         /// </summary>
         /// <param name="logger">An error logger.</param>
         /// <param name="database">Access to the survey database.</param>
-        public FunctionProvider(ILogger<Function> logger, ISurveyDatabase database)
+        /// <param name="createMailPubSubClient">Publisher client for creating emails.</param>
+        public FunctionProvider(
+            ILogger<Function> logger,
+            ISurveyDatabase database,
+            ICreateMailPubSubClient createMailPubSubClient
+        )
             : base(logger)
         {
             this.database = database ?? throw new ArgumentNullException(nameof(database));
+            this.createMailPubSubClient = createMailPubSubClient ??
+                                          throw new ArgumentNullException(nameof(createMailPubSubClient));
         }
 
         /// <summary>
@@ -52,6 +67,8 @@
                 message.Survey.Participants,
                 message.Survey.Questions);
             await this.database.InsertAsync(survey.DocumentId, survey);
+            await this.createMailPubSubClient.PublishAsync(
+                new CreateMailMessage(message.ProcessId, MailType.RequestForParticipation, survey));
         }
     }
 }

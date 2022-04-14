@@ -7,6 +7,7 @@
     using Google.Cloud.Functions.Testing;
     using Google.Events.Protobuf.Cloud.PubSub.V1;
     using Md.Tga.Common.TestData.Generators;
+    using Md.Tga.Common.TestData.Mocks.PubSub;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Messages;
@@ -41,7 +42,10 @@
 
             var logger = new MemoryLogger<Function>();
             var container = new TestDataContainer();
-            var provider = new FunctionProvider(logger, container.SurveysDatabaseMock);
+            var provider = new FunctionProvider(
+                logger,
+                container.SurveysDatabaseMock,
+                new CreateMailPubSubClientMock());
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 
