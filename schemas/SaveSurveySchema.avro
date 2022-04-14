@@ -8,18 +8,22 @@
       "logicalType": "uuid"
     },
     {
-      "name": "internalSurveyId",
-      "type": "string",
-      "logicalType": "uuid"
-    },
-    {
       "name": "survey",
       "type": {
         "name": "surveyRecord",
         "type": "record",
         "fields": [
           {
-            "name": "id",
+            "name": "documentId",
+            "type": "string",
+            "logicalType": "uuid"
+          },
+          {
+            "name": "created",
+            "type": "string"
+          },
+          {
+            "name": "parentDocumentId",
             "type": "string",
             "logicalType": "uuid"
           },
