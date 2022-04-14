@@ -29,7 +29,7 @@ const initialize = (options) => {
       } = message;
 
       const resultsJson = Array.from(results.map(({ questionId, choiceId }) => `{"questionId":"${questionId}","choiceId":"${choiceId}"}`)).join(',');
-      const json = `{"processId":"${uuid.v4()}","surveyResult":{"internalSurveyId":"${internalSurveyId}","participantId":"${participantId}","isSuggested":false,"results":[${resultsJson}]}}`;
+      const json = `{"processId":"${uuid.v4()}","surveyResult":{"documentId":"","created":"","parentDocumentId":"${internalSurveyId}","participantId":"${participantId}","isSuggested":false,"results":[${resultsJson}]}}`;
       const data = Buffer.from(json);
       await pubSubClient
         .topic(topicName)
