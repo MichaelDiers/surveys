@@ -51,7 +51,7 @@ message CreateMailMessage {
         string parentDocumentId = 3;
         string participantId = 4;
         bool isSuggested = 5;
-        repeated QuestionReference questionReferences = 6;
+        repeated QuestionReference results = 6;
     };
 
     enum MailType {
@@ -62,5 +62,5 @@ message CreateMailMessage {
     string processId = 1;
     MailType mailType = 2;
     Survey survey = 3;
-    SurveyResult surveyResults = 4;
+    SurveyResult surveyResult = 4;
 }
