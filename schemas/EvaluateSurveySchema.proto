@@ -1,5 +1,5 @@
 syntax = "proto3";
 message EvalauteSurveyMessage {
     string processId = 1;
-    string internalSurveyId = 2;
+    string surveyDocumentId = 2;
 }
