@@ -41,7 +41,6 @@
             Assert.Equal(order, participant.Order);
         }
 
-
         [Theory]
         [InlineData(
             "{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244b',email:'foo@bar.example',name:'the name',questionReferences:[{questionId:'bcb28b2d-e9a8-450c-a25e-7412e66d244c',choiceId:'bcb28b2d-e9a8-450c-a25e-7412e66d244d'}],order:1}",

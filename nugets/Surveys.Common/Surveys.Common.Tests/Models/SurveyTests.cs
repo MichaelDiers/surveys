@@ -62,7 +62,6 @@
                                       aqr => qr.ChoiceId == aqr.ChoiceId && qr.QuestionId == aqr.QuestionId)))));
         }
 
-
         [Fact]
         public void QuestionImplementsIQuestion()
         {

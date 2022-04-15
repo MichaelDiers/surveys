@@ -65,7 +65,6 @@
         [JsonProperty("text", Required = Required.Always, Order = 14)]
         public Body Body { get; }
 
-
         /// <summary>
         ///     Gets or sets the recipients of the email.
         /// </summary>

@@ -21,7 +21,6 @@
             Assert.Equal(name, person.Name);
         }
 
-
         [Theory]
         [InlineData(
             "{id:'bcb28b2d-e9a8-450c-a25e-7412e66d244b',email:'foo@bar.example',name:'the name'}",

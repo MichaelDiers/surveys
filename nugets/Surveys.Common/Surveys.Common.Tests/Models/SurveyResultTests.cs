@@ -44,7 +44,6 @@
             Assert.Equal(choiceId, result.Results.Single().ChoiceId);
         }
 
-
         [Theory]
         [InlineData(
             "{documentId:'bcb28b2d-e9a8-450c-a25e-7412e66d244d',created:null,parentDocumentId:'bcb28b2d-e9a8-450c-a25e-7412e66d244e',participantId:'bcb28b2d-e9a8-450c-a25e-7412e66d244c','isSuggested':true,'results':[{'questionId':'ccb28b2d-e9a8-450c-a25e-7412e66d244d','choiceId':'dcb28b2d-e9a8-450c-a25e-7412e66d244d'}]}",

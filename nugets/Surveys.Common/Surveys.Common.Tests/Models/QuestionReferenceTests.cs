@@ -20,7 +20,6 @@
             Assert.Equal(choiceId, questionReference.ChoiceId);
         }
 
-
         [Theory]
         [InlineData(
             "{questionId:'bcb28b2d-e9a8-450c-a25e-7412e66d244c',choiceId:'bcb28b2d-e9a8-450c-a25e-7412e66d244d'}",

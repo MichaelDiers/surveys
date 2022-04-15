@@ -10,6 +10,6 @@
         /// <summary>
         ///     Gets the internal id of the survey.
         /// </summary>
-        public string InternalSurveyId { get; }
+        string SurveyDocumentId { get; }
     }
 }
