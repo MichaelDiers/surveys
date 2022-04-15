@@ -79,13 +79,13 @@
         /// <summary>
         ///     Gets the id of the participant.
         /// </summary>
-        [JsonProperty(SurveyStatus.ParticipantIdName, Required = Required.AllowNull, Order = 2)]
+        [JsonProperty(SurveyStatus.ParticipantIdName, Required = Required.AllowNull, Order = 11)]
         public string ParticipantId { get; }
 
         /// <summary>
         ///     Gets the status of the survey.
         /// </summary>
-        [JsonProperty(SurveyStatus.StatusName, Required = Required.Always, Order = 3)]
+        [JsonProperty(SurveyStatus.StatusName, Required = Required.Always, Order = 12)]
         public Status Status { get; }
 
         /// <summary>

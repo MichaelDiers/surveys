@@ -56,6 +56,7 @@
         /// <param name="processId">The global process id.</param>
         /// <param name="mailType">The type of the email.</param>
         /// <param name="survey">The survey data.</param>
+        /// <param name="surveyResult">The result for that a mail is created.</param>
         public CreateMailMessage(
             string processId,
             MailType mailType,
