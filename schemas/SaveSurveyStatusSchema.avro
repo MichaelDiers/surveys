@@ -14,7 +14,16 @@
 				"type": "record",
 				"fields": [
 					{
-						"name": "internalSurveyId",
+						"name": "documentId",
+						"type": "string",
+      					"logicalType": "uuid"
+					},
+					{
+						"name": "created",
+						"type": "string"
+					},
+					{
+						"name": "parentDocumentId",
 						"type": "string",
       					"logicalType": "uuid"
 					},
@@ -29,13 +38,8 @@
 							"name": "statusEnum",
 							"type": "enum",
 							"symbols": [
-								"CREATED",
-                                                                "INVITATION_MAIL_OK",
-                                                                "INVITATION_MAIL_FAILED",
-                                                                "CLOSED",
-                                                                "THANK_YOU_MAIL_OK",
-                                                                "THANK_YOU_MAIL_FAILED"
-                							]
+                                "CLOSED"
+                			]
 						}
 					}					
 				]
