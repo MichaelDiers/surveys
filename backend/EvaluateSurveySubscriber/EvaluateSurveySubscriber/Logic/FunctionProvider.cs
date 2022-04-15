@@ -4,10 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Md.GoogleCloud.Base.Contracts.Logic;
-    using Md.GoogleCloud.Base.Logic;
+    using Md.Common.Database;
+    using Md.GoogleCloudFunctions.Logic;
     using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
     using Surveys.Common.Contracts;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
@@ -20,8 +19,6 @@
     /// </summary>
     public class FunctionProvider : PubSubProvider<IEvaluateSurveyMessage, Function>
     {
-        private readonly ILogger<Function> logger;
-
         /// <summary>
         ///     Access to google cloud pub/sub for saving the status of a survey.
         /// </summary>
@@ -66,7 +63,6 @@
         )
             : base(logger)
         {
-            this.logger = logger;
             this.surveyDatabase = surveyDatabase;
             this.surveyResultsDatabase = surveyResultsDatabase;
             this.surveyStatusDatabase = surveyStatusDatabase;
@@ -81,62 +77,56 @@
         /// <returns>A <see cref="Task" /> without a result.</returns>
         protected override async Task HandleMessageAsync(IEvaluateSurveyMessage message)
         {
-            if (message == null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
             var (survey, results, status) = await this.ReadData(message);
-            if (survey == null)
-
-            {
-                throw new ArgumentException($"Unknown survey {message.InternalSurveyId}", nameof(message));
-            }
 
             if (status.Any(s => s.Status == Status.Closed))
             {
-                throw new ArgumentException($"Survey {message.InternalSurveyId} is already closed.");
+                await this.LogErrorAsync(
+                    new Exception($"Survey {message.SurveyDocumentId} is already closed."),
+                    "Survey is closed.");
+                return;
             }
 
-            var participantResults = survey.Participants.Select(
+            // if a vote exists for each participant then close the survey and publish the results
+            if (survey.Participants.All(
                     participant =>
-                        results.LastOrDefault(result => !result.IsSuggested && result.ParticipantId == participant.Id))
-                .ToArray();
-            if (participantResults.Length == survey.Participants.Count() &&
-                participantResults.All(result => result != null))
+                        results.Any(result => !result.IsSuggested && participant.Id == result.ParticipantId)))
             {
                 await this.saveSurveyStatusPubSubClient.PublishAsync(
                     new SaveSurveyStatusMessage(
                         message.ProcessId,
-                        new SurveyStatus(message.InternalSurveyId, Status.Closed)));
-                var surveyClosedMessage = new SurveyClosedMessage(message.ProcessId, survey, results);
-                this.logger.LogInformation(JsonConvert.SerializeObject(surveyClosedMessage));
-                await this.surveyClosedPubSubClient.PublishAsync(surveyClosedMessage);
+                        new SurveyStatus(
+                            null,
+                            null,
+                            message.SurveyDocumentId,
+                            Status.Closed)));
+                await this.surveyClosedPubSubClient.PublishAsync(
+                    new SurveyClosedMessage(message.ProcessId, survey, results));
             }
         }
 
-        private async Task<(ISurvey? survey, IEnumerable<ISurveyResult> results, IEnumerable<ISurveyStatus> status)>
-            ReadData(IEvaluateSurveyMessage message)
+        private async Task<(ISurvey survey, IList<ISurveyResult> results, IList<ISurveyStatus> status)> ReadData(
+            IEvaluateSurveyMessage message
+        )
         {
-            var surveyTask = this.surveyDatabase.ReadByDocumentIdAsync(message.InternalSurveyId);
+            var surveyTask = this.surveyDatabase.ReadByDocumentIdAsync(message.SurveyDocumentId);
             var surveyResultsTask = this.surveyResultsDatabase.ReadManyAsync(
-                SurveyResult.InternalSurveyIdName,
-                message.InternalSurveyId,
-                OrderType.Desc);
+                DatabaseObject.ParentDocumentIdName,
+                message.SurveyDocumentId);
             var surveyStatusTask = this.surveyStatusDatabase.ReadManyAsync(
-                SurveyStatus.InternalSurveyIdName,
-                message.InternalSurveyId);
-
+                DatabaseObject.ParentDocumentIdName,
+                message.SurveyDocumentId);
 
             var survey = await surveyTask ??
                          throw new ArgumentException(
-                             $"Survey {message.InternalSurveyId} not found.",
-                             nameof(message.InternalSurveyId));
+                             $"Survey {message.SurveyDocumentId} not found.",
+                             nameof(message.SurveyDocumentId));
 
             var surveyStatus = (await surveyStatusTask).ToArray();
 
             var dictionary = new Dictionary<string, ISurveyResult>();
-            foreach (var result in (await surveyResultsTask).Where(r => !r.IsSuggested))
+            foreach (var result in (await surveyResultsTask).Where(r => !r.IsSuggested)
+                     .OrderByDescending(r => r.Created))
             {
                 if (!dictionary.ContainsKey(result.ParticipantId))
                 {
@@ -144,7 +134,7 @@
                 }
             }
 
-            return (survey, dictionary.Values, surveyStatus);
+            return (survey, dictionary.Values.Select(x => x).ToArray(), surveyStatus);
         }
     }
 }

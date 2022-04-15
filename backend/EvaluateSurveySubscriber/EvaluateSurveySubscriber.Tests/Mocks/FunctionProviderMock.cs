@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloudFunctions.Contracts.Logic;
     using Surveys.Common.Contracts.Messages;
     using Xunit;
 
@@ -17,7 +17,7 @@
 
         public Task HandleAsync(IEvaluateSurveyMessage message)
         {
-            Assert.Equal(this.expectedMessage.InternalSurveyId, message.InternalSurveyId);
+            Assert.Equal(this.expectedMessage.SurveyDocumentId, message.SurveyDocumentId);
             Assert.Equal(this.expectedMessage.ProcessId, message.ProcessId);
             return Task.CompletedTask;
         }

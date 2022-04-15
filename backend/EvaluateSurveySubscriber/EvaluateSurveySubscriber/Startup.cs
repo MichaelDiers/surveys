@@ -4,9 +4,9 @@ namespace EvaluateSurveySubscriber
     using EvaluateSurveySubscriber.Logic;
     using EvaluateSurveySubscriber.Model;
     using Google.Cloud.Functions.Hosting;
-    using Md.Common.Contracts;
-    using Md.GoogleCloud.Base.Contracts.Logic;
-    using Md.GoogleCloudPubSub.Logic;
+    using Md.Common.Contracts.Model;
+    using Md.GoogleCloudFunctions.Contracts.Logic;
+    using Md.GoogleCloudPubSub.Model;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;

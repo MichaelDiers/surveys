@@ -24,55 +24,47 @@
         [Fact]
         public async void HandleAsync()
         {
-            var gameSeries = GameSeriesGenerator.Generate();
-            var game = GameGenerator.Generate(new GameGeneratorConfiguration(), gameSeries);
-            var survey = SurveyGenerator.Generate(new SurveyGeneratorConfiguration(), gameSeries, game);
-            var status = SurveyStatusGenerator.Generate(new SurveyStatusGeneratorConfiguration(), game).ToArray();
-            var results = SurveyResultGenerator.Generate(new SurveyResultGeneratorConfiguration(), game, survey)
-                .ToArray();
+            var container = new TestDataContainer();
             Assert.Empty(
                 await FunctionProviderTests.Run(
-                    game,
-                    survey,
-                    status,
-                    results));
+                    container.Game,
+                    container.Survey,
+                    container.SurveyStatus,
+                    container.SurveyResults));
         }
 
         [Fact]
         public async void HandleAsyncCheckSurveyClosedMessage()
         {
-            var gameSeries = GameSeriesGenerator.Generate();
-            var game = GameGenerator.Generate(new GameGeneratorConfiguration(), gameSeries);
-            var survey = SurveyGenerator.Generate(new SurveyGeneratorConfiguration(), gameSeries, game);
-            var status = SurveyStatusGenerator.Generate(new SurveyStatusGeneratorConfiguration(), game).ToArray();
-            var results = SurveyResultGenerator.Generate(new SurveyResultGeneratorConfiguration(), game, survey)
-                .ToList();
-
-
+            var container = new TestDataContainer();
+            var results = new List<ISurveyResult>();
             var surveyClosedMessage = new SurveyClosedMessage(
                 Guid.NewGuid().ToString(),
-                survey,
-                gameSeries.Players.Select(
-                    (player, i) =>
-                    {
-                        var surveyResult = new SurveyResult(
-                            game.SurveyId,
-                            player.Id,
-                            false,
-                            survey.Questions.Select(
-                                    question => new QuestionReference(
-                                        question.Id,
-                                        question.Choices.Where(choice => choice.Selectable).Skip(i).First().Id))
-                                .ToArray());
-                        results.Add(surveyResult);
-                        return surveyResult;
-                    }));
+                container.Survey as Survey,
+                container.GameSeries.Players.Select(
+                        (player, i) =>
+                        {
+                            var surveyResult = new SurveyResult(
+                                Guid.NewGuid().ToString(),
+                                DateTime.Now,
+                                container.Survey.DocumentId,
+                                player.Id,
+                                false,
+                                container.Survey.Questions.Select(
+                                        question => new QuestionReference(
+                                            question.Id,
+                                            question.Choices.Where(choice => choice.Selectable).Skip(i).First().Id))
+                                    .ToArray());
+                            results.Add(surveyResult);
+                            return surveyResult;
+                        })
+                    .ToArray());
 
             Assert.Empty(
                 await FunctionProviderTests.Run(
-                    game,
-                    survey,
-                    status,
+                    container.Game,
+                    container.Survey,
+                    Enumerable.Empty<ISurveyStatus>(),
                     results,
                     surveyClosedMessage));
         }
@@ -80,13 +72,19 @@
         [Fact]
         public async void HandleAsyncFailsForClosedSurvey()
         {
-            var gameSeries = GameSeriesGenerator.Generate();
-            var game = GameGenerator.Generate(new GameGeneratorConfiguration(), gameSeries);
-            var survey = SurveyGenerator.Generate(new SurveyGeneratorConfiguration(), gameSeries, game);
-            var status = SurveyStatusGenerator.Generate(new SurveyStatusGeneratorConfiguration {IsClosed = true}, game)
-                .ToArray();
-            var results = SurveyResultGenerator.Generate(new SurveyResultGeneratorConfiguration(), game, survey)
-                .ToArray();
+            var container = new TestDataContainer();
+            var gameSeries = container.GameSeries;
+            var game = container.Game;
+            var survey = container.Survey;
+            var status = new[]
+            {
+                new SurveyStatus(
+                    Guid.NewGuid().ToString(),
+                    DateTime.Now,
+                    survey.DocumentId,
+                    Status.Closed)
+            };
+            var results = Enumerable.Empty<ISurveyResult>();
 
             var logs = await FunctionProviderTests.Run(
                 game,
@@ -94,7 +92,7 @@
                 status,
                 results);
             Assert.Single(logs);
-            Assert.Equal($"Survey {game.SurveyId} is already closed.", logs.First().Exception?.Message);
+            Assert.Equal($"Survey {survey.DocumentId} is already closed.", logs.First().Exception?.Message);
         }
 
         private static async Task<List<TestLogEntry>> Run(
@@ -112,7 +110,6 @@
                 null);
         }
 
-
         private static async Task<List<TestLogEntry>> Run(
             IGame game,
             ISurvey survey,
@@ -124,7 +121,7 @@
             var logger = new MemoryLogger<Function>();
             var provider = new FunctionProvider(
                 logger,
-                new SurveysDatabaseMock(new Dictionary<string, ISurvey> {{game.SurveyId, survey}}),
+                new SurveysDatabaseMock(new Dictionary<string, ISurvey> {{survey.DocumentId, survey}}),
                 new SurveyResultsDatabaseMock(results),
                 new SurveyStatusDatabaseMock(status),
                 new SaveSurveyStatusPubSubClientMock(),
@@ -133,7 +130,7 @@
             await provider.HandleAsync(
                 new EvaluateSurveyMessage(
                     expectedSurveyClosedMessage?.ProcessId ?? Guid.NewGuid().ToString(),
-                    game.SurveyId));
+                    survey.DocumentId));
             return logger.ListLogEntries();
         }
     }

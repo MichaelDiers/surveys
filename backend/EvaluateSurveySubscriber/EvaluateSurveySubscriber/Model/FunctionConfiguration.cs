@@ -16,6 +16,6 @@
         /// <summary>
         ///     Gets the pub/sub topic name.
         /// </summary>
-        public string SurveyClosedTopicName { get; set; } = "";
+        public string SurveyClosedTopicName { get; set; } = string.Empty;
     }
 }
