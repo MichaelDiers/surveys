@@ -11,7 +11,6 @@
     using Md.Tga.Common.TestData.Generators;
     using Md.Tga.Common.TestData.Mocks.Database;
     using Md.Tga.Common.TestData.Mocks.PubSub;
-    using SaveSurveyResultSubscriber.Logic;
     using Surveys.Common.Contracts;
     using Surveys.Common.Messages;
     using Xunit;

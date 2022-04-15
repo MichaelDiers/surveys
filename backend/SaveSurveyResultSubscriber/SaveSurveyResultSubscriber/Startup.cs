@@ -7,9 +7,6 @@ namespace SaveSurveyResultSubscriber
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using SaveSurveyResultSubscriber.Contracts;
-    using SaveSurveyResultSubscriber.Logic;
-    using SaveSurveyResultSubscriber.Model;
     using Surveys.Common.Contracts;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Firestore.Models;

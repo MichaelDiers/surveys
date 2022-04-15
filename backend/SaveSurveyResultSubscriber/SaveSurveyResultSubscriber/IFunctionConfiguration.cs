@@ -1,4 +1,4 @@
-﻿namespace SaveSurveyResultSubscriber.Contracts
+﻿namespace SaveSurveyResultSubscriber
 {
     using Md.Common.Contracts.Model;
 

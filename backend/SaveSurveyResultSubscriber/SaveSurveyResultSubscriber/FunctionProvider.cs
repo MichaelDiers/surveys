@@ -1,4 +1,4 @@
-﻿namespace SaveSurveyResultSubscriber.Logic
+﻿namespace SaveSurveyResultSubscriber
 {
     using System;
     using System.Linq;
@@ -98,8 +98,8 @@
 
             if (!message.SurveyResult.IsSuggested)
             {
-                // await this.evaluateSurveyPubSubClient.PublishAsync(
-                //    new EvaluateSurveyMessage(message.ProcessId, message.SurveyResult.InternalSurveyId));
+                await this.evaluateSurveyPubSubClient.PublishAsync(
+                    new EvaluateSurveyMessage(message.ProcessId, message.SurveyResult.ParentDocumentId));
                 await this.createMailPubSubClient.PublishAsync(
                     new CreateMailMessage(
                         message.ProcessId,
