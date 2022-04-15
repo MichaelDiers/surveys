@@ -1,8 +1,8 @@
-﻿namespace SaveSurveyStatusSubscriber.Logic
+﻿namespace SaveSurveyStatusSubscriber
 {
     using System;
     using System.Threading.Tasks;
-    using Md.GoogleCloud.Base.Logic;
+    using Md.GoogleCloudFunctions.Logic;
     using Microsoft.Extensions.Logging;
     using Surveys.Common.Contracts;
     using Surveys.Common.Firestore.Contracts;
