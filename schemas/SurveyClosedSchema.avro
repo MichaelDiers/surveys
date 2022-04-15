@@ -28,6 +28,10 @@
                         "logicalType": "uuid"
                     },
                     {
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
                         "name": "info",
                         "type": "string"
                     },
