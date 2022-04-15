@@ -1,7 +1,7 @@
 ﻿namespace MailerService.Test.Mocks
 {
     using System.Threading.Tasks;
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloudSecrets.Contracts.Logic;
 
     public class SecretManagerMock : ISecretManager
     {

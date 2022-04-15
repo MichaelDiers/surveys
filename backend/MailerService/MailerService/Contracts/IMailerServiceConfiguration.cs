@@ -1,8 +1,8 @@
 ﻿namespace MailerService.Contracts
 {
     using MailerService.Model;
-    using Md.Common.Contracts;
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.Common.Contracts.Model;
+    using Md.GoogleCloudSecrets.Contracts.Logic;
 
     /// <summary>
     ///     Specification of the application configuration.

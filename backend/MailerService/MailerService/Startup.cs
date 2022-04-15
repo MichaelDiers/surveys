@@ -4,7 +4,8 @@
     using MailerService.Contracts;
     using MailerService.Logic;
     using MailerService.Model;
-    using Md.GoogleCloud.Base.Contracts.Logic;
+    using Md.GoogleCloudFunctions.Contracts.Logic;
+    using Md.GoogleCloudSecrets.Contracts.Logic;
     using Md.GoogleCloudSecrets.Logic;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;

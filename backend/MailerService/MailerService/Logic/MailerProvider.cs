@@ -3,8 +3,8 @@
     using System;
     using System.Threading.Tasks;
     using MailerService.Contracts;
-    using Md.GoogleCloud.Base.Contracts.Logic;
-    using Md.GoogleCloud.Base.Logic;
+    using Md.GoogleCloudFunctions.Logic;
+    using Md.GoogleCloudSecrets.Contracts.Logic;
     using Microsoft.Extensions.Logging;
     using MimeKit;
     using Surveys.Common.Contracts.Messages;
