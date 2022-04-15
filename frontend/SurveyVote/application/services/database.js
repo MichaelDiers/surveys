@@ -59,7 +59,7 @@ const initialize = (config) => {
       const { surveyId } = options;
       const snapshot = await firestore
         .collection(surveyStatusCollectionName)
-        .where('internalSurveyId', '==', surveyId)
+        .where('parentDocumentId', '==', surveyId)
         .where('status', '==', 'Closed')
         .limit(1)
         .get();
@@ -75,7 +75,7 @@ const initialize = (config) => {
 
       const querySnapshot = await firestore
         .collection(surveyResultsCollectionName)
-        .where('internalSurveyId', '==', surveyId)
+        .where('parentDocumentId', '==', surveyId)
         .where('participantId', '==', participantId)
         .get();
 
