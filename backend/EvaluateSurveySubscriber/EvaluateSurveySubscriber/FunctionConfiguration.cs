@@ -1,6 +1,5 @@
-﻿namespace EvaluateSurveySubscriber.Model
+﻿namespace EvaluateSurveySubscriber
 {
-    using EvaluateSurveySubscriber.Contracts;
     using Md.Common.Model;
 
     /// <summary>

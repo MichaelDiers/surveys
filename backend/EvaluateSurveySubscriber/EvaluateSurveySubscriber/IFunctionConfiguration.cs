@@ -1,4 +1,4 @@
-﻿namespace EvaluateSurveySubscriber.Contracts
+﻿namespace EvaluateSurveySubscriber
 {
     using Md.Common.Contracts.Model;
 

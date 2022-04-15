@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using EvaluateSurveySubscriber.Logic;
     using Google.Cloud.Functions.Testing;
     using Md.Tga.Common.Contracts.Models;
     using Md.Tga.Common.TestData.Generators;
@@ -62,7 +61,6 @@
 
             Assert.Empty(
                 await FunctionProviderTests.Run(
-                    container.Game,
                     container.Survey,
                     Enumerable.Empty<ISurveyStatus>(),
                     results,
@@ -73,7 +71,6 @@
         public async void HandleAsyncFailsForClosedSurvey()
         {
             var container = new TestDataContainer();
-            var gameSeries = container.GameSeries;
             var game = container.Game;
             var survey = container.Survey;
             var status = new[]
@@ -103,7 +100,6 @@
         )
         {
             return await FunctionProviderTests.Run(
-                game,
                 survey,
                 status,
                 results,
@@ -111,7 +107,6 @@
         }
 
         private static async Task<List<TestLogEntry>> Run(
-            IGame game,
             ISurvey survey,
             IEnumerable<ISurveyStatus> status,
             IEnumerable<ISurveyResult> results,
