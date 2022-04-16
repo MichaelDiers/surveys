@@ -17,7 +17,11 @@
         public async void HandleAsync()
         {
             var logger = new MemoryLogger<Function>();
-            var provider = new FunctionProvider(logger, new SurveysDatabaseMock(), new CreateMailPubSubClientMock());
+            var provider = new FunctionProvider(
+                logger,
+                new SurveysDatabaseMock(),
+                new CreateMailPubSubClientMock(),
+                new SaveSurveyResultPubSubClientMock());
 
             var container = new TestDataContainer();
             var message = new SaveSurveyMessage(Guid.NewGuid().ToString(), container.Survey);

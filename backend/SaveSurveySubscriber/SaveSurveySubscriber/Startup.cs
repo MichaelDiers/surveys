@@ -4,6 +4,7 @@ namespace SaveSurveySubscriber
     using Md.Common.Contracts.Model;
     using Md.GoogleCloudFunctions.Contracts.Logic;
     using Md.GoogleCloudPubSub.Contracts.Model;
+    using Md.GoogleCloudPubSub.Model;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,12 @@ namespace SaveSurveySubscriber
 
             services.AddScoped<IPubSubClientEnvironment>(_ => configuration);
             services.AddScoped<ICreateMailPubSubClient, CreateMailPubSubClient>();
+            services.AddScoped<ISaveSurveyResultPubSubClient>(
+                _ => new SaveSurveyResultPubSubClient(
+                    new PubSubClientEnvironment(
+                        configuration.Environment,
+                        configuration.ProjectId,
+                        configuration.SaveSurveyResultTopicName)));
 
             services.AddScoped<IPubSubProvider<ISaveSurveyMessage>, FunctionProvider>();
         }

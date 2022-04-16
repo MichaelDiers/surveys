@@ -26,22 +26,27 @@
         /// </summary>
         private readonly ISurveyDatabase database;
 
+        private readonly ISaveSurveyResultPubSubClient saveSurveyResultPubSubClient;
+
         /// <summary>
         ///     Creates a new instance of <see cref="FunctionProvider" />.
         /// </summary>
         /// <param name="logger">An error logger.</param>
         /// <param name="database">Access to the survey database.</param>
         /// <param name="createMailPubSubClient">Publisher client for creating emails.</param>
+        /// <param name="saveSurveyResultPubSubClient">The pub/sub client for saving survey results.</param>
         public FunctionProvider(
             ILogger<Function> logger,
             ISurveyDatabase database,
-            ICreateMailPubSubClient createMailPubSubClient
+            ICreateMailPubSubClient createMailPubSubClient,
+            ISaveSurveyResultPubSubClient saveSurveyResultPubSubClient
         )
             : base(logger)
         {
             this.database = database ?? throw new ArgumentNullException(nameof(database));
             this.createMailPubSubClient = createMailPubSubClient ??
                                           throw new ArgumentNullException(nameof(createMailPubSubClient));
+            this.saveSurveyResultPubSubClient = saveSurveyResultPubSubClient;
         }
 
         /// <summary>
@@ -67,6 +72,21 @@
                 message.Survey.Participants,
                 message.Survey.Questions);
             await this.database.InsertAsync(survey.DocumentId, survey);
+
+            foreach (var surveyParticipant in survey.Participants)
+            {
+                await this.saveSurveyResultPubSubClient.PublishAsync(
+                    new SaveSurveyResultMessage(
+                        message.ProcessId,
+                        new SurveyResult(
+                            null,
+                            null,
+                            survey.DocumentId,
+                            surveyParticipant.Id,
+                            true,
+                            surveyParticipant.QuestionReferences)));
+            }
+
             await this.createMailPubSubClient.PublishAsync(
                 new CreateMailMessage(message.ProcessId, MailType.RequestForParticipation, survey));
         }

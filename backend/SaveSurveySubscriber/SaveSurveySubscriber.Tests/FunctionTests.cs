@@ -45,7 +45,8 @@
             var provider = new FunctionProvider(
                 logger,
                 container.SurveysDatabaseMock,
-                new CreateMailPubSubClientMock());
+                new CreateMailPubSubClientMock(),
+                new SaveSurveyResultPubSubClientMock());
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 
