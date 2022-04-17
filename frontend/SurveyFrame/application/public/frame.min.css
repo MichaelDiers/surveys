@@ -1,2 +1,2 @@
-body{background-color:#f00}
+.table-col-6{display:-ms-grid;display:grid;-ms-grid-columns:(auto)[6];grid-template-columns:repeat(6, auto)}.table-body .header{font-weight:bold}
 /*# sourceMappingURL=frame.min.css.map */

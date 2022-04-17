@@ -1,8 +1,9 @@
 {
     "version": 3,
-    "mappings": "AAAA,AAAA,IAAI,AAAC,CACH,gBAAgB,CAAE,IAAI,CACvB",
+    "mappings": "ACAA,AAAA,YAAY,AAAC,CACX,OAAO,CAAE,IAAI,CACb,qBAAqB,CAAE,eAAe,CACvC,AAED,AAAA,WAAW,CAAC,OAAO,AAAC,CAClB,WAAW,CAAE,IAAI,CAClB",
     "sources": [
-        "../../client/scss/frame.scss"
+        "../../client/scss/frame.scss",
+        "../../client/scss/components/_table.scss"
     ],
     "names": [],
     "file": "frame.min.css"
