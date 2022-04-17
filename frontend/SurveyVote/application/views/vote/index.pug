@@ -1,6 +1,6 @@
 h1 Hallo #{participantName}!
 h2 Willkommen zur Umfrage #{surveyName}
-!{surveyInfo}
+div !{surveyInfo}
 form(id=formId, method='POST', action='../../../../vote/submit')
   input(type='hidden', name='_csrf', value=csurfToken)
   input(type='hidden', name='surveyId', value=surveyId)
