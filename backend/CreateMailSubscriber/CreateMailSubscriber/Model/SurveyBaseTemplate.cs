@@ -16,7 +16,6 @@
         {
         }
 
-
         /// <summary>
         ///     Build the subject of the email.
         /// </summary>

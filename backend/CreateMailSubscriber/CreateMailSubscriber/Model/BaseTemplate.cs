@@ -41,7 +41,6 @@
         /// </summary>
         protected string SubjectTemplate { get; }
 
-
         /// <summary>
         ///     Reads an entry for the given <paramref name="key" /> in the template data.
         /// </summary>
