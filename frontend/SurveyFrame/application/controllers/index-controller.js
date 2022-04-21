@@ -12,8 +12,9 @@ const initialize = (config = {}) => {
   const controller = {
     index: async (req, res) => {
       const urlSplit = req.originalUrl.split('/frame');
+      // handle local and server environment
       const destination = urlSplit.length === 1 ? req.originalUrl : urlSplit[1];
-      const container = urlSplit.length === 1 ? req.originalUrl.split('/frame')[1].split('/')[1] : req.originalUrl.split('/')[1];
+      const container = urlSplit.length === 1 ? req.originalUrl.split('/')[1] : req.originalUrl.split('/frame')[1].split('/')[1];
 
       const placeholder = `${gatewayAddress}${destination}`;
       const containerId = `${container}-container`;
