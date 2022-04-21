@@ -19,9 +19,9 @@
   <ItemGroup>
     <PackageReference Include="Google.Cloud.Functions.Hosting" Version="1.0.0" />
     <PackageReference Include="MailKit" Version="3.2.0" />
-    <PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.16" />
-    <PackageReference Include="Md.GoogleCloudSecrets" Version="1.2.6" />
-    <PackageReference Include="Surveys.Common" Version="1.2.72" />
+    <PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.17" />
+    <PackageReference Include="Md.GoogleCloudSecrets" Version="1.2.7" />
+    <PackageReference Include="Surveys.Common" Version="1.2.75" />
   </ItemGroup>
 
 </Project>
