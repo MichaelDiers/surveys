@@ -14,6 +14,7 @@
     using Surveys.Common.Messages;
     using Surveys.Common.Models;
     using Xunit;
+    using Status = Surveys.Common.Contracts.Status;
 
     /// <summary>
     ///     Tests for <see cref="FunctionProvider" />

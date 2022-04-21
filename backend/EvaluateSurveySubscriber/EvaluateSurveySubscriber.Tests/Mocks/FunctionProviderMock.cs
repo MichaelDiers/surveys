@@ -26,5 +26,15 @@
         {
             return Task.CompletedTask;
         }
+
+        public Task LogErrorAsync(Exception ex)
+        {
+            return Task.CompletedTask;
+        }
+
+        public Task LogErrorAsync(string message)
+        {
+            return Task.CompletedTask;
+        }
     }
 }
