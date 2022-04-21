@@ -11,6 +11,8 @@ const initialize = (config = {}) => {
   const {
     framePath = '/frame',
     frameTarget,
+    terminatePath = '/terminate',
+    terminateTarget,
     votePath = '/vote',
     voteTarget,
     requestLogging,
@@ -34,6 +36,16 @@ const initialize = (config = {}) => {
   app.use(framePath, createProxyMiddleware({
     changeOrigin: true,
     target: frameTarget,
+    pathRewrite: {
+      '^/gateway': '',
+    },
+    onProxyReq: fixRequestBody,
+    logLevel,
+  }));
+
+  app.use(terminatePath, createProxyMiddleware({
+    changeOrigin: true,
+    target: terminateTarget,
     pathRewrite: {
       '^/gateway': '',
     },
