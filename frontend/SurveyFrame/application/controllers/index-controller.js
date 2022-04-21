@@ -11,17 +11,14 @@ const initialize = (config = {}) => {
 
   const controller = {
     index: async (req, res) => {
-      console.log(req.originalUrl); // eslint-disable-line
-      console.log(req.baseUrl); // eslint-disable-line
-      console.log(req.path); // eslint-disable-line
-      console.log(req.originalUrl.split('/frame')); // eslint-disable-line
-      console.log(gatewayAddress); // eslint-disable-line
-
       const urlSplit = req.originalUrl.split('/frame');
       const destination = urlSplit.length === 1 ? req.originalUrl : urlSplit[1];
+      const container = req.originalUrl.split('/frame')[1].split('/')[1];
 
       const placeholder = `${gatewayAddress}${destination}`;
-      res.render('index/index', { placeholder });
+      const containerId = `${container}-container`;
+
+      res.render('index/index', { containerId, placeholder });
     },
   };
 

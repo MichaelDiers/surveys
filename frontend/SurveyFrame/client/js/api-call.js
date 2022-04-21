@@ -29,7 +29,6 @@ function apiCall(url, method, options = {}) {
       const data = {};
       formData.forEach((value, key) => { data[key] = value; });
       const json = JSON.stringify(data);
-      console.log(json);
       xhttp.setRequestHeader('Content-type', 'application/json');
       xhttp.setRequestHeader('CSRF-Token', formData.get('_csrf'));
       xhttp.send(json);
