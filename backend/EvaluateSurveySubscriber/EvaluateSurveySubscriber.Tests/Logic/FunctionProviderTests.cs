@@ -57,20 +57,6 @@
             Assert.Empty(await FunctionProviderTests.Run(container.Survey, results, surveyClosedMessage));
         }
 
-        [Fact]
-        public async void HandleAsyncFailsForClosedSurvey()
-        {
-            var container = new TestDataContainer();
-            var game = container.Game;
-            var survey = container.Survey;
-
-            var results = Enumerable.Empty<ISurveyResult>();
-
-            var logs = await FunctionProviderTests.Run(game, survey, results);
-            Assert.Single(logs);
-            Assert.Equal($"Survey {survey.DocumentId} is already closed.", logs.First().Exception?.Message);
-        }
-
         private static async Task<List<TestLogEntry>> Run(
             IGame game,
             ISurvey survey,
