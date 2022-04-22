@@ -1,6 +1,11 @@
 ﻿namespace Surveys.Common.Firestore.Models
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Google.Cloud.Firestore;
     using Md.Common.Contracts.Model;
+    using Md.Common.Database;
     using Md.GoogleCloudFirestore.Logic;
     using Surveys.Common.Contracts;
     using Surveys.Common.Firestore.Contracts;
@@ -23,6 +28,39 @@
         public SurveyStatusDatabase(IRuntimeEnvironment runtimeEnvironment)
             : base(runtimeEnvironment, SurveyStatusDatabase.CollectionNameBase, SurveyStatus.FromDictionary)
         {
+        }
+
+        public async Task<string?> InsertIfNotExistsAsync(ISurveyStatus surveyStatus)
+        {
+            var documentData = surveyStatus.ToDictionary();
+
+            var _ = documentData.Remove(DatabaseObject.DocumentIdName);
+            if (!documentData.TryAdd(DatabaseObject.CreatedName, FieldValue.ServerTimestamp))
+            {
+                documentData[DatabaseObject.CreatedName] = FieldValue.ServerTimestamp;
+            }
+
+            var documentId = Guid.NewGuid().ToString();
+            var documentReference = this.Collection().Document(documentId);
+
+            var created = false;
+            await this.Collection()
+                .Database.RunTransactionAsync(
+                    async transaction =>
+                    {
+                        var query = this.Collection()
+                            .WhereEqualTo(DatabaseObject.ParentDocumentIdName, surveyStatus.ParentDocumentId)
+                            .WhereEqualTo(SurveyStatus.StatusName, Status.Closed.ToString())
+                            .Limit(1);
+                        var snapshot = await transaction.GetSnapshotAsync(query);
+                        if (snapshot.Count == 0)
+                        {
+                            transaction.Create(documentReference, documentData);
+                            created = true;
+                        }
+                    });
+
+            return created ? documentId : null;
         }
     }
 }
