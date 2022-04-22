@@ -14,7 +14,6 @@
     using Surveys.Common.Messages;
     using Surveys.Common.Models;
     using Xunit;
-    using Status = Surveys.Common.Contracts.Status;
 
     /// <summary>
     ///     Tests for <see cref="FunctionProvider" />
@@ -25,12 +24,7 @@
         public async void HandleAsync()
         {
             var container = new TestDataContainer();
-            Assert.Empty(
-                await FunctionProviderTests.Run(
-                    container.Game,
-                    container.Survey,
-                    container.SurveyStatus,
-                    container.SurveyResults));
+            Assert.Empty(await FunctionProviderTests.Run(container.Game, container.Survey, container.SurveyResults));
         }
 
         [Fact]
@@ -60,12 +54,7 @@
                         })
                     .ToArray());
 
-            Assert.Empty(
-                await FunctionProviderTests.Run(
-                    container.Survey,
-                    Enumerable.Empty<ISurveyStatus>(),
-                    results,
-                    surveyClosedMessage));
+            Assert.Empty(await FunctionProviderTests.Run(container.Survey, results, surveyClosedMessage));
         }
 
         [Fact]
@@ -74,21 +63,10 @@
             var container = new TestDataContainer();
             var game = container.Game;
             var survey = container.Survey;
-            var status = new[]
-            {
-                new SurveyStatus(
-                    Guid.NewGuid().ToString(),
-                    DateTime.Now,
-                    survey.DocumentId,
-                    Status.Closed)
-            };
+
             var results = Enumerable.Empty<ISurveyResult>();
 
-            var logs = await FunctionProviderTests.Run(
-                game,
-                survey,
-                status,
-                results);
+            var logs = await FunctionProviderTests.Run(game, survey, results);
             Assert.Single(logs);
             Assert.Equal($"Survey {survey.DocumentId} is already closed.", logs.First().Exception?.Message);
         }
@@ -96,20 +74,14 @@
         private static async Task<List<TestLogEntry>> Run(
             IGame game,
             ISurvey survey,
-            IEnumerable<ISurveyStatus> status,
             IEnumerable<ISurveyResult> results
         )
         {
-            return await FunctionProviderTests.Run(
-                survey,
-                status,
-                results,
-                null);
+            return await FunctionProviderTests.Run(survey, results, null);
         }
 
         private static async Task<List<TestLogEntry>> Run(
             ISurvey survey,
-            IEnumerable<ISurveyStatus> status,
             IEnumerable<ISurveyResult> results,
             ISurveyClosedMessage? expectedSurveyClosedMessage
         )
@@ -119,9 +91,7 @@
                 logger,
                 new SurveysDatabaseMock(new Dictionary<string, ISurvey> {{survey.DocumentId, survey}}),
                 new SurveyResultsDatabaseMock(results),
-                new SurveyStatusDatabaseMock(status),
-                new SaveSurveyStatusPubSubClientMock(),
-                new SurveyClosedPubSubClientMock(expectedSurveyClosedMessage));
+                new SaveSurveyStatusPubSubClientMock());
 
             await provider.HandleAsync(
                 new EvaluateSurveyMessage(

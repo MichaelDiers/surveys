@@ -5,8 +5,8 @@ namespace EvaluateSurveySubscriber
     using Md.GoogleCloudFunctions.Contracts.Logic;
     using Md.GoogleCloudPubSub.Model;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
     using Surveys.Common.Contracts.Messages;
     using Surveys.Common.Firestore.Contracts;
     using Surveys.Common.Firestore.Models;
@@ -25,29 +25,24 @@ namespace EvaluateSurveySubscriber
         /// <param name="services">Add services to this collection used in dependency injection context.</param>
         public override void ConfigureServices(WebHostBuilderContext context, IServiceCollection services)
         {
-            var config = new FunctionConfiguration();
-            context.Configuration.Bind(config);
-            var configuration = config as IFunctionConfiguration;
+            services.AddOptions<FunctionConfiguration>().Bind(context.Configuration).ValidateDataAnnotations();
 
-            services.AddScoped(_ => configuration);
+            services.AddScoped<IRuntimeEnvironment>(
+                provider => provider.GetService<IOptions<FunctionConfiguration>>().Value);
 
-            services.AddScoped<IRuntimeEnvironment>(_ => configuration);
             services.AddScoped<ISurveyReadOnlyDatabase, SurveyReadOnlyDatabase>();
             services.AddScoped<ISurveyResultReadOnlyDatabase, SurveyResultReadOnlyDatabase>();
-            services.AddScoped<ISurveyStatusReadOnlyDatabase, SurveyStatusReadOnlyDatabase>();
 
             services.AddScoped<ISaveSurveyStatusPubSubClient>(
-                _ => new SaveSurveyStatusPubSubClient(
-                    new PubSubClientEnvironment(
-                        configuration.Environment,
-                        configuration.ProjectId,
-                        configuration.SaveSurveyStatusTopicName)));
-            services.AddScoped<ISurveyClosedPubSubClient>(
-                _ => new SurveyClosedPubSubClient(
-                    new PubSubClientEnvironment(
-                        configuration.Environment,
-                        configuration.ProjectId,
-                        configuration.SurveyClosedTopicName)));
+                provider =>
+                {
+                    var config = provider.GetService<IOptions<FunctionConfiguration>>().Value;
+                    return new SaveSurveyStatusPubSubClient(
+                        new PubSubClientEnvironment(
+                            config.Environment,
+                            config.ProjectId,
+                            config.SaveSurveyStatusTopicName));
+                });
 
             services.AddScoped<IPubSubProvider<IEvaluateSurveyMessage>, FunctionProvider>();
         }
