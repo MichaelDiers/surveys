@@ -41,243 +41,241 @@
                                 "CLOSED"
                 			]
 						}
-					}					
+					}
 				]
 			}
 		},
 		{
 			"name": "surveyClosedMessage",
 			"type": {
-				{
-    				"type": "record",
-    				"name": "surveyClosedMessageRecord",
-    				"fields": [
-    				    {
-    				        "name": "processId",
-    				        "type": "string",
-    				        "logicalType": "uuid"
-    				    },
-    				    {
-    				        "name": "survey",
-    				        "type": {
-    				            "name": "surveyRecord",
-    				            "type": "record",
-    				            "fields": [
-    				                {
-    				                    "name": "documentId",
-    				                    "type": "string",
-    				                    "logicalType": "uuid"
-    				                },
-    				                {
-    				                    "name": "created",
-    				                    "type": "string"
-    				                },
-    				                {
-    				                    "name": "parentDocumentId",
-    				                    "type": "string",
-    				                    "logicalType": "uuid"
-    				                },
-    				                {
-    				                    "name": "name",
-    				                    "type": "string"
-    				                },
-    				                {
-    				                    "name": "info",
-    				                    "type": "string"
-    				                },
-    				                {
-    				                    "name": "link",
-    				                    "type": "string"
-    				                },
-    				                {
-    				                    "name": "organizer",
-    				                    "type": {
-    				                        "name": "organizerRecord",
-    				                        "type": "record",
-    				                        "fields": [
-    				                            {
-    				                                "name": "id",
-    				                                "type": "string",
-    				                                "logicalType": "uuid"
-    				                            },
-    				                            {
-    				                                "name": "email",
-    				                                "type": "string"
-    				                            },
-    				                            {
-    				                                "name": "name",
-    				                                "type": "string"
-    				                            }
-    				                        ]
-    				                    }
-    				                },
-    				                {
-    				                    "name": "participants",
-    				                    "type": {
-    				                        "type": "array",
-    				                        "items": {
-    				                            "name": "participant",
-    				                            "type": "record",
-    				                            "fields": [
-    				                                {
-    				                                    "name": "id",
-    				                                    "type": "string",
-    				                                    "logicalType": "uuid"
-    				                                },
-    				                                {
-    				                                    "name": "email",
-    				                                    "type": "string"
-    				                                },
-    				                                {
-    				                                    "name": "name",
-    				                                    "type": "string"
-    				                                },
-    				                                {
-    				                                    "name": "questionReferences",
-    				                                    "type": {
-    				                                        "type": "array",
-    				                                        "items": {
-    				                                            "name": "questionRef",
-    				                                            "type": "record",
-    				                                            "fields": [
-    				                                                {
-    				                                                    "name": "questionId",
-    				                                                    "type": "string",
-    				                                                    "logicalType": "uuid"
-    				                                                },
-    				                                                {
-    				                                                    "name": "choiceId",
-    				                                                    "type": "string",
-    				                                                    "logicalType": "uuid"
-    				                                                }
-    				                                            ]
-    				                                        }
-    				                                    }
-    				                                },
-    				                                {
-    				                                    "name": "order",
-    				                                    "type": "int"
-    				                                }
-    				                            ]
-    				                        }
-    				                    }
-    				                },
-    				                {
-    				                    "name": "questions",
-    				                    "type": {
-    				                        "type": "array",
-    				                        "items": {
-    				                            "name": "question",
-    				                            "type": "record",
-    				                            "fields": [
-    				                                {
-    				                                    "name": "id",
-    				                                    "type": "string",
-    				                                    "logicalType": "uuid"
-    				                                },
-    				                                {
-    				                                    "name": "question",
-    				                                    "type": "string"
-    				                                },
-    				                                {
-    				                                    "name": "choices",
-    				                                    "type": {
-    				                                        "type": "array",
-    				                                        "items": {
-    				                                            "name": "choice",
-    				                                            "type": "record",
-    				                                            "fields": [
-    				                                                {
-    				                                                    "name": "id",
-    				                                                    "type": "string",
-    				                                                    "logicalType": "uuid"
-    				                                                },
-    				                                                {
-    				                                                    "name": "answer",
-    				                                                    "type": "string"
-    				                                                },
-    				                                                {
-    				                                                    "name": "selectable",
-    				                                                    "type": "boolean"
-    				                                                },
-    				                                                {
-    				                                                    "name": "order",
-    				                                                    "type": "int"
-    				                                                }
-    				                                            ]
-    				                                        }
-    				                                    }
-    				                                },
-    				                                {
-    				                                    "name": "order",
-    				                                    "type": "int"
-    				                                }
-    				                            ]
-    				                        }
-    				                    }
-    				                }
-    				            ]
-    				        }
-    				    },
-    				    {
-    				        "name": "results",
-    				        "type": {
-    				            "type": "array",
-    				            "items": {
-    				                "name": "surveyResultRecord",
-    				                "type": "record",
-    				                "fields": [
-    				                    {
-    				                        "name": "documentId",
-    				                        "type": "string",
-    				                        "logicalType": "uuid"
-    				                    },
-    				                    {
-    				                        "name": "created",
-    				                        "type": "string"
-    				                    },
-    				                    {
-    				                        "name": "parentDocumentId",
-    				                        "type": "string",
-    				                        "logicalType": "uuid"
-    				                    },
-    				                    {
-    				                        "name": "participantId",
-    				                        "type": "string",
-    				                        "logicalType": "uuid"
-    				                    },
-    				                    {
-    				                        "name": "isSuggested",
-    				                        "type": "boolean"
-    				                    },
-    				                    {
-    				                        "name": "results",
-    				                        "type": {
-    				                            "type": "array",
-    				                            "items": {
-    				                                "name": "result",
-    				                                "type": "record",
-    				                                "fields": [
-    				                                    {
-    				                                        "name": "questionId",
-    				                                        "type": "string",
-    				                                        "logicalType": "uuid"
-    				                                    },
-    				                                    {
-    				                                        "name": "choiceId",
-    				                                        "type": "string",
-    				                                        "logicalType": "uuid"
-    				                                    }
-    				                                ]
-    				                            }
-    				                        }
-    				                    }
-    				                ]
-    				            }
-    				        }
-    				    }
-    				]
-				}
+				"type": "record",
+				"name": "surveyClosedMessageRecord",
+				"fields": [
+					{
+						"name": "processId",
+						"type": "string",
+						"logicalType": "uuid"
+					},
+					{
+						"name": "survey",
+						"type": {
+							"name": "surveyRecord",
+							"type": "record",
+							"fields": [
+								{
+									"name": "documentId",
+									"type": "string",
+									"logicalType": "uuid"
+								},
+								{
+									"name": "created",
+									"type": "string"
+								},
+								{
+									"name": "parentDocumentId",
+									"type": "string",
+									"logicalType": "uuid"
+								},
+								{
+									"name": "name",
+									"type": "string"
+								},
+								{
+									"name": "info",
+									"type": "string"
+								},
+								{
+									"name": "link",
+									"type": "string"
+								},
+								{
+									"name": "organizer",
+									"type": {
+										"name": "organizerRecord",
+										"type": "record",
+										"fields": [
+											{
+												"name": "id",
+												"type": "string",
+												"logicalType": "uuid"
+											},
+											{
+												"name": "email",
+												"type": "string"
+											},
+											{
+												"name": "name",
+												"type": "string"
+											}
+										]
+									}
+								},
+								{
+									"name": "participants",
+									"type": {
+										"type": "array",
+										"items": {
+											"name": "participant",
+											"type": "record",
+											"fields": [
+												{
+													"name": "id",
+													"type": "string",
+													"logicalType": "uuid"
+												},
+												{
+													"name": "email",
+													"type": "string"
+												},
+												{
+													"name": "name",
+													"type": "string"
+												},
+												{
+													"name": "questionReferences",
+													"type": {
+														"type": "array",
+														"items": {
+															"name": "questionRef",
+															"type": "record",
+															"fields": [
+																{
+																	"name": "questionId",
+																	"type": "string",
+																	"logicalType": "uuid"
+																},
+																{
+																	"name": "choiceId",
+																	"type": "string",
+																	"logicalType": "uuid"
+																}
+															]
+														}
+													}
+												},
+												{
+													"name": "order",
+													"type": "int"
+												}
+											]
+										}
+									}
+								},
+								{
+									"name": "questions",
+									"type": {
+										"type": "array",
+										"items": {
+											"name": "question",
+											"type": "record",
+											"fields": [
+												{
+													"name": "id",
+													"type": "string",
+													"logicalType": "uuid"
+												},
+												{
+													"name": "question",
+													"type": "string"
+												},
+												{
+													"name": "choices",
+													"type": {
+														"type": "array",
+														"items": {
+															"name": "choice",
+															"type": "record",
+															"fields": [
+																{
+																	"name": "id",
+																	"type": "string",
+																	"logicalType": "uuid"
+																},
+																{
+																	"name": "answer",
+																	"type": "string"
+																},
+																{
+																	"name": "selectable",
+																	"type": "boolean"
+																},
+																{
+																	"name": "order",
+																	"type": "int"
+																}
+															]
+														}
+													}
+												},
+												{
+													"name": "order",
+													"type": "int"
+												}
+											]
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "results",
+						"type": {
+							"type": "array",
+							"items": {
+								"name": "surveyResultRecord",
+								"type": "record",
+								"fields": [
+									{
+										"name": "documentId",
+										"type": "string",
+										"logicalType": "uuid"
+									},
+									{
+										"name": "created",
+										"type": "string"
+									},
+									{
+										"name": "parentDocumentId",
+										"type": "string",
+										"logicalType": "uuid"
+									},
+									{
+										"name": "participantId",
+										"type": "string",
+										"logicalType": "uuid"
+									},
+									{
+										"name": "isSuggested",
+										"type": "boolean"
+									},
+									{
+										"name": "results",
+										"type": {
+											"type": "array",
+											"items": {
+												"name": "result",
+												"type": "record",
+												"fields": [
+													{
+														"name": "questionId",
+														"type": "string",
+														"logicalType": "uuid"
+													},
+													{
+														"name": "choiceId",
+														"type": "string",
+														"logicalType": "uuid"
+													}
+												]
+											}
+										}
+									}
+								]
+							}
+						}
+					}
+				]
 			}
 		}
 	]
