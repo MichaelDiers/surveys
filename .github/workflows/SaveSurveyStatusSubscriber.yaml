@@ -24,7 +24,7 @@ jobs:
       projectIdTest: ${{ secrets.GLOBAL_PROJECT_ID_TEST }}
       projectIdStage: ${{ secrets.GLOBAL_PROJECT_ID_STAGE }}
       projectIdProd: ${{ secrets.GLOBAL_PROJECT_ID_PROD }}
-      appSettingsJsonTest: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_TEST }}\",\"Environment\": \"Test\"\}'
-      appSettingsJsonStage: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_STAGE }}\",\"Environment\": \"Stage\"\}'
-      appSettingsJsonProd: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_PROD }}\",\"Environment\": \"Prod\"\}'
+      appSettingsJsonTest: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_TEST }}\",\"Environment\": \"Test\",\"TopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_CLOSED }}\"\}'
+      appSettingsJsonStage: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_STAGE }}\",\"Environment\": \"Stage\",\"TopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_CLOSED }}\"\}'
+      appSettingsJsonProd: '\{\"Logging\":\{\"LogLevel\":\{\"Microsoft\":\"Error\"\}\},\"ProjectId\": \"${{ secrets.GLOBAL_PROJECT_ID_PROD }}\",\"Environment\": \"Prod\",\"TopicName\": \"${{ secrets.GLOBAL_PUBSUB_TOPIC_SURVEY_CLOSED }}\"\}'
       subTopicName: ${{ secrets.GLOBAL_PUBSUB_TOPIC_SAVE_SURVEY_STATUS }}

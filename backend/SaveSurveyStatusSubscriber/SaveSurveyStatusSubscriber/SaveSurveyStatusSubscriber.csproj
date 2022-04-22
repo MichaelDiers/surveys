@@ -7,8 +7,9 @@
 	<ItemGroup>
 		<PackageReference Include="Google.Cloud.Functions.Hosting" Version="1.0.0" />
 		<PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.18" />
-		<PackageReference Include="Surveys.Common" Version="1.2.77" />
-		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.20" />
+		<PackageReference Include="Surveys.Common" Version="1.2.79" />
+		<PackageReference Include="Surveys.Common.Firestore" Version="1.2.22" />
+		<PackageReference Include="Surveys.Common.PubSub" Version="1.2.15" />
 	</ItemGroup>
 
 </Project>
