@@ -1,9 +1,12 @@
 {
     "version": 3,
-    "mappings": "ACAA,AAAA,YAAY,AAAC,CACX,OAAO,CAAE,IAAI,CACb,qBAAqB,CAAE,eAAe,CACvC,AAED,AAAA,WAAW,CAAC,OAAO,AAAC,CAClB,WAAW,CAAE,IAAI,CAClB",
+    "mappings": "ACAA,AAAA,MAAM,AAAC,CACL,OAAO,CAAE,IAAI,CACb,aAAa,CAAE,MAAM,CACrB,KAAK,CAAE,IAAI,CACZ,ACJD,AAAA,MAAM,AAAC,CACL,OAAO,CAAE,IAAI,CACb,aAAa,CAAE,MAAM,CACrB,KAAK,CAAE,IAAI,CACZ,ACJD,AAAA,IAAI,AAAC,CACH,OAAO,CAAE,IAAI,CACb,aAAa,CAAE,MAAM,CACrB,KAAK,CAAE,IAAI,CACZ,ACJD,AAAA,OAAO,AAAC,CACN,SAAS,CAAE,uBAAuB,CAClC,MAAM,CAAE,kBAAkB,CAC1B,aAAa,CAAE,GAAG,CAClB,UAAU,CAAE,kBAAkB,CAC9B,MAAM,CAAE,KAAK,CACb,KAAK,CAAE,KAAK,CACb,AAED,UAAU,CAAV,IAAU,CACR,EAAE,CAAG,SAAS,CAAE,YAAY,CAC5B,IAAI,CAAG,SAAS,CAAE,cAAc",
     "sources": [
         "../../client/scss/frame.scss",
-        "../../client/scss/components/_table.scss"
+        "../../client/scss/layout/_footer.scss",
+        "../../client/scss/layout/_header.scss",
+        "../../client/scss/layout/_main.scss",
+        "../../client/scss/components/_loading.scss"
     ],
     "names": [],
     "file": "frame.min.css"

@@ -19,7 +19,16 @@ const initialize = (config = {}) => {
       const placeholder = `${gatewayAddress}${destination}`;
       const containerId = `${container}-container`;
 
-      res.render('index/index', { containerId, placeholder });
+      const subViewBase = destination.split('/')[1];
+      const placeholderHeader = `${gatewayAddress}/${subViewBase}/header`;
+      const placeholderFooter = `${gatewayAddress}/${subViewBase}/footer`;
+
+      res.locals.pubLocals.files.css.push(`${gatewayAddress}/${subViewBase}/public/${subViewBase}.min.css`);
+      res.locals.pubLocals.files.js.push(`${gatewayAddress}/${subViewBase}/public/${subViewBase}.min.js`);
+
+      res.render('index/index', {
+        containerId, placeholder, placeholderFooter, placeholderHeader,
+      });
     },
   };
 

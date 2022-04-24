@@ -12,13 +12,21 @@ const initialize = (config = {}) => {
   const {
     router = Router(),
     lang,
-    files,
+    files: {
+      css,
+      js,
+      favicon,
+    },
   } = config;
 
   router.use((req, res, next) => {
     res.locals.pubLocals = {
       lang,
-      files,
+      files: {
+        css: [...css],
+        js: [...js],
+        favicon,
+      },
     };
 
     next();
