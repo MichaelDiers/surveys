@@ -1,7 +1,7 @@
 const { Router } = require('express');
 
 /**
- * Initialize the index route.
+ * Initialize the footer route.
  * @param {object} config A configuration object.
  * @param {Router} config.router An express router.
  * @returns The given router if set in config, a new express router otherwise.
@@ -12,7 +12,7 @@ const initialize = (config = {}) => {
     router = Router(),
   } = config;
 
-  router.get('/', controller.index);
+  router.get('/footer', controller.index);
 
   return router;
 };

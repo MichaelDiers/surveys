@@ -1,9 +1,11 @@
-const indexRoute = require('./index-route');
+const footerRoute = require('./footer-route');
+const headerRoute = require('./header-route');
 const publicRoute = require('./public-route');
 const voteRoute = require('./vote-route');
 
 module.exports = {
-  indexRoute,
+  footerRoute,
+  headerRoute,
   publicRoute,
   voteRoute,
 };

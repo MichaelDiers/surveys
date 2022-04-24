@@ -1,22 +1,22 @@
-h1 Hallo #{participantName}!
-h2 Willkommen zur Umfrage #{surveyName}
-div !{surveyInfo}
-form(id=formId, method='POST', action='../../../../vote/submit')
-  input(type='hidden', name='_csrf', value=csurfToken)
-  input(type='hidden', name='surveyId', value=surveyId)
-  input(type='hidden', name='participantId', value=participantId)
-  each question, i in surveyQuestions
-    label(for=question.id)= question.question
-    br
-    select(id=question.id, name=question.id, required='true')
-      each choice in question.choices
-        - var attributes = {}
-        if choice.selectable
-          - attributes.value = choice.id;
-        else
-          - attributes.value = '';
-        if choice.isSelected
-          - attributes.selected = true;
-        option&attributes(attributes)= choice.answer
-    br
-  button(type='submit') go
+.vote-block
+  div !{surveyInfo}
+.vote-block
+  h1 Willkommen zur Umfrage #{surveyName}, #{participantName}!
+  form(id=formId, method='POST', action='../../../../vote/submit')
+    input(type='hidden', name='_csrf', value=csurfToken)
+    input(type='hidden', name='surveyId', value=surveyId)
+    input(type='hidden', name='participantId', value=participantId)
+    each question, i in surveyQuestions
+      label(for=question.id)= question.question
+      select(id=question.id, name=question.id, required='true')
+        each choice in question.choices
+          - var attributes = {}
+          if choice.selectable
+            - attributes.value = choice.id;
+          else
+            - attributes.value = '';
+          if choice.isSelected
+            - attributes.selected = true;
+          option&attributes(attributes)= choice.answer
+    div
+    button(type='submit') Abstimmen

@@ -1,0 +1,32 @@
+.vote-block .table-col-6 {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(6, auto);
+  justify-items: stretch;
+}
+
+.vote-block .table-col-6 div {
+  padding: 5px;
+  text-align: center;
+}
+
+.vote-block .table-col-6:nth-child(6n+1) {
+  font-weight: bold;
+  justify-self: right;
+}
+
+.vote-block .table-col-6:nth-child(12n+8),
+.vote-block .table-col-6:nth-child(12n+9),
+.vote-block .table-col-6:nth-child(12n+10),
+.vote-block .table-col-6:nth-child(12n+11),
+.vote-block .table-col-6:nth-child(12n+12) {
+  background: $vote-table-cell-color;
+}
+
+.vote-block .table-col-6:nth-child(12n+14),
+.vote-block .table-col-6:nth-child(12n+15),
+.vote-block .table-col-6:nth-child(12n+16),
+.vote-block .table-col-6:nth-child(12n+17),
+.vote-block .table-col-6:nth-child(12n+18) {
+  background: $vote-table-cell-alternate-color;
+}

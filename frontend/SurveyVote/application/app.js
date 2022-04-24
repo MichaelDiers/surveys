@@ -41,9 +41,15 @@ const initialize = (config = {}) => {
   routers.publicRoute({ router });
   middlewares.pugMiddleware({ router, lang, files });
   middlewares.csurfMiddleware({ router, csurfCookieName });
-  routers.indexRoute({
-    router: middlewares.indexMiddleware({ router }),
-    controller: controllers.indexController(),
+
+  routers.footerRoute({
+    router,
+    controller: controllers.footerController(),
+  });
+
+  routers.headerRoute({
+    router,
+    controller: controllers.headerController(),
   });
 
   routers.voteRoute({

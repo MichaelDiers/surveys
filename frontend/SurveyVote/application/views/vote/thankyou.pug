@@ -1,12 +1,11 @@
-input(type='hidden', name='pushStateUrl', value=pushStateUrl)
-h1 Vielen Dank, #{participantName}!
-p Deine Stimme wurde gezählt!
-
-h2= surveyName
-div !{surveyInfo}
-
-h2 Deine Antworten
-div
-  each result in results
-    div= result.question
-    div= result.answer
+.vote-block
+  input(type='hidden', name='pushStateUrl', value=pushStateUrl)
+  h1 Vielen Dank, #{participantName}!
+  p Deine Stimme wurde für #{surveyName} gezählt!
+.vote-block
+  h2 Deine Antworten
+  .result-grid
+    each result in results
+      div= result.question
+      div= result.answer
+.vote-block !{surveyInfo}

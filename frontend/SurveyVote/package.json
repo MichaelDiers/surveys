@@ -6,7 +6,8 @@
   "scripts": {
     "eslint": "eslint -c ./configs/.eslintrc.js . --fix",
     "git": "git add . && git add ../../.github/workflows/SurveyVote.yaml && git status",
-    "gitadd": "npm run lint && npm run ugly && npm run git",
+    "gitadd": "npm run lint && npm run ugly && npm run git && npm run images",
+    "images": "copy client\\images\\*.png application\\public\\",
     "lint": "npm run eslint && npm run puglint && npm run stylelint",
     "puglint": "pug-lint -c ./configs/.pug-lintrc.json -r inline ./application/views/",
     "serveGateway": "nodemon localGateway.js",

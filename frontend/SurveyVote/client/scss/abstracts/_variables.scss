@@ -1,0 +1,7 @@
+$vote-background-from: hsl(40, 87%, 64%);
+$vote-background-to: hsl(13, 97%, 54%);
+$vote-background: linear-gradient(to top right, $vote-background-from, $vote-background-to);
+
+$vote-table-cell-color: linear-gradient(to top right, hsl(40, 87%, 70%), hsl(40, 87%, 60%));
+$vote-table-cell-alternate-color: linear-gradient(to top right, hsl(40, 87%, 60%), hsl(40, 87%, 50%));
+

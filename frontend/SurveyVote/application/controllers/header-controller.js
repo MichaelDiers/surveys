@@ -1,7 +1,7 @@
 const initialize = () => {
   const controller = {
     index: async (req, res) => {
-      res.render('index/index');
+      res.render('header/index');
     },
   };
 

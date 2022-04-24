@@ -1,7 +1,9 @@
-const indexController = require('./index-controller');
+const footerController = require('./footer-controller');
+const headerController = require('./header-controller');
 const voteController = require('./vote-controller');
 
 module.exports = {
-  indexController,
+  footerController,
+  headerController,
   voteController,
 };

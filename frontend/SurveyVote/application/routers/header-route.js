@@ -1,19 +1,18 @@
 const { Router } = require('express');
 
 /**
- * Initializes the middleware for the index route.
+ * Initialize the header route.
  * @param {object} config A configuration object.
  * @param {Router} config.router An express router.
  * @returns The given router if set in config, a new express router otherwise.
  */
 const initialize = (config = {}) => {
   const {
+    controller,
     router = Router(),
   } = config;
 
-  router.use('/', (req, res, next) => {
-    next();
-  });
+  router.get('/header', controller.index);
 
   return router;
 };
