@@ -1,12 +1,12 @@
 .container
   input(type='hidden', name='pushStateUrl', value=pushStateUrl)
   h1 Vielen Dank, #{participantName}!
-  p 
+  p
     | Deine Stimme wurde für #{surveyName} gezählt!
     | Die zahllosen Helfer haben bereits mit der Auszählung begonnen.
     | Das Ergebnis wird in Kürze feststehen und Dir per Email zugeschickt werden.
   h1 Deine Antworten
-  .grid-2#result-grid
+  #result-grid.grid-2
     each result in results
       div= result.question
       div= result.answer

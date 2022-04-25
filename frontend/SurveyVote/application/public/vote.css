@@ -3,6 +3,16 @@ body {
   font-family: 'Play', sans-serif;
 }
 
+.table-body .header {
+  font-weight: bold;
+}
+
+.table-headline {
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+}
+
 header {
   background-image: url("pixel-gb69c3828f_640.png");
   background-repeat: repeat-x;
@@ -25,16 +35,9 @@ header {
       justify-self: right;
 }
 
-.table-body .header {
-  font-weight: bold;
-}
-
 .table-headline {
-  font-size: 3rem;
-  text-align: center;
-  margin-top: 32px;
   margin-bottom: 32px;
-  font-weight: 700;
+  margin-top: 32px;
 }
 
 #result-grid :nth-child(2n+1) {

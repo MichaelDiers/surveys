@@ -1,13 +1,6 @@
 @include table(6);
 
-.table-body .header {
-  font-weight: bold;
-}
-
 .table-headline {
-  font-size: 3rem;
-  text-align: center;
-  margin-top: 32px;
   margin-bottom: 32px;
-  font-weight: 700;
+  margin-top: 32px;
 }
