@@ -157,6 +157,7 @@ body {
 
 .loader {
   cursor: wait;
+  position: relative;
 }
 
 .loader::before {
