@@ -1,0 +1,19 @@
+form {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) min-content;
+
+  :nth-child(2n) {
+    justify-self: right;
+  }
+}
+
+form * {
+  align-items: center;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+}
+
+label::after {
+  content: ':';
+}

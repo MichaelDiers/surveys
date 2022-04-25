@@ -1,0 +1,9 @@
+@mixin grid($columns, $justify-items: center, $align-items: center, $gap: 10px, $column-sizing: auto) {
+  .grid-#{$columns} {
+    display: grid;
+    grid-template-columns: repeat($columns, $column-sizing);
+    align-items: $align-items;
+    justify-items: $justify-items;
+    gap: $gap;
+  }
+}

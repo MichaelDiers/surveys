@@ -1,0 +1,7 @@
+// colors dark
+$background-color-dark: hsla(0, 1%, 6%, 0.95);
+$foreground-color-dark: hsla(30, 6%, 87%, 0.863);
+
+// color light
+$background-color-light: $foreground-color-dark;
+$foreground-color-light: $background-color-dark;
