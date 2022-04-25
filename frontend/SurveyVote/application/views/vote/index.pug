@@ -1,6 +1,5 @@
-.vote-block
+.container
   div !{surveyInfo}
-.vote-block
   h1 Willkommen zur Umfrage #{surveyName}, #{participantName}!
   form(id=formId, method='POST', action='../../../../vote/submit')
     input(type='hidden', name='_csrf', value=csurfToken)

@@ -1,11 +1,13 @@
-.vote-block
+.container
   input(type='hidden', name='pushStateUrl', value=pushStateUrl)
   h1 Vielen Dank, #{participantName}!
-  p Deine Stimme wurde für #{surveyName} gezählt!
-.vote-block
-  h2 Deine Antworten
-  .result-grid
+  p 
+    | Deine Stimme wurde für #{surveyName} gezählt!
+    | Die zahllosen Helfer haben bereits mit der Auszählung begonnen.
+    | Das Ergebnis wird in Kürze feststehen und Dir per Email zugeschickt werden.
+  h1 Deine Antworten
+  .grid-2#result-grid
     each result in results
       div= result.question
       div= result.answer
-.vote-block !{surveyInfo}
+  div !{surveyInfo}

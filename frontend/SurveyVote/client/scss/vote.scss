@@ -1,14 +1,12 @@
-@import 'base/reset';
+@import 'abstracts/mixins';
+
 @import 'base/fonts';
 @import 'base/typographie';
 
-@import 'abstracts/variables';
-
-@import 'themes/theme';
-
-@import 'layout/forms';
-@import 'layout/main';
+@import 'layout/header';
 @import 'layout/table';
-@import 'layout/result-grid';
 
-@import 'components/vote-block';
+@import 'pages/thankyou';
+
+@import 'themes/dark';
+@import 'themes/lights';

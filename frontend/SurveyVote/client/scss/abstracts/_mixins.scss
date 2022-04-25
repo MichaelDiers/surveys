@@ -1,0 +1,13 @@
+@mixin table($size, $gap: 10px) {
+  .table-body.table-col-#{$size} {
+    display: grid;
+    gap: $gap;
+    grid-template-columns: repeat($size, auto);
+    place-items: center;
+  }
+
+  .table-body.table-col-#{$size} :nth-child(#{$size}n+1) {
+    font-weight: bold;
+    justify-self: right;
+  }
+}
