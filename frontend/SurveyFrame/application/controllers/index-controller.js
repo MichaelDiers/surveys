@@ -16,18 +16,18 @@ const initialize = (config = {}) => {
       const destination = urlSplit.length === 1 ? req.originalUrl : urlSplit[1];
       const container = urlSplit.length === 1 ? req.originalUrl.split('/')[1] : req.originalUrl.split('/frame')[1].split('/')[1];
 
-      const placeholder = `${gatewayAddress}${destination}`;
+      const placeholderAjax = `${gatewayAddress}${destination}`;
       const containerId = `${container}-container`;
 
       const subViewBase = destination.split('/')[1];
-      const placeholderHeader = `${gatewayAddress}/${subViewBase}/header`;
-      const placeholderFooter = `${gatewayAddress}/${subViewBase}/footer`;
+      const placeholderAjaxHeader = `${gatewayAddress}/${subViewBase}/header`;
+      const placeholderAjaxFooter = `${gatewayAddress}/${subViewBase}/footer`;
 
       res.locals.pubLocals.files.css.push(`${gatewayAddress}/${subViewBase}/public/${subViewBase}.min.css`);
       res.locals.pubLocals.files.js.push(`${gatewayAddress}/${subViewBase}/public/${subViewBase}.min.js`);
 
       res.render('index/index', {
-        containerId, placeholder, placeholderFooter, placeholderHeader,
+        containerId, placeholderAjax, placeholderAjaxFooter, placeholderAjaxHeader,
       });
     },
   };

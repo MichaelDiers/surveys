@@ -5,6 +5,11 @@ body {
 
 h1 {
   font-size: 3rem;
+  text-align: center;
+}
+
+form textarea {
+  text-align: left;
 }
 
 .theme-toggle {
