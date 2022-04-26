@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Md.GoogleCloudPubSub" Version="1.2.32" />
-    <PackageReference Include="Surveys.Common" Version="1.2.77" />
+    <PackageReference Include="Surveys.Common" Version="1.2.79" />
   </ItemGroup>
 
 </Project>

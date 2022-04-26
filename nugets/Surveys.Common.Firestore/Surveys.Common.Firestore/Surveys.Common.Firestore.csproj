@@ -16,7 +16,7 @@
   <ItemGroup>
     <PackageReference Include="Md.Common" Version="1.2.35" />
     <PackageReference Include="Md.GoogleCloudFirestore" Version="1.2.36" />
-    <PackageReference Include="Surveys.Common" Version="1.2.77" />
+    <PackageReference Include="Surveys.Common" Version="1.2.79" />
   </ItemGroup>
 
 </Project>
