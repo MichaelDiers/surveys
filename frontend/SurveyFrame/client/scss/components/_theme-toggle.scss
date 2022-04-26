@@ -1,0 +1,21 @@
+.theme-toggle {
+  border: 2px solid;
+  border-radius: 20%;
+  padding: 4px;
+  position: absolute;
+  transform: rotate(90deg);
+  transform-origin: center top;
+}
+
+.theme-toggle:hover {
+  border-width: 3px;
+  cursor: pointer;
+}
+
+.theme-toggle::before {
+  content: 'light';
+}
+
+.light .theme-toggle::before {
+  content: 'dark';
+}

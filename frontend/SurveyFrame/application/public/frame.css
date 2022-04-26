@@ -23,6 +23,10 @@ h1 {
   font-size: 3rem;
 }
 
+.theme-toggle {
+  font-size: 70%;
+}
+
 .container {
   display: -ms-grid;
   display: grid;
@@ -96,9 +100,17 @@ body {
   color: rgba(224, 222, 220, 0.863);
 }
 
+.theme-toggle {
+  border-color: rgba(224, 222, 220, 0.863);
+}
+
 .light {
   background-color: rgba(224, 222, 220, 0.863);
   color: rgba(15, 15, 15, 0.95);
+}
+
+.light .theme-toggle {
+  border-color: rgba(15, 15, 15, 0.95);
 }
 
 @-webkit-keyframes spinner {
@@ -186,5 +198,29 @@ body {
   position: absolute;
   top: 0;
   width: 100%;
+}
+
+.theme-toggle {
+  border: 2px solid;
+  border-radius: 20%;
+  padding: 4px;
+  position: absolute;
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+  -webkit-transform-origin: center top;
+          transform-origin: center top;
+}
+
+.theme-toggle:hover {
+  border-width: 3px;
+  cursor: pointer;
+}
+
+.theme-toggle::before {
+  content: 'light';
+}
+
+.light .theme-toggle::before {
+  content: 'dark';
 }
 /*# sourceMappingURL=frame.css.map */

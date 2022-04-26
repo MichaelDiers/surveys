@@ -2,3 +2,7 @@
   background-color: $background-color-light;
   color: $foreground-color-light;
 }
+
+.light .theme-toggle {
+  border-color: $foreground-color-light;
+}

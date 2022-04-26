@@ -2,3 +2,7 @@ body {
   background-color: $background-color-dark;
   color: $foreground-color-dark;
 }
+
+.theme-toggle {
+  border-color: $foreground-color-dark;
+}

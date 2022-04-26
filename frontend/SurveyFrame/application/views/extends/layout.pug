@@ -12,6 +12,7 @@ html(lang=pubLocals.lang)
     include ../includes/header
     main
       block content
+    include ../includes/theme-toggle
     include ../includes/footer
     each js in pubLocals.files.js
       script(src=js)
