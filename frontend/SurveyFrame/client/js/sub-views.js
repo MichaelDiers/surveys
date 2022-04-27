@@ -35,11 +35,11 @@ const subViewForms = (sourceElement) => {
 };
 
 const subViews = (sourceElement) => {
-  const elements = sourceElement.querySelectorAll('[placeholderAjax]');
+  const elements = sourceElement.querySelectorAll('[placeholder-ajax]');
   if (elements) {
     elements.forEach((element) => {
-      const url = element.getAttribute('placeholderAjax');
-      // element.removeAttribute('placeholderAjax');
+      const url = element.getAttribute('placeholder-ajax');
+      // element.removeAttribute('placeholder-ajax');
       element.classList.add('loader');
       // eslint-disable-next-line no-undef
       apiCall(url, 'GET').then((result) => {
