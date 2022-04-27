@@ -9,6 +9,8 @@
     /// </summary>
     public interface ISendMailMessage : IMessage
     {
+        IEnumerable<IAttachment> Attachments { get; }
+
         /// <summary>
         ///     Gets or ses the body of the message.
         /// </summary>

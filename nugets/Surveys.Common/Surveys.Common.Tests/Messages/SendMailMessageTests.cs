@@ -1,21 +1,14 @@
 ﻿namespace Surveys.Common.Tests.Messages
 {
     using System;
+    using System.Linq;
+    using Md.Common.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Messages;
     using Xunit;
 
     public class SendMailMessageTests
     {
-        [Fact]
-        public void Deserialize()
-        {
-            const string json =
-                "{\"processId\":\"1fb37955-603e-4a91-844b-94a9b26c63e3\",\"recipients\":[{\"email\":\"foo@bar.example\",\"name\":\"foo\"}],\"replyTo\":{\"email\":\"bar@foo.example\",\"name\":\"bar\"},\"subject\":\"subject\",\"text\":{\"html\":\"html\",\"plain\":\"plain\"},\"surveyId\":\"ef6bca83-2968-45f1-a973-00c0097cdf1a\",\"participantIds\":[\"a3b8d7cd-5801-4f6d-818c-4d0d358ae709\"],\"statusOk\":\"CREATED\",\"statusFailed\":\"INVITATION_MAIL_FAILED\"}";
-            var message = JsonConvert.DeserializeObject<SendMailMessage>(json);
-            Assert.NotNull(message);
-        }
-
         [Fact]
         public void Serialize()
         {
@@ -24,9 +17,37 @@
                 new[] {new Recipient("foo@bar.example", "foo")},
                 new Recipient("bar@foo.example", "bar"),
                 "subject",
-                new Body("html", "plain"));
+                new Body("html", "plain"),
+                Enumerable.Empty<Attachment>());
             var json = JsonConvert.SerializeObject(message);
             Assert.NotNull(json);
+        }
+
+        [Fact]
+        public void SerializeDeserialize()
+        {
+            var expected = new SendMailMessage(
+                Guid.NewGuid().ToString(),
+                new[] {new Recipient("foobar@example.example", "foobar")},
+                new Recipient("reply@example.example", "reply"),
+                "subject",
+                new Body("<html></html>", "plain"),
+                new[] {new Attachment("name", new byte[10])});
+            var actual = Serializer.DeserializeObject<SendMailMessage>(Serializer.SerializeObject(expected));
+
+            Assert.Single(expected.Attachments);
+            Assert.Single(actual.Attachments);
+            Assert.Equal(expected.Attachments.First().Data, actual.Attachments.First().Data);
+            Assert.Equal(expected.Attachments.First().Name, actual.Attachments.First().Name);
+            Assert.Equal(expected.Body.Html, actual.Body.Html);
+            Assert.Equal(expected.Body.Plain, actual.Body.Plain);
+            Assert.Single(expected.Recipients);
+            Assert.Single(actual.Recipients);
+            Assert.Equal(expected.Recipients.First().Name, actual.Recipients.First().Name);
+            Assert.Equal(expected.Recipients.First().Email, actual.Recipients.First().Email);
+            Assert.Equal(expected.ReplyTo.Email, actual.ReplyTo.Email);
+            Assert.Equal(expected.ReplyTo.Name, actual.ReplyTo.Name);
+            Assert.Equal(expected.Subject, actual.Subject);
         }
     }
 }

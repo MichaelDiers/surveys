@@ -1,6 +1,7 @@
 ﻿namespace Surveys.Common.Messages
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Md.Common.Extensions;
     using Md.Common.Messages;
     using Newtonsoft.Json;
@@ -25,14 +26,17 @@
             IEnumerable<Recipient> recipients,
             Recipient replyTo,
             string subject,
-            Body body
+            Body body,
+            IEnumerable<Attachment> attachments
         )
             : this(
                 processId,
                 recipients,
-                replyTo as IRecipient,
+                replyTo,
                 subject,
-                body)
+                body,
+                attachments.Select(a => a as IAttachment).ToArray())
+
         {
         }
 
@@ -49,7 +53,8 @@
             IEnumerable<IRecipient> recipients,
             IRecipient replyTo,
             string subject,
-            Body body
+            Body body,
+            IEnumerable<IAttachment> attachments
         )
             : base(processId)
         {
@@ -57,7 +62,11 @@
             this.ReplyTo = replyTo;
             this.Subject = subject.ValidateIsNotNullOrWhitespace(nameof(subject));
             this.Body = body;
+            this.Attachments = attachments.ToArray();
         }
+
+        [JsonProperty("attachments", Required = Required.AllowNull, Order = 15)]
+        public IEnumerable<IAttachment> Attachments { get; }
 
         /// <summary>
         ///     Gets or ses the body of the message.
