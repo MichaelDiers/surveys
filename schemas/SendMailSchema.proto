@@ -10,9 +10,15 @@ message SendMail {
     string plain = 2;
   };
 
+  message Attachment {
+    string name = 1;
+    bytes data = 2;
+  };
+
   string processId = 1;
   repeated Recipient recipients = 2;
   Recipient replyTo = 3;
   string subject = 4;
   Body text = 5;
+  repeated Attachment attachments = 6;
 };
