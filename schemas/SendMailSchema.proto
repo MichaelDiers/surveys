@@ -1,0 +1,18 @@
+syntax = "proto3";
+message SendMail {
+  message Recipient {
+    string email = 1;
+    string name = 2;
+  };
+
+  message Body {
+    string html = 1;
+    string plain = 2;
+  };
+
+  string processId = 1;
+  repeated Recipient recipients = 2;
+  Recipient replyTo = 3;
+  string subject = 4;
+  Body text = 5;
+};

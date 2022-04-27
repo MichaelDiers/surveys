@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'schemas/SendMailSchema.avro'
+      - 'schemas/SendMailSchema.proto'
   workflow_dispatch:
   workflow_run:
     workflows: [GoLive]
@@ -14,8 +14,8 @@ jobs:
     uses: MichaelDiers/shared-workflows/.github/workflows/deploy-google-cloud-pubsub-schema-topic.yaml@main
     with:
       messageEnconding: json
-      schemaFile: schemas/SendMailSchema.avro
-      schemaType: AVRO
+      schemaFile: schemas/SendMailSchema.proto
+      schemaType: PROTOCOL_BUFFER
     secrets:
       gcpCredentialsTest: ${{ secrets.GLOBAL_GCP_CREDENTIALS_TEST }}
       gcpCredentialsStage: ${{ secrets.GLOBAL_GCP_CREDENTIALS_STAGE }}
