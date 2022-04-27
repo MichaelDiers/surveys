@@ -41,7 +41,6 @@
         /// <param name="messageConverter">Converter for <see cref="ISendMailMessage" /> to <see cref="MimeMessage" />.</param>
         /// <param name="mailerSmtpClient">Sends mails via smtp.</param>
         /// <param name="configuration">The application configuration.</param>
-        /// <param name="pubSubClient">Access the Pub/Sub client.</param>
         /// <param name="secretManager">Access to google cloud secrets.</param>
         public MailerProvider(
             ILogger<Function> logger,
@@ -65,12 +64,9 @@
         /// <returns>A <see cref="Task" /> without a result.</returns>
         protected override async Task HandleMessageAsync(ISendMailMessage message)
         {
-            var smtpCredentials = await this.AccessSecrets();
+            var (emailSecret, passwordSecret) = await this.AccessSecrets();
 
-            var mimeMessageFrom = new[]
-            {
-                new MailboxAddress(this.configuration.Smtp.DisplayName, smtpCredentials.email)
-            };
+            var mimeMessageFrom = new[] {new MailboxAddress(this.configuration.Smtp.DisplayName, emailSecret)};
 
             var email = this.messageConverter.ToMimeMessage(message, mimeMessageFrom);
 
@@ -79,8 +75,8 @@
                 await this.mailerSmtpClient.SendAsync(
                     email,
                     this.configuration.Smtp,
-                    smtpCredentials.email,
-                    smtpCredentials.password);
+                    emailSecret,
+                    passwordSecret);
             }
             catch (Exception ex)
             {

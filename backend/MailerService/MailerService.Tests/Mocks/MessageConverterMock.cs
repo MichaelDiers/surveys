@@ -1,4 +1,4 @@
-﻿namespace MailerService.Test.Mocks
+﻿namespace MailerService.Tests.Mocks
 {
     using System.Collections.Generic;
     using MailerService.Contracts;

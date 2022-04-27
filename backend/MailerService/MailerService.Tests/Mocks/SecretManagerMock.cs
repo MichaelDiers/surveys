@@ -1,4 +1,4 @@
-﻿namespace MailerService.Test.Mocks
+﻿namespace MailerService.Tests.Mocks
 {
     using System.Threading.Tasks;
     using Md.GoogleCloudSecrets.Contracts.Logic;

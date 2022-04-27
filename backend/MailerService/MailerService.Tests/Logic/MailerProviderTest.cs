@@ -1,11 +1,11 @@
-﻿namespace MailerService.Test.Logic
+﻿namespace MailerService.Tests.Logic
 {
     using System;
     using System.Linq;
     using Google.Cloud.Functions.Testing;
     using MailerService.Logic;
     using MailerService.Model;
-    using MailerService.Test.Mocks;
+    using MailerService.Tests.Mocks;
     using Md.Common.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Messages;
