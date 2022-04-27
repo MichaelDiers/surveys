@@ -94,7 +94,8 @@
                     new[] {new Recipient(surveyParticipant.Email, surveyParticipant.Name)},
                     new Recipient(message.Survey.Organizer.Email, message.Survey.Name),
                     string.Format(RequestForParticipation.Subject, message.Survey.Name),
-                    this.HandleRequestForParticipationBody(message.Survey, surveyParticipant));
+                    this.HandleRequestForParticipationBody(message.Survey, surveyParticipant),
+                    Enumerable.Empty<Attachment>());
                 await this.sendMailPubSubClient.PublishAsync(sendMailMessage);
             }
         }
@@ -153,7 +154,8 @@
                 new[] {new Recipient(participant.Email, participant.Email)},
                 new Recipient(message.Survey.Organizer.Email, message.Survey.Organizer.Name),
                 string.Format(ThankYou.Subject, message.Survey.Name),
-                this.HandleThankYouBody(message.Survey, participant, message.SurveyResult));
+                this.HandleThankYouBody(message.Survey, participant, message.SurveyResult),
+                Enumerable.Empty<Attachment>());
             await this.sendMailPubSubClient.PublishAsync(sendMailMessage);
         }
 
