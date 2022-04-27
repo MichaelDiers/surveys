@@ -5,7 +5,7 @@
   "main": "function.js",
   "scripts": {
     "eslint": "eslint -c ./configs/.eslintrc.js . --fix",
-    "git": "git add . && git status",
+    "git": "git add . && git add ../../.github/workflows/SurveyGateway.yaml && git status",
     "gitadd": "npm run lint && npm run git",
     "lint": "npm run eslint",
     "serve": "nodemon index.js",

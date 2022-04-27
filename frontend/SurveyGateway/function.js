@@ -8,6 +8,7 @@ const {
   ENV_GATEWAY_VOTE_TARGET: voteTarget,
   ENV_REQUEST_LOGGING: requestLogging = false,
   ENV_GATEWAY_TERMINATE_TARGET: terminateTarget,
+  ENV_GATEWAY_STATISTICS_TARGET: statisticsTarget,
 } = process.env;
 
 exports.gateway = app({
@@ -15,4 +16,5 @@ exports.gateway = app({
   voteTarget,
   requestLogging,
   terminateTarget,
+  statisticsTarget,
 });
