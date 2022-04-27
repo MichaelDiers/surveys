@@ -1,20 +1,29 @@
 ﻿namespace MailerService.Test.Logic
 {
+    using System;
+    using System.Linq;
     using Google.Cloud.Functions.Testing;
     using MailerService.Logic;
     using MailerService.Model;
     using MailerService.Test.Mocks;
+    using Md.Common.Logic;
     using Newtonsoft.Json;
     using Surveys.Common.Messages;
     using Xunit;
 
     public class MailerProviderTest
     {
-        [Theory]
-        [InlineData(
-            "{\"processId\":\"53C67E0C-3B7D-417A-AF2A-FAD74684C4E7\",\"recipients\":[{\"email\":\"foo@bar.example\",\"name\":\"RecipientName\"}],\"replyTo\":{\"email\":\"foobar@bar.example\",\"name\":\"ReplyToName\"},\"subject\":\"subject\",\"text\":{\"html\":\"html body\",\"plain\":\"plain body\"},\"surveyId\":\"53C67E0C-3B7D-417A-AF2A-FAD74684C4E7\",\"participantIds\":[\"53C67E0C-3B7D-417A-AF2A-FAD74684C4E7\"],\"statusOk\":\"CREATED\",\"statusFailed\":\"CREATED\"}")]
-        public async void SendAsyncDeserializeObjectSucceeds(string json)
+        [Fact]
+        public async void SendAsyncDeserializeObjectSucceeds()
         {
+            var sendMailMessage = new SendMailMessage(
+                Guid.NewGuid().ToString(),
+                new[] {new Recipient("example@example.example", "example")},
+                new Recipient("reply@example.example", "reply"),
+                "subject",
+                new Body("<html></html>", "plain"),
+                Enumerable.Empty<Attachment>());
+            var json = Serializer.SerializeObject(sendMailMessage);
             var logger = new MemoryLogger<Function>();
             await new MailerProvider(
                 logger,

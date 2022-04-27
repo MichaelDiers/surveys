@@ -1,6 +1,7 @@
-﻿namespace MailerService.Test.Logic
+﻿namespace MailerService.Tests.Logic
 {
     using System;
+    using System.Linq;
     using MailerService.Logic;
     using MimeKit;
     using Surveys.Common.Messages;
@@ -37,7 +38,8 @@
                     new[] {new Recipient(recipientEmail, recipientName)},
                     new Recipient(replyToEmail, replyToName),
                     subject,
-                    new Body(textHtml, textPlain)),
+                    new Body(textHtml, textPlain),
+                    Enumerable.Empty<Attachment>()),
                 new[] {new MailboxAddress(fromName, fromEmail)});
 
             Assert.Single(message.To.Mailboxes);
