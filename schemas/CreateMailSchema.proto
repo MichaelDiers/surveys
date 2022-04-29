@@ -64,4 +64,5 @@ message CreateMailMessage {
     MailType mailType = 2;
     Survey survey = 3;
     SurveyResult surveyResult = 4;
+    repeated string reminderParticipantIds = 5;
 }
