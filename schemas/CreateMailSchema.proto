@@ -56,7 +56,8 @@ message CreateMailMessage {
 
     enum MailType {
         RequestForParticipation = 0;
-        ThankYou = 1;	
+        ThankYou = 1;
+        Reminder = 2;		
     };
 
     string processId = 1;
