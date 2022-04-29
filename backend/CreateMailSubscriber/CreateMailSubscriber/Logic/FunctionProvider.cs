@@ -65,6 +65,9 @@
                 case MailType.ThankYou:
                     await this.HandleThankYouAsync(message);
                     break;
+                case MailType.Reminder:
+                    await this.HandleReminderAsync(message);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(
                         nameof(message.MailType),
@@ -73,6 +76,32 @@
             }
 
             await Task.CompletedTask;
+        }
+
+        /// <summary>
+        ///     Send a survey reminder.
+        /// </summary>
+        /// <param name="message">The incoming pub/sub message.</param>
+        /// <returns>A <see cref="Task" />.</returns>
+        private async Task HandleReminderAsync(ICreateMailMessage message)
+        {
+            var participants = message.Survey.Participants.Where(
+                participant => message.ReminderParticipantIds.Any(reminderId => reminderId == participant.Id));
+            foreach (var participant in participants)
+            {
+                var sendMailMessage = new SendMailMessage(
+                    message.ProcessId,
+                    new[] {new Recipient(participant.Email, participant.Name)},
+                    new Recipient(message.Survey.Organizer.Email, message.Survey.Name),
+                    string.Format(RequestForParticipation.Subject, message.Survey.Name),
+                    this.HandleRequestForParticipationBody(
+                        message.Survey,
+                        participant,
+                        Reminder.BodyHtml,
+                        Reminder.BodyText),
+                    Enumerable.Empty<Attachment>());
+                await this.sendMailPubSubClient.PublishAsync(sendMailMessage);
+            }
         }
 
         /// <summary>
@@ -94,7 +123,11 @@
                     new[] {new Recipient(surveyParticipant.Email, surveyParticipant.Name)},
                     new Recipient(message.Survey.Organizer.Email, message.Survey.Name),
                     string.Format(RequestForParticipation.Subject, message.Survey.Name),
-                    this.HandleRequestForParticipationBody(message.Survey, surveyParticipant),
+                    this.HandleRequestForParticipationBody(
+                        message.Survey,
+                        surveyParticipant,
+                        RequestForParticipation.BodyHtml,
+                        RequestForParticipation.BodyText),
                     Enumerable.Empty<Attachment>());
                 await this.sendMailPubSubClient.PublishAsync(sendMailMessage);
             }
@@ -105,19 +138,26 @@
         /// </summary>
         /// <param name="survey">The survey data.</param>
         /// <param name="participant">The participant data.</param>
+        /// <param name="formatStringHtml">The format string for the html message.</param>
+        /// <param name="formatStringText">The format string for the plain text message.</param>
         /// <returns>The body of the email.</returns>
-        private Body HandleRequestForParticipationBody(ISurvey survey, IParticipant participant)
+        private Body HandleRequestForParticipationBody(
+            ISurvey survey,
+            IParticipant participant,
+            string formatStringHtml,
+            string formatStringText
+        )
         {
             var frontEndUrl = string.Format(this.configuration.FrondEndUrlFormat, survey.DocumentId, participant.Id);
             return new Body(
                 string.Format(
-                    RequestForParticipation.BodyHtml,
+                    formatStringHtml,
                     participant.Name,
                     survey.Name,
                     frontEndUrl,
                     survey.Organizer.Name),
                 string.Format(
-                    RequestForParticipation.BodyText,
+                    formatStringText,
                     participant.Name,
                     survey.Name,
                     frontEndUrl,

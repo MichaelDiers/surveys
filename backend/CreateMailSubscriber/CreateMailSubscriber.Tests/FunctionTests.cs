@@ -1,6 +1,7 @@
 ﻿namespace CreateMailSubscriber.Tests
 {
     using System;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using CloudNative.CloudEvents;
@@ -39,7 +40,8 @@
                 Guid.NewGuid().ToString(),
                 MailType.ThankYou,
                 container.Survey,
-                container.SurveyResult);
+                container.SurveyResult,
+                Enumerable.Empty<string>());
             await FunctionTests.HandleAsyncForMessage(message);
         }
 
