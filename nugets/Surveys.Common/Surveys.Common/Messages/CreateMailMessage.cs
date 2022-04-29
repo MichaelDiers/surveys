@@ -1,7 +1,9 @@
 ﻿namespace Surveys.Common.Messages
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using Md.Common.Messages;
     using Newtonsoft.Json;
     using Surveys.Common.Contracts;
@@ -20,18 +22,21 @@
         /// <param name="mailType">The type of the email.</param>
         /// <param name="survey">The survey data.</param>
         /// <param name="surveyResult">The optional survey result for thank you mails.</param>
+        /// <param name="reminderParticipantIds">The participant ids for that a reminder is sent.</param>
         [JsonConstructor]
         public CreateMailMessage(
             string processId,
             MailType mailType,
             Survey survey,
-            SurveyResult? surveyResult
+            SurveyResult? surveyResult,
+            IEnumerable<string> reminderParticipantIds
         )
             : this(
                 processId,
                 mailType,
                 survey,
-                surveyResult as ISurveyResult)
+                surveyResult as ISurveyResult,
+                reminderParticipantIds)
         {
         }
 
@@ -46,7 +51,8 @@
                 processId,
                 mailType,
                 survey,
-                null)
+                null,
+                Enumerable.Empty<string>())
         {
         }
 
@@ -57,11 +63,13 @@
         /// <param name="mailType">The type of the email.</param>
         /// <param name="survey">The survey data.</param>
         /// <param name="surveyResult">The result for that a mail is created.</param>
+        /// <param name="reminderParticipantIds">The participant ids for that a reminder is sent.</param>
         public CreateMailMessage(
             string processId,
             MailType mailType,
             ISurvey survey,
-            ISurveyResult? surveyResult
+            ISurveyResult? surveyResult,
+            IEnumerable<string> reminderParticipantIds
         )
             : base(processId)
         {
@@ -73,6 +81,7 @@
             this.MailType = mailType;
             this.Survey = survey;
             this.SurveyResult = surveyResult;
+            this.ReminderParticipantIds = reminderParticipantIds;
         }
 
         /// <summary>
@@ -80,6 +89,12 @@
         /// </summary>
         [JsonProperty("mailType", Required = Required.Always, Order = 10)]
         public MailType MailType { get; }
+
+        /// <summary>
+        ///     Gets the participant ids for that a reminder is sent.
+        /// </summary>
+        [JsonProperty("reminderParticipantIds", Required = Required.AllowNull, Order = 13)]
+        public IEnumerable<string> ReminderParticipantIds { get; }
 
         /// <summary>
         ///     Gets the survey data.
