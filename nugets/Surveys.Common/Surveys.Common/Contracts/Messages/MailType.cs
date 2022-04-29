@@ -18,6 +18,11 @@
         /// <summary>
         ///     Send a thank you mail for voting.
         /// </summary>
-        ThankYou = 2
+        ThankYou = 2,
+
+        /// <summary>
+        ///     Send a survey reminder.
+        /// </summary>
+        Reminder = 3
     }
 }
