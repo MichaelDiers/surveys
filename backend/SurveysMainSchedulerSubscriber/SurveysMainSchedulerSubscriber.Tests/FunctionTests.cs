@@ -1,6 +1,7 @@
 ﻿namespace SurveysMainSchedulerSubscriber.Tests
 {
     using System;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using CloudNative.CloudEvents;
@@ -8,6 +9,7 @@
     using Google.Events.Protobuf.Cloud.PubSub.V1;
     using Md.Common.Logic;
     using Md.Common.Messages;
+    using Md.Tga.Common.PubSub.Contracts.Logic;
     using Xunit;
 
     /// <summary>
@@ -31,7 +33,7 @@
             };
 
             var logger = new MemoryLogger<Function>();
-            var provider = new FunctionProvider(logger);
+            var provider = new FunctionProvider(logger, Enumerable.Empty<ISchedulerPubSubClient>());
             var function = new Function(logger, provider);
             await function.HandleAsync(cloudEvent, data, CancellationToken.None);
 
