@@ -21,7 +21,7 @@
     <PackageReference Include="MailKit" Version="3.2.0" />
     <PackageReference Include="Md.GoogleCloudFunctions" Version="1.2.18" />
     <PackageReference Include="Md.GoogleCloudSecrets" Version="1.2.8" />
-    <PackageReference Include="Surveys.Common" Version="1.2.80" />
+    <PackageReference Include="Surveys.Common" Version="1.2.82" />
   </ItemGroup>
 
 </Project>

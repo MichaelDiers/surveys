@@ -105,7 +105,8 @@
                         message.ProcessId,
                         MailType.ThankYou,
                         survey,
-                        surveyResult));
+                        surveyResult,
+                        Enumerable.Empty<string>()));
             }
         }
     }
