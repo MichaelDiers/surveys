@@ -73,8 +73,9 @@
             foreach (var survey in surveys.Where(survey => survey.Created.AddHours(24) < DateTime.Now))
             {
                 var results = (await this.surveyResultReadOnlyDatabase.ReadManyAsync(
-                    DatabaseObject.ParentDocumentIdName,
-                    survey.DocumentId)).ToArray();
+                        DatabaseObject.ParentDocumentIdName,
+                        survey.DocumentId)).Where(result => !result.IsSuggested)
+                    .ToArray();
                 var surveyParticipants = survey.Participants.Where(
                         participant => results.All(result => result.ParticipantId != participant.Id))
                     .Select(participant => participant.Id)
