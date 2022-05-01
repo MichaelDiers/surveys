@@ -93,7 +93,7 @@
                     message.ProcessId,
                     new[] {new Recipient(participant.Email, participant.Name)},
                     new Recipient(message.Survey.Organizer.Email, message.Survey.Name),
-                    string.Format(RequestForParticipation.Subject, message.Survey.Name),
+                    string.Format(Reminder.Subject, message.Survey.Name),
                     this.HandleRequestForParticipationBody(
                         message.Survey,
                         participant,
