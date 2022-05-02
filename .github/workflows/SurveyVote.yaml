@@ -2,8 +2,7 @@ name: SurveyVote
 on:
   pull_request:
     branches:
-      - stage
-      - prod
+      - release
     paths:
       - 'frontend/SurveyVote/**'
   push:
@@ -11,6 +10,7 @@ on:
       - main
     paths:
       - 'frontend/SurveyVote/**'
+      - '.github/workflows/SurveyVote.yaml'
   workflow_dispatch:
   workflow_run:
     workflows: [GoLiveTest, GoLiveStage, GoLiveProd]
