@@ -1,4 +1,4 @@
-name: SurveyVote
+name: SurveyVote ci/cd
 on:
   pull_request:
     branches:
