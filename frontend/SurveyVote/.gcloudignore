@@ -1,0 +1,9 @@
+.gcloudignore
+.git
+.gitignore
+/node_modules/
+/localGateway.js
+/localWithoutGateway.js
+/tests/
+/configs/
+/.vscode/
