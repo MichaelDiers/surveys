@@ -1,6 +1,6 @@
 name: SurveyVote
 on:
-  pull:
+  pull_request:
     branches:
       - stage
       - prod
