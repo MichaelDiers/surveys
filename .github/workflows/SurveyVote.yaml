@@ -1,5 +1,11 @@
 name: SurveyVote
 on:
+  pull:
+    branches:
+      - stage
+      - prod
+    paths:
+      - 'frontend/SurveyVote/**'
   push:
     branches:
       - main
@@ -7,11 +13,11 @@ on:
       - 'frontend/SurveyVote/**'
   workflow_dispatch:
   workflow_run:
-    workflows: [GoLive]
+    workflows: [GoLiveTest, GoLiveStage, GoLiveProd]
     types: [completed]
 jobs:
   deployGoogleCloudFunction:
-    uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function.yaml@main
+    uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function-vnext.yaml@main
     with:
       functionName: vote
       sourceDirectory: frontend/SurveyVote

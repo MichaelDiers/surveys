@@ -1,0 +1,8 @@
+name: GoLiveTest
+on:
+  workflow_dispatch:
+jobs:
+  triggerForInitialBuildAndDeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'completed'

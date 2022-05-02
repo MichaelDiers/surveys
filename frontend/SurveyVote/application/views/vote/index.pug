@@ -1,5 +1,4 @@
 .container
-  div !{surveyInfo}
   h1 Willkommen zur Umfrage #{surveyName}, #{participantName}!
   form(id=formId, method='POST', action='../../../../vote/submit')
     input(type='hidden', name='_csrf', value=csurfToken)
@@ -19,3 +18,4 @@
           option&attributes(attributes)= choice.answer
     div
     button(type='submit') Abstimmen
+  div !{surveyInfo}

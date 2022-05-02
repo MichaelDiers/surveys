@@ -1,4 +1,4 @@
-name: GoLive
+name: GoLiveStage
 on:
   workflow_dispatch:
 jobs:
