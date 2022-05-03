@@ -17,7 +17,7 @@
     "uglyfy": "uglifyjs ./client/js/*.js -o application/public/vote.min.js",
     "ugly": "npm run uglyfy -- --compress --mangle",
     "uglybeauty": "npm run uglyfy -- --beautify",
-    "workflow": "npm run lint && npm run ugly && npm run images && npm run test"
+    "workflow": "npm run lint && npm run ugly && npm run test"
   },
   "author": "Michael Diers",
   "license": "MIT",
