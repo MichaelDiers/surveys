@@ -1,7 +1,7 @@
 {
   "name": "surveyvote",
   "version": "1.0.0",
-  "description": "",
+  "description": "subview for surveys",
   "main": "function.js",
   "scripts": {
     "eslint": "eslint -c ./configs/.eslintrc.js . --fix",
