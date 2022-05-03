@@ -18,7 +18,7 @@
     "uglybeauty": "npm run uglyfy -- --beautify",
     "workflow": "npm run lint && npm run ugly && npm run test"
   },
-  "author": "",
+  "author": "Michael Diers",
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.3.6",
