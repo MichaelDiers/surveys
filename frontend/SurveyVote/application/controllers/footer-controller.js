@@ -1,7 +1,11 @@
 const initialize = () => {
   const controller = {
-    index: async (req, res) => {
-      res.render('footer/index');
+    index: async (req, res, next) => {
+      try {
+        res.render('footer/index');
+      } catch (err) {
+        next(err);
+      }
     },
   };
 

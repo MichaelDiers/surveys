@@ -13,10 +13,7 @@
     "serveGateway": "nodemon localGateway.js",
     "serveWithoutGateway": "nodemon localWithoutGateway.js",
     "stylelint": "npx stylelint --config ./configs/.stylelintrc.json ./client/scss/**/*",
-    "test": "npm run testUnit",
-    "testUnit": "mocha ./tests/unit/**/*-tests.js --config configs/.mocharc.json",
-    "testIntegration": "mocha ./tests/integration/**/*-tests.js --config configs/.mocharc.json",
-    "testSelenium": "mocha ./tests/selenium/**/*-tests.js --config configs/.mocharc.json",
+    "test": "mocha --timeout 10000 ./tests/**/*.tests.js --config configs/.mocharc.json",
     "uglyfy": "uglifyjs ./client/js/*.js -o application/public/vote.min.js",
     "ugly": "npm run uglyfy -- --compress --mangle",
     "uglybeauty": "npm run uglyfy -- --beautify"
@@ -34,7 +31,7 @@
     "selenium-webdriver": "^4.1.1",
     "stylelint": "^14.3.0",
     "stylelint-config-sass-guidelines": "^9.0.1",
-    "supertest": "^6.2.2",
+    "supertest": "^6.2.3",
     "uglify-js": "^3.15.0"
   },
   "dependencies": {
