@@ -12,10 +12,7 @@
     "serveGateway": "nodemon localGateway.js",
     "serveWithoutGateway": "nodemon localWithoutGateway.js",
     "stylelint": "npx stylelint --config ./configs/.stylelintrc.json ./client/scss/**/*",
-    "test": "npm run testUnit",
-    "testUnit": "mocha ./tests/unit/**/*-tests.js --config configs/.mocharc.json",
-    "testIntegration": "mocha ./tests/integration/**/*-tests.js --config configs/.mocharc.json",
-    "testSelenium": "mocha ./tests/selenium/**/*-tests.js --config configs/.mocharc.json",
+    "test": "mocha --timeout 10000 ./tests/**/*.tests.js --config configs/.mocharc.json",
     "uglyfy": "uglifyjs ./client/js/*.js -o application/public/frame.min.js",
     "ugly": "npm run uglyfy -- --compress --mangle",
     "uglybeauty": "npm run uglyfy -- --beautify"

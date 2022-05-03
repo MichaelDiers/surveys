@@ -1,4 +1,4 @@
-name: SurveyFrame
+name: SurveyFrame ci/cd
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ on:
     types: [completed]
 jobs:
   deployGoogleCloudFunction:
-    uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function.yaml@main
+    uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function-vnext.yaml@main
     with:
       functionName: frame
       sourceDirectory: frontend/SurveyFrame

@@ -1,17 +1,24 @@
 form {
+  align-items: center;
   display: grid;
   grid-template-columns: minmax(100px, 1fr) min-content;
 
   :nth-child(2n) {
-    justify-self: right;
+    justify-self: left;
   }
 }
 
 form * {
-  align-items: center;
   margin: 10px;
   padding: 10px;
+}
+
+form select {
   text-align: center;
+}
+
+form [type='submit'] {
+  margin-top: 20px;
 }
 
 label::after {

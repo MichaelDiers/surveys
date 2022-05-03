@@ -39,7 +39,7 @@ const subViews = (sourceElement) => {
   if (elements) {
     elements.forEach((element) => {
       const url = element.getAttribute('placeholder-ajax');
-      // element.removeAttribute('placeholder-ajax');
+      element.removeAttribute('placeholder-ajax');
       element.classList.add('loader');
       // eslint-disable-next-line no-undef
       apiCall(url, 'GET').then((result) => {
