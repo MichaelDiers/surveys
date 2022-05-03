@@ -6,7 +6,7 @@
   "scripts": {
     "eslint": "eslint -c ./configs/.eslintrc.js . --fix",
     "git": "git add . && git add ../../.github/workflows/SurveyVote.yaml && git status",
-    "gitadd": "npm run lint && npm run ugly && npm run git && npm run images",
+    "gitadd": "npm run workflow && npm run git",
     "images": "copy client\\images\\*.png application\\public\\",
     "lint": "npm run eslint && npm run puglint && npm run stylelint",
     "puglint": "pug-lint -c ./configs/.pug-lintrc.json -r inline ./application/views/",
@@ -16,7 +16,8 @@
     "test": "mocha --timeout 10000 ./tests/**/*.tests.js --config configs/.mocharc.json",
     "uglyfy": "uglifyjs ./client/js/*.js -o application/public/vote.min.js",
     "ugly": "npm run uglyfy -- --compress --mangle",
-    "uglybeauty": "npm run uglyfy -- --beautify"
+    "uglybeauty": "npm run uglyfy -- --beautify",
+    "workflow": "npm run lint && npm run ugly && npm run images && npm run test"
   },
   "author": "",
   "license": "MIT",

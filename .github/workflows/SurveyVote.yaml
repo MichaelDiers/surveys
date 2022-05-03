@@ -2,9 +2,11 @@ name: SurveyVote ci/cd
 on:
   pull_request:
     branches:
-      - release
+      - stage
+      - prod
     paths:
       - 'frontend/SurveyVote/**'
+      - '.github/workflows/SurveyVote.yaml'
   push:
     branches:
       - main

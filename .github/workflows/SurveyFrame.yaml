@@ -1,13 +1,21 @@
 name: SurveyFrame ci/cd
 on:
+  pull_request:
+    branches:
+      - stage
+      - prod
+    paths:
+      - 'frontend/SurveyFrame/**'
+      - '.github/workflows/SurveyFrame.yaml'
   push:
     branches:
       - main
     paths:
       - 'frontend/SurveyFrame/**'
+      - '.github/workflows/SurveyFrame.yaml'
   workflow_dispatch:
   workflow_run:
-    workflows: [GoLive]
+    workflows: [GoLiveTest, GoLiveStage, GoLiveProd]
     types: [completed]
 jobs:
   deployGoogleCloudFunction:

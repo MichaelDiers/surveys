@@ -6,7 +6,7 @@
   "scripts": {
     "eslint": "eslint -c ./configs/.eslintrc.js . --fix",
     "git": "git add . && git status",
-    "gitadd": "npm run lint && npm run ugly && npm run git",
+    "gitadd": "npm run workflow && npm run git",
     "lint": "npm run eslint && npm run puglint && npm run stylelint",
     "puglint": "pug-lint -c ./configs/.pug-lintrc.json -r inline ./application/views/",
     "serveGateway": "nodemon localGateway.js",
@@ -15,7 +15,8 @@
     "test": "mocha --timeout 10000 ./tests/**/*.tests.js --config configs/.mocharc.json",
     "uglyfy": "uglifyjs ./client/js/*.js -o application/public/frame.min.js",
     "ugly": "npm run uglyfy -- --compress --mangle",
-    "uglybeauty": "npm run uglyfy -- --beautify"
+    "uglybeauty": "npm run uglyfy -- --beautify",
+    "workflow": "npm run lint && npm run ugly && npm run test"
   },
   "author": "",
   "license": "MIT",
