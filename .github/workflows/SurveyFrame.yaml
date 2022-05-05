@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 jobs:
   deployGoogleCloudFunction:
-    uses: MichaelDiers/shared-workflows/.github/node-deploy-google-cloud-function-semantic.yaml@main
+    uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function-semantic.yaml@main
     with:
       functionName: frame
       sourceDirectory: frontend/SurveyFrame
