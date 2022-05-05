@@ -1,12 +1,5 @@
-name: SurveyFrame ci/cd
+name: SurveyFrame (semantic v1)
 on:
-  pull_request:
-    branches:
-      - stage
-      - prod
-    paths:
-      - 'frontend/SurveyFrame/**'
-      - '.github/workflows/SurveyFrame.yaml'
   push:
     branches:
       - main
@@ -14,12 +7,9 @@ on:
       - 'frontend/SurveyFrame/**'
       - '.github/workflows/SurveyFrame.yaml'
   workflow_dispatch:
-  workflow_run:
-    workflows: [GoLiveTest, GoLiveStage, GoLiveProd]
-    types: [completed]
 jobs:
   deployGoogleCloudFunction:
-    uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function-vnext.yaml@main
+    uses: MichaelDiers/shared-workflows/.github/node-deploy-google-cloud-function-semantic.yaml@main
     with:
       functionName: frame
       sourceDirectory: frontend/SurveyFrame
