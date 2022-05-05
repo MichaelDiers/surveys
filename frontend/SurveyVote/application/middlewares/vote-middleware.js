@@ -23,6 +23,7 @@ const initialize = (config = {}) => {
       next();
     } else {
       res.render('vote/unknown');
+      next('invalid request');
     }
   });
 

@@ -63,14 +63,18 @@ const initialize = (config = {}) => {
   app.use(appRoute, router);
 
   app.use((err, req, res, next) => {
+    const error = {
+      message: err?.message || err,
+      stack: err?.stack || err,
+      request: `${req.method} ${req.originalUrl} ${JSON.stringify(req.body)}`,
+    };
+
+    // eslint-disable-next-line no-console
+    console.error(JSON.stringify(error));
+
     if (res.headersSent) {
       next(err);
     } else {
-      if (err) {
-        console.error(err.stack);
-        console.error(err.message);
-      }
-
       res.status(500).send('error');
     }
   });
