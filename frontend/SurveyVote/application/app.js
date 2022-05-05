@@ -40,7 +40,7 @@ const initialize = (config = {}) => {
   middlewares.baseMiddleware({ router, requestLogging });
   routers.publicRoute({ router });
   middlewares.pugMiddleware({ router, lang, files });
-  middlewares.csurfMiddleware({ router, csurfCookieName });
+  // middlewares.csurfMiddleware({ router, csurfCookieName });
 
   routers.footerRoute({
     router,
