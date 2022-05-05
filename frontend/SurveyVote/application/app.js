@@ -32,7 +32,7 @@ const initialize = (config = {}) => {
       surveysCollectionName,
       surveyResultsCollectionName,
     }),
-    csurfCookieName,
+    // csurfCookieName,
     saveSurveyResultTopic,
     pubSubClient = pubSubInit({ topicName: saveSurveyResultTopic }),
   } = config;
