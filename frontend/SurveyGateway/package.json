@@ -9,10 +9,8 @@
     "gitadd": "npm run lint && npm run git",
     "lint": "npm run eslint",
     "serve": "nodemon index.js",
-    "test": "npm run testUnit",
-    "testUnit": "mocha ./tests/unit/**/*-tests.js --config configs/.mocharc.json",
-    "testIntegration": "mocha ./tests/integration/**/*-tests.js --config configs/.mocharc.json",
-    "testSelenium": "mocha ./tests/selenium/**/*-tests.js --config configs/.mocharc.json"
+    "test": "mocha ./tests/**/*-tests.js --config configs/.mocharc.json",
+    "workflow": "npm run lint && npm run test"
   },
   "author": "",
   "license": "MIT",
