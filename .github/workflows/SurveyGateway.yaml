@@ -5,13 +5,11 @@ on:
       - main
     paths:
       - 'frontend/SurveyGateway/**'
+      - '.github/workflows/SurveyGateway.yaml'
   workflow_dispatch:
-  workflow_run:
-    workflows: [GoLive]
-    types: [completed]
 jobs:
   deployGoogleCloudFunction:
-    uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function.yaml@main
+    uses: MichaelDiers/shared-workflows/.github/workflows/node-deploy-google-cloud-function-semantic.yaml@main
     with:
       functionName: gateway
       sourceDirectory: frontend/SurveyGateway
