@@ -1,4 +1,4 @@
-name: SurveyGateway (semantic)
+name: SurveyGateway (semantic v1)
 on:
   push:
     branches:
