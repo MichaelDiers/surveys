@@ -62,6 +62,19 @@ const initialize = (config = {}) => {
 
   app.use(appRoute, router);
 
+  app.use((err, req, res, next) => {
+    if (res.headersSent) {
+      next(err);
+    } else {
+      if (err) {
+        console.error(err.stack);
+        console.error(err.message);
+      }
+
+      res.status(500).send('error');
+    }
+  });
+
   return app;
 };
 

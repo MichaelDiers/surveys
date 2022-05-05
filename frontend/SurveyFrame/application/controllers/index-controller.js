@@ -10,25 +10,29 @@ const initialize = (config = {}) => {
   } = config;
 
   const controller = {
-    index: async (req, res) => {
-      const urlSplit = req.originalUrl.split('/frame');
-      // handle local and server environment
-      const destination = urlSplit.length === 1 ? req.originalUrl : urlSplit[1];
-      const container = urlSplit.length === 1 ? req.originalUrl.split('/')[1] : req.originalUrl.split('/frame')[1].split('/')[1];
+    index: async (req, res, next) => {
+      try {
+        const urlSplit = req.originalUrl.split('/frame');
+        // handle local and server environment
+        const destination = urlSplit.length === 1 ? req.originalUrl : urlSplit[1];
+        const container = urlSplit.length === 1 ? req.originalUrl.split('/')[1] : req.originalUrl.split('/frame')[1].split('/')[1];
 
-      const placeholderAjax = `${gatewayAddress}${destination}`;
-      const containerId = `${container}-container`;
+        const placeholderAjax = `${gatewayAddress}${destination}`;
+        const containerId = `${container}-container`;
 
-      const subViewBase = destination.split('/')[1];
-      const placeholderAjaxHeader = `${gatewayAddress}/${subViewBase}/header`;
-      const placeholderAjaxFooter = `${gatewayAddress}/${subViewBase}/footer`;
+        const subViewBase = destination.split('/')[1];
+        const placeholderAjaxHeader = `${gatewayAddress}/${subViewBase}/header`;
+        const placeholderAjaxFooter = `${gatewayAddress}/${subViewBase}/footer`;
 
-      res.locals.pubLocals.files.css.push(`${gatewayAddress}/${subViewBase}/public/${subViewBase}.min.css`);
-      res.locals.pubLocals.files.js.push(`${gatewayAddress}/${subViewBase}/public/${subViewBase}.min.js`);
+        res.locals.pubLocals.files.css.push(`${gatewayAddress}/${subViewBase}/public/${subViewBase}.min.css`);
+        res.locals.pubLocals.files.js.push(`${gatewayAddress}/${subViewBase}/public/${subViewBase}.min.js`);
 
-      res.render('index/index', {
-        containerId, placeholderAjax, placeholderAjaxFooter, placeholderAjaxHeader,
-      });
+        res.render('index/index', {
+          containerId, placeholderAjax, placeholderAjaxFooter, placeholderAjaxHeader,
+        });
+      } catch (err) {
+        next(err);
+      }
     },
   };
 

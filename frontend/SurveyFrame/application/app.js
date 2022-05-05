@@ -45,6 +45,21 @@ const initialize = (config = {}) => {
 
   app.use(appRoute, router);
 
+  app.use((err, req, res, next) => {
+    if (res.headersSent) {
+      next(err);
+    } else {
+      if (err) {
+        // eslint-disable-next-line no-console
+        console.error(err.stack);
+        // eslint-disable-next-line no-console
+        console.error(err.message);
+      }
+
+      res.status(500).send('error');
+    }
+  });
+
   return app;
 };
 
